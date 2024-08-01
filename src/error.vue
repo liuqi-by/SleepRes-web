@@ -12,7 +12,7 @@
                     type="primary"
                     height="32px"
                     @click="$router.push('/')"
-                    >{{ $t('errors.goBackToHome') }}</base-button
+                    >{{ $t('errors.goBack') }}</base-button
                 >
             </div>
         </div>

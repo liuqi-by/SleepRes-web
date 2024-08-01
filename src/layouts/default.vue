@@ -243,10 +243,9 @@
 
     // 顶部布局
     .layout-top {
-        // .fixed-header + .app-main {
-        //     min-height: calc(100vh - $navbar-height);
-        //     padding-top: 0;
-        // }
+        .fixed-header + .app-main {
+            padding-top: 0;
+        }
 
         .main-container {
             min-height: 100vh;

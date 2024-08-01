@@ -42,3 +42,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.link {
+    color: $active-color;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.85;
+    }
+}

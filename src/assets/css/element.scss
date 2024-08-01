@@ -1,1 +1,25 @@
 @charset "UTF-8";
+
+// 隐藏input的required红星
+.no-required {
+    .el-form-item__label {
+        &::before {
+            content: '' !important;
+        }
+    }
+}
+
+body {
+    .el-message {
+        z-index: 9999 !important;
+    }
+
+    .el-message__content,
+    .el-message {
+        font-size: $font-middle;
+    }
+
+    .is-message-box {
+        z-index: 9999 !important;
+    }
+}

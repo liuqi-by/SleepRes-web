@@ -8,7 +8,14 @@ export interface LoginRes {
     userinfo: {
         id: number;
         token: string;
+        roles: Roles[];
+        username: string;
     };
+}
+
+export interface Roles {
+    label: string;
+    value: string;
 }
 
 export interface UserInfo {

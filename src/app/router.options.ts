@@ -25,13 +25,25 @@ export const routes: RouteRecordRaw[] = [
         path: '/',
         component: () => import('@/pages/home/index.vue'),
         name: '主页',
-        meta: { title: 'home', affix: true, icon: 'homepage', keepalive: true },
+        meta: { title: 'home', affix: true, icon: 'homepage', keepalive: true, roles: ['superAdmin'] },
     },
     {
-        path: '/menu',
-        component: () => import('@/pages/menu/index.vue'),
-        name: '菜单',
-        meta: { title: 'menu', icon: 'homepage', keepalive: true },
+        path: '/patients',
+        component: () => import('@/pages/patients/index.vue'),
+        name: '患者',
+        meta: { title: 'menu', icon: 'homepage', keepalive: true, roles: ['patients'] },
+    },
+    {
+        path: '/users',
+        component: () => import('@/pages/users/index.vue'),
+        name: '用户',
+        meta: { title: 'users', icon: 'homepage', keepalive: true, roles: ['users'] },
+    },
+    {
+        path: '/organization',
+        component: () => import('@/pages/organization/index.vue'),
+        name: '机构',
+        meta: { title: 'organization', icon: 'homepage', keepalive: true, roles: ['organization'] },
     },
 ];
 

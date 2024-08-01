@@ -9,68 +9,56 @@
             height="68px"
             class="login-logo"
         />
-        <!-- 语言切换 -->
-        <lang-select>
-            <template #title="{ title }">
-                <div class="header-lang-right cursor-pointer">
-                    {{ title }} <el-icon class="m-l-[7.5px]"><ArrowDown /></el-icon>
-                </div>
-            </template>
-        </lang-select>
         <!-- 表单 -->
         <div class="login-card">
-            <div
-                class="tab-header"
-                @click="switchLoginType"
-            >
-                <div
-                    class="tab-title"
-                    :class="{ 'is-active': loginType === 'accountLogin' }"
-                    data-type="accountLogin"
-                >
-                    {{ $t('login.accountLogin') }}
-                </div>
-                <div
-                    class="tab-title"
-                    :class="{ 'is-active': loginType === 'scanLogin' }"
-                    data-type="scanLogin"
-                    v-if="loginType !== 'register'"
-                >
-                    {{ $t('login.scanLogin') }}
-                </div>
-                <div
-                    class="tab-title"
-                    :class="{ 'is-active': loginType === 'register' }"
-                    data-type="register"
-                    v-if="loginType === 'register'"
-                >
-                    {{ $t('login.register') }}
-                </div>
-            </div>
             <div class="tab-content">
-                <div v-show="loginType === 'accountLogin'">
+                <div>
                     <!-- 登录表单 -->
-                    <login-form />
-                    <div class="form-bottom m-t-[32px]">
-                        <span class="color-[var(--login-active-color)]">{{ $t('login.register') }}</span>
-                        <span class="text-[#FF6511]/85">{{ $t('login.ForgotPassword') }} ？</span>
-                    </div>
+                    <login-form @link-to="switchTab" />
                 </div>
             </div>
         </div>
+
+        <!-- 注册弹窗 -->
+        <LazyRegisterForm
+            v-model="showRegisterForm"
+            :tabType="tabType"
+            v-if="tabType === 'registerDme' || tabType === 'registerPhysician'"
+        />
+
+        <!-- 重置密码弹窗 -->
+        <LazyResetPasswordForm
+            v-model="showResetPasswordForm"
+            v-if="tabType === 'resetPwd'"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ArrowDown } from '@element-plus/icons-vue';
-
+    // import { ArrowDown } from '@element-plus/icons-vue';
     import LoginForm from './components/login-form.vue';
 
-    let loginType = ref('accountLogin'); // 登录方式
+    const LazyRegisterForm = defineAsyncComponent(() => import('./components/register-form.vue'));
+    const LazyResetPasswordForm = defineAsyncComponent(() => import('./components/reset-password.vue'));
 
-    const switchLoginType = (e: any) => {
-        loginType.value = e.target.dataset.type;
+    export type TabType = '' | 'registerDme' | 'registerPhysician' | 'resetPwd';
+
+    const tabType = ref<TabType>('');
+
+    const showRegisterForm = ref(false); // 是否显示注册表单
+    const switchTab = (type: TabType) => {
+        if (type === 'registerDme' || type === 'registerPhysician') {
+            showRegisterForm.value = true;
+            tabType.value = type;
+            return;
+        }
+        if (type === 'resetPwd') {
+            showResetPasswordForm.value = true;
+            tabType.value = type;
+        }
     };
+
+    const showResetPasswordForm = ref(false); // 是否显示重置密码表单
 </script>
 
 <style lang="scss" scoped>
@@ -80,8 +68,7 @@
         justify-content: center;
         width: 100%;
         min-width: 1200px;
-        height: 100%;
-        overflow-y: auto;
+        min-height: 100vh;
         background: url('@/assets/images/login-bg.png') no-repeat;
         background-size: 100% 100%;
 
@@ -126,10 +113,10 @@
 
         .login-card {
             position: relative;
-            left: 20%;
             width: 500px;
             min-height: 500px;
-            padding: 48px 70px;
+            padding: 40px;
+            padding-top: 30px;
             background-color: #fff;
             border-radius: 0 2px 2px 0;
             box-shadow:
@@ -148,9 +135,16 @@
             }
         }
 
-        :deep(.login-form) {
-            padding: 30px 0;
+        :deep(.title) {
+            @include font($font-huge);
 
+            margin-bottom: 40px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+        }
+
+        :deep(.login-form) {
             .el-button {
                 span {
                     @include font($font-small);
@@ -166,29 +160,9 @@
                 box-shadow: 0 0 0 1px #e0e0e0 inset;
             }
 
-            .captcha {
-                height: 40px;
-
-                .el-image {
-                    flex: 1;
-                    height: 48px;
-                    cursor: pointer;
-                }
-
-                .image-slot {
-                    display: flex;
-                    align-items: center;
-                    justify-content: right;
-                    width: 100%;
-                    height: 100%;
-                    font-size: 18px;
-                    color: var(--el-text-color-secondary);
-                    background: var(--el-fill-color-light);
-
-                    svg {
-                        margin-right: 10px;
-                    }
-                }
+            .el-form-item {
+                align-items: center;
+                margin-bottom: 24px;
             }
 
             .form-item {
@@ -196,95 +170,30 @@
                 align-items: center;
                 width: 100%;
 
-                .mg2 {
-                    margin: 0 0.5rem;
-                }
-
                 .form-input {
                     flex: 1;
                     height: 40px;
                 }
-
-                .right-icon {
-                    margin-right: 0.5rem;
-                    cursor: pointer;
-                }
-            }
-
-            .el-form-item {
-                margin-bottom: 24px;
             }
         }
     }
 
-    .form-bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-family: var(--font-family);
-        font-weight: 500;
-        line-height: 22px;
+    :deep(.el-form-item__label) {
+        @include font($font-small);
 
-        span {
-            cursor: pointer;
-        }
+        font-weight: bold;
+        color: #000;
     }
 
-    .login-bottom {
-        position: absolute;
-        bottom: 0.25rem;
-        font-size: 10px;
-        text-align: center;
-    }
+    :deep(.el-dialog) {
+        padding-right: 40px;
+        padding-bottom: 25px;
+        padding-left: 40px;
+        margin-top: 10vh;
 
-    :deep(.el-tabs) {
-        .el-tabs__content {
-            overflow: visible;
-        }
-
-        .el-tabs__item {
-            padding: 0;
-            font-family: var(--font-family);
-            font-size: 24px;
-            font-weight: 500;
-            line-height: 36px;
-
-            &.is-active {
-                color: var(--login-active-color);
-            }
-
-            &:hover {
-                color: var(--login-active-color);
-            }
-        }
-
-        .el-tabs__active-bar {
-            background-color: var(--login-active-color);
-        }
-
-        .el-tabs__header {
-            margin-bottom: 10px;
-        }
-    }
-
-    :deep(.el-input) {
-        .el-input__wrapper {
-            border-radius: 2px;
-
-            &.is-focus {
-                border: 1px solid var(--login-active-color);
-                box-shadow: 0 0 0 3px rgb(64 134 255 / 20%);
-            }
-        }
-
-        .el-input__inner {
-            font-family: var(--font-family);
-            font-weight: 350;
-            color: var(--font-black1);
-
-            &::placeholder {
-                color: var(--font-black7);
-            }
+        .dialog-footer {
+            display: flex;
+            justify-content: center;
         }
     }
 </style>

@@ -13,13 +13,13 @@ export const useAppStore = defineStore('app', () => {
     /** element组件size大小 */
     const size = ref<AppSettings['size']>('default');
     /** 是否显示tags栏 */
-    const isTagsView = ref<AppSettings['isTagsView']>(true);
+    const isTagsView = ref<AppSettings['isTagsView']>(false);
     /** 是否固定header */
     const isFixedHeader = ref<AppSettings['isFixedHeader']>(true);
     /** 是否显示logo */
     const isShowLogo = ref<AppSettings['isShowLogo']>(true);
     /** 布局 顶部或左边 */
-    const layout = useCookie<AppSettings['layout']>('layout', { default: () => 'left' });
+    const layout = useCookie<AppSettings['layout']>('layout', { default: () => 'top' });
     /** 是否显示菜单图标 */
     const isShowMenuIcon = ref<AppSettings['isShowMenuIcon']>(false);
     /** 主题 黑暗/明亮 */
