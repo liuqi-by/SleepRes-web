@@ -1,14 +1,33 @@
 {
     "title": "vhealth",
     "form": {
-        "error": "error"
+        "error": "error",
+        "Confirm": "Confirm",
+        "Cancel": "Cancel"
     },
     "login": {
         "login": "Login",
-        "Username": "Username",
-        "Password": "Password",
+        "accountLogin": "Account Login",
+        "username": "Username",
+        "password": "Password",
         "registerDme": "Create the DME account",
         "registerPhysician": "Create a Physician account",
-        "resetPwd": "Reset Password"
+        "resetPwd": "Reset Password",
+        "loginSuccess": "Login Success",
+        "registerDmeTitle": "DME Account Creation",
+        "registerPhysicianTitle": "Physician Account Creation",
+
+        "dmeName": "DME Name",
+        "FirstName": "First name",
+        "LastName": "Last name",
+        "SleepResAccountNumber": "SleepRes Account #",
+        "Email": "Email",
+        "PhoneNumber": "Phone number",
+        "Address": "Address",
+        "State": "State",
+        "ZipCode": "Zip Code",
+
+        "PracticeName": "Practice Name",
+        "PhysicianNPI": "Physician NPI number"
     }
 }

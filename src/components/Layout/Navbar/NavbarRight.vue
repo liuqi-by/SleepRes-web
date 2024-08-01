@@ -24,13 +24,13 @@
             />
         </el-tooltip>
         <!-- 选择语言 -->
-        <el-tooltip
+        <!-- <el-tooltip
             :content="$t('layout.LangSelect')"
             effect="dark"
             placement="bottom"
         >
             <lang-select class="right-menu-item whitespace-nowrap" />
-        </el-tooltip>
+        </el-tooltip> -->
 
         <!-- 用户名 -->
         <el-dropdown trigger="click">

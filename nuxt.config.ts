@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     },
     // 修改src目录
     srcDir: 'src/',
-    ssr: false,
+    ssr: true,
     app: {
         baseURL: '/',
         head: {
@@ -59,7 +59,7 @@ export default defineNuxtConfig({
     },
     // 配置国际化
     i18n: {
-        locales: ['en-US', 'zh-CN'],
+        locales: ['en-US'],
         // 浏览器语言检测
         // detectBrowserLanguage: {
         //     // 使用cookie记录用户语言
