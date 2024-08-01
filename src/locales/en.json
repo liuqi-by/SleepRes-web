@@ -1,0 +1,14 @@
+{
+    "title": "vhealth",
+    "form": {
+        "error": "error"
+    },
+    "login": {
+        "login": "Login",
+        "Username": "Username",
+        "Password": "Password",
+        "registerDme": "Create the DME account",
+        "registerPhysician": "Create a Physician account",
+        "resetPwd": "Reset Password"
+    }
+}
