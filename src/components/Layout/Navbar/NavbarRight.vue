@@ -47,20 +47,13 @@
 
                 <p
                     class="user-name"
-                    :title="userStore.userInfo.username"
+                    :title="userStore.userInfo.roles[0].label"
                 >
-                    {{ userStore.userInfo.username }}
+                    {{ userStore.userInfo.roles[0].label }}
                 </p>
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <a
-                        target="_blank"
-                        href="https://gitee.com/liu-qi2/nuxt3-element-template.git"
-                    >
-                        <el-dropdown-item>{{ $t('layout.gitee') }}</el-dropdown-item>
-                    </a>
-
                     <el-dropdown-item
                         divided
                         @click="logout"

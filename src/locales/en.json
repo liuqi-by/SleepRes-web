@@ -3,7 +3,11 @@
     "form": {
         "error": "error",
         "Confirm": "Confirm",
-        "Cancel": "Cancel"
+        "Cancel": "Cancel",
+        "PleaseEnter": "Please enter ",
+        "PleaseSelect": "Please select ",
+        "PleaseEnterCurrent": "Please enter current ",
+        "lengthRule": "limit {length} characters"
     },
     "login": {
         "login": "Login",
@@ -29,5 +33,32 @@
 
         "PracticeName": "Practice Name",
         "PhysicianNPI": "Physician NPI number"
+    },
+    "router": {
+        "home": "Home",
+        "dashboard": "Dashboard",
+        "patients": "Patients",
+        "users": "Users",
+        "organization": "Organization"
+    },
+    "layout": {
+        "screenfull": "Full Screen",
+        "exitFullscreen": "Exit Full Screen",
+        "LangSelect": "Select Language",
+        "message": "message",
+        "search": "search",
+        "switchTheme": "Switch Themes",
+        "PersonalizedSettings": "Personalized Settings",
+        "ThemeColor": "Theme Color",
+        "LayoutSetting": "Layout Setting",
+        "LeftMode": "Left Mode",
+        "TopMode": "Top Mode",
+        "logout": "Login Out"
+    },
+    "errors": {
+        "goBack": "Go Back",
+        "404": "Sorry, the page you visited does not exist",
+        "505": "Sorry, the server is reporting an error",
+        "401": "Sorry, you do not have permission to access this page"
     }
 }

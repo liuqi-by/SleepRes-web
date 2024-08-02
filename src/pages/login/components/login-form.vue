@@ -12,15 +12,15 @@
         >
             <!-- 账号 -->
             <el-form-item
-                prop="account"
+                prop="username"
                 :label="$t('login.username')"
+                class="no-required"
             >
                 <div class="form-item">
                     <el-input
-                        v-model.trim="formData.account"
+                        v-model="formData.username"
                         class="form-input"
                         :placeholder="`${$t('login.username')}`"
-                        name="username"
                         type="text"
                     >
                         <template #prefix>
@@ -37,6 +37,7 @@
             <el-form-item
                 prop="password"
                 :label="$t('login.password')"
+                class="no-required"
             >
                 <div class="form-item">
                     <el-input
@@ -106,14 +107,18 @@
     const { t } = useI18n(); // 国际化
 
     const formData = ref({
-        account: '',
-        password: '',
-        verificationCode: '',
+        username: 'admin',
+        password: '123456',
     });
+
+    const { usernameRequired, passwordRequired } = useFormRules();
 
     // 表单规则
     const formRules = computed(() => {
-        return {};
+        return {
+            username: usernameRequired,
+            password: passwordRequired,
+        };
     });
 
     const route = useRoute();
@@ -130,7 +135,7 @@
 
             loading.value = true;
             let queryData = {
-                account: formData.value.account,
+                account: formData.value.username,
                 password: formData.value.password,
             };
             userStore

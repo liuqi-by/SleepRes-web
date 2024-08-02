@@ -1,13 +1,52 @@
 export function useFormRules() {
     // 表单验证规则
+    const { t } = useI18n();
 
     return {
         // 用户名验证规则
-        account: [
+        usernameRequired: [
             {
                 required: true,
                 trigger: 'blur',
-                message: '请输入账号',
+                message: t('form.PleaseEnter') + t('login.username'),
+            },
+        ],
+        // 密码验证规则
+        passwordRequired: [
+            {
+                trigger: 'blur',
+                required: true,
+                message: t('form.PleaseEnter') + t('login.password'),
+            },
+        ],
+        // 用户名验证规则
+        username: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('login.username'),
+            },
+            {
+                min: 3,
+                max: 18,
+                message: t('form.lengthRule', { length: '3-' + inputLength.name }),
+                trigger: 'blur',
+            },
+        ],
+        // 用户名验证规则
+        firstName: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('login.FirstName'),
+            },
+        ],
+        // 用户名验证规则
+        lastName: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('login.LastName'),
             },
         ],
         // 密码验证规则
@@ -15,16 +54,25 @@ export function useFormRules() {
             {
                 trigger: 'blur',
                 required: true,
-                message: '请输入密码',
+                message: t('form.PleaseEnter') + t('login.password'),
             },
         ],
-
-        // 手机/邮箱验证码
-        code: [
+        // 邮箱
+        email: [
             {
-                required: true,
                 trigger: 'blur',
-                message: '请输入验证码',
+                required: true,
+                message: t('form.PleaseEnter') + t('login.Email'),
+            },
+            {
+                trigger: 'blur',
+                validator: (_rule: any, value: string, callback: any) => {
+                    const reg = REGULAR.email;
+                    if (!reg.test(value)) {
+                        return callback(new Error(t('form.PleaseEnterCurrent') + t('login.Email')));
+                    }
+                    callback();
+                },
             },
         ],
     };

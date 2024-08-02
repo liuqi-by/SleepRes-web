@@ -5,6 +5,7 @@
             v-model="dialogVisible"
             title=""
             width="500"
+            @close="close"
         >
             <div class="title">
                 {{ $t('login.resetPwd') }}
@@ -19,30 +20,30 @@
             >
                 <!-- Email -->
                 <el-form-item
-                    prop="account"
+                    prop="email"
                     :label="$t('login.Email')"
+                    class="no-required"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model.trim="formData.account"
+                            v-model.trim="formData.email"
                             class="form-input"
                             :placeholder="`${$t('login.Email')}`"
-                            name="username"
-                            type="text"
                         />
                     </div>
                 </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button
+                    <base-button
                         type="primary"
-                        @click="handleLogin"
+                        @click="handleConfirm"
                         class="m-r-[10px]"
+                        :loading="loading"
                     >
                         {{ $t('form.Confirm') }}
-                    </el-button>
-                    <el-button @click="dialogVisible = false">{{ $t('form.Cancel') }}</el-button>
+                    </base-button>
+                    <base-button @click="dialogVisible = false">{{ $t('form.Cancel') }}</base-button>
                 </div>
             </template>
         </el-dialog>
@@ -51,69 +52,39 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
-    import type { LocationQuery, LocationQueryValue } from 'vue-router';
-    import { useUserStore } from '@/stores/modules/user';
-
     const dialogVisible = defineModel({ type: Boolean, default: true });
-
-    const userStore = useUserStore();
 
     const loading = ref(false); // 按钮loading
     const formRef = ref<FormInstance>(); // 登录表单ref
-    const { t } = useI18n(); // 国际化
+    // const { t } = useI18n(); // 国际化
 
     const formData = ref({
-        account: '',
-        password: '',
-        verificationCode: '',
+        email: '',
     });
 
+    const { email } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
-        return {};
+        return {
+            email,
+        };
     });
 
-    const route = useRoute();
-    const router = useRouter();
-
     /**
-     * 登录
+     * 重置密码
      */
-    const handleLogin = () => {
+    const handleConfirm = () => {
         formRef.value?.validate((valid: boolean) => {
             if (!valid) {
                 return;
             }
 
             loading.value = true;
-            let queryData = {
-                account: formData.value.account,
-                password: formData.value.password,
-            };
-            userStore
-                .login(queryData)
-                .then(async () => {
-                    ElMessage.success(t('login.loginSuccess'));
-                    // 登录成功后，获取用户信息
-                    await userStore.getUserInfo();
-
-                    const query: LocationQuery = route.query;
-
-                    const redirect = (query.redirect as LocationQueryValue) ?? '/';
-
-                    const otherQueryParams = Object.keys(query).reduce((acc: any, cur: string) => {
-                        if (cur !== 'redirect') {
-                            acc[cur] = query[cur];
-                        }
-                        return acc;
-                    }, {});
-
-                    router.push({ path: redirect, query: otherQueryParams });
-                })
-                .finally(() => {
-                    loading.value = false;
-                });
         });
+    };
+
+    const close = () => {
+        formRef.value?.clearValidate();
     };
 </script>
 

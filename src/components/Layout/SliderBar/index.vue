@@ -28,10 +28,22 @@
                     <span>{{ $t(`router.home`) }}</span>
                 </el-menu-item>
                 <el-menu-item
-                    index="/menu"
-                    :title="$t(`router.menu`)"
+                    index="/patients"
+                    :title="$t(`router.patients`)"
                 >
-                    <span>{{ $t(`router.menu`) }}</span>
+                    <span>{{ $t(`router.patients`) }}</span>
+                </el-menu-item>
+                <el-menu-item
+                    index="/users"
+                    :title="$t(`router.users`)"
+                >
+                    <span>{{ $t(`router.users`) }}</span>
+                </el-menu-item>
+                <el-menu-item
+                    index="/organization"
+                    :title="$t(`router.organization`)"
+                >
+                    <span>{{ $t(`router.organization`) }}</span>
                 </el-menu-item>
             </el-menu>
         </el-scrollbar>
@@ -57,6 +69,7 @@
     const { width } = useWindowSize();
     // const permissionStore = usePermissionStore();
     // const permission_routes = permissionStore.permissionRoutes;
+    // console.log(permission_routes);
 
     // 是否显示logo
     const isShowLogo = computed(() => appStore.device === DeviceEnum.DESKTOP);

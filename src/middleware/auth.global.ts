@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware(to => {
     // 获取用户信息
     const userStore = useUserStore();
     const isLogin = userStore.loginStatus?.token;
-    console.log(userStore.roles);
+
     // 如果登录
     if (!isLogin) {
         console.log('没有登录');
@@ -13,7 +13,13 @@ export default defineNuxtRouteMiddleware(to => {
         if (!whiteList.includes(to.path)) {
             return navigateTo('/login?redirect=' + to.path);
         }
-    } else if (to.meta?.roles && !haveRoles(to.meta.roles, userStore.roles)) {
+    } else if (
+        to.meta?.roles &&
+        !haveRoles(
+            to.meta.roles,
+            userStore.loginStatus.roles.map(item => item.value),
+        )
+    ) {
         // 如果登录，判断权限
         console.log('没有权限');
         // 如果没有

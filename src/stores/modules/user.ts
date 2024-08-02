@@ -1,3 +1,4 @@
+import { usePermissionStore } from './permission';
 import { useTagsViewStore } from './tagsView';
 // import { getUserDetailInfo, loginAccount, loginOut } from '~/api/login';
 import type { LoginReq, LoginRes, UserInfo } from '~/api/login/types';
@@ -6,7 +7,7 @@ export const useUserStore = defineStore(
     'user',
     () => {
         // 登录状态保持
-        const loginStatus = useCookie<LoginRes['userinfo'] | null>('loginData', {
+        const loginStatus = useCookie<LoginRes['userinfo']>('loginData', {
             maxAge: 60 * 60 * 24,
         });
 
@@ -32,11 +33,22 @@ export const useUserStore = defineStore(
                 //     .catch(error => {
                 //         reject(error);
                 //     });
-                loginStatus.value = { id: 1, token: '123456' };
-                resolve(loginStatus.value);
+                if (loginData.account === 'admin' && loginData.password === '123456') {
+                    loginStatus.value = {
+                        username: loginData.account,
+                        id: 1,
+                        token: '123456',
+                        roles: [{ label: 'Sleep Res Admin', value: 'superAdmin' }],
+                    };
+                    resolve({ userinfo: loginStatus.value });
+                } else {
+                    ElMessage.error('Account or password error');
+                    reject();
+                }
             });
         }
 
+        const permissionStore = usePermissionStore();
         /**
          * 获取信息(用户昵称、头像、角色集合、权限集合)
          * @return {Promise<UserInfo>}
@@ -53,7 +65,19 @@ export const useUserStore = defineStore(
                 //     .catch((error: any) => {
                 //         reject(error);
                 //     });
-                userInfo.value = { id: 1, username: 'admin' };
+                userInfo.value = {
+                    username: 'admin',
+                    id: 1,
+                    token: '123456',
+                    roles: [{ label: 'Sleep Res Admin', value: 'superAdmin' }],
+                };
+                loginStatus.value = {
+                    username: 'admin',
+                    id: 1,
+                    token: '123456',
+                    roles: [{ label: 'Sleep Res Admin', value: 'superAdmin' }],
+                };
+                // permissionStore.getPermissionRoutes();
                 resolve();
             });
         }
