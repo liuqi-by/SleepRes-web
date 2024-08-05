@@ -16,21 +16,19 @@ export const usePermissionStore = defineStore('permission', () => {
      */
     const getPermissionRoutes = () => {
         // let res = await useClientRequest<ResPonseType<RouteRecordRaw[]>>('/api/menu');
+
         if (routes.length > 0) {
             let route = routes.filter(item => {
                 return (
-                    item.meta?.title &&
-                    ((item.meta?.roles &&
-                        !haveRoles(
-                            item.meta.roles,
-                            userStore.loginStatus.roles.map(item => item.value),
-                        )) ||
-                        !item.meta?.roles)
+                    (item.meta?.roles && haveRoles(item.meta.roles, userStore.loginStatus.roles)) || !item.meta?.roles
                 );
             });
+
             console.log(route);
-            permissionRoutes.value = routes;
+            permissionRoutes.value = JSON.parse(JSON.stringify(route));
+            return permissionRoutes.value;
         }
+
         // permissionRoutes.value = routes.filter(item => {
         //     return (
         //         item.meta?.title &&

@@ -1,5 +1,6 @@
 import { usePermissionStore } from './permission';
 import { useTagsViewStore } from './tagsView';
+
 // import { getUserDetailInfo, loginAccount, loginOut } from '~/api/login';
 import type { LoginReq, LoginRes, UserInfo } from '~/api/login/types';
 
@@ -38,7 +39,7 @@ export const useUserStore = defineStore(
                         username: loginData.account,
                         id: 1,
                         token: '123456',
-                        roles: [{ label: 'Sleep Res Admin', value: 'superAdmin' }],
+                        roles: ['superAdmin'],
                     };
                     resolve({ userinfo: loginStatus.value });
                 } else {
@@ -69,15 +70,15 @@ export const useUserStore = defineStore(
                     username: 'admin',
                     id: 1,
                     token: '123456',
-                    roles: [{ label: 'Sleep Res Admin', value: 'superAdmin' }],
+                    roles: ['patients', 'superAdmin', 'users', 'organization'],
                 };
                 loginStatus.value = {
                     username: 'admin',
                     id: 1,
                     token: '123456',
-                    roles: [{ label: 'Sleep Res Admin', value: 'superAdmin' }],
+                    roles: ['patients', 'superAdmin', 'users', 'organization'],
                 };
-                // permissionStore.getPermissionRoutes();
+                permissionStore.getPermissionRoutes();
                 resolve();
             });
         }
@@ -91,8 +92,9 @@ export const useUserStore = defineStore(
         function logout() {
             const route = useRoute();
             return new Promise<void>((resolve, reject) => {
-                loginStatus.value = null;
-
+                loginStatus.value = undefined;
+                userInfo.value = undefined;
+                usePermissionStore().setPermissionRoutes([]);
                 resolve();
                 // loginOut()
                 //     .then(() => {
@@ -110,7 +112,7 @@ export const useUserStore = defineStore(
                 //         reject(error);
                 //     });
                 tagsViewStore.delAllViews();
-                if (route.fullPath !== '/') {
+                if (route.fullPath !== '/' && route.fullPath !== '/login') {
                     navigateTo(`/login?redirect=${route.fullPath}`);
                 } else {
                     navigateTo(`/login`);

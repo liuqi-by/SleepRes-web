@@ -12,6 +12,7 @@
 
         <!-- 菜单，key防止变化时默认菜单打开的情况 -->
         <!-- 这里菜单写死，是因为elementplus的bug，暂时没有解决办法，发现v-for以及注释都会影响elementplus的计算，导致省略不准，遗留大量空白 -->
+
         <el-scrollbar :key="layout">
             <el-menu
                 :default-active="route.path"
@@ -20,33 +21,47 @@
                 :collapse-transition="false"
                 :mode="layout === LayoutEnum.LEFT || device === DeviceEnum.MOBILE ? 'vertical' : 'horizontal'"
                 router
+                v-if="permission_routes.length > 1"
             >
                 <el-menu-item
-                    index="/"
-                    :title="$t(`router.home`)"
+                    :title="$t(`router.${item.meta?.title}`)"
+                    v-for="item in permission_routes"
+                    :key="item.path"
+                    :index="item.path"
                 >
-                    <span>{{ $t(`router.home`) }}</span>
+                    <span>{{ $t(`router.${item.meta?.title}`) }}</span>
+                </el-menu-item>
+                <!-- <el-menu-item
+                    index="/admin"
+                    :title="$t(`router.patients`)"
+                    v-if="haveRoles(['superAdmin'])"
+                >
+                    <span>{{ $t(`router.admin`) }}</span>
                 </el-menu-item>
                 <el-menu-item
                     index="/patients"
                     :title="$t(`router.patients`)"
+                    v-if="haveRoles(['patients'])"
                 >
                     <span>{{ $t(`router.patients`) }}</span>
                 </el-menu-item>
                 <el-menu-item
                     index="/users"
                     :title="$t(`router.users`)"
+                    v-if="haveRoles(['users'])"
                 >
                     <span>{{ $t(`router.users`) }}</span>
                 </el-menu-item>
                 <el-menu-item
                     index="/organization"
                     :title="$t(`router.organization`)"
+                    v-if="haveRoles(['organization'])"
                 >
                     <span>{{ $t(`router.organization`) }}</span>
-                </el-menu-item>
+                </el-menu-item> -->
             </el-menu>
         </el-scrollbar>
+
         <!-- 右侧菜单 -->
         <NavbarRight
             v-if="layout === LayoutEnum.TOP && device === DeviceEnum.DESKTOP"
@@ -62,13 +77,15 @@
     // import SidebarItem from './components/SidebarItem.vue';
     // import AppLink from './components/Link.vue';
     import { useAppStore } from '@/stores/modules/app';
-    // import { usePermissionStore } from '@/stores/modules/permission';
+    import { usePermissionStore } from '@/stores/modules/permission';
 
     import { DeviceEnum, LayoutEnum } from '~/enums/AppSettingsEnum';
     const appStore = useAppStore();
     const { width } = useWindowSize();
-    // const permissionStore = usePermissionStore();
-    // const permission_routes = permissionStore.permissionRoutes;
+    const permissionStore = usePermissionStore();
+    const permission_routes = computed(() =>
+        permissionStore.permissionRoutes.filter(route => route.meta?.title && !route.meta.hidden),
+    );
     // console.log(permission_routes);
 
     // 是否显示logo

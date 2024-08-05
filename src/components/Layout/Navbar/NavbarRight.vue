@@ -47,9 +47,9 @@
 
                 <p
                     class="user-name"
-                    :title="userStore.userInfo.roles[0].label"
+                    :title="userStore.userInfo.username"
                 >
-                    {{ userStore.userInfo.roles[0].label }}
+                    {{ userStore.userInfo.username }}
                 </p>
             </div>
             <template #dropdown>
@@ -101,6 +101,7 @@
         justify-content: space-between;
         float: right;
         height: 100%;
+        padding-right: 20px;
 
         &:focus {
             outline: none;

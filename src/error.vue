@@ -11,15 +11,25 @@
                 <base-button
                     type="primary"
                     height="32px"
-                    @click="$router.push('/')"
-                    >{{ $t('errors.goBack') }}</base-button
-                >
+                    @click="$router.go(-1)"
+                    v-if="currentError?.statusCode !== 401"
+                    >{{ $t('errors.goBack') }}
+                </base-button>
+                <base-button
+                    type="primary"
+                    height="32px"
+                    @click="useUserStore().logout"
+                    v-else
+                    >{{ $t('errors.goBack') }}
+                </base-button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+    import { useUserStore } from './stores/modules/user';
+
     const props = defineProps({
         error: Object,
     });
@@ -27,7 +37,7 @@
     const currentError = computed(() => {
         let statusCode = props.error?.statusCode;
 
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV !== 'development') {
             return {
                 statusCode,
                 message: props.error?.message,

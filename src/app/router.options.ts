@@ -20,18 +20,21 @@ export const routes: RouteRecordRaw[] = [
         name: '登录',
         meta: { title: 'login', hidden: true, layout: 'custom' },
     },
-
+    // {
+    //     path: '/',
+    //     redirect: '/admin',
+    // },
     {
-        path: '/',
-        component: () => import('@/pages/home/index.vue'),
-        name: '主页',
-        meta: { title: 'home', affix: true, icon: 'homepage', keepalive: true, roles: ['superAdmin'] },
+        path: '/admin',
+        component: () => import('@/pages/admin/index.vue'),
+        name: '管理页',
+        meta: { title: 'admin', affix: true, icon: 'homepage', keepalive: true, roles: ['superAdmin'] },
     },
     {
         path: '/patients',
         component: () => import('@/pages/patients/index.vue'),
         name: '患者',
-        meta: { title: 'menu', icon: 'homepage', keepalive: true, roles: ['patients'] },
+        meta: { title: 'patients', icon: 'homepage', keepalive: true, roles: ['patients'] },
     },
     {
         path: '/users',
