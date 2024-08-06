@@ -3,6 +3,7 @@
     "form": {
         "error": "error",
         "Confirm": "Confirm",
+        "Submit": "Submit",
         "Cancel": "Cancel",
         "PleaseEnter": "Please enter ",
         "PleaseSelect": "Please select ",
@@ -20,7 +21,7 @@
         "loginSuccess": "Login Success",
         "registerDmeTitle": "DME Account Creation",
         "registerPhysicianTitle": "Physician Account Creation",
-
+        "RegisterSuccess": "Register Success",
         "dmeName": "DME Name",
         "FirstName": "First name",
         "LastName": "Last name",
@@ -30,9 +31,15 @@
         "Address": "Address",
         "State": "State",
         "ZipCode": "Zip Code",
-
         "PracticeName": "Practice Name",
         "PhysicianNPI": "Physician NPI number"
+    },
+    "message": {
+        "dmeApproval": "DME Account Approval",
+        "physicianApproval": "Physician Account Application",
+        "dmeNPI": "NPI number",
+        "AccountName": "Account name",
+        "AccountNumber": "Account Number"
     },
     "router": {
         "home": "Home",

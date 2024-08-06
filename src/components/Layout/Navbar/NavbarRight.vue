@@ -23,15 +23,18 @@
                 :size="size"
             />
         </el-tooltip>
-        <!-- 选择语言 -->
-        <!-- <el-tooltip
-            :content="$t('layout.LangSelect')"
+        <!-- 消息通知 -->
+        <el-tooltip
+            content="Message"
             effect="dark"
             placement="bottom"
+            v-if="haveRoles(['superAdmin'])"
         >
-            <lang-select class="right-menu-item whitespace-nowrap" />
-        </el-tooltip> -->
-
+            <MessageCenter
+                class="right-menu-item"
+                :size="size"
+            />
+        </el-tooltip>
         <!-- 用户名 -->
         <el-dropdown trigger="click">
             <div class="avatar-wrapper">
@@ -68,6 +71,7 @@
 
 <script setup lang="ts">
     import Screenfull from './components/Screenfull/index.vue';
+    import MessageCenter from './components/MessageCenter/index.vue';
 
     import { useAppStore } from '@/stores/modules/app';
     import { useUserStore } from '@/stores/modules/user';

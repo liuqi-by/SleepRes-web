@@ -51,3 +51,65 @@
         opacity: 0.85;
     }
 }
+
+body {
+    .form-title {
+        @include font($font-huge);
+
+        margin-bottom: 40px;
+        font-weight: bold;
+        color: #000;
+        text-align: center;
+    }
+
+    .form,
+    .login-form {
+        .el-button {
+            span {
+                @include font($font-small);
+
+                font-weight: 350;
+                line-height: 24px;
+            }
+        }
+
+        .el-form-item {
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .form-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+
+            .form-input {
+                flex: 1;
+                height: 40px;
+            }
+        }
+
+        .el-select {
+            height: 40px;
+        }
+
+        .el-form-item__label {
+            @include font($font-small);
+
+            font-weight: bold;
+            color: #000;
+        }
+    }
+
+    .form-dialog {
+        padding-right: 40px;
+        padding-bottom: 25px;
+        padding-left: 40px;
+        margin-top: 10vh;
+
+        .dialog-footer {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}

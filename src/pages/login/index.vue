@@ -27,10 +27,7 @@
         />
 
         <!-- 重置密码弹窗 -->
-        <LazyResetPasswordForm
-            v-model="showResetPasswordForm"
-            v-if="tabType === 'resetPwd'"
-        />
+        <LazyResetPasswordForm ref="resetPasswordForm" />
     </div>
 </template>
 
@@ -46,6 +43,7 @@
     const tabType = ref<TabType>('');
 
     const showRegisterForm = ref(false); // 是否显示注册表单
+    const resetPasswordForm = ref<InstanceType<typeof LazyResetPasswordForm> | null>(null);
     const switchTab = (type: TabType) => {
         if (type === 'registerDme' || type === 'registerPhysician') {
             showRegisterForm.value = true;
@@ -53,12 +51,13 @@
             return;
         }
         if (type === 'resetPwd') {
-            showResetPasswordForm.value = true;
             tabType.value = type;
+
+            resetPasswordForm.value?.showResetPassword();
         }
     };
 
-    const showResetPasswordForm = ref(false); // 是否显示重置密码表单
+    // const showResetPasswordForm = ref(false); // 是否显示重置密码表单
 </script>
 
 <style lang="scss" scoped>
@@ -133,67 +132,6 @@
                 font-weight: 350;
                 line-height: 22px;
             }
-        }
-
-        :deep(.title) {
-            @include font($font-huge);
-
-            margin-bottom: 40px;
-            font-weight: bold;
-            color: #000;
-            text-align: center;
-        }
-
-        :deep(.login-form) {
-            .el-button {
-                span {
-                    @include font($font-small);
-
-                    font-weight: 350;
-                    line-height: 24px;
-                }
-            }
-
-            .el-input__wrapper,
-            .el-textarea__inner {
-                border-radius: 2px;
-                box-shadow: 0 0 0 1px #e0e0e0 inset;
-            }
-
-            .el-form-item {
-                align-items: center;
-                margin-bottom: 24px;
-            }
-
-            .form-item {
-                display: flex;
-                align-items: center;
-                width: 100%;
-
-                .form-input {
-                    flex: 1;
-                    height: 40px;
-                }
-            }
-        }
-    }
-
-    :deep(.el-form-item__label) {
-        @include font($font-small);
-
-        font-weight: bold;
-        color: #000;
-    }
-
-    :deep(.el-dialog) {
-        padding-right: 40px;
-        padding-bottom: 25px;
-        padding-left: 40px;
-        margin-top: 10vh;
-
-        .dialog-footer {
-            display: flex;
-            justify-content: center;
         }
     }
 </style>

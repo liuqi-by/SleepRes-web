@@ -22,4 +22,60 @@ body {
     .is-message-box {
         z-index: 9999 !important;
     }
+
+    // form
+    .el-input__wrapper,
+    .el-textarea__inner {
+        border-radius: 2px;
+        box-shadow: 0 0 0 1px #b7bac1 inset;
+
+        &.is-focus {
+            box-shadow: 0 0 0 2px #2c7ff5 inset;
+        }
+    }
+
+    .el-select__wrapper {
+        height: 100%;
+        border-radius: 2px;
+        box-shadow: 0 0 0 1px #b7bac1 inset;
+
+        &.is-focused {
+            box-shadow: 0 0 0 2px #2c7ff5 inset;
+        }
+    }
+
+    // table
+
+    .el-table {
+        text-indent: 0 !important;
+    }
+
+    .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+        background: #f5f8ff;
+    }
+
+    .el-table thead {
+        font-family: var(--font-family);
+        font-size: $font-standard;
+        font-weight: 500;
+        line-height: 22px;
+        color: var(--font-black5);
+    }
+
+    .el-table th.el-table__cell {
+        background-color: #f1f2f2;
+    }
+
+    .el-table td.el-table__cell div {
+        font-family: var(--font-family);
+        font-size: $font-standard;
+        font-weight: 350;
+        line-height: 22px;
+        color: var(--font-black2);
+    }
+
+    .el-table.is-scrolling-none th.el-table-fixed-column--left,
+    .el-table.is-scrolling-none th.el-table-fixed-column--right {
+        background-color: #f1f2f2;
+    }
 }

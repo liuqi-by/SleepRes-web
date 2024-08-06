@@ -6,8 +6,9 @@
             title=""
             width="500"
             @close="close"
+            class="form form-dialog"
         >
-            <div class="title">
+            <div class="form-title">
                 {{ $t('login.resetPwd') }}
             </div>
             <el-form
@@ -29,6 +30,7 @@
                             v-model.trim="formData.email"
                             class="form-input"
                             :placeholder="`${$t('login.Email')}`"
+                            :readonly="isEdit"
                         />
                     </div>
                 </el-form-item>
@@ -52,7 +54,7 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
-    const dialogVisible = defineModel({ type: Boolean, default: true });
+    const dialogVisible = ref(false); // 弹窗显示
 
     const loading = ref(false); // 按钮loading
     const formRef = ref<FormInstance>(); // 登录表单ref
@@ -83,22 +85,30 @@
         });
     };
 
+    const isEdit = ref(false);
+    /**
+     * 打开弹窗
+     */
+    const showResetPassword = (item?: any) => {
+        dialogVisible.value = true;
+        if (item) {
+            formData.value.email = item.email;
+            isEdit.value = true;
+        }
+    };
+
     const close = () => {
         formRef.value?.clearValidate();
+        isEdit.value = false;
     };
+
+    defineExpose({
+        showResetPassword,
+    });
 </script>
 
 <style lang="scss" scoped>
-    .el-form-item {
-        margin-bottom: 12px !important;
-    }
-
     :deep(.el-dialog) {
-        margin-top: 15vh;
-
-        .dialog-footer {
-            display: flex;
-            justify-content: center;
-        }
+        margin-top: 15vh !important;
     }
 </style>

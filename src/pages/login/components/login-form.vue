@@ -1,7 +1,7 @@
 <!-- 登录表单 -->
 <template>
     <div>
-        <div class="title">{{ $t('login.accountLogin') }}</div>
+        <div class="form-title">{{ $t('login.accountLogin') }}</div>
         <el-form
             ref="formRef"
             :model="formData"

@@ -75,5 +75,20 @@ export function useFormRules() {
                 },
             },
         ],
+        // accountName
+        accountName: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('message.AccountName'),
+            },
+        ],
+        accountNumber: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('message.AccountNumber'),
+            },
+        ],
     };
 }

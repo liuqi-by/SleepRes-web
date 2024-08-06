@@ -1,4 +1,4 @@
-<!-- 注册 -->
+<!-- 查看消息 -->
 <template>
     <div>
         <el-dialog
@@ -6,32 +6,28 @@
             title=""
             width="600"
             @close="close"
-            class="form form-dialog"
+            class="form-dialog from"
+            style="margin-top: 5vh"
+            append-to-body
         >
             <div class="form-title">
-                {{ tabType === 'registerDme' ? $t('login.registerDmeTitle') : $t('login.registerPhysicianTitle') }}
+                {{ tabType === 'DME' ? $t('message.dmeApproval') : $t('message.physicianApproval') }}
             </div>
             <el-form
                 ref="formRef"
                 :model="formData"
                 :rules="formRules"
                 class="login-form"
-                :label-width="tabType === 'registerDme' ? '170px' : '200px'"
+                :label-width="tabType === 'DME' ? '170px' : '200px'"
                 label-position="left"
             >
                 <!-- DME name -->
                 <el-form-item
                     prop="dmeName"
-                    :label="tabType === 'registerDme' ? $t('login.dmeName') : $t('login.PracticeName')"
+                    :label="tabType === 'DME' ? $t('login.dmeName') : $t('login.PracticeName')"
                 >
                     <div class="form-item">
-                        <el-input
-                            v-model="formData.dmeName"
-                            class="form-input"
-                            :placeholder="tabType === 'registerDme' ? $t('login.dmeName') : $t('login.PracticeName')"
-                            type="text"
-                            :maxlength="inputLength.name"
-                        />
+                        {{ formData.dmeName }}
                     </div>
                 </el-form-item>
 
@@ -41,13 +37,7 @@
                     :label="$t('login.FirstName')"
                 >
                     <div class="form-item">
-                        <el-input
-                            v-model="formData.firstName"
-                            class="form-input"
-                            :placeholder="`${$t('login.FirstName')}`"
-                            type="text"
-                            :maxlength="inputLength.name"
-                        />
+                        {{ formData.firstName }}
                     </div>
                 </el-form-item>
                 <!-- LastName -->
@@ -56,26 +46,20 @@
                     :label="$t('login.LastName')"
                 >
                     <div class="form-item">
-                        <el-input
-                            v-model="formData.lastName"
-                            class="form-input"
-                            :placeholder="`${$t('login.LastName')}`"
-                            type="text"
-                            :maxlength="inputLength.name"
-                        />
+                        {{ formData.lastName }}
                     </div>
                 </el-form-item>
                 <!-- SleepResAccountNumber -->
                 <el-form-item
                     prop="sleepAccount"
-                    :label="tabType === 'registerDme' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')"
+                    :label="tabType === 'DME' ? $t('message.dmeNPI') : $t('login.PhysicianNPI')"
                 >
                     <div class="form-item">
                         <el-input
                             v-model="formData.sleepAccount"
                             class="form-input"
                             :placeholder="
-                                tabType === 'registerDme' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')
+                                tabType === 'DME' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')
                             "
                             type="text"
                         />
@@ -87,12 +71,7 @@
                     :label="$t('login.Email')"
                 >
                     <div class="form-item">
-                        <el-input
-                            v-model="formData.email"
-                            class="form-input"
-                            :placeholder="`${$t('login.Email')}`"
-                            type="text"
-                        />
+                        {{ formData.email }}
                     </div>
                 </el-form-item>
                 <!-- PhoneNumber -->
@@ -101,12 +80,7 @@
                     :label="$t('login.PhoneNumber')"
                 >
                     <div class="form-item">
-                        <el-input
-                            v-model="formData.mobile"
-                            class="form-input"
-                            :placeholder="`${$t('login.PhoneNumber')}`"
-                            type="text"
-                        />
+                        {{ formData.mobile }}
                     </div>
                 </el-form-item>
                 <!-- Address -->
@@ -115,12 +89,7 @@
                     :label="$t('login.Address')"
                 >
                     <div class="form-item">
-                        <el-input
-                            v-model="formData.address"
-                            class="form-input"
-                            :placeholder="`${$t('login.Address')}`"
-                            type="text"
-                        />
+                        {{ formData.address }}
                     </div>
                 </el-form-item>
                 <!-- State -->
@@ -129,11 +98,7 @@
                     :label="$t('login.State')"
                 >
                     <div class="form-item">
-                        <select-state
-                            v-model="formData.state"
-                            class="form-input"
-                            :placeholder="`${$t('login.State')}`"
-                        />
+                        {{ formData.state }}
                     </div>
                 </el-form-item>
                 <!-- ZipCode -->
@@ -142,10 +107,34 @@
                     :label="$t('login.ZipCode')"
                 >
                     <div class="form-item">
+                        {{ formData.zipCode }}
+                    </div>
+                </el-form-item>
+
+                <!-- AccountName -->
+                <el-form-item
+                    prop="accountName"
+                    :label="$t('message.AccountName')"
+                >
+                    <div class="form-item">
                         <el-input
-                            v-model="formData.zipCode"
+                            v-model="formData.accountName"
                             class="form-input"
-                            :placeholder="`${$t('login.ZipCode')}`"
+                            :placeholder="`${$t('message.AccountName')}`"
+                            type="text"
+                        />
+                    </div>
+                </el-form-item>
+                <!-- AccountName -->
+                <el-form-item
+                    prop="accountNumber"
+                    :label="$t('message.AccountNumber')"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.accountNumber"
+                            class="form-input"
+                            :placeholder="`${$t('message.AccountNumber')}`"
                             type="text"
                         />
                     </div>
@@ -170,11 +159,9 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
-    import type { TabType } from '../index.vue';
 
-    const dialogVisible = defineModel({ type: Boolean, default: true });
-
-    const props = defineProps<{ tabType: TabType }>();
+    const dialogVisible = ref(false);
+    const tabType = ref('DME');
 
     const formRef = ref<FormInstance>(); // 登录表单ref
     const { t } = useI18n(); // 国际化
@@ -189,24 +176,24 @@
         state: '',
         zipCode: '',
         sleepAccount: '',
+        accountName: '',
+        accountNumber: '',
     };
 
     const formData = ref({
         ...formDataInit,
     });
-    const { username, firstName, lastName, email } = useFormRules();
+    const { accountName, accountNumber } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
-            dmeName: username,
-            firstName,
-            lastName,
-            email,
+            accountName,
+            accountNumber,
         };
     });
 
     watch(
-        () => props.tabType,
+        () => tabType,
         () => {
             nextTick(() => {
                 formRef.value?.resetFields();
@@ -214,9 +201,20 @@
         },
     );
 
+    // 打开
+    const showApproval = (item: any) => {
+        formData.value = {
+            ...item,
+            accountNumber: '',
+            accountName: '',
+        };
+        dialogVisible.value = true;
+        tabType.value = item.accountType;
+    };
+
     const loading = ref(false); // 按钮loading
     /**
-     * 注册
+     * 批准
      */
     const submit = () => {
         formRef.value?.validate((valid: boolean) => {
@@ -231,7 +229,7 @@
                 userList.value.push({
                     ...formData.value,
                     id: userList.value.length + 1,
-                    accountType: props.tabType === 'registerDme' ? 'DME' : 'Physician',
+                    accountType: tabType.value === 'DME' ? 'DME' : 'Physician',
                 });
                 ElMessage.success(t('login.RegisterSuccess'));
                 dialogVisible.value = false;
@@ -243,10 +241,10 @@
     const close = () => {
         formRef.value?.clearValidate();
     };
+
+    defineExpose({
+        showApproval,
+    });
 </script>
 
-<style lang="scss" scoped>
-    .el-form-item {
-        margin-bottom: 18px !important;
-    }
-</style>
+<style lang="scss"></style>
