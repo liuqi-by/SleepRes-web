@@ -99,6 +99,7 @@
     import type { LocationQuery, LocationQueryValue } from 'vue-router';
     import type { TabType } from '../index.vue';
     import { useUserStore } from '@/stores/modules/user';
+    import { usePermissionStore } from '~/stores/modules/permission';
 
     const userStore = useUserStore();
 
@@ -107,8 +108,8 @@
     const { t } = useI18n(); // 国际化
 
     const formData = ref({
-        username: 'admin',
-        password: '123456',
+        username: '',
+        password: '',
     });
 
     const { usernameRequired, passwordRequired } = useFormRules();
@@ -123,7 +124,7 @@
 
     const route = useRoute();
     const router = useRouter();
-
+    const permissionStore = usePermissionStore();
     /**
      * 登录
      */
@@ -138,6 +139,7 @@
                 account: formData.value.username,
                 password: formData.value.password,
             };
+
             userStore
                 .login(queryData)
                 .then(async () => {
@@ -155,6 +157,13 @@
                         }
                         return acc;
                     }, {});
+
+                    let menuRoute = permissionStore.permissionRoutes.filter(route => !route.meta?.hidden);
+
+                    // 如果跳转的路由不在权限路由中，跳转到第一个菜单路由
+                    if (menuRoute.findIndex(route => route.path === redirect) === -1) {
+                        return navigateTo(menuRoute[0].path);
+                    }
 
                     router.push({ path: redirect, query: otherQueryParams });
                 })

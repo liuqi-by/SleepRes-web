@@ -28,7 +28,7 @@
             content="Message"
             effect="dark"
             placement="bottom"
-            v-if="haveRoles(['superAdmin'])"
+            v-if="haveRoles(['SleepRes'])"
         >
             <MessageCenter
                 class="right-menu-item"
@@ -46,14 +46,14 @@
                         :src="avatar"
                         :error="avatar"
                     />
-                </ClientOnly>
 
-                <p
-                    class="user-name"
-                    :title="userStore.userInfo.username"
-                >
-                    {{ userStore.userInfo.username }}
-                </p>
+                    <p
+                        class="user-name"
+                        :title="userStore.userInfo?.nickname"
+                    >
+                        {{ userStore.userInfo?.nickname }}
+                    </p>
+                </ClientOnly>
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
@@ -90,11 +90,18 @@
     // const { width } = useWindowSize();
     const { isFullscreen } = useFullscreen();
 
+    const { t } = useI18n();
     /**
      * 注销
      */
     const logout = () => {
-        userStore.logout();
+        ElMessageBox.confirm(t('login.ConfirmLogout'), t('login.logout'), {
+            confirmButtonText: t('form.Confirm'),
+            cancelButtonText: t('form.Cancel'),
+            type: 'warning',
+        }).then(() => {
+            userStore.logout();
+        });
     };
 </script>
 
@@ -152,6 +159,7 @@
             align-items: center;
             height: 100%;
             margin-right: 20px;
+            cursor: pointer;
 
             @include font($font-middle);
 

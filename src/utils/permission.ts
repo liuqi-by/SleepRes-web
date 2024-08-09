@@ -10,7 +10,7 @@ import { useUserStore } from '~/stores/modules/user';
 export function haveRoles(checkRoles: string[], roles?: string[]) {
     const userStore = useUserStore();
     if (!roles) {
-        roles = userStore.userInfo.roles;
+        roles = userStore.roles;
     }
     return checkRoles.some(item => roles.includes(item));
 }

@@ -62,3 +62,13 @@ export function isScrollable(element: HTMLElement, type: 'vertical' | 'horizonta
         return element.scrollWidth > element.clientWidth;
     }
 }
+
+/**
+ *   使用Object.entries()和数组的map()方法
+ */
+
+export function queryString(data: Object) {
+    return Object.entries(data)
+        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`) // 使用encodeURIComponent来处理特殊字符
+        .join('&');
+}

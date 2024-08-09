@@ -37,7 +37,7 @@
         <div class="table-module">
             <table-module
                 border
-                :tableData="showAccountList"
+                :tableData="accountList"
                 v-loading="loading"
                 height="calc(100vh - 280px)"
                 v-model:pageOption="pageOption"
@@ -129,16 +129,7 @@
         total: 0,
     });
     const loading = ref(false);
-    const accountList = useLocalStorage<any>('userList', []);
-
-    const showAccountList = computed(() => {
-        return accountList.value.filter(item => {
-            return (
-                (item.firstName.includes(searchOption.value.name) || item.lastName.includes(searchOption.value.name)) &&
-                item.state.includes(searchOption.value.state)
-            );
-        });
-    });
+    const accountList = ref([]);
 
     // 重置密码
     const resetPasswordForm = ref<InstanceType<typeof LazyResetPasswordForm> | null>(null);
@@ -148,6 +139,8 @@
 
     // 搜索
     const search = () => {};
+
+    console.log(1234);
 </script>
 
 <style lang="scss" scoped>

@@ -1,4 +1,3 @@
-import { useAppStore } from '~/stores/modules/app';
 import { useUserStore } from '~/stores/modules/user';
 
 // 客户端请求
@@ -16,17 +15,17 @@ function isJson(str: string) {
 
 export const useClientRequest = <T = unknown>(url: string, opts?: FetchOptions) => {
     const loginStatus = useUserStore().loginStatus;
-    const lang = useAppStore().language === 'zh-CN' ? 'zh-cn' : 'en';
+    // const lang = useAppStore().language === 'zh-CN' ? 'zh-cn' : 'en';
     const defaultOptions: FetchOptions = {
         retry: 0,
         baseURL: '',
         onRequest({ options }) {
             // 如果有token，则添加到请求参数中
             if (loginStatus?.token) {
-                options.query = { ...options.query, token: loginStatus.token };
+                options.query = { ...options.query, token: loginStatus.token, userid: loginStatus.id };
             }
 
-            options.query = { ...options.query, lang, flag: 'WEB', rand: new Date().getTime() };
+            // options.query = { ...options.query, };
         },
         onResponse({ response }) {
             if (response.status !== 200) {

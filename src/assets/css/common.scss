@@ -99,6 +99,27 @@ body {
             font-weight: bold;
             color: #000;
         }
+
+        .el-form-item.is-required:not(.is-no-asterisk).asterisk-left > .el-form-item__label::before,
+        .el-form-item.is-required:not(.is-no-asterisk).asterisk-left
+            > .el-form-item__label-wrap
+            > .el-form-item__label::before {
+            position: absolute;
+            right: 20px;
+            margin-top: 3px;
+            margin-right: 4px;
+            color: var(--el-color-danger);
+            content: '*';
+        }
+    }
+
+    // 隐藏input的required红星
+    .no-required {
+        .el-form-item__label {
+            &::before {
+                content: '' !important;
+            }
+        }
     }
 
     .form-dialog {

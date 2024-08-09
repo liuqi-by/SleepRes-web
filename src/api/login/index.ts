@@ -4,8 +4,12 @@ import type { LoginRes, LoginReq, UserInfo } from './types';
  * @description 用户登录
  */
 export const loginAccount = (data: LoginReq) => {
-    return useClientRequest<ResPonseType<LoginRes>>('/api/user/login', {
-        query: data,
+    return useClientRequest<ResPonseType<LoginRes>>('/api/admin/login', {
+        method: 'POST',
+        body: queryString(data),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        },
     });
 };
 
@@ -14,9 +18,9 @@ export const loginAccount = (data: LoginReq) => {
  */
 export const getUserDetailInfo = (isServer: boolean): any => {
     if (isServer) {
-        return useServerRequest<ResPonseType<UserInfo>>('/api/user/detail');
+        return useServerRequest<ResPonseType<UserInfo>>('/api/admin/getUserinfo');
     } else {
-        return useClientRequest<ResPonseType<UserInfo>>('/api/user/detail');
+        return useClientRequest<ResPonseType<UserInfo>>('/api/admin/getUserinfo');
     }
 };
 
@@ -24,5 +28,5 @@ export const getUserDetailInfo = (isServer: boolean): any => {
  * @description 退出登录
  */
 export const loginOut = () => {
-    return useClientRequest<ResPonseType<void>>('/api/user/logout');
+    return useClientRequest<ResPonseType<void>>('/api/admin/logout');
 };

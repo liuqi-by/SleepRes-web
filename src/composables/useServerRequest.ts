@@ -1,6 +1,5 @@
 // 服务端请求
 import type { UseFetchOptions } from 'nuxt/app';
-import { useAppStore } from '~/stores/modules/app';
 import { useUserStore } from '~/stores/modules/user';
 
 function isJson(str: string) {
@@ -14,7 +13,6 @@ function isJson(str: string) {
 
 export const useServerRequest = <T = unknown>(url: string, opts?: UseFetchOptions<T, unknown>) => {
     const loginStatus = useUserStore().loginStatus;
-    const lang = useAppStore().language === 'zh-CN' ? 'zh-cn' : 'en';
 
     const defaultOptions: UseFetchOptions<unknown> = {
         baseURL: '',
@@ -22,10 +20,8 @@ export const useServerRequest = <T = unknown>(url: string, opts?: UseFetchOption
             // 如果有token，则添加到请求参数中
             // 如果有token，则添加到请求参数中 lang语言 zh-cn/en
             if (loginStatus?.token) {
-                options.query = { ...options.query, token: loginStatus.token };
+                options.query = { ...options.query, token: loginStatus.token, userid: loginStatus.id };
             }
-
-            options.query = { ...options.query, lang, flag: 'WEB', rand: new Date().getTime() };
         },
         onResponse({ response }) {
             if (response.status !== 200) {

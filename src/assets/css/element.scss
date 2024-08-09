@@ -1,13 +1,6 @@
 @charset "UTF-8";
 
-// 隐藏input的required红星
-.no-required {
-    .el-form-item__label {
-        &::before {
-            content: '' !important;
-        }
-    }
-}
+
 
 body {
     .el-message {

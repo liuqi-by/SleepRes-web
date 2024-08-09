@@ -129,6 +129,7 @@
                 <el-form-item
                     prop="accountNumber"
                     :label="$t('message.AccountNumber')"
+                    v-if="tabType !== 'DME'"
                 >
                     <div class="form-item">
                         <el-input

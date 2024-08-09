@@ -20,33 +20,34 @@ export const routes: RouteRecordRaw[] = [
         name: '登录',
         meta: { title: 'login', hidden: true, layout: 'custom' },
     },
-    // {
-    //     path: '/',
-    //     redirect: '/admin',
-    // },
+    {
+        path: '/',
+        redirect: '/admin',
+        meta: { hidden: true },
+    },
     {
         path: '/admin',
         component: () => import('@/pages/admin/index.vue'),
         name: '管理页',
-        meta: { title: 'admin', affix: true, icon: 'homepage', keepalive: true, roles: ['superAdmin'] },
+        meta: { title: 'admin', affix: true, icon: 'homepage', keepalive: true, roles: ['SleepRes'] },
     },
     {
         path: '/patients',
         component: () => import('@/pages/patients/index.vue'),
         name: '患者',
-        meta: { title: 'patients', icon: 'homepage', keepalive: true, roles: ['patients'] },
+        meta: { title: 'patients', icon: 'homepage', keepalive: true, roles: ['patients', 'SleepRes'] },
     },
     {
         path: '/users',
         component: () => import('@/pages/users/index.vue'),
         name: '用户',
-        meta: { title: 'users', icon: 'homepage', keepalive: true, roles: ['users'] },
+        meta: { title: 'users', icon: 'homepage', keepalive: true, roles: ['users', 'SleepRes'] },
     },
     {
         path: '/organization',
         component: () => import('@/pages/organization/index.vue'),
         name: '机构',
-        meta: { title: 'organization', icon: 'homepage', keepalive: true, roles: ['organization'] },
+        meta: { title: 'organization', icon: 'homepage', keepalive: true, roles: ['organization', 'SleepRes'] },
     },
 ];
 

@@ -32,7 +32,9 @@
         "State": "State",
         "ZipCode": "Zip Code",
         "PracticeName": "Practice Name",
-        "PhysicianNPI": "Physician NPI number"
+        "PhysicianNPI": "Physician NPI number",
+        "logout": "Login Out",
+        "ConfirmLogout": "Are you sure you want to log out?"
     },
     "message": {
         "dmeApproval": "DME Account Approval",

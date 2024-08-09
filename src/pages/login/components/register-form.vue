@@ -16,7 +16,7 @@
                 :model="formData"
                 :rules="formRules"
                 class="login-form"
-                :label-width="tabType === 'registerDme' ? '170px' : '200px'"
+                :label-width="tabType === 'registerDme' ? '180px' : '200px'"
                 label-position="left"
             >
                 <!-- DME name -->

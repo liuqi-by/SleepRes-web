@@ -18,7 +18,7 @@
                 <base-button
                     type="primary"
                     height="32px"
-                    @click="useUserStore().logout"
+                    @click="goBack"
                     v-else
                     >{{ $t('errors.goBack') }}
                 </base-button>
@@ -28,7 +28,9 @@
 </template>
 
 <script setup lang="ts">
-    import { useUserStore } from './stores/modules/user';
+    import { usePermissionStore } from './stores/modules/permission';
+
+    // import { useUserStore } from './stores/modules/user';
 
     const props = defineProps({
         error: Object,
@@ -79,6 +81,19 @@
             imgSrc: '@/assets/images/401.png',
         },
     ];
+
+    const permissionStore = usePermissionStore();
+
+    const goBack = () => {
+        let menuRoute = permissionStore.permissionRoutes.filter(route => !route.meta?.hidden);
+
+        // 如果跳转的路由不在权限路由中，跳转到第一个菜单路由
+        if (menuRoute.length > 0) {
+            return navigateTo(menuRoute[0].path);
+        } else {
+            return navigateTo({ path: '/' });
+        }
+    };
 </script>
 
 <style lang="scss" scoped>
