@@ -21,12 +21,12 @@
             >
                 <!-- DME name -->
                 <el-form-item
-                    prop="dmeName"
+                    prop="username"
                     :label="tabType === 'registerDme' ? $t('login.dmeName') : $t('login.PracticeName')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.dmeName"
+                            v-model="formData.username"
                             class="form-input"
                             :placeholder="tabType === 'registerDme' ? $t('login.dmeName') : $t('login.PracticeName')"
                             type="text"
@@ -37,42 +37,40 @@
 
                 <!-- FirstName -->
                 <el-form-item
-                    prop="firstName"
+                    prop="first_name"
                     :label="$t('login.FirstName')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.firstName"
+                            v-model="formData.first_name"
                             class="form-input"
                             :placeholder="`${$t('login.FirstName')}`"
-                            type="text"
                             :maxlength="inputLength.name"
                         />
                     </div>
                 </el-form-item>
                 <!-- LastName -->
                 <el-form-item
-                    prop="lastName"
+                    prop="last_name"
                     :label="$t('login.LastName')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.lastName"
+                            v-model="formData.last_name"
                             class="form-input"
                             :placeholder="`${$t('login.LastName')}`"
-                            type="text"
                             :maxlength="inputLength.name"
                         />
                     </div>
                 </el-form-item>
                 <!-- SleepResAccountNumber -->
                 <el-form-item
-                    prop="sleepAccount"
+                    prop="account_id"
                     :label="tabType === 'registerDme' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.sleepAccount"
+                            v-model="formData.account_id"
                             class="form-input"
                             :placeholder="
                                 tabType === 'registerDme' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')
@@ -138,12 +136,12 @@
                 </el-form-item>
                 <!-- ZipCode -->
                 <el-form-item
-                    prop="zipCode"
+                    prop="zip_code"
                     :label="$t('login.ZipCode')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.zipCode"
+                            v-model="formData.zip_code"
                             class="form-input"
                             :placeholder="`${$t('login.ZipCode')}`"
                             type="text"
@@ -171,6 +169,8 @@
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
     import type { TabType } from '../index.vue';
+    import type { RegisterReq } from '~/api/login/types';
+    import { registerAccount } from '~/api/login';
 
     const dialogVisible = defineModel({ type: Boolean, default: true });
 
@@ -179,28 +179,30 @@
     const formRef = ref<FormInstance>(); // 登录表单ref
     const { t } = useI18n(); // 国际化
 
-    const formDataInit = {
-        dmeName: '',
-        firstName: '',
-        lastName: '',
+    const formDataInit: RegisterReq = {
+        username: '',
         email: '',
         mobile: '',
+        first_name: '',
+        last_name: '',
+        account_id: '',
         address: '',
         state: '',
-        zipCode: '',
-        sleepAccount: '',
+        zip_code: '',
+        // 账户类型:2=DME,4=Physician
+        type: '',
     };
 
     const formData = ref({
         ...formDataInit,
     });
-    const { username, firstName, lastName, email } = useFormRules();
+    const { dmeName, practiceName, firstName, lastName, email } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
-            dmeName: username,
-            firstName,
-            lastName,
+            usename: props.tabType === 'registerDme' ? dmeName : practiceName,
+            first_name: firstName,
+            last_name: lastName,
             email,
         };
     });
@@ -225,23 +227,30 @@
             }
             loading.value = true;
 
-            const userList = useLocalStorage<any>('userList', []);
             // 注册
-            setTimeout(() => {
-                userList.value.push({
-                    ...formData.value,
-                    id: userList.value.length + 1,
-                    accountType: props.tabType === 'registerDme' ? 'DME' : 'Physician',
+            registerAccount({
+                ...formData.value,
+                type: props.tabType === 'registerDme' ? '2' : '4',
+            })
+                .then(res => {
+                    if (res.code === 1) {
+                        ElMessage.success(t('login.RegisterSuccess'));
+                        // 重置
+                        formRef.value?.resetFields();
+                        dialogVisible.value = false;
+                    }
+                })
+                .finally(() => {
+                    loading.value = false;
                 });
-                ElMessage.success(t('login.RegisterSuccess'));
-                dialogVisible.value = false;
-                loading.value = false;
-            }, 500);
         });
     };
 
     const close = () => {
-        formRef.value?.clearValidate();
+        nextTick(() => {
+            dialogVisible.value = false;
+            formRef.value?.clearValidate();
+        });
     };
 </script>
 

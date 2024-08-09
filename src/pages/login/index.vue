@@ -23,7 +23,7 @@
         <LazyRegisterForm
             v-model="showRegisterForm"
             :tabType="tabType"
-            v-if="tabType === 'registerDme' || tabType === 'registerPhysician'"
+            :key="tabType"
         />
 
         <!-- 重置密码弹窗 -->

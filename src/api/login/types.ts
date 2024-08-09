@@ -51,3 +51,18 @@ export interface UserInfo {
     parentid: number;
     group_id: number;
 }
+
+// 注册
+export interface RegisterReq {
+    username: string;
+    email: string;
+    mobile: string;
+    first_name: string;
+    last_name: string;
+    account_id: string;
+    address: string;
+    state: string;
+    zip_code: string;
+    // 账户类型:2=DME,4=Physician
+    type: string;
+}

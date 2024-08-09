@@ -19,6 +19,20 @@ export function useFormRules() {
                 message: t('form.PleaseEnter') + t('login.password'),
             },
         ],
+        dmeName: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('login.dmeName'),
+            },
+        ],
+        practiceName: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('login.PracticeName'),
+            },
+        ],
         // 用户名验证规则
         username: [
             {

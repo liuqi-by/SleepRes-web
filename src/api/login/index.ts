@@ -1,4 +1,4 @@
-import type { LoginRes, LoginReq, UserInfo } from './types';
+import type { LoginRes, LoginReq, UserInfo, RegisterReq } from './types';
 
 /**
  * @description 用户登录
@@ -29,4 +29,17 @@ export const getUserDetailInfo = (isServer: boolean): any => {
  */
 export const loginOut = () => {
     return useClientRequest<ResPonseType<void>>('/api/admin/logout');
+};
+
+/**
+ * @description 注册
+ */
+export const registerAccount = (data: RegisterReq) => {
+    return useClientRequest<ResPonseType<void>>('/api/admin/register', {
+        method: 'POST',
+        body: queryString(data),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        },
+    });
 };
