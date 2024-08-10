@@ -9,6 +9,7 @@ declare global {
         time: number;
         count?: number;
         token_status?: number;
+        data_other?: any;
     }
 
     /**

@@ -29,6 +29,7 @@
             effect="dark"
             placement="bottom"
             v-if="haveRoles(['SleepRes'])"
+            id="message"
         >
             <MessageCenter
                 class="right-menu-item"

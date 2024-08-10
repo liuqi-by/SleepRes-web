@@ -1,13 +1,17 @@
 <template>
     <div class="module-table">
-        <div class="table-title">{{ title }}</div>
+        <div
+            class="table-title"
+            v-if="title"
+        >
+            {{ title }}
+        </div>
 
         <el-table
             :data="tableData"
             style="width: 100%"
             class="m-b-[20px] flex-1"
             v-bind="$attrs"
-            scrollbar-always-on
             ref="tableRef"
             @wheel="handleMouseWheel"
         >
@@ -15,9 +19,9 @@
         </el-table>
 
         <base-pagination
-            v-model:current-page="pageOption.currentPage"
-            v-model:page-size="pageOption.pageSize"
-            :total="pageOption.total"
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
+            :total="total"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             v-if="isPagination"
@@ -40,22 +44,27 @@
         isPagination: true,
     });
 
-    const pageOption = defineModel('pageOption', {
-        type: Object,
-        default: {
-            currentPage: 1,
-            pageSize: 10,
-            total: 0,
-        },
+    // const pageOption = defineModel('pageOption', {
+    //     type: Object,
+    //     default: {
+    //         currentPage: 0,
+    //         pageSize: 2,
+    //         total: 0,
+    //     },
+    // });
+    const currentPage = defineModel('currentPage', {
+        type: Number,
+        default: 1,
     });
-    // const pageSize = defineModel('pageSize', {
-    //     type: Number,
-    //     default: 10,
-    // });
-    // const total = defineModel('total', {
-    //     type: Number,
-    //     default: 0,
-    // });
+
+    const pageSize = defineModel('pageSize', {
+        type: Number,
+        default: 10,
+    });
+    const total = defineModel('total', {
+        type: Number,
+        default: 0,
+    });
 
     const emit = defineEmits(['size-change', 'current-change']);
 
@@ -68,13 +77,18 @@
     };
 
     const tableRef = ref<TableInstance>();
-    // 鼠标横向滚动
+    // 鼠标滚动
     const handleMouseWheel = (event: any) => {
         event.preventDefault(); // 阻止事件发生时浏览器默认的行为
         if (tableRef.value) {
             const table = (tableRef.value.$refs.scrollBarRef as any).wrapRef;
             if (table) {
-                table.scrollLeft += event.deltaY;
+                // 判断是横向还是纵向有滚动条,同时有则纵向优先
+                if (table.scrollHeight > table.clientHeight) {
+                    table.scrollTop += event.deltaY;
+                } else if (table.scrollWidth > table.clientWidth) {
+                    table.scrollLeft += event.deltaY;
+                }
             }
         }
     };

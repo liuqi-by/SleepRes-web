@@ -1,8 +1,14 @@
 <template>
     <div class="page-container">
         <!-- 搜索模块 -->
-        <div class="search-module">
+        <div class="search-module m-b-[20px]">
             <div class="search-module-item">
+                <el-input
+                    v-model="searchOption"
+                    :placeholder="$t('admin.searchPlaceholder')"
+                />
+            </div>
+            <!-- <div class="search-module-item">
                 <div class="search-module-item-label">Name</div>
                 <el-input
                     v-model="searchOption.name"
@@ -19,7 +25,7 @@
             <div class="search-module-item">
                 <div class="search-module-item-label">State</div>
                 <select-state v-model="searchOption.state" />
-            </div>
+            </div> -->
             <div class="search-module-item">
                 <base-button
                     type="primary"
@@ -37,73 +43,83 @@
         <div class="table-module">
             <table-module
                 border
-                :tableData="accountList"
+                :data="accountList"
                 v-loading="loading"
                 height="calc(100vh - 280px)"
-                v-model:pageOption="pageOption"
+                v-model:current-page="pageOption.currentPage"
+                v-model:page-size="pageOption.pageSize"
+                :total="pageOption.total"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
             >
                 <el-table-column
-                    prop="account"
-                    label="Account #"
+                    prop="account_num"
+                    :label="$t('admin.AccountNumber')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="lastName"
-                    label="Last Name"
+                    prop="last_name"
+                    :label="$t('login.LastName')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="firstName"
-                    label="First Name"
+                    prop="first_name"
+                    :label="$t('login.FirstName')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="accountType"
-                    label="Account Type"
+                    prop="group_name"
+                    :label="$t('admin.AccountType')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="status"
-                    label="Account Status"
+                    prop="frozen"
+                    :label="$t('admin.AccountStatus')"
                     min-width="120"
                     align="center"
                 >
                     <template #default="{ row }">
-                        <el-switch v-model="row.status" />
+                        <el-switch
+                            v-model="row.frozen"
+                            :active-value="0"
+                            :inactive-value="1"
+                            @click="frozenAccount(row)"
+                        />
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="address"
-                    label="Address"
+                    :label="$t('login.Address')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
                     prop="state"
-                    label="State"
+                    :label="$t('admin.State')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="zipCode"
-                    label="Zip Code"
+                    prop="zip_code"
+                    :label="$t('login.ZipCode')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    label="Password Reset"
+                    :label="$t('login.pwdReset')"
                     min-width="120"
                     align="center"
+                    fixed="right"
                 >
                     <template #default="{ row }">
                         <span
                             class="link"
                             @click="resetPwd(row)"
-                            >Reset Password</span
+                            >{{ $t('login.resetPwd') }}</span
                         >
                     </template>
                 </el-table-column>
@@ -115,13 +131,13 @@
 </template>
 
 <script setup lang="ts">
+    import { frozenUser, getUserlist } from '~/api/admin';
+    import type { UserInfo } from '~/api/login/types';
+    import { useUserStore } from '~/stores/modules/user';
+
     const LazyResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
 
-    const searchOption = ref({
-        name: '',
-        account: '',
-        state: '',
-    });
+    const searchOption = ref('');
 
     const pageOption = ref({
         currentPage: 1,
@@ -129,7 +145,7 @@
         total: 0,
     });
     const loading = ref(false);
-    const accountList = ref([]);
+    const accountList = ref<UserInfo[]>([]);
 
     // 重置密码
     const resetPasswordForm = ref<InstanceType<typeof LazyResetPasswordForm> | null>(null);
@@ -137,10 +153,72 @@
         resetPasswordForm.value?.showResetPassword(row);
     };
 
-    // 搜索
-    const search = () => {};
+    // 获取用户列表
+    const getAccountList = useDebounceFn(() => {
+        loading.value = true;
+        accountList.value = [];
 
-    console.log(1234);
+        getUserlist({
+            page: pageOption.value.currentPage - 1,
+            pagesize: pageOption.value.pageSize,
+            val: searchOption.value,
+        })
+            .then(res => {
+                if (res.code === 1) {
+                    accountList.value = res.data;
+                    pageOption.value.total = res.data_other.num;
+                }
+            })
+            .finally(() => {
+                loading.value = false;
+            });
+    }, 300);
+
+    // 搜索
+    const search = () => {
+        pageOption.value.currentPage = 1;
+        getAccountList();
+    };
+
+    const handleSizeChange = () => {
+        getAccountList();
+    };
+    const handleCurrentChange = () => {
+        getAccountList();
+    };
+
+    // 冻结/解冻
+    const frozenAccount = useDebounceFn((row: UserInfo) => {
+        frozenUser({
+            user_id: row.id,
+            frozen: row.frozen,
+        })
+            .then(res => {
+                if (res.code === 1) {
+                    // ElMessage.success('操作成功');
+                }
+            })
+            .catch(() => {
+                row.frozen = row.frozen === 1 ? 0 : 1;
+            });
+    }, 300);
+
+    // 获取消息
+    const getMessageNum = () => {
+        useUserStore().getAdminMessage();
+    };
+
+    onActivated(() => {
+        getMessageNum();
+        getAccountList();
+    });
+
+    watch(
+        () => useUserStore().messageCount,
+        () => {
+            getAccountList();
+        },
+    );
 </script>
 
 <style lang="scss" scoped>

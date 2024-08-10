@@ -20,43 +20,44 @@
                 class="login-form"
                 :label-width="tabType === 'DME' ? '170px' : '200px'"
                 label-position="left"
+                v-if="formData"
             >
                 <!-- DME name -->
                 <el-form-item
-                    prop="dmeName"
+                    prop="dmename"
                     :label="tabType === 'DME' ? $t('login.dmeName') : $t('login.PracticeName')"
                 >
                     <div class="form-item">
-                        {{ formData.dmeName }}
+                        {{ formData.dmename }}
                     </div>
                 </el-form-item>
 
                 <!-- FirstName -->
                 <el-form-item
-                    prop="firstName"
+                    prop="first_name"
                     :label="$t('login.FirstName')"
                 >
                     <div class="form-item">
-                        {{ formData.firstName }}
+                        {{ formData.first_name }}
                     </div>
                 </el-form-item>
                 <!-- LastName -->
                 <el-form-item
-                    prop="lastName"
+                    prop="last_name"
                     :label="$t('login.LastName')"
                 >
                     <div class="form-item">
-                        {{ formData.lastName }}
+                        {{ formData.last_name }}
                     </div>
                 </el-form-item>
                 <!-- SleepResAccountNumber -->
                 <el-form-item
-                    prop="sleepAccount"
+                    prop="account_id"
                     :label="tabType === 'DME' ? $t('message.dmeNPI') : $t('login.PhysicianNPI')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.sleepAccount"
+                            v-model="formData.account_id"
                             class="form-input"
                             :placeholder="
                                 tabType === 'DME' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')
@@ -107,18 +108,18 @@
                     :label="$t('login.ZipCode')"
                 >
                     <div class="form-item">
-                        {{ formData.zipCode }}
+                        {{ formData.zip_code }}
                     </div>
                 </el-form-item>
 
                 <!-- AccountName -->
                 <el-form-item
-                    prop="accountName"
+                    prop="username"
                     :label="$t('message.AccountName')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.accountName"
+                            v-model="formData.username"
                             class="form-input"
                             :placeholder="`${$t('message.AccountName')}`"
                             type="text"
@@ -127,13 +128,13 @@
                 </el-form-item>
                 <!-- AccountName -->
                 <el-form-item
-                    prop="accountNumber"
+                    prop="account_num"
                     :label="$t('message.AccountNumber')"
                     v-if="tabType !== 'DME'"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.accountNumber"
+                            v-model="formData.account_num"
                             class="form-input"
                             :placeholder="`${$t('message.AccountNumber')}`"
                             type="text"
@@ -160,6 +161,9 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
+    import { checkMessage } from '~/api/admin';
+    import type { MessageRes } from '~/api/admin/types';
+    import type { UserInfo } from '~/api/login/types';
 
     const dialogVisible = ref(false);
     const tabType = ref('DME');
@@ -167,29 +171,13 @@
     const formRef = ref<FormInstance>(); // 登录表单ref
     const { t } = useI18n(); // 国际化
 
-    const formDataInit = {
-        dmeName: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        mobile: '',
-        address: '',
-        state: '',
-        zipCode: '',
-        sleepAccount: '',
-        accountName: '',
-        accountNumber: '',
-    };
-
-    const formData = ref({
-        ...formDataInit,
-    });
+    const formData = ref<UserInfo>();
     const { accountName, accountNumber } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
-            accountName,
-            accountNumber,
+            username: accountName,
+            account_num: accountNumber,
         };
     });
 
@@ -203,17 +191,19 @@
     );
 
     // 打开
-    const showApproval = (item: any) => {
+    const showApproval = (item: MessageRes) => {
         formData.value = {
-            ...item,
-            accountNumber: '',
-            accountName: '',
+            ...item.userinfo,
+            account_num: '',
+            username: '',
         };
+
         dialogVisible.value = true;
-        tabType.value = item.accountType;
+        tabType.value = item.group_id === 2 ? 'DME' : 'Physician';
     };
 
     const loading = ref(false); // 按钮loading
+    const emit = defineEmits(['refresh']);
     /**
      * 批准
      */
@@ -224,27 +214,37 @@
             }
             loading.value = true;
 
-            const userList = useLocalStorage<any>('userList', []);
-            // 注册
-            setTimeout(() => {
-                userList.value.push({
-                    ...formData.value,
-                    id: userList.value.length + 1,
-                    accountType: tabType.value === 'DME' ? 'DME' : 'Physician',
+            if (!formData.value) {
+                return;
+            }
+
+            checkMessage({
+                user_id: formData.value?.id,
+                account_num: formData.value?.account_num,
+                account_name: formData.value?.username,
+                status: 1,
+            })
+                .then(res => {
+                    if (res.code === 1) {
+                        ElMessage.success(t('message.Approved'));
+                        emit('refresh');
+                        dialogVisible.value = false;
+                    }
+                })
+                .finally(() => {
+                    loading.value = false;
                 });
-                ElMessage.success(t('login.RegisterSuccess'));
-                dialogVisible.value = false;
-                loading.value = false;
-            }, 500);
         });
     };
 
     const close = () => {
         formRef.value?.clearValidate();
+        formRef.value?.resetFields();
     };
 
     defineExpose({
         showApproval,
+        dialogVisible,
     });
 </script>
 

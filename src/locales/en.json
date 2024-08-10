@@ -18,13 +18,14 @@
         "registerDme": "Create the DME account",
         "registerPhysician": "Create a Physician account",
         "resetPwd": "Reset Password",
+        "pwdReset": "Password Reset",
         "loginSuccess": "Login Success",
         "registerDmeTitle": "DME Account Creation",
         "registerPhysicianTitle": "Physician Account Creation",
         "RegisterSuccess": "Register Success",
         "dmeName": "DME Name",
-        "FirstName": "First name",
-        "LastName": "Last name",
+        "FirstName": "First Name",
+        "LastName": "Last Name",
         "SleepResAccountNumber": "SleepRes Account #",
         "Email": "Email",
         "PhoneNumber": "Phone number",
@@ -41,7 +42,12 @@
         "physicianApproval": "Physician Account Application",
         "dmeNPI": "NPI number",
         "AccountName": "Account name",
-        "AccountNumber": "Account Number"
+        "AccountNumber": "Account Number",
+        "Approved": "Approved successfully",
+        "Date": "Date",
+        "NO": "NO.",
+        "Status": "Status",
+        "Check": "Check"
     },
     "router": {
         "home": "Home",
@@ -70,5 +76,12 @@
         "404": "Sorry, the page you visited does not exist",
         "505": "Sorry, the server is reporting an error",
         "401": "Sorry, you do not have permission to access this page"
+    },
+    "admin": {
+        "searchPlaceholder": "Name / Account / State / Email / Mobile",
+        "AccountNumber": "Account #",
+        "AccountType": "Account Type",
+        "AccountStatus": "Account Status",
+        "State": "State"
     }
 }

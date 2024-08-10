@@ -1,5 +1,6 @@
 import { usePermissionStore } from './permission';
 import { useTagsViewStore } from './tagsView';
+import { getMessage } from '~/api/admin';
 
 import { loginAccount, getUserDetailInfo, loginOut } from '~/api/login';
 import type { LoginReq, LoginRes, UserInfo } from '~/api/login/types';
@@ -48,7 +49,24 @@ export const useUserStore = defineStore(
                     .then((res: any) => {
                         if (res) {
                             userInfo.value = isServer ? res.data.value.data : res.data;
-                            roles.value = userInfo.value?.group_id === 1 ? ['SleepRes'] : [];
+                            switch (userInfo.value?.group_id) {
+                                case 1:
+                                    roles.value = ['SleepRes'];
+                                    break;
+                                case 2:
+                                    roles.value = ['DME'];
+                                    break;
+                                case 3:
+                                    roles.value = ['DME User'];
+                                    break;
+                                case 4:
+                                    roles.value = ['Physician'];
+                                    break;
+                                case 5:
+                                    roles.value = ['Physician User'];
+                                    break;
+                            }
+                            // roles.value = userInfo.value?.group_id === 1 ? ['SleepRes'] : [];
                             permissionStore.getPermissionRoutes();
                             resolve(userInfo.value as UserInfo);
                         }
@@ -99,13 +117,44 @@ export const useUserStore = defineStore(
             });
         }
 
+        const messageCount = ref<number>(0); // 消息数量
+        /**
+         * 获取消息
+         */
+        function getAdminMessage() {
+            return new Promise<void>((resolve, reject) => {
+                getMessage({
+                    page: 0,
+                    pagesize: 1,
+                    status: 1,
+                })
+                    .then(res => {
+                        if (res.code === 1) {
+                            setMessageCount(res.data_other.num);
+                            resolve();
+                        }
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
+        }
+
+        function setMessageCount(count: number) {
+            console.log(count);
+            messageCount.value = count;
+        }
+
         return {
             loginStatus,
             roles,
             userInfo,
+            messageCount,
             login,
             logout,
             getUserInfo,
+            getAdminMessage,
+            setMessageCount,
         };
     },
     {

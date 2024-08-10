@@ -1,10 +1,10 @@
-import type { LoginRes, LoginReq, UserInfo, RegisterReq } from './types';
+import type { LoginReq, UserInfo, RegisterReq } from './types';
 
 /**
  * @description 用户登录
  */
 export const loginAccount = (data: LoginReq) => {
-    return useClientRequest<ResPonseType<LoginRes>>('/api/admin/login', {
+    return useClientRequest<ResPonseType<UserInfo>>('/api/admin/login', {
         method: 'POST',
         body: queryString(data),
         headers: {
@@ -42,4 +42,7 @@ export const registerAccount = (data: RegisterReq) => {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
         },
     });
+    // return useClientRequest<ResPonseType<void>>('/api/admin/register', {
+    //     query: data,
+    // });
 };

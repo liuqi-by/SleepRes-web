@@ -58,6 +58,7 @@
                     </el-input>
                 </div>
             </el-form-item>
+            <p>test:admin password:a654321</p>
             <div class="m-t-[48px]">
                 <div class="form-bottom">
                     <!-- 注册DME -->
@@ -159,10 +160,17 @@
                     }, {});
 
                     let menuRoute = permissionStore.permissionRoutes.filter(route => !route.meta?.hidden);
+                    console.log('menuRoute', menuRoute);
 
                     // 如果跳转的路由不在权限路由中，跳转到第一个菜单路由
-                    if (menuRoute.findIndex(route => route.path === redirect) === -1) {
-                        return navigateTo(menuRoute[0].path);
+                    if (menuRoute.length > 0) {
+                        if (menuRoute.findIndex(route => route.path === redirect) === -1) {
+                            return navigateTo(menuRoute[0].path);
+                        }
+                    } else {
+                        return showError({
+                            statusCode: 401,
+                        });
                     }
 
                     router.push({ path: redirect, query: otherQueryParams });

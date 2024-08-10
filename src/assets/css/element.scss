@@ -1,7 +1,5 @@
 @charset "UTF-8";
 
-
-
 body {
     .el-message {
         z-index: 9999 !important;
@@ -55,7 +53,9 @@ body {
         color: var(--font-black5);
     }
 
-    .el-table th.el-table__cell {
+    .el-table th.el-table__cell,
+    .el-table__header-wrapper tr th.el-table-fixed-column--left,
+    .el-table__header-wrapper tr th.el-table-fixed-column--right {
         background-color: #f1f2f2;
     }
 

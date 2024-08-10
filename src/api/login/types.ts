@@ -10,10 +10,10 @@ export interface LoginRes {
     nickname: string;
     first_name: string;
     last_name: string;
-    account_id: null;
-    address: null;
-    state: null;
-    zip_code: null;
+    account_id: string | null;
+    address: string | null;
+    state: string | null;
+    zip_code: string | null;
     avatar: string;
     email: string;
     mobile: string;
@@ -31,13 +31,14 @@ export interface LoginRes {
 export interface UserInfo {
     id: number;
     username: string;
+    dmename: string;
     nickname: string;
     first_name: string;
     last_name: string;
-    account_id: null;
-    address: null;
-    state: null;
-    zip_code: null;
+    account_id: string | null;
+    address: string | null;
+    state: string | null;
+    zip_code: string | null;
     avatar: string;
     email: string;
     mobile: string;
@@ -50,6 +51,8 @@ export interface UserInfo {
     status: string;
     parentid: number;
     group_id: number;
+    frozen: number;
+    account_num: string;
 }
 
 // 注册
@@ -63,6 +66,8 @@ export interface RegisterReq {
     address: string;
     state: string;
     zip_code: string;
-    // 账户类型:2=DME,4=Physician
+    /**
+     *  账户类型:2=DME,4=Physician
+     * */
     type: string;
 }
