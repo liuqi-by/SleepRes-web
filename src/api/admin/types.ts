@@ -26,8 +26,8 @@ export interface MessageRes {
 // 审核用户
 export interface CheckMessageReq {
     user_id: number;
-    account_name: string;
-    account_num: string;
+    account_name?: string;
+    account_num?: string;
 
     /**
      * 用户状态,1=审核通过

@@ -104,5 +104,13 @@ export function useFormRules() {
                 message: t('form.PleaseEnter') + t('message.AccountNumber'),
             },
         ],
+        // role、type
+        role: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseSelect') + t('users.Role'),
+            },
+        ],
     };
 }

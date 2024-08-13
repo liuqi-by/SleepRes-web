@@ -8,9 +8,6 @@ export const getMessage = (data: MessageReq & PageQuery) => {
     return useClientRequest<ResPonseType<MessageRes[]>>('/api/admin/Msg', {
         method: 'POST',
         body: queryString(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-        },
     });
 };
 
@@ -21,9 +18,6 @@ export const checkMessage = (data: CheckMessageReq) => {
     return useClientRequest<ResPonseType<void>>('/api/admin/check', {
         method: 'POST',
         body: queryString(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-        },
     });
 };
 
@@ -34,9 +28,6 @@ export const getUserlist = (data: UserListReq & PageQuery) => {
     return useClientRequest<ResPonseType<UserInfo[]>>('/api/admin/UserSearch', {
         method: 'POST',
         body: queryString(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-        },
     });
 };
 
@@ -47,8 +38,5 @@ export const frozenUser = (data: FrozenUserReq) => {
     return useClientRequest<ResPonseType<void>>('/api/admin/frozen', {
         method: 'POST',
         body: queryString(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-        },
     });
 };

@@ -50,7 +50,6 @@ body {
         font-size: $font-standard;
         font-weight: 500;
         line-height: 22px;
-        color: var(--font-black5);
     }
 
     .el-table th.el-table__cell,
@@ -64,11 +63,48 @@ body {
         font-size: $font-standard;
         font-weight: 350;
         line-height: 22px;
-        color: var(--font-black2);
     }
 
     .el-table.is-scrolling-none th.el-table-fixed-column--left,
     .el-table.is-scrolling-none th.el-table-fixed-column--right {
         background-color: #f1f2f2;
+    }
+
+    // 提示框
+    .el-message-box {
+        display: inline-flex;
+        flex-direction: column;
+        min-width: 480px;
+        min-height: 240px;
+        padding: 25px;
+
+        .el-message-box__content {
+            flex: 1;
+            padding-left: 50px;
+            font-family: var(--font-family);
+            font-size: $font-standard;
+            font-weight: 350;
+            line-height: 22px;
+        }
+
+        .el-message-box__header {
+            padding-bottom: 24px;
+            margin-left: 30px;
+            font-family: var(--font-family);
+            font-size: $font-large;
+            font-weight: 500;
+            line-height: 28px;
+        }
+
+        .el-message-box__headerbtn {
+            top: 10px;
+            right: 10px;
+        }
+
+        .el-message-box__status {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+        }
     }
 }

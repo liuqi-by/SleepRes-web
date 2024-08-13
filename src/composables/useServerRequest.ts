@@ -16,6 +16,9 @@ export const useServerRequest = <T = unknown>(url: string, opts?: UseFetchOption
 
     const defaultOptions: UseFetchOptions<unknown> = {
         baseURL: '',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        },
         onRequest({ options }) {
             // 如果有token，则添加到请求参数中
             // 如果有token，则添加到请求参数中 lang语言 zh-cn/en

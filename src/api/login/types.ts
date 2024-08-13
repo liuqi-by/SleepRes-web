@@ -63,6 +63,7 @@ export interface RegisterReq {
     first_name: string;
     last_name: string;
     account_id: string;
+    account_num: string;
     address: string;
     state: string;
     zip_code: string;

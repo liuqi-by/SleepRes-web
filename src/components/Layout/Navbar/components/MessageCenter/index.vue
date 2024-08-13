@@ -164,6 +164,7 @@
     };
 
     const popover = ref<any>();
+    // 点击外面隐藏
     const hidePanel = (e: any) => {
         if (!popover.value?.contains(e.target) && !approvalRef.value?.dialogVisible) {
             visiblePopover.value = false;

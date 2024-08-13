@@ -1,44 +1,11 @@
 <template>
-    <div class="page-container">
+    <div class="page-container min-w-[600px]">
         <!-- 搜索模块 -->
-        <div class="search-module m-b-[20px]">
-            <div class="search-module-item">
-                <el-input
-                    v-model="searchOption"
-                    :placeholder="$t('admin.searchPlaceholder')"
-                />
-            </div>
-            <!-- <div class="search-module-item">
-                <div class="search-module-item-label">Name</div>
-                <el-input
-                    v-model="searchOption.name"
-                    placeholder="Please input"
-                />
-            </div>
-            <div class="search-module-item">
-                <div class="search-module-item-label">Account</div>
-                <el-input
-                    v-model="searchOption.account"
-                    placeholder="Please input"
-                />
-            </div>
-            <div class="search-module-item">
-                <div class="search-module-item-label">State</div>
-                <select-state v-model="searchOption.state" />
-            </div> -->
-            <div class="search-module-item">
-                <base-button
-                    type="primary"
-                    @click="search"
-                >
-                    <base-svg-icon
-                        icon="search"
-                        size="22px"
-                    />
-                </base-button>
-            </div>
-        </div>
-
+        <search-module
+            @search="search"
+            v-model="searchOption"
+            :placeholder="$t('admin.searchPlaceholder')"
+        />
         <!-- 表格模块 -->
         <div class="table-module">
             <table-module
@@ -58,6 +25,12 @@
                     min-width="120"
                     align="center"
                 />
+                <!-- <el-table-column
+                    prop="username"
+                    :label="$t('message.AccountName')"
+                    min-width="120"
+                    align="center"
+                /> -->
                 <el-table-column
                     prop="last_name"
                     :label="$t('login.LastName')"
@@ -221,37 +194,4 @@
     );
 </script>
 
-<style lang="scss" scoped>
-    .search-module {
-        display: flex;
-        padding: 20px;
-        border: 1px solid var(--el-border-color);
-        border-radius: var(--el-border-radius-base);
-
-        .search-module-item {
-            display: flex;
-            flex: 1;
-            align-items: center;
-            min-width: 200px;
-            max-width: 300px;
-            margin-right: 30px;
-
-            .search-module-item-label {
-                margin-right: 8px;
-            }
-        }
-
-        @media screen and (width <= 768px) {
-            flex-wrap: wrap;
-            padding-bottom: 0;
-
-            .search-module-item {
-                margin-bottom: 20px;
-
-                .search-module-item-label {
-                    width: 80px;
-                }
-            }
-        }
-    }
-</style>
+<style lang="scss" scoped></style>

@@ -19,6 +19,9 @@ export const useClientRequest = <T = unknown>(url: string, opts?: FetchOptions) 
     const defaultOptions: FetchOptions = {
         retry: 0,
         baseURL: '',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        },
         onRequest({ options }) {
             // 如果有token，则添加到请求参数中
             if (loginStatus?.token) {

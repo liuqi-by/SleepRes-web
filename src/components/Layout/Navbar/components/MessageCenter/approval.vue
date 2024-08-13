@@ -18,7 +18,7 @@
                 :model="formData"
                 :rules="formRules"
                 class="login-form"
-                :label-width="tabType === 'DME' ? '170px' : '200px'"
+                :label-width="tabType === 'DME' ? '180px' : '200px'"
                 label-position="left"
                 v-if="formData"
             >
@@ -51,9 +51,9 @@
                     </div>
                 </el-form-item>
                 <!-- SleepResAccountNumber -->
-                <el-form-item
+                <!-- <el-form-item
                     prop="account_id"
-                    :label="tabType === 'DME' ? $t('message.dmeNPI') : $t('login.PhysicianNPI')"
+                    :label="tabType === 'DME' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')"
                 >
                     <div class="form-item">
                         <el-input
@@ -62,6 +62,34 @@
                             :placeholder="
                                 tabType === 'DME' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')
                             "
+                            type="text"
+                        />
+                    </div>
+                </el-form-item> -->
+                <el-form-item
+                    prop="account_num"
+                    :label="$t('login.SleepResAccountNumber')"
+                    v-if="tabType === 'DME'"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.account_num"
+                            class="form-input"
+                            :placeholder="$t('login.SleepResAccountNumber')"
+                            type="text"
+                        />
+                    </div>
+                </el-form-item>
+                <el-form-item
+                    prop="account_id"
+                    :label="$t('login.PhysicianNPI')"
+                    v-else
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.account_id"
+                            class="form-input"
+                            :placeholder="$t('login.PhysicianNPI')"
                             type="text"
                         />
                     </div>
@@ -152,7 +180,7 @@
                     >
                         {{ $t('form.Submit') }}
                     </base-button>
-                    <base-button @click="dialogVisible = false">{{ $t('form.Cancel') }}</base-button>
+                    <base-button @click="reject">{{ $t('form.Reject') }}</base-button>
                 </div>
             </template>
         </el-dialog>
@@ -235,6 +263,35 @@
                     loading.value = false;
                 });
         });
+    };
+
+    // 拒绝
+    const reject = () => {
+        let msg = t('message.confirmReject');
+        ElMessageBox.confirm(' ', msg, {
+            confirmButtonText: t('form.Confirm'),
+            cancelButtonText: t('form.Cancel'),
+            type: 'warning',
+            customStyle: { minHeight: 0 },
+            dangerouslyUseHTMLString: true,
+        })
+            .then(() => {
+                if (!formData.value) {
+                    return;
+                }
+
+                checkMessage({
+                    user_id: formData.value?.id,
+                    status: 2,
+                }).then(res => {
+                    if (res.code === 1) {
+                        ElMessage.success(t('message.Rejected'));
+                        emit('refresh');
+                        dialogVisible.value = false;
+                    }
+                });
+            })
+            .catch();
     };
 
     const close = () => {

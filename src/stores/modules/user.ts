@@ -14,9 +14,33 @@ export const useUserStore = defineStore(
         });
 
         const userInfoInit = null;
-        let userInfo = ref<UserInfo | null>(userInfoInit);
-
+        // 用户信息
+        const userInfo = ref<UserInfo | null>(userInfoInit);
+        // 角色权限
         const roles = ref<string[]>([]);
+
+        const rolesOption = [
+            {
+                value: 2,
+                label: 'DME',
+                roles: ['SleepRes'],
+            },
+            {
+                value: 3,
+                label: 'DME User',
+                roles: ['DME'],
+            },
+            {
+                value: 3,
+                label: 'Physician',
+                roles: ['SleepRes'],
+            },
+            {
+                value: 4,
+                label: 'Physician User',
+                roles: ['Physician'],
+            },
+        ];
 
         /**
          * 登录
@@ -65,6 +89,9 @@ export const useUserStore = defineStore(
                                 case 5:
                                     roles.value = ['Physician User'];
                                     break;
+                                default:
+                                    roles.value = [];
+                                    break;
                             }
                             // roles.value = userInfo.value?.group_id === 1 ? ['SleepRes'] : [];
                             permissionStore.getPermissionRoutes();
@@ -101,7 +128,7 @@ export const useUserStore = defineStore(
 
                 try {
                     userInfo.value = userInfoInit;
-
+                    roles.value = [];
                     // useMessageStore().stopInterval();
                     usePermissionStore().setPermissionRoutes([]);
                     tagsViewStore.delAllViews();
@@ -150,6 +177,7 @@ export const useUserStore = defineStore(
             roles,
             userInfo,
             messageCount,
+            rolesOption, // 角色选项
             login,
             logout,
             getUserInfo,
