@@ -1,4 +1,4 @@
-import type { LoginReq, UserInfo, RegisterReq } from './types';
+import type { LoginReq, UserInfo, RegisterReq, EditPwdReq } from './types';
 
 /**
  * @description 用户登录
@@ -39,4 +39,24 @@ export const registerAccount = (data: RegisterReq) => {
     // return useClientRequest<ResPonseType<void>>('/api/admin/register', {
     //     query: data,
     // });
+};
+
+/**
+ * @description 重置密码 邮箱
+ */
+export const resetPasswordByEmail = (data: { email: string }) => {
+    return useClientRequest<ResPonseType<void>>('/api/admin/resetpwd', {
+        method: 'GET',
+        query: data,
+    });
+};
+
+/**
+ * @description 修改密码 旧密码
+ */
+export const changePassword = (data: EditPwdReq) => {
+    return useClientRequest<ResPonseType<void>>('/api/admin/editpwd', {
+        method: 'POST',
+        body: queryString(data),
+    });
 };

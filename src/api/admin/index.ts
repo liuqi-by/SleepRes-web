@@ -6,8 +6,8 @@ import type { CheckMessageReq, FrozenUserReq, MessageReq, MessageRes, UserListRe
  */
 export const getMessage = (data: MessageReq & PageQuery) => {
     return useClientRequest<ResPonseType<MessageRes[]>>('/api/admin/Msg', {
-        method: 'POST',
-        body: queryString(data),
+        method: 'GET',
+        query: data,
     });
 };
 
@@ -16,8 +16,8 @@ export const getMessage = (data: MessageReq & PageQuery) => {
  */
 export const checkMessage = (data: CheckMessageReq) => {
     return useClientRequest<ResPonseType<void>>('/api/admin/check', {
-        method: 'POST',
-        body: queryString(data),
+        method: 'GET',
+        query: data,
     });
 };
 
@@ -26,8 +26,8 @@ export const checkMessage = (data: CheckMessageReq) => {
  */
 export const getUserlist = (data: UserListReq & PageQuery) => {
     return useClientRequest<ResPonseType<UserInfo[]>>('/api/admin/UserSearch', {
-        method: 'POST',
-        body: queryString(data),
+        method: 'GET',
+        query: data,
     });
 };
 
@@ -36,7 +36,7 @@ export const getUserlist = (data: UserListReq & PageQuery) => {
  */
 export const frozenUser = (data: FrozenUserReq) => {
     return useClientRequest<ResPonseType<void>>('/api/admin/frozen', {
-        method: 'POST',
-        body: queryString(data),
+        method: 'GET',
+        query: data,
     });
 };

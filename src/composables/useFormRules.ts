@@ -1,4 +1,4 @@
-export function useFormRules() {
+export function useFormRules(formData?: any) {
     // 表单验证规则
     const { t } = useI18n();
 
@@ -63,12 +63,43 @@ export function useFormRules() {
                 message: t('form.PleaseEnter') + t('login.LastName'),
             },
         ],
+
         // 密码验证规则
         password: [
             {
                 trigger: 'blur',
                 required: true,
                 message: t('form.PleaseEnter') + t('login.password'),
+            },
+            {
+                min: 6,
+                max: 16,
+                message: t('login.passwordRule'),
+                trigger: 'blur',
+            },
+        ],
+        // 确认密码验证规则
+        confirmPassword: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('layout.inputConfirmPassword'),
+            },
+            {
+                validator: (_rule: any, value: string, callback: any) => {
+                    if (value !== formData.value.password) {
+                        return callback(new Error(t('layout.passwordNotMatch')));
+                    }
+                    callback();
+                },
+                trigger: 'blur',
+            },
+        ],
+        oldPassword: [
+            {
+                trigger: 'blur',
+                required: true,
+                message: t('layout.oldPasswordPlaceHolder'),
             },
         ],
         // 邮箱

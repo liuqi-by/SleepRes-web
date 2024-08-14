@@ -60,6 +60,12 @@
                 <el-dropdown-menu>
                     <el-dropdown-item
                         divided
+                        @click="changePassword"
+                    >
+                        {{ $t('layout.ChangePassword') }}
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                        divided
                         @click="logout"
                     >
                         {{ $t('layout.logout') }}
@@ -67,12 +73,14 @@
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
+        <ChangePassword v-model="changePasswordVisible" />
     </div>
 </template>
 
 <script setup lang="ts">
     import Screenfull from './components/Screenfull/index.vue';
     import MessageCenter from './components/MessageCenter/index.vue';
+    import ChangePassword from './components/ChangePassword/index.vue';
 
     import { useAppStore } from '@/stores/modules/app';
     import { useUserStore } from '@/stores/modules/user';
@@ -103,6 +111,14 @@
         }).then(() => {
             userStore.logout();
         });
+    };
+
+    /**
+     * 修改密码
+     */
+    const changePasswordVisible = ref(false);
+    const changePassword = () => {
+        changePasswordVisible.value = true;
     };
 </script>
 

@@ -73,3 +73,9 @@ export interface RegisterReq {
      * */
     type: string;
 }
+
+// 修改密码
+export interface EditPwdReq {
+    password: string;
+    newpassword: string;
+}

@@ -39,7 +39,8 @@
         "PracticeName": "Practice Name",
         "PhysicianNPI": "Physician NPI number",
         "logout": "Login Out",
-        "ConfirmLogout": "Are you sure you want to log out?"
+        "ConfirmLogout": "Are you sure you want to log out?",
+        "passwordRule": "Password must be 6-16 characters"
     },
     "message": {
         "dmeApproval": "DME Account Approval",
@@ -75,7 +76,16 @@
         "LayoutSetting": "Layout Setting",
         "LeftMode": "Left Mode",
         "TopMode": "Top Mode",
-        "logout": "Login Out"
+        "logout": "Login Out",
+        "ChangePassword": "Change Password",
+        "oldPasswordPlaceHolder": "Please enter old password",
+        "newPasswordPlaceHolder": "Please enter new password",
+        "confirmPassword": "Confirm Password",
+        "inputConfirmPassword": "Please reenter your password to confirm",
+        "passwordNotMatch": "The password entered twice is inconsistent",
+        "NewPasswordCannotBeSameAsOldPassword": "New password cannot be same as old password",
+        "ConfirmChangePassword": "Confirm Change Password",
+        "PasswordChangedSuccessfully": "Password changed successfully,Please log in again"
     },
     "errors": {
         "goBack": "Go Back",
