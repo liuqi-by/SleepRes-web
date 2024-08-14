@@ -8,7 +8,9 @@
             @close="close"
             class="form form-dialog"
         >
-            <div class="form-title">{{ $t('users.CreateUser') }}</div>
+            <div class="form-title">
+                {{ formData.id ? $t('users.EditUserInfo') : $t('users.CreateUser') }}
+            </div>
             <el-form
                 ref="formRef"
                 :model="formData"
@@ -89,12 +91,12 @@
                 </el-form-item>
                 <!-- Role -->
                 <el-form-item
-                    prop="type"
+                    prop="group_id"
                     :label="$t('users.Role')"
                 >
                     <div class="form-item">
                         <el-select
-                            v-model="formData.type"
+                            v-model="formData.group_id"
                             placeholder="Please select"
                             filterable
                         >
@@ -107,6 +109,20 @@
                         </el-select>
                     </div>
                 </el-form-item>
+                <!-- status -->
+                <el-form-item
+                    prop="frozen"
+                    :label="$t('message.Status')"
+                    v-if="formData.id"
+                >
+                    <div class="form-item">
+                        <el-switch
+                            v-model="formData.frozen"
+                            :active-value="0"
+                            :inactive-value="1"
+                        />
+                    </div>
+                </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
@@ -116,7 +132,7 @@
                         class="m-r-[10px]"
                         :loading="loading"
                     >
-                        {{ $t('form.Confirm') }}
+                        {{ formData.id ? $t('form.Save') : $t('form.Confirm') }}
                     </base-button>
                     <base-button @click="dialogVisible = false">{{ $t('form.Cancel') }}</base-button>
                 </div>
@@ -127,9 +143,10 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
-    import type { RegisterReq } from '~/api/login/types';
-    import { registerAccount } from '~/api/login';
+    import type { AddUserReq } from '~/api/users/types';
+    import { addUser, updateUser } from '~/api/users';
     import { useUserStore } from '~/stores/modules/user';
+    import type { UserInfo } from '~/api/login/types';
 
     const userStore = useUserStore();
     const rolesOption = computed(() => {
@@ -137,43 +154,49 @@
             userStore.rolesOption.filter(item => {
                 return haveRoles(item.roles, userStore.roles);
             }) || [];
-        formData.value.type = arr[0]?.value as unknown as string;
+        formData.value.group_id = arr[0]?.value as unknown as string;
         return arr;
     });
 
     const dialogVisible = ref(false);
 
     const formRef = ref<FormInstance>(); // 登录表单ref
-    const { t } = useI18n(); // 国际化
 
-    const formDataInit = {
-        username: '',
+    const formDataInit: AddUserReq = {
         email: '',
         mobile: '',
         first_name: '',
         last_name: '',
-        // 账户类型:2=DME,4=Physician
-        type: '',
+        // 账户类型:2=DME User,4=Physician User
+        group_id: '',
+        institution_id: '',
+
+        username: '',
+        account_id: '',
+        zip_code: '',
+        state: '',
     };
 
-    const formData = ref({
+    const formData = ref<any>({
         ...formDataInit,
     });
-    const { firstName, lastName, email, role, accountName } = useFormRules();
+    const { firstName, lastName, email, role, office } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
             first_name: firstName,
             last_name: lastName,
             email,
-            type: role,
-            username: accountName,
+            group_id: role,
+            institution_id: office,
         };
     });
 
+    const { t } = useI18n();
+    const emit = defineEmits(['refresh']);
     const loading = ref(false); // 按钮loading
     /**
-     * 注册
+     * submit
      */
     const submit = () => {
         formRef.value?.validate((valid: boolean) => {
@@ -181,32 +204,67 @@
                 return;
             }
             loading.value = true;
-
-            // 注册
-            registerAccount({
-                ...formData.value,
-                type: '2',
-            })
-                .then(res => {
-                    if (res.code === 1) {
-                        ElMessage.success(t('login.RegisterSuccess'));
-                        // 重置
-                        formRef.value?.resetFields();
-                        dialogVisible.value = false;
-                    }
+            if (formData.value.id) {
+                // 编辑
+                updateUser({
+                    user_id: formData.value.id,
+                    group_id: formData.value.group_id,
+                    institution_id: formData.value.institution_id || '',
+                    first_name: formData.value.first_name,
+                    last_name: formData.value.last_name,
+                    email: formData.value.email,
+                    mobile: formData.value.mobile,
+                    frozen: formData.value.frozen,
                 })
-                .finally(() => {
-                    loading.value = false;
-                });
+                    .then(res => {
+                        if (res.code === 1) {
+                            ElMessage.success(t('form.saveSuccess'));
+                            dialogVisible.value = false;
+                            emit('refresh');
+                            formData.value = {
+                                ...formDataInit,
+                            };
+                        }
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    });
+            } else {
+                // 新增
+                addUser({
+                    ...formData.value,
+                    username: formData.value.email,
+                })
+                    .then(res => {
+                        if (res.code === 1) {
+                            ElMessage.success(t('users.createSuccess'));
+                            dialogVisible.value = false;
+                            emit('refresh');
+                            formRef.value?.resetFields();
+                        }
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    });
+            }
         });
     };
 
     const close = () => {
         dialogVisible.value = false;
         formRef.value?.clearValidate();
+        if (formData.value.id) {
+            formData.value = {
+                ...formDataInit,
+            };
+        }
     };
 
-    const showDialog = () => {
+    const showDialog = (item?: UserInfo) => {
+        if (item) {
+            formData.value = { ...item };
+        }
+
         dialogVisible.value = true;
     };
 

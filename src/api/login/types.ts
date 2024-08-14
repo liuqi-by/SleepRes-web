@@ -29,7 +29,7 @@ export interface LoginRes {
 }
 
 export interface UserInfo {
-    id: number;
+    id: string;
     username: string;
     dmename: string;
     nickname: string;
@@ -53,6 +53,7 @@ export interface UserInfo {
     group_id: number;
     frozen: number;
     account_num: string;
+    institution_id: string; // 医疗机构id
 }
 
 // 注册

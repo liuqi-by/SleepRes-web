@@ -11,7 +11,7 @@ export interface MessageReq {
 export interface MessageRes {
     id: number;
     event: string;
-    user_id: number;
+    user_id: string;
     admin_id: number;
     isread: number;
     content: string;
@@ -25,12 +25,12 @@ export interface MessageRes {
 
 // 审核用户
 export interface CheckMessageReq {
-    user_id: number;
+    user_id: string;
     account_name?: string;
     account_num?: string;
 
     /**
-     * 用户状态,1=审核通过
+     * 用户状态,1=审核通过 2=审核不通过删除
      */
     status: number;
 }
@@ -48,7 +48,7 @@ export interface UserListRes {}
 
 // 冻结用户
 export interface FrozenUserReq {
-    user_id: number;
+    user_id: string;
     /**
      * 	用户状态,1=冻结,0=解冻
      */

@@ -112,5 +112,13 @@ export function useFormRules() {
                 message: t('form.PleaseSelect') + t('users.Role'),
             },
         ],
+        // office loaction
+        office: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseSelect') + t('users.OfficeLocation'),
+            },
+        ],
     };
 }

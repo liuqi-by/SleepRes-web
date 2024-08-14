@@ -4,13 +4,15 @@
         "error": "error",
         "Confirm": "Confirm",
         "Submit": "Submit",
+        "Save": "Save",
         "Reject": "Reject",
         "Cancel": "Cancel",
         "PleaseEnter": "Please enter ",
         "PleaseSelect": "Please select ",
         "PleaseEnterCurrent": "Please enter current ",
         "lengthRule": "limit {length} characters",
-        "Search": "Search"
+        "Search": "Search",
+        "saveSuccess": "Save Success"
     },
     "login": {
         "login": "Login",
@@ -93,8 +95,10 @@
         "OfficeLocation": "Office location",
         "Role": "Role",
         "EditUser": "Edit User",
+        "EditUserInfo": "Edit User Information",
         "CreateUser": "Create User",
-        "searchPlaceholder": "Name / Email / Mobile"
+        "searchPlaceholder": "Name / Email / Mobile",
+        "createSuccess": "Create successfully"
     },
     "office": {
         "CreateOffice": "Create Office",

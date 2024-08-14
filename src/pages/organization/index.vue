@@ -142,7 +142,6 @@
     // 获取用户列表
     const getAccountList = useDebounceFn(() => {
         loading.value = true;
-        accountList.value = [];
 
         getUserlist({
             page: pageOption.value.currentPage - 1,

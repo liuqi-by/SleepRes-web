@@ -83,7 +83,7 @@
                     <template #default="{ row }">
                         <span
                             class="link"
-                            @click="resetPwd(row)"
+                            @click="editUser(row)"
                             >{{ $t('users.EditUser') }}</span
                         >
                     </template>
@@ -107,12 +107,15 @@
         <!-- 重置密码弹窗 -->
         <LazyResetPasswordForm ref="resetPasswordForm" />
         <!-- 新增/编辑用户 -->
-        <EditUser ref="editUser" />
+        <EditUserDialog
+            ref="editUserDialog"
+            @refresh="getAccountList"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-    import EditUser from './compononets/edit.vue';
+    import EditUserDialog from './compononets/edit.vue';
     import { frozenUser, getUserlist } from '~/api/admin';
     import type { UserInfo } from '~/api/login/types';
 
@@ -137,7 +140,6 @@
     // 获取用户列表
     const getAccountList = useDebounceFn(() => {
         loading.value = true;
-        accountList.value = [];
 
         getUserlist({
             page: pageOption.value.currentPage - 1,
@@ -189,9 +191,14 @@
     });
 
     // 创建用户
-    const editUser = ref<InstanceType<typeof EditUser>>();
+    const editUserDialog = ref<InstanceType<typeof EditUserDialog>>();
     const createUser = () => {
-        editUser.value?.showDialog();
+        editUserDialog.value?.showDialog();
+    };
+
+    // 编辑
+    const editUser = (row: UserInfo) => {
+        editUserDialog.value?.showDialog(row);
     };
 </script>
 

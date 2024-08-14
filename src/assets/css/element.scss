@@ -66,7 +66,8 @@ body {
     }
 
     .el-table.is-scrolling-none th.el-table-fixed-column--left,
-    .el-table.is-scrolling-none th.el-table-fixed-column--right {
+    .el-table.is-scrolling-none th.el-table-fixed-column--right,
+    .el-table.is-scrolling-right th.el-table-fixed-column--right {
         background-color: #f1f2f2;
     }
 
