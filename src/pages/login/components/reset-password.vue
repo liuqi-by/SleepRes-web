@@ -54,6 +54,7 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
+    import { resetPasswordByEmail } from '~/api/login';
     const dialogVisible = ref(false); // 弹窗显示
 
     const loading = ref(false); // 按钮loading
@@ -72,6 +73,7 @@
         };
     });
 
+    const { t } = useI18n();
     /**
      * 重置密码
      */
@@ -82,6 +84,17 @@
             }
 
             loading.value = true;
+            resetPasswordByEmail(formData.value)
+                .then(res => {
+                    if (res.code === 1) {
+                        ElMessage.success(t('login.resetPwdSuccess'));
+                        dialogVisible.value = false;
+                        formData.value.email = '';
+                    }
+                })
+                .finally(() => {
+                    loading.value = false;
+                });
         });
     };
 

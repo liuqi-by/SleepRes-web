@@ -40,7 +40,8 @@
         "PhysicianNPI": "Physician NPI number",
         "logout": "Login Out",
         "ConfirmLogout": "Are you sure you want to log out?",
-        "passwordRule": "Password must be 6-16 characters"
+        "passwordRule": "Password must be 6-16 characters",
+        "resetPwdSuccess": "Password reset success"
     },
     "message": {
         "dmeApproval": "DME Account Approval",
