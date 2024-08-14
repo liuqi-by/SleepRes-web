@@ -8,23 +8,23 @@
             @close="close"
             class="form form-dialog"
         >
-            <div class="form-title">{{ $t('users.CreateUser') }}</div>
+            <div class="form-title">{{ $t('office.CreateOffice') }}</div>
             <el-form
                 ref="formRef"
                 :model="formData"
                 :rules="formRules"
                 class="login-form"
-                label-width="150px"
+                label-width="130"
                 label-position="left"
             >
                 <!-- OfficeName -->
                 <el-form-item
-                    prop="first_name"
+                    prop="name"
                     :label="$t('office.OfficeName')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.first_name"
+                            v-model="formData.name"
                             class="form-input"
                             :placeholder="$t('office.OfficeName')"
                             :maxlength="inputLength.name"
@@ -38,7 +38,7 @@
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.last_name"
+                            v-model="formData.city"
                             class="form-input"
                             :placeholder="$t('office.City')"
                             :maxlength="inputLength.name"
@@ -115,6 +115,21 @@
                         />
                     </div>
                 </el-form-item>
+
+                <!-- status -->
+                <el-form-item
+                    prop="status"
+                    :label="$t('message.Status')"
+                    v-if="formData.id"
+                >
+                    <div class="form-item">
+                        <el-switch
+                            v-model="formData.status"
+                            :active-value="0"
+                            :inactive-value="1"
+                        />
+                    </div>
+                </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
@@ -135,49 +150,38 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
-    import { useUserStore } from '~/stores/modules/user';
-
-    const userStore = useUserStore();
-    const rolesOption = computed(() => {
-        let arr =
-            userStore.rolesOption.filter(item => {
-                return haveRoles(item.roles, userStore.roles);
-            }) || [];
-        formData.value.type = arr[0]?.value as unknown as string;
-        return arr;
-    });
+    import { addOrganization, editOrganization } from '~/api/organization';
+    import type { AddOrganizationReq, Organization } from '~/api/organization/types';
 
     const dialogVisible = ref(false);
 
     const formRef = ref<FormInstance>(); // 登录表单ref
     const { t } = useI18n(); // 国际化
 
-    const formDataInit = {
-        username: '',
+    const formDataInit: AddOrganizationReq = {
+        name: '',
         email: '',
         mobile: '',
-        first_name: '',
-        last_name: '',
-        // 账户类型:2=DME,4=Physician
-        type: '',
+        city: '',
+        state: '',
+        zip_code: '',
+        address: '',
     };
 
-    const formData = ref({
+    const formData = ref<any>({
         ...formDataInit,
     });
-    const { firstName, lastName, email, role, accountName } = useFormRules();
+    const { officeName, email } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
-            first_name: firstName,
-            last_name: lastName,
+            name: officeName,
             email,
-            type: role,
-            username: accountName,
         };
     });
 
     const loading = ref(false); // 按钮loading
+    const emit = defineEmits(['refresh']);
     /**
      * 注册
      */
@@ -188,31 +192,57 @@
             }
             loading.value = true;
 
-            // 注册
-            // registerAccount({
-            //     ...formData.value,
-            //     type: '2',
-            // })
-            //     .then(res => {
-            //         if (res.code === 1) {
-            //             ElMessage.success(t('login.RegisterSuccess'));
-            //             // 重置
-            //             formRef.value?.resetFields();
-            //             dialogVisible.value = false;
-            //         }
-            //     })
-            //     .finally(() => {
-            //         loading.value = false;
-            //     });
+            if (formData.value.id) {
+                // 编辑
+                editOrganization({
+                    ...formData.value,
+                })
+                    .then(res => {
+                        if (res.code === 1) {
+                            ElMessage.success(t('form.saveSuccess'));
+                            dialogVisible.value = false;
+                            emit('refresh');
+                            formRef.value?.resetFields();
+                        }
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    });
+            } else {
+                // 新增
+                addOrganization({
+                    ...formData.value,
+                })
+                    .then(res => {
+                        if (res.code === 1) {
+                            ElMessage.success(t('form.createSuccess'));
+                            dialogVisible.value = false;
+                            emit('refresh');
+                            formRef.value?.resetFields();
+                        }
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    });
+            }
         });
     };
 
     const close = () => {
         dialogVisible.value = false;
         formRef.value?.clearValidate();
+        if (formData.value.id) {
+            formData.value = {
+                ...formDataInit,
+            };
+        }
     };
 
-    const showDialog = () => {
+    const showDialog = (item?: Organization) => {
+        if (item) {
+            formData.value = { ...item };
+        }
+
         dialogVisible.value = true;
     };
 

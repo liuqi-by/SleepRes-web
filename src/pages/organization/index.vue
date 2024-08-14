@@ -19,7 +19,7 @@
         <div class="table-module">
             <table-module
                 border
-                :data="accountList"
+                :data="tableList"
                 v-loading="loading"
                 height="calc(100vh - 340px)"
                 v-model:current-page="pageOption.currentPage"
@@ -29,54 +29,63 @@
                 @current-change="handleCurrentChange"
             >
                 <el-table-column
-                    prop="nickname"
+                    prop="name"
                     :label="$t('office.OfficeName')"
                     min-width="120"
                     align="center"
                 />
 
                 <el-table-column
-                    prop="email"
+                    prop="city"
                     :label="$t('office.City')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="mobile"
+                    prop="state"
                     :label="$t('login.State')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="group_name"
-                    :label="$t('users.OfficeLocation')"
-                    min-width="120"
-                    align="center"
-                />
-                <el-table-column
-                    prop="group_name"
+                    prop="zip_code"
                     :label="$t('login.ZipCode')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="group_name"
+                    prop="address"
                     :label="$t('login.Address')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="group_name"
+                    prop="mobile"
                     :label="$t('office.Telephone')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="group_name"
+                    prop="email"
                     :label="$t('login.Email')"
                     min-width="120"
                     align="center"
                 />
+                <el-table-column
+                    prop="status"
+                    :label="$t('message.Status')"
+                    min-width="120"
+                    align="center"
+                >
+                    <template #default="{ row }">
+                        <el-switch
+                            v-model="row.status"
+                            :active-value="0"
+                            :inactive-value="1"
+                            @click="frozen(row)"
+                        />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     :label="$t('office.Modify')"
                     min-width="120"
@@ -86,42 +95,26 @@
                     <template #default="{ row }">
                         <span
                             class="link"
-                            @click="resetPwd(row)"
+                            @click="edit(row)"
                             >{{ $t('office.Edit') }}</span
                         >
                     </template>
                 </el-table-column>
-
-                <el-table-column
-                    prop="frozen"
-                    :label="$t('message.Status')"
-                    min-width="120"
-                    align="center"
-                >
-                    <template #default="{ row }">
-                        <el-switch
-                            v-model="row.frozen"
-                            :active-value="0"
-                            :inactive-value="1"
-                            @click="frozenAccount(row)"
-                        />
-                    </template>
-                </el-table-column>
             </table-module>
         </div>
-        <!-- 重置密码弹窗 -->
-        <LazyResetPasswordForm ref="resetPasswordForm" />
         <!-- 新增/编辑用户 -->
-        <EditOffice ref="editOffice" />
+        <EditOffice
+            ref="editOffice"
+            @refresh="getList"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
     import EditOffice from './compononets/edit.vue';
-    import { frozenUser, getUserlist } from '~/api/admin';
-    import type { UserInfo } from '~/api/login/types';
+    import { editOrganization, getOrganization as getListApi } from '~/api/organization';
 
-    const LazyResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
+    import type { Organization } from '~/api/organization/types';
 
     const searchOption = ref('');
 
@@ -131,26 +124,19 @@
         total: 0,
     });
     const loading = ref(false);
-    const accountList = ref<UserInfo[]>([]);
-
-    // 重置密码
-    const resetPasswordForm = ref<InstanceType<typeof LazyResetPasswordForm> | null>(null);
-    const resetPwd = (row: any) => {
-        resetPasswordForm.value?.showResetPassword(row);
-    };
-
-    // 获取用户列表
-    const getAccountList = useDebounceFn(() => {
+    const tableList = ref<Organization[]>([]);
+    // 获取机构列表
+    const getList = useDebounceFn(() => {
         loading.value = true;
 
-        getUserlist({
+        getListApi({
             page: pageOption.value.currentPage - 1,
             pagesize: pageOption.value.pageSize,
             val: searchOption.value,
         })
             .then(res => {
                 if (res.code === 1) {
-                    accountList.value = res.data;
+                    tableList.value = res.data;
                     pageOption.value.total = res.data_other.num;
                 }
             })
@@ -162,34 +148,32 @@
     // 搜索
     const search = () => {
         pageOption.value.currentPage = 1;
-        getAccountList();
+        getList();
     };
 
     const handleSizeChange = () => {
-        getAccountList();
+        getList();
     };
     const handleCurrentChange = () => {
-        getAccountList();
+        getList();
     };
 
     // 冻结/解冻
-    const frozenAccount = useDebounceFn((row: UserInfo) => {
-        frozenUser({
-            user_id: row.id,
-            frozen: row.frozen,
+    const frozen = useDebounceFn((row: Organization) => {
+        // 编辑
+        editOrganization({
+            ...row,
         })
-            .then(res => {
-                if (res.code === 1) {
-                    // ElMessage.success('操作成功');
-                }
-            })
             .catch(() => {
-                row.frozen = row.frozen === 1 ? 0 : 1;
+                row.status = row.status === '1' ? '0' : '1';
+            })
+            .finally(() => {
+                loading.value = false;
             });
     }, 300);
 
     onActivated(() => {
-        getAccountList();
+        getList();
     });
 
     // 创建用户
@@ -197,6 +181,11 @@
     const create = () => {
         console.log('create', editOffice);
         editOffice.value?.showDialog();
+    };
+
+    // 编辑用户
+    const edit = (row: Organization) => {
+        editOffice.value?.showDialog(row);
     };
 </script>
 

@@ -63,6 +63,14 @@ export function useFormRules(formData?: any) {
                 message: t('form.PleaseEnter') + t('login.LastName'),
             },
         ],
+        // 机构名称
+        officeName: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('office.OfficeName'),
+            },
+        ],
 
         // 密码验证规则
         password: [

@@ -12,7 +12,8 @@
         "PleaseEnterCurrent": "Please enter current ",
         "lengthRule": "limit {length} characters",
         "Search": "Search",
-        "saveSuccess": "Save Success"
+        "saveSuccess": "Save successfully",
+        "createSuccess": "Create successfully"
     },
     "login": {
         "login": "Login",
@@ -108,8 +109,7 @@
         "EditUser": "Edit User",
         "EditUserInfo": "Edit User Information",
         "CreateUser": "Create User",
-        "searchPlaceholder": "Name / Email / Mobile",
-        "createSuccess": "Create successfully"
+        "searchPlaceholder": "Name / Email / Mobile"
     },
     "office": {
         "CreateOffice": "Create Office",
@@ -118,6 +118,6 @@
         "Telephone": "Telephone",
         "Modify": "Modify",
         "Edit": "Edit",
-        "searchPlaceholder": "Name / Email / Telephone"
+        "searchPlaceholder": "Name / Email / Telephone / State / Address"
     }
 }

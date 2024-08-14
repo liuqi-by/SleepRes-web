@@ -237,7 +237,7 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success(t('users.createSuccess'));
+                            ElMessage.success(t('form.createSuccess'));
                             dialogVisible.value = false;
                             emit('refresh');
                             formRef.value?.resetFields();
