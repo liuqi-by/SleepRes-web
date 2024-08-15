@@ -54,6 +54,7 @@ export interface UserInfo {
     frozen: number;
     account_num: string;
     institution_id: string; // 医疗机构id
+    institution_name: string; // 医疗机构名称
 }
 
 // 注册

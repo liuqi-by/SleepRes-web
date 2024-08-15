@@ -8,7 +8,6 @@
         remote-show-suffix
         class="selectSearch"
         @filter-method="getList"
-        clearable
     >
         <el-option
             v-for="item in options"
@@ -32,8 +31,24 @@
 <script setup lang="ts">
     import { getOrganization } from '~/api/organization';
     import type { Organization } from '~/api/organization/types';
+    import { useUserStore } from '~/stores/modules/user';
 
-    const options = ref<Organization[]>([]);
+    const userStore = useUserStore();
+    const options = ref<Organization[]>([
+        {
+            id: userStore.userInfo?.institution_id || '',
+            name: userStore.userInfo?.institution_name || '',
+            number: '',
+            mobile: '',
+            address: '',
+            status: '',
+            createtime: '',
+            city: '',
+            state: '',
+            zip_code: '',
+            email: '',
+        },
+    ]);
     const value = defineModel({
         type: String,
         default: '',

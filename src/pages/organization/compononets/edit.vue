@@ -13,7 +13,7 @@
                 ref="formRef"
                 :model="formData"
                 :rules="formRules"
-                class="login-form"
+                class="form line-form"
                 label-width="130"
                 label-position="left"
             >

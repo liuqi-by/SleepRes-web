@@ -21,6 +21,7 @@
         <base-pagination
             v-model:current-page="currentPage"
             v-model:page-size="pageSize"
+            :page-sizes="pageSizes"
             :total="total"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -36,12 +37,14 @@
         title?: string;
         tableData?: Array<any>;
         isPagination?: boolean;
+        pageSizes?: Array<number>;
     }
 
     withDefaults(defineProps<Props>(), {
         title: '',
         tableData: () => [],
         isPagination: true,
+        pageSizes: () => [10, 20, 30, 40, 50, 100],
     });
 
     // const pageOption = defineModel('pageOption', {

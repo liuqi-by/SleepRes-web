@@ -17,7 +17,7 @@
                 ref="formRef"
                 :model="formData"
                 :rules="formRules"
-                class="login-form"
+                class="form line-form"
                 :label-width="tabType === 'DME' ? '180px' : '200px'"
                 label-position="left"
                 v-if="formData"

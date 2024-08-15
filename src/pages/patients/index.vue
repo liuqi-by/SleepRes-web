@@ -8,11 +8,16 @@
             :placeholder="$t('users.searchPlaceholder')"
         />
         <!-- 功能模块 -->
-        <div class="function-module m-b-[20px]">
+        <div class="function-module m-b-[20px] flex justify-between">
             <el-button
                 type="primary"
                 @click="createUser"
-                >{{ $t('users.CreateUser') }}
+                >{{ $t('patients.AddPatient') }}
+            </el-button>
+            <el-button
+                type="primary"
+                @click="createUser"
+                >{{ $t('patients.SDCardUpload') }}
             </el-button>
         </div>
         <!-- 表格模块 -->
@@ -27,6 +32,7 @@
                 :total="pageOption.total"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
+                :pageSizes="[25, 50, 100]"
             >
                 <el-table-column
                     prop="nickname"
@@ -36,14 +42,14 @@
                 />
 
                 <el-table-column
-                    prop="email"
-                    :label="$t('login.Email')"
+                    prop="Patient ID"
+                    :label="$t('patients.PatientID')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="mobile"
-                    :label="$t('login.PhoneNumber')"
+                    prop="Birthdate"
+                    :label="$t('patients.Birthdate')"
                     min-width="120"
                     align="center"
                 />
@@ -54,54 +60,41 @@
                     align="center"
                 />
                 <el-table-column
-                    prop="group_name"
-                    :label="$t('users.Role')"
+                    prop="SerialNumber"
+                    :label="$t('patients.SerialNumber')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="frozen"
-                    :label="$t('message.Status')"
+                    prop="Office"
+                    :label="$t('patients.Office')"
                     min-width="120"
                     align="center"
-                >
-                    <template #default="{ row }">
-                        <el-switch
-                            v-model="row.frozen"
-                            :active-value="0"
-                            :inactive-value="1"
-                            @click="frozenAccount(row)"
-                        />
-                    </template>
-                </el-table-column>
+                />
                 <el-table-column
-                    :label="$t('users.EditUser')"
+                    prop="TherapyStartDate"
+                    :label="$t('patients.TherapyStartDate')"
                     min-width="120"
                     align="center"
-                    fixed="right"
-                >
-                    <template #default="{ row }">
-                        <span
-                            class="link"
-                            @click="editUser(row)"
-                            >{{ $t('users.EditUser') }}</span
-                        >
-                    </template>
-                </el-table-column>
+                />
                 <el-table-column
-                    :label="$t('login.pwdReset')"
+                    prop="PercentUsage"
+                    :label="$t('patients.PercentUsage')"
                     min-width="120"
                     align="center"
-                    fixed="right"
-                >
-                    <template #default="{ row }">
-                        <span
-                            class="link"
-                            @click="resetPwd(row)"
-                            >{{ $t('login.resetPwd') }}</span
-                        >
-                    </template>
-                </el-table-column>
+                />
+                <el-table-column
+                    prop="LastUpdateDate"
+                    :label="$t('patients.LastUpdateDate')"
+                    min-width="120"
+                    align="center"
+                />
+                <el-table-column
+                    prop="Compliant"
+                    :label="$t('patients.Compliant')"
+                    min-width="120"
+                    align="center"
+                />
             </table-module>
         </div>
         <!-- 重置密码弹窗 -->
@@ -125,17 +118,11 @@
 
     const pageOption = ref({
         currentPage: 1,
-        pageSize: 10,
+        pageSize: 25,
         total: 0,
     });
     const loading = ref(false);
     const accountList = ref<UserInfo[]>([]);
-
-    // 重置密码
-    const resetPasswordForm = ref<InstanceType<typeof LazyResetPasswordForm> | null>(null);
-    const resetPwd = (row: any) => {
-        resetPasswordForm.value?.showResetPassword(row);
-    };
 
     // 获取用户列表
     const getAccountList = useDebounceFn(() => {
@@ -169,23 +156,6 @@
     const handleCurrentChange = () => {
         getAccountList();
     };
-
-    // 冻结/解冻
-    const frozenAccount = useDebounceFn((row: UserInfo) => {
-        frozenUser({
-            user_id: row.id,
-            frozen: row.frozen,
-        })
-            .then(res => {
-                if (res.code === 1) {
-                    // ElMessage.success('操作成功');
-                }
-            })
-            .catch(() => {
-                row.frozen = row.frozen === 1 ? 0 : 1;
-            });
-    }, 300);
-
     onActivated(() => {
         getAccountList();
     });

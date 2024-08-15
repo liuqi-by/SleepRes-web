@@ -15,7 +15,7 @@
                 ref="formRef"
                 :model="formData"
                 :rules="formRules"
-                class="login-form"
+                class="login-form line-form"
                 :label-width="tabType === 'registerDme' ? '180px' : '200px'"
                 label-position="left"
             >

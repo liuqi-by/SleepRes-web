@@ -100,16 +100,30 @@ body {
             color: #000;
         }
 
-        .el-form-item.is-required:not(.is-no-asterisk).asterisk-left > .el-form-item__label::before,
-        .el-form-item.is-required:not(.is-no-asterisk).asterisk-left
-            > .el-form-item__label-wrap
-            > .el-form-item__label::before {
-            position: absolute;
-            right: 20px;
-            margin-top: 3px;
-            margin-right: 4px;
-            color: var(--el-color-danger);
-            content: '*';
+        // .el-form-item.is-required:not(.is-no-asterisk).asterisk-left > .el-form-item__label::before,
+        // .el-form-item.is-required:not(.is-no-asterisk).asterisk-left
+        //     > .el-form-item__label-wrap
+        //     > .el-form-item__label::before {
+        //     position: absolute;
+        //     right: 20px;
+        //     margin-top: 3px;
+        //     margin-right: 4px;
+        //     color: var(--el-color-danger);
+        //     content: '*';
+        // }
+
+        &.line-form {
+            .el-form-item.is-required:not(.is-no-asterisk).asterisk-left > .el-form-item__label::before,
+            .el-form-item.is-required:not(.is-no-asterisk).asterisk-left
+                > .el-form-item__label-wrap
+                > .el-form-item__label::before {
+                position: absolute;
+                right: 20px;
+                margin-top: 3px;
+                margin-right: 4px;
+                color: var(--el-color-danger);
+                content: '*';
+            }
         }
     }
 

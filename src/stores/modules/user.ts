@@ -3,13 +3,13 @@ import { useTagsViewStore } from './tagsView';
 import { getMessage } from '~/api/admin';
 
 import { loginAccount, getUserDetailInfo, loginOut } from '~/api/login';
-import type { LoginReq, LoginRes, UserInfo } from '~/api/login/types';
+import type { LoginReq, UserInfo } from '~/api/login/types';
 
 export const useUserStore = defineStore(
     'user',
     () => {
         // 登录状态保持
-        const loginStatus = useCookie<LoginRes | null>('loginData', {
+        const loginStatus = useCookie<UserInfo | null>('loginData', {
             maxAge: 60 * 60 * 24,
         });
 
@@ -48,7 +48,7 @@ export const useUserStore = defineStore(
          * @returns Promise
          */
         function login(loginData: LoginReq) {
-            return new Promise<LoginRes>((resolve, reject) => {
+            return new Promise<UserInfo>((resolve, reject) => {
                 loginStatus.value = null;
                 // 登录
                 loginAccount(loginData)

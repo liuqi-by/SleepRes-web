@@ -14,7 +14,7 @@
                 ref="editForm"
                 :model="editFormData"
                 :rules="editFormRules"
-                class="edit-form form m-t-[20px]"
+                class="edit-form form line-form m-t-[20px]"
             >
                 <!-- 旧密码 -->
                 <el-form-item prop="oldPassword">

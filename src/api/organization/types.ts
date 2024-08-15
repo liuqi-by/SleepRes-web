@@ -13,7 +13,7 @@ export interface Organization {
     mobile: string;
     address: string;
     status: string;
-    createtime: number;
+    createtime: string;
     city: string;
     state: string;
     zip_code: string;

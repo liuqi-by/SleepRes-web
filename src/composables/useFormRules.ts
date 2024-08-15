@@ -159,5 +159,13 @@ export function useFormRules(formData?: any) {
                 message: t('form.PleaseSelect') + t('users.OfficeLocation'),
             },
         ],
+        // setupDate
+        setupDate: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleasePick') + t('patients.SetupDate'),
+            },
+        ],
     };
 }

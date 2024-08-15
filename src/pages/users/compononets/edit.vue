@@ -15,7 +15,7 @@
                 ref="formRef"
                 :model="formData"
                 :rules="formRules"
-                class="login-form"
+                class="form line-form"
                 label-width="150px"
                 label-position="left"
             >
@@ -82,7 +82,7 @@
                     :label="$t('users.OfficeLocation')"
                 >
                     <div class="form-item">
-                        <page-select
+                        <select-office
                             v-model="formData.institution_id"
                             placeholder="Please select"
                             filterable
@@ -170,8 +170,7 @@
         last_name: '',
         // 账户类型:2=DME User,4=Physician User
         group_id: '',
-        institution_id: '',
-
+        institution_id: userStore.userInfo?.institution_id || '',
         username: '',
         account_id: '',
         zip_code: '',
