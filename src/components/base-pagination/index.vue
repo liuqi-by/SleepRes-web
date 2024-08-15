@@ -2,14 +2,21 @@
 <template>
     <div>
         <el-pagination
-            layout="prev, pager, next, jumper,->,total,,sizes"
+            :layout="layout"
             :teleported="false"
             v-bind="$attrs"
         />
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+    defineProps({
+        layout: {
+            type: String,
+            default: 'prev, pager, next, jumper,->,total,,sizes',
+        },
+    });
+</script>
 
 <style lang="scss" scoped>
     :deep(.el-pagination) {

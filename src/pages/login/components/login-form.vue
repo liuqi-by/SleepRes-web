@@ -58,7 +58,8 @@
                     </el-input>
                 </div>
             </el-form-item>
-            <p>test:admin password:a654321</p>
+            <p>SleepRes Admin: admin a654321</p>
+            <p>DME Admin: dme-admin 123456</p>
             <div class="m-t-[48px]">
                 <div class="form-bottom">
                     <!-- 注册DME -->

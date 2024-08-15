@@ -39,27 +39,19 @@
     const currentError = computed(() => {
         let statusCode = props.error?.statusCode;
 
-        if (process.env.NODE_ENV !== 'development') {
-            return {
-                statusCode,
-                message: props.error?.message,
-                imgSrc: '@/assets/images/505.png',
-            };
-        } else {
-            switch (statusCode) {
-                case 404:
-                    return errorList[0];
-                case 500:
-                    return errorList[1];
-                case 401:
-                    return errorList[2];
-                default:
-                    return {
-                        statusCode,
-                        message: props.error?.message,
-                        imgSrc: '@/assets/images/505.png',
-                    };
-            }
+        switch (statusCode) {
+            case 404:
+                return errorList[0];
+            case 500:
+                return errorList[1];
+            case 401:
+                return errorList[2];
+            default:
+                return {
+                    statusCode,
+                    message: props.error?.message,
+                    imgSrc: '@/assets/images/505.png',
+                };
         }
     });
 

@@ -117,7 +117,7 @@
         pageSize: 10,
         total: 0,
     });
-    const loading = ref(false);
+    const loading = ref(true);
     const accountList = ref<UserInfo[]>([]);
 
     // 重置密码

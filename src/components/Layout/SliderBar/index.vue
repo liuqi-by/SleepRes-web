@@ -21,7 +21,6 @@
                 :collapse-transition="false"
                 :mode="layout === LayoutEnum.LEFT || device === DeviceEnum.MOBILE ? 'vertical' : 'horizontal'"
                 router
-                v-if="permission_routes.length > 1"
             >
                 <el-menu-item
                     :title="$t(`router.${item.meta?.title}`)"

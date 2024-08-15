@@ -48,7 +48,7 @@
                     align="center"
                 />
                 <el-table-column
-                    prop="group_name"
+                    prop="institution_name"
                     :label="$t('users.OfficeLocation')"
                     min-width="120"
                     align="center"
