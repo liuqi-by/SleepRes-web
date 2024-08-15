@@ -101,7 +101,12 @@
         "AccountNumber": "Account #",
         "AccountType": "Account Type",
         "AccountStatus": "Account Status",
-        "State": "State"
+        "State": "State",
+        "Operate": "Operate",
+        "delete": "Delete",
+        "edit": "Edit",
+        "ConfirmDelete": "Are you sure you want to delete?",
+        "DeleteSuccess": "Delete successfully"
     },
     "users": {
         "FullName": "Full Name",

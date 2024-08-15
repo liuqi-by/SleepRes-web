@@ -72,6 +72,24 @@
                     align="center"
                 />
                 <el-table-column
+                    :label="$t('office.Modify')"
+                    min-width="120"
+                    align="center"
+                >
+                    <template #default="{ row }">
+                        <span
+                            class="link"
+                            @click="edit(row)"
+                            >{{ $t('office.Edit') }}</span
+                        >
+                        <span
+                            class="link m-l-[20px]"
+                            @click="deleteItem(row)"
+                            >{{ $t('admin.delete') }}</span
+                        >
+                    </template>
+                </el-table-column>
+                <el-table-column
                     prop="status"
                     :label="$t('message.Status')"
                     min-width="120"
@@ -86,20 +104,6 @@
                         />
                     </template>
                 </el-table-column>
-                <el-table-column
-                    :label="$t('office.Modify')"
-                    min-width="120"
-                    align="center"
-                    fixed="right"
-                >
-                    <template #default="{ row }">
-                        <span
-                            class="link"
-                            @click="edit(row)"
-                            >{{ $t('office.Edit') }}</span
-                        >
-                    </template>
-                </el-table-column>
             </table-module>
         </div>
         <!-- 新增/编辑用户 -->
@@ -112,7 +116,7 @@
 
 <script setup lang="ts">
     import EditOffice from './compononets/edit.vue';
-    import { editOrganization, getOrganization as getListApi } from '~/api/organization';
+    import { deleteOrganization, editOrganization, getOrganization as getListApi } from '~/api/organization';
 
     import type { Organization } from '~/api/organization/types';
 
@@ -186,6 +190,26 @@
     // 编辑用户
     const edit = (row: Organization) => {
         editOffice.value?.showDialog(row);
+    };
+
+    // 删除
+    const { t } = useI18n();
+    const deleteItem = (row: Organization) => {
+        let msg = t('admin.ConfirmDelete');
+        ElMessageBox.confirm(' ', msg, {
+            confirmButtonText: t('form.Confirm'),
+            cancelButtonText: t('form.Cancel'),
+            type: 'warning',
+            customStyle: { minHeight: 0 },
+            dangerouslyUseHTMLString: true,
+        }).then(() => {
+            deleteOrganization(row.id).then(res => {
+                if (res.code === 1) {
+                    ElMessage.success(t('admin.DeleteSuccess'));
+                    getList();
+                }
+            });
+        });
     };
 </script>
 

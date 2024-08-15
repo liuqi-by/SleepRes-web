@@ -39,7 +39,7 @@ export const routes: RouteRecordRaw[] = [
             title: 'patients',
             icon: 'homepage',
             keepalive: true,
-            roles: ['DME User', 'Physician User', 'SleepRes'],
+            roles: ['DME User', 'DME', 'Physician User', 'SleepRes'],
         },
     },
     {

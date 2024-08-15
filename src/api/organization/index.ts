@@ -29,3 +29,13 @@ export const editOrganization = (data: EditOrganizationReq) => {
         query: data,
     });
 };
+
+/**
+ * @description 删除机构
+ */
+export const deleteOrganization = (id: string) => {
+    return useClientRequest<ResPonseType<void>>('/api/institution/del', {
+        method: 'GET',
+        query: { id },
+    });
+};

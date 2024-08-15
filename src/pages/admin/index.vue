@@ -83,7 +83,7 @@
                     align="center"
                 />
                 <el-table-column
-                    :label="$t('login.pwdReset')"
+                    :label="$t('admin.Operate')"
                     min-width="120"
                     align="center"
                     fixed="right"
@@ -122,9 +122,22 @@
 
     // 重置密码
     const resetPasswordForm = ref<InstanceType<typeof LazyResetPasswordForm> | null>(null);
-    const resetPwd = (row: any) => {
+    const resetPwd = (row: UserInfo) => {
         resetPasswordForm.value?.showResetPassword(row);
     };
+
+    // 删除
+    // const { t } = useI18n();
+    // const deleteItem = (row: UserInfo) => {
+    //     let msg = t('admin.ConfirmDelete');
+    //     ElMessageBox.confirm(' ', msg, {
+    //         confirmButtonText: t('form.Confirm'),
+    //         cancelButtonText: t('form.Cancel'),
+    //         type: 'warning',
+    //         customStyle: { minHeight: 0 },
+    //         dangerouslyUseHTMLString: true,
+    //     }).then(res => {});
+    // };
 
     // 获取用户列表
     const getAccountList = useDebounceFn(() => {

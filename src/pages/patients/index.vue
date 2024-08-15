@@ -39,7 +39,11 @@
                     :label="$t('users.FullName')"
                     min-width="120"
                     align="center"
-                />
+                >
+                    <template #default="{ row }">
+                        <span class="link">{{ row.nickname }} </span>
+                    </template>
+                </el-table-column>
 
                 <el-table-column
                     prop="Patient ID"
