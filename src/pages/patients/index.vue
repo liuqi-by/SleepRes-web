@@ -11,12 +11,12 @@
         <div class="function-module m-b-[20px] flex justify-between">
             <el-button
                 type="primary"
-                @click="createUser"
+                @click="create"
                 >{{ $t('patients.AddPatient') }}
             </el-button>
             <el-button
                 type="primary"
-                @click="createUser"
+                @click="create"
                 >{{ $t('patients.SDCardUpload') }}
             </el-button>
         </div>
@@ -24,7 +24,7 @@
         <div class="table-module">
             <table-module
                 border
-                :data="accountList"
+                :data="tableList"
                 v-loading="loading"
                 height="calc(100vh - 340px)"
                 v-model:current-page="pageOption.currentPage"
@@ -106,40 +106,38 @@
         <!-- 新增/编辑用户 -->
         <EditUserDialog
             ref="editUserDialog"
-            @refresh="getAccountList"
+            @refresh="getList"
         />
     </div>
 </template>
 
 <script setup lang="ts">
     import EditUserDialog from './compononets/edit.vue';
-    import { frozenUser, getUserlist } from '~/api/admin';
-    import type { UserInfo } from '~/api/login/types';
+    import { getPatient as getListApi } from '~/api/patient';
 
-    const LazyResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
+    import type { UserInfo } from '~/api/login/types';
 
     const searchOption = ref('');
 
     const pageOption = ref({
         currentPage: 1,
-        pageSize: 25,
+        pageSize: 10,
         total: 0,
     });
-    const loading = ref(false);
-    const accountList = ref<UserInfo[]>([]);
-
-    // 获取用户列表
-    const getAccountList = useDebounceFn(() => {
+    const loading = ref(true);
+    const tableList = ref<UserInfo[]>([]);
+    // 获取机构列表
+    const getList = useDebounceFn(() => {
         loading.value = true;
 
-        getUserlist({
+        getListApi({
             page: pageOption.value.currentPage - 1,
             pagesize: pageOption.value.pageSize,
             val: searchOption.value,
         })
             .then(res => {
                 if (res.code === 1) {
-                    accountList.value = res.data;
+                    tableList.value = res.data;
                     pageOption.value.total = res.data_other.num;
                 }
             })
@@ -151,29 +149,23 @@
     // 搜索
     const search = () => {
         pageOption.value.currentPage = 1;
-        getAccountList();
+        getList();
     };
 
     const handleSizeChange = () => {
-        getAccountList();
+        getList();
     };
     const handleCurrentChange = () => {
-        getAccountList();
+        getList();
     };
+
     onActivated(() => {
-        getAccountList();
+        getList();
     });
 
-    // 创建用户
+    // 创建
     const editUserDialog = ref<InstanceType<typeof EditUserDialog>>();
-    const createUser = () => {
+    const create = () => {
         editUserDialog.value?.showDialog();
     };
-
-    // 编辑
-    const editUser = (row: UserInfo) => {
-        editUserDialog.value?.showDialog(row);
-    };
 </script>
-
-<style lang="scss" scoped></style>

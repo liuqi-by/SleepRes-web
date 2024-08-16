@@ -2,6 +2,7 @@
 // 页面内使用 definePageMeta({layout: 'main'}) 会失效
 import type { RouteRecordRaw } from 'vue-router';
 import Layout from '@/components/Layout/index.vue';
+
 export const routes: RouteRecordRaw[] = [
     {
         path: '/redirect',
@@ -22,7 +23,8 @@ export const routes: RouteRecordRaw[] = [
     },
     {
         path: '/',
-        redirect: '/admin',
+        // redirect: '/admin',
+        component: Layout,
         meta: { hidden: true },
     },
     {
@@ -31,17 +33,7 @@ export const routes: RouteRecordRaw[] = [
         name: '管理页',
         meta: { title: 'admin', affix: true, icon: 'homepage', keepalive: true, roles: ['SleepRes'] },
     },
-    {
-        path: '/patients',
-        component: () => import('@/pages/patients/index.vue'),
-        name: '患者',
-        meta: {
-            title: 'patients',
-            icon: 'homepage',
-            keepalive: true,
-            roles: ['DME User', 'DME', 'Physician User', 'SleepRes'],
-        },
-    },
+
     {
         path: '/users',
         component: () => import('@/pages/users/index.vue'),
@@ -53,6 +45,17 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/pages/organization/index.vue'),
         name: '机构',
         meta: { title: 'organization', icon: 'homepage', keepalive: true, roles: ['DME', 'Physician', 'SleepRes'] },
+    },
+    {
+        path: '/patients',
+        component: () => import('@/pages/patients/index.vue'),
+        name: '患者',
+        meta: {
+            title: 'patients',
+            icon: 'homepage',
+            keepalive: true,
+            roles: ['DME User', 'DME', 'Physician User', 'SleepRes'],
+        },
     },
 ];
 

@@ -36,9 +36,14 @@ export default defineNuxtRouteMiddleware(async to => {
         }
         // 如果跳转的路由不在权限路由中，跳转到第一个菜单路由
         if (menuRoute.findIndex(route => route.path === to.path) === -1) {
-            return showError({
-                statusCode: 401,
-            });
+            if (to.path === '/') {
+                return navigateTo(menuRoute[0].path);
+            } else {
+                return showError({
+                    statusCode: 401,
+                });
+            }
+
             // return navigateTo(menuRoute[0].path);
         }
     }

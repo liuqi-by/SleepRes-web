@@ -16,7 +16,7 @@ export const getOrganization = (data: OrganizationListReq & PageQuery) => {
 export const addOrganization = (data: AddOrganizationReq) => {
     return useClientRequest<ResPonseType<void>>('/api/institution/add', {
         method: 'POST',
-        query: data,
+        body: queryString(data),
     });
 };
 
@@ -26,7 +26,7 @@ export const addOrganization = (data: AddOrganizationReq) => {
 export const editOrganization = (data: EditOrganizationReq) => {
     return useClientRequest<ResPonseType<void>>('/api/institution/edit', {
         method: 'POST',
-        query: data,
+        body: queryString(data),
     });
 };
 

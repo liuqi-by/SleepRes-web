@@ -8,7 +8,7 @@ export default defineNuxtPlugin(nuxtApp => {
         mounted(el, value) {
             // 用户信息，这里面有属性 role | permission
 
-            const roles = useUserStore().userInfo?.roles;
+            const roles = useUserStore().roles;
 
             console.log('roles', roles);
 
