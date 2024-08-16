@@ -12,7 +12,7 @@
         <el-option
             v-for="item in options"
             :key="item.id"
-            :label="item.name"
+            :label="item.nickname"
             :value="item.id"
         />
         <template #footer>
@@ -29,26 +29,9 @@
 </template>
 
 <script setup lang="ts">
-    import { getOrganization } from '~/api/organization';
-    import type { Organization } from '~/api/organization/types';
-    import { useUserStore } from '~/stores/modules/user';
-
-    const userStore = useUserStore();
-    const options = ref<Organization[]>([
-        {
-            id: userStore.userInfo?.institution_id || '',
-            name: userStore.userInfo?.institution_name || '',
-            number: '',
-            mobile: '',
-            address: '',
-            status: '',
-            createtime: '',
-            city: '',
-            state: '',
-            zip_code: '',
-            email: '',
-        },
-    ]);
+    import { getDoctor } from '~/api/patient';
+    import type { UserInfo } from '~/api/login/types';
+    const options = ref<UserInfo[]>([]);
     const value = defineModel({
         type: String,
         default: '',
@@ -61,7 +44,7 @@
     });
 
     const getList = (val?: string) => {
-        getOrganization({
+        getDoctor({
             page: pageOption.value.currentPage - 1,
             pagesize: pageOption.value.pageSize,
             val: val || '',

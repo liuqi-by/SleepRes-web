@@ -14,9 +14,19 @@ export const getPatient = (data: GetPatientReq & PageQuery) => {
 /**
  * @description 添加患者
  */
-export const addPatient = (data: AddPatientReq) => {
+export const addPatient = (data: Partial<AddPatientReq>) => {
     return useClientRequest<ResPonseType<void>>('/api/patient/add', {
         method: 'POST',
         body: queryString(data),
+    });
+};
+
+/**
+ * @description 医生/治疗师列表&搜索
+ */
+export const getDoctor = (data: GetPatientReq & PageQuery) => {
+    return useClientRequest<ResPonseType<UserInfo[]>>('/api/patient/pySearch', {
+        method: 'GET',
+        query: data,
     });
 };

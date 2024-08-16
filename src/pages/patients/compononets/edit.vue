@@ -9,7 +9,7 @@
             class="form form-dialog"
         >
             <div class="form-title">
-                {{ formData.id ? $t('users.EditUserInfo') : $t('patients.AddPatient') }}
+                {{ $t('patients.AddPatient') }}
             </div>
             <el-form
                 ref="formRef"
@@ -49,12 +49,12 @@
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="BirthDate"
+                            prop="birthdate"
                             :label="$t('patients.DateOfBirth')"
                         >
                             <div class="form-item">
                                 <el-date-picker
-                                    v-model="formData.last_name"
+                                    v-model="formData.birthdate"
                                     type="date"
                                     :placeholder="$t('patients.DateOfBirth')"
                                     :disabled-date="disabledDateFun"
@@ -62,12 +62,12 @@
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="PatientID"
+                            prop="patientid"
                             :label="$t('patients.PatientID')"
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.last_name"
+                                    v-model="formData.patientid"
                                     class="form-input"
                                     :placeholder="$t('patients.PatientID')"
                                     :maxlength="inputLength.name"
@@ -78,25 +78,16 @@
                             prop="institution_id"
                             :label="$t('patients.Office')"
                         >
-                            <div class="form-item">
-                                <select-office
-                                    v-model="formData.institution_id"
-                                    placeholder="Please select"
-                                    filterable
-                                />
+                            <div class="min-w-[150px]">
+                                <select-office v-model="formData.institution_id" />
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="Gender"
+                            prop="gender"
                             :label="$t('patients.Gender')"
                         >
                             <div class="form-item">
-                                <el-input
-                                    v-model="formData.last_name"
-                                    class="form-input"
-                                    :placeholder="$t('patients.Gender')"
-                                    :maxlength="inputLength.name"
-                                />
+                                <select-gender v-model="formData.gender" />
                             </div>
                         </el-form-item>
                     </div>
@@ -106,41 +97,46 @@
                     <div class="module-title">{{ $t('patients.SetupDetails') }}</div>
                     <div class="module-content">
                         <el-form-item
-                            prop="setupDate"
+                            prop="setup_date"
                             :label="$t('patients.SetupDate')"
                         >
                             <div class="form-item">
                                 <el-date-picker
-                                    v-model="formData.last_name"
+                                    v-model="formData.setup_date"
                                     type="date"
                                     :placeholder="$t('patients.SetupDate')"
                                 />
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="Therapist"
+                            prop="therapist_id"
                             :label="$t('patients.Therapist')"
                         >
                             <div class="form-item">
-                                <el-input
-                                    v-model="formData.last_name"
+                                <!-- <el-input
+                                    v-model="formData.therapist_id"
                                     class="form-input"
                                     :placeholder="$t('patients.Therapist')"
                                     :maxlength="inputLength.name"
-                                />
+                                /> -->
+                                <el-select
+                                    v-model="formData.therapist_id"
+                                    placeholder="Please select"
+                                >
+                                    <el-option
+                                        v-if="userStore.userInfo"
+                                        :label="userStore.userInfo?.nickname"
+                                        :value="userStore.userInfo.id"
+                                    />
+                                </el-select>
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="Physician"
+                            prop="physician_id"
                             :label="$t('patients.Physician')"
                         >
-                            <div class="form-item">
-                                <el-input
-                                    v-model="formData.last_name"
-                                    class="form-input"
-                                    :placeholder="$t('patients.Physician')"
-                                    :maxlength="inputLength.name"
-                                />
+                            <div class="min-w-[150px]">
+                                <select-physician v-model="formData.physician_id" />
                             </div>
                         </el-form-item>
                     </div>
@@ -150,69 +146,65 @@
                     <div class="module-title">{{ $t('patients.Equipment') }}</div>
                     <div class="module-content">
                         <el-form-item
-                            prop="DeviceSerialNumber"
+                            prop="sn"
                             :label="$t('patients.DeviceSerialNumber')"
                         >
-                            <div class="form-item">
+                            <div class="form-item w-[300px]!">
                                 <el-input
-                                    v-model="formData.first_name"
+                                    v-model="formData.sn"
                                     class="form-input"
                                     :placeholder="$t('patients.DeviceSerialNumber')"
-                                    :maxlength="inputLength.name"
+                                    :maxlength="inputLength.sn"
                                 />
                             </div>
                         </el-form-item>
                         <br />
                         <el-form-item
-                            prop="Mode"
+                            prop="mode_name"
                             :label="$t('patients.Mode')"
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.last_name"
+                                    v-model="formData.mode_name"
                                     class="form-input"
                                     :placeholder="$t('patients.Mode')"
-                                    :maxlength="inputLength.name"
                                 />
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="Pressure"
+                            prop="pressure"
                             :label="$t('patients.Pressure')"
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.last_name"
+                                    v-model="formData.pressure"
                                     class="form-input"
                                     :placeholder="$t('patients.Pressure')"
-                                    :maxlength="inputLength.name"
                                 />
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="Ramp"
+                            prop="ramp"
                             :label="$t('patients.Ramp')"
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.last_name"
+                                    v-model="formData.ramp"
                                     class="form-input"
                                     :placeholder="$t('patients.Ramp')"
-                                    :maxlength="inputLength.name"
                                 />
                             </div>
                         </el-form-item>
                         <br />
                         <el-form-item
-                            prop="Mask"
+                            prop="mask"
                             :label="$t('patients.Mask')"
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.last_name"
+                                    v-model="formData.mask"
                                     class="form-input"
                                     :placeholder="$t('patients.Mask')"
-                                    :maxlength="inputLength.name"
                                 />
                             </div>
                         </el-form-item>
@@ -225,67 +217,58 @@
                     </div>
                     <div class="module-content">
                         <el-form-item
-                            prop="Address"
+                            prop="address"
                             :label="$t('login.Address')"
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.first_name"
+                                    v-model="formData.address"
                                     class="form-input"
                                     :placeholder="$t('login.Address')"
-                                    :maxlength="inputLength.name"
                                 />
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="City"
+                            prop="city"
                             :label="$t('office.City')"
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.last_name"
+                                    v-model="formData.city"
                                     class="form-input"
                                     :placeholder="$t('office.City')"
-                                    :maxlength="inputLength.name"
                                 />
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="State"
+                            prop="state"
                             :label="$t('login.State')"
                         >
                             <div class="form-item">
-                                <el-input
-                                    v-model="formData.last_name"
-                                    class="form-input"
-                                    :placeholder="$t('login.State')"
-                                    :maxlength="inputLength.name"
-                                />
+                                <select-state v-model="formData.state" />
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="ZipCode"
+                            prop="zip_code"
                             :label="$t('login.ZipCode')"
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.last_name"
+                                    v-model="formData.zip_code"
                                     class="form-input"
                                     :placeholder="$t('login.ZipCode')"
-                                    :maxlength="inputLength.name"
                                 />
                             </div>
                         </el-form-item>
                         <el-form-item
-                            prop="Email"
+                            prop="email"
                             :label="$t('login.Email')"
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.last_name"
+                                    v-model="formData.email"
                                     class="form-input"
                                     :placeholder="$t('login.Email')"
-                                    :maxlength="inputLength.name"
                                 />
                             </div>
                         </el-form-item>
@@ -295,10 +278,9 @@
                         >
                             <div class="form-item">
                                 <el-input
-                                    v-model="formData.last_name"
+                                    v-model="formData.mobile"
                                     class="form-input"
                                     :placeholder="$t('login.PhoneNumber')"
-                                    :maxlength="inputLength.name"
                                 />
                             </div>
                         </el-form-item>
@@ -324,10 +306,9 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
-    import type { AddUserReq } from '~/api/users/types';
-    import { addUser, updateUser } from '~/api/users';
     import { useUserStore } from '~/stores/modules/user';
-    import type { UserInfo } from '~/api/login/types';
+    import type { AddPatientReq } from '~/api/patient/types';
+    import { addPatient } from '~/api/patient';
 
     const userStore = useUserStore();
 
@@ -335,24 +316,12 @@
 
     const formRef = ref<FormInstance>(); // 登录表单ref
 
-    const formDataInit: AddUserReq = {
-        email: '',
-        mobile: '',
-        first_name: '',
-        last_name: '',
-        // 账户类型:2=DME User,4=Physician User
-        group_id: '',
+    const formData = ref<Partial<AddPatientReq>>({
+        gender: 0,
         institution_id: userStore.userInfo?.institution_id || '',
-
-        username: '',
-        account_id: '',
-        zip_code: '',
-        state: '',
-    };
-
-    const formData = ref<any>({
-        ...formDataInit,
+        therapist_id: userStore.userInfo?.id || '',
     });
+
     const { firstName, lastName, email, role, office, setupDate } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
@@ -378,66 +347,31 @@
                 return;
             }
             loading.value = true;
-            if (formData.value.id) {
-                // 编辑
-                updateUser({
-                    user_id: formData.value.id,
-                    group_id: formData.value.group_id,
-                    institution_id: formData.value.institution_id || '',
-                    first_name: formData.value.first_name,
-                    last_name: formData.value.last_name,
-                    email: formData.value.email,
-                    mobile: formData.value.mobile,
-                    frozen: formData.value.frozen,
+
+            // 新增
+            addPatient({
+                ...formData.value,
+            })
+                .then(res => {
+                    if (res.code === 1) {
+                        ElMessage.success(t('form.createSuccess'));
+                        dialogVisible.value = false;
+                        emit('refresh');
+                        formRef.value?.resetFields();
+                    }
                 })
-                    .then(res => {
-                        if (res.code === 1) {
-                            ElMessage.success(t('form.saveSuccess'));
-                            dialogVisible.value = false;
-                            emit('refresh');
-                            formData.value = {
-                                ...formDataInit,
-                            };
-                        }
-                    })
-                    .finally(() => {
-                        loading.value = false;
-                    });
-            } else {
-                // 新增
-                addUser({
-                    ...formData.value,
-                    username: formData.value.email,
-                })
-                    .then(res => {
-                        if (res.code === 1) {
-                            ElMessage.success(t('form.createSuccess'));
-                            dialogVisible.value = false;
-                            emit('refresh');
-                            formRef.value?.resetFields();
-                        }
-                    })
-                    .finally(() => {
-                        loading.value = false;
-                    });
-            }
+                .finally(() => {
+                    loading.value = false;
+                });
         });
     };
 
     const close = () => {
         dialogVisible.value = false;
         formRef.value?.clearValidate();
-
-        formData.value = {
-            ...formDataInit,
-        };
     };
 
-    const showDialog = (item?: UserInfo) => {
-        if (item) {
-            formData.value = { ...item };
-        }
-
+    const showDialog = () => {
         dialogVisible.value = true;
     };
 
@@ -479,8 +413,8 @@
             font-size: $font-standard;
         }
 
-        :deep(.el-form-item__content) {
-            max-width: 150px;
-        }
+        // :deep(.el-form-item__content) {
+        //     max-width: 150px;
+        // }
     }
 </style>

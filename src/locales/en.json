@@ -151,6 +151,11 @@
         "Ramp": "Ramp",
         "Mask": "Mask",
         "Demographics": "Demographics",
-        "ContactDetails": "Contact Details"
+        "ContactDetails": "Contact Details",
+        "searchPlaceholder": "Name / Email ",
+        "unknown": "Unknown",
+        "Male": "Male",
+        "Female": "Female",
+        "searchPlaceholderDoctor": "Name / NPI / Organization / City / State / Zip Code"
     }
 }

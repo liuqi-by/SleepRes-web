@@ -82,11 +82,7 @@
                     :label="$t('users.OfficeLocation')"
                 >
                     <div class="form-item">
-                        <select-office
-                            v-model="formData.institution_id"
-                            placeholder="Please select"
-                            filterable
-                        />
+                        <select-office v-model="formData.institution_id" />
                     </div>
                 </el-form-item>
                 <!-- Role -->
@@ -168,7 +164,7 @@
         mobile: '',
         first_name: '',
         last_name: '',
-        // 账户类型:2=DME User,4=Physician User
+        // 账户类型:2=DME User,5=Physician User
         group_id: '',
         institution_id: userStore.userInfo?.institution_id || '',
         username: '',

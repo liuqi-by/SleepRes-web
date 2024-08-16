@@ -105,7 +105,7 @@
             </table-module>
         </div>
         <!-- 重置密码弹窗 -->
-        <LazyResetPasswordForm ref="resetPasswordForm" />
+        <ResetPasswordForm ref="resetPasswordForm" />
         <!-- 新增/编辑用户 -->
         <EditUserDialog
             ref="editUserDialog"
@@ -119,7 +119,7 @@
     import { frozenUser, getUserlist } from '~/api/admin';
     import type { UserInfo } from '~/api/login/types';
 
-    const LazyResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
+    const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
 
     const searchOption = ref('');
 
@@ -132,7 +132,7 @@
     const accountList = ref<UserInfo[]>([]);
 
     // 重置密码
-    const resetPasswordForm = ref<InstanceType<typeof LazyResetPasswordForm> | null>(null);
+    const resetPasswordForm = ref<InstanceType<typeof ResetPasswordForm> | null>(null);
     const resetPwd = (row: any) => {
         resetPasswordForm.value?.showResetPassword(row);
     };

@@ -44,6 +44,12 @@
                     align="center"
                 />
                 <el-table-column
+                    prop="email"
+                    :label="$t('login.Email')"
+                    min-width="120"
+                    align="center"
+                />
+                <el-table-column
                     prop="group_name"
                     :label="$t('admin.AccountType')"
                     min-width="120"
@@ -99,7 +105,7 @@
             </table-module>
         </div>
         <!-- 重置密码弹窗 -->
-        <LazyResetPasswordForm ref="resetPasswordForm" />
+        <ResetPasswordForm ref="resetPasswordForm" />
     </div>
 </template>
 
@@ -108,7 +114,7 @@
     import type { UserInfo } from '~/api/login/types';
     import { useUserStore } from '~/stores/modules/user';
 
-    const LazyResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
+    const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
 
     const searchOption = ref('');
 
@@ -121,7 +127,7 @@
     const accountList = ref<UserInfo[]>([]);
 
     // 重置密码
-    const resetPasswordForm = ref<InstanceType<typeof LazyResetPasswordForm> | null>(null);
+    const resetPasswordForm = ref<InstanceType<typeof ResetPasswordForm> | null>(null);
     const resetPwd = (row: UserInfo) => {
         resetPasswordForm.value?.showResetPassword(row);
     };

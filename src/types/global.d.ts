@@ -91,6 +91,8 @@ declare global {
     type Partial<T> = {
         [P in keyof T]?: T[P] | undefined;
     };
+
+    type UserInitializer<T> = Partial<Pick<T, keyof T>>;
 }
 
 export {};

@@ -5,7 +5,7 @@
             @search="search"
             v-model="searchOption"
             class="m-b-[20px]"
-            :placeholder="$t('users.searchPlaceholder')"
+            :placeholder="$t('patients.searchPlaceholder')"
         />
         <!-- 功能模块 -->
         <div class="function-module m-b-[20px] flex justify-between">
@@ -101,8 +101,7 @@
                 />
             </table-module>
         </div>
-        <!-- 重置密码弹窗 -->
-        <LazyResetPasswordForm ref="resetPasswordForm" />
+
         <!-- 新增/编辑用户 -->
         <EditUserDialog
             ref="editUserDialog"

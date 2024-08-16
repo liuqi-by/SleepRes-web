@@ -21,7 +21,7 @@
 <script setup lang="ts">
     import stateJson from '@/assets/areas/state.json';
 
-    const state = defineModel('state', {
+    const state = defineModel({
         type: String,
         default: '',
     });

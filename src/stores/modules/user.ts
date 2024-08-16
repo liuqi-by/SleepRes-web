@@ -31,12 +31,12 @@ export const useUserStore = defineStore(
                 roles: ['DME'],
             },
             {
-                value: 3,
+                value: 4,
                 label: 'Physician',
                 roles: ['SleepRes'],
             },
             {
-                value: 4,
+                value: 5,
                 label: 'Physician User',
                 roles: ['Physician'],
             },

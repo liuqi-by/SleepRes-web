@@ -20,14 +20,14 @@
         </div>
 
         <!-- 注册弹窗 -->
-        <LazyRegisterForm
+        <RegisterForm
             v-model="showRegisterForm"
             :tabType="tabType"
             :key="tabType"
         />
 
         <!-- 重置密码弹窗 -->
-        <LazyResetPasswordForm ref="resetPasswordForm" />
+        <ResetPasswordForm ref="resetPasswordForm" />
     </div>
 </template>
 
@@ -35,15 +35,15 @@
     // import { ArrowDown } from '@element-plus/icons-vue';
     import LoginForm from './components/login-form.vue';
 
-    const LazyRegisterForm = defineAsyncComponent(() => import('./components/register-form.vue'));
-    const LazyResetPasswordForm = defineAsyncComponent(() => import('./components/reset-password.vue'));
+    const RegisterForm = defineAsyncComponent(() => import('./components/register-form.vue'));
+    const ResetPasswordForm = defineAsyncComponent(() => import('./components/reset-password.vue'));
 
     export type TabType = '' | 'registerDme' | 'registerPhysician' | 'resetPwd';
 
     const tabType = ref<TabType>('');
 
     const showRegisterForm = ref(false); // 是否显示注册表单
-    const resetPasswordForm = ref<InstanceType<typeof LazyResetPasswordForm> | null>(null);
+    const resetPasswordForm = ref<InstanceType<typeof ResetPasswordForm> | null>(null);
     const switchTab = (type: TabType) => {
         if (type === 'registerDme' || type === 'registerPhysician') {
             showRegisterForm.value = true;
