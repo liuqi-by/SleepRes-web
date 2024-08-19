@@ -82,7 +82,15 @@
                     :label="$t('users.OfficeLocation')"
                 >
                     <div class="form-item">
-                        <select-office v-model="formData.institution_id" />
+                        <select-office
+                            :model-value="{
+                                id: formData.institution_id,
+                                name: formData.institution_name,
+                            }"
+                            ref="selectOfficeRef"
+                            @change="handleChangeOffice"
+                            :key="formData.institution_id"
+                        />
                     </div>
                 </el-form-item>
                 <!-- Role -->
@@ -144,6 +152,7 @@
     import { addUser, updateUser } from '~/api/users';
     import { useUserStore } from '~/stores/modules/user';
     import type { UserInfo } from '~/api/login/types';
+    import type { SelectOffice } from '#build/components';
 
     const userStore = useUserStore();
     const rolesOption = computed(() => {
@@ -167,6 +176,7 @@
         // 账户类型:2=DME User,5=Physician User
         group_id: '',
         institution_id: userStore.userInfo?.institution_id || '',
+        institution_name: userStore.userInfo?.institution_name || '',
         username: '',
         account_id: '',
         zip_code: '',
@@ -255,12 +265,19 @@
         };
     };
 
+    const selectOfficeRef = ref<InstanceType<typeof SelectOffice>>();
     const showDialog = (item?: UserInfo) => {
         if (item) {
             formData.value = { ...item };
         }
+        // selectOfficeRef.value?.initOptions();
 
         dialogVisible.value = true;
+    };
+
+    const handleChangeOffice = (val: { id: string; name: string }) => {
+        formData.value.institution_id = val.id;
+        formData.value.institution_name = val.name;
     };
 
     defineExpose({

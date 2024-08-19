@@ -5,6 +5,8 @@
         :placeholder="$t('form.PleaseSelect')"
         @focus="getList"
         :class="{ 'auto-width': optionLabel }"
+        ref="selectRef"
+        :value-key="value"
     >
         <template #header>
             <div class="header">
@@ -16,14 +18,14 @@
                 />
             </div>
         </template>
-        <template #prefix>
-            {{ optionLabel }}
-        </template>
+        <!-- <template #prefix>
+                {{ optionLabel }}
+            </template> -->
         <el-option
             v-for="item in options"
             :key="item[value]"
             :label="item[label]"
-            :value="item[value]"
+            :value="item"
         >
             <slot
                 name="option"
@@ -49,19 +51,7 @@
 </template>
 
 <script setup lang="ts">
-    const options = ref<any[]>([]);
-    const selectValue = defineModel({
-        type: String,
-        default: '',
-    });
-
-    const pageOption = ref({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-    });
-
-    const searchVal = ref('');
+    import type { ElSelect } from 'element-plus';
 
     const props = defineProps({
         getListApi: {
@@ -86,9 +76,29 @@
         },
     });
 
-    const optionLabel = computed(() => {
-        return (options.value.find(item => item[props.value] === selectValue.value) || {})[props.label];
+    const options = ref<any[]>([]);
+    const selectValue = defineModel({
+        type: Object,
+        default: {},
     });
+
+    const pageOption = ref({
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+    });
+
+    const searchVal = ref('');
+
+    const optionLabel = computed(() => {
+        return selectValue.value[props.label];
+    });
+
+    options.value = [
+        {
+            ...selectValue.value,
+        },
+    ];
 
     const getList = () => {
         props
@@ -112,20 +122,32 @@
     const handleCurrentChange = () => {
         getList();
     };
+
+    // const initOptions = () => {
+    //     options.value = [
+    //         {
+    //             ...selectValue.value,
+    //         },
+    //     ];
+    // };
+
+    // defineExpose({
+    //     initOptions,
+    // });
 </script>
 
 <style lang="scss" scoped>
-    .auto-width {
-        :deep(.el-select__placeholder) {
-            overflow: visible;
-        }
+    // .auto-width {
+    //     :deep(.el-select__placeholder) {
+    //         overflow: visible;
+    //     }
 
-        :deep(.el-select__selection) {
-            position: absolute;
-        }
+    //     :deep(.el-select__selection) {
+    //         position: absolute;
+    //     }
 
-        :deep(.el-select__prefix) {
-            visibility: hidden;
-        }
-    }
+    //     // :deep(.el-select__prefix) {
+    //     //     visibility: hidden;
+    //     // }
+    // }
 </style>

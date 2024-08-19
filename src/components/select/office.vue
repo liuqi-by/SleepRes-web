@@ -6,6 +6,8 @@
         :searchPlaceholder="$t('office.searchPlaceholder')"
         value="id"
         label="name"
+        ref="baseSelectRef"
+        v-bind="$attrs"
     >
         <template #option="{ data }">
             <div class="flex justify-between">
@@ -17,12 +19,23 @@
 </template>
 
 <script setup lang="ts">
+    import type { BaseSelectSearch } from '#build/components';
     import { getOrganization } from '~/api/organization';
 
     const value = defineModel({
-        type: String,
-        default: '',
+        type: Object,
+        default: {},
     });
+
+    // const baseSelectRef = ref<InstanceType<typeof BaseSelectSearch>>();
+
+    // const initOptions = () => {
+    //     baseSelectRef.value?.initOptions();
+    // };
+
+    // defineExpose({
+    //     initOptions,
+    // });
 </script>
 
 <style lang="scss" scoped></style>

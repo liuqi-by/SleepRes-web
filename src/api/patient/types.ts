@@ -13,6 +13,7 @@ export interface AddPatientReq {
     birthdate: string;
     patientid: string;
     institution_id: string;
+    institution_name: string;
     /**
      * 性别，0=未知,1=男，2=女
      */

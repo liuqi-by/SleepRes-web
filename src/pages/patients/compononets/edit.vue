@@ -79,7 +79,15 @@
                             :label="$t('patients.Office')"
                         >
                             <div class="min-w-[150px]">
-                                <select-office v-model="formData.institution_id" />
+                                <select-office
+                                    :model-value="{
+                                        id: formData.institution_id,
+                                        name: formData.institution_name,
+                                    }"
+                                    @change="handleChangeOffice"
+                                    ref="selectOfficeRef"
+                                    :key="formData.institution_id"
+                                />
                             </div>
                         </el-form-item>
                         <el-form-item
@@ -309,6 +317,7 @@
     import { useUserStore } from '~/stores/modules/user';
     import type { AddPatientReq } from '~/api/patient/types';
     import { addPatient } from '~/api/patient';
+    import type { SelectOffice } from '#build/components';
 
     const userStore = useUserStore();
 
@@ -319,6 +328,7 @@
     const formData = ref<Partial<AddPatientReq>>({
         gender: 0,
         institution_id: userStore.userInfo?.institution_id || '',
+        institution_name: userStore.userInfo?.institution_name || '',
         therapist_id: userStore.userInfo?.id || '',
     });
 
@@ -371,8 +381,18 @@
         formRef.value?.clearValidate();
     };
 
+    const selectOfficeRef = ref<InstanceType<typeof SelectOffice>>();
     const showDialog = () => {
+        // 初始化机构选择框默认值
+
+        // selectOfficeRef.value?.initOptions();
+
         dialogVisible.value = true;
+    };
+
+    const handleChangeOffice = (val: { id: string; name: string }) => {
+        formData.value.institution_id = val.id;
+        formData.value.institution_name = val.name;
     };
 
     defineExpose({

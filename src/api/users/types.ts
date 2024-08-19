@@ -8,7 +8,7 @@ export interface AddUserReq {
      */
     group_id: string;
     institution_id: string;
-
+    institution_name: string;
     username: string;
     account_id: string;
     zip_code: string;
