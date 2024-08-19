@@ -20,7 +20,6 @@
                 class="form line-form"
                 :label-width="tabType === 'DME' ? '180px' : '200px'"
                 label-position="left"
-                v-if="formData"
             >
                 <!-- DME name -->
                 <el-form-item
@@ -199,7 +198,7 @@
     const formRef = ref<FormInstance>(); // 登录表单ref
     const { t } = useI18n(); // 国际化
 
-    const formData = ref<UserInfo>();
+    const formData = ref<Partial<UserInfo>>({});
     const { accountName, accountNumber } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
@@ -242,7 +241,7 @@
             }
             loading.value = true;
 
-            if (!formData.value) {
+            if (!formData.value.id) {
                 return;
             }
 
@@ -276,7 +275,7 @@
             dangerouslyUseHTMLString: true,
         })
             .then(() => {
-                if (!formData.value) {
+                if (!formData.value.id) {
                     return;
                 }
 

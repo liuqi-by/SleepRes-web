@@ -4,7 +4,7 @@
         v-model="selectValue"
         :placeholder="$t('form.PleaseSelect')"
         @focus="getList"
-        :class="{ 'auto-width': optionLabel }"
+        class="auto-width"
         ref="selectRef"
         :value-key="value"
     >
@@ -18,9 +18,7 @@
                 />
             </div>
         </template>
-        <!-- <template #prefix>
-                {{ optionLabel }}
-            </template> -->
+
         <el-option
             v-for="item in options"
             :key="item[value]"
@@ -90,9 +88,9 @@
 
     const searchVal = ref('');
 
-    const optionLabel = computed(() => {
-        return selectValue.value[props.label];
-    });
+    // const optionLabel = computed(() => {
+    //     return selectValue.value[props.label];
+    // });
 
     options.value = [
         {
@@ -137,17 +135,12 @@
 </script>
 
 <style lang="scss" scoped>
-    // .auto-width {
-    //     :deep(.el-select__placeholder) {
-    //         overflow: visible;
-    //     }
-
-    //     :deep(.el-select__selection) {
-    //         position: absolute;
-    //     }
-
-    //     // :deep(.el-select__prefix) {
-    //     //     visibility: hidden;
-    //     // }
-    // }
+    .auto-width {
+        // position: relative;
+        :deep(.el-select__placeholder) {
+            position: relative;
+            top: none;
+            transform: none;
+        }
+    }
 </style>

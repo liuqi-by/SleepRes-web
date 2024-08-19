@@ -19,7 +19,7 @@ export interface MessageRes {
     ip: string;
     createtime: number;
     group_name: string;
-    group_id: number;
+    group_id: number | string;
     userinfo: UserInfo;
 }
 

@@ -5,6 +5,10 @@ import path from 'path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 export default defineNuxtConfig({
+    // 构建时启动类型检查
+    typescript: {
+        typeCheck: true,
+    },
     devtools: { enabled: false },
     runtimeConfig: {
         public: {

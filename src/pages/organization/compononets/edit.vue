@@ -151,14 +151,14 @@
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
     import { addOrganization, editOrganization } from '~/api/organization';
-    import type { AddOrganizationReq, Organization } from '~/api/organization/types';
+    import type { EditOrganizationReq, Organization } from '~/api/organization/types';
 
     const dialogVisible = ref(false);
 
     const formRef = ref<FormInstance>(); // 登录表单ref
     const { t } = useI18n(); // 国际化
 
-    const formDataInit: AddOrganizationReq = {
+    const formData = ref<EditOrganizationReq>({
         name: '',
         email: '',
         mobile: '',
@@ -166,10 +166,8 @@
         state: '',
         zip_code: '',
         address: '',
-    };
-
-    const formData = ref<any>({
-        ...formDataInit,
+        id: '',
+        status: '',
     });
     const { officeName, email } = useFormRules();
     // 表单规则
@@ -232,9 +230,7 @@
         dialogVisible.value = false;
         formRef.value?.clearValidate();
         if (formData.value.id) {
-            formData.value = {
-                ...formDataInit,
-            };
+            formRef.value?.resetFields();
         }
     };
 

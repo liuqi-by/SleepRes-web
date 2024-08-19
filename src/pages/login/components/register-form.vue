@@ -192,29 +192,33 @@
     const formRef = ref<FormInstance>(); // 登录表单ref
     const { t } = useI18n(); // 国际化
 
-    const formDataInit: RegisterReq = {
+    // const formDataInit: RegisterReq = {
+    //     username: '',
+    //     email: '',
+    //     mobile: '',
+    //     first_name: '',
+    //     last_name: '',
+    //     account_id: '',
+    //     account_num: '',
+    //     address: '',
+    //     state: '',
+    //     zip_code: '',
+    //     // 账户类型:2=DME,4=Physician
+    //     type: '',
+    // };
+
+    const formData = ref<RegisterReq>({
         username: '',
         email: '',
-        mobile: '',
         first_name: '',
         last_name: '',
-        account_id: '',
-        account_num: '',
-        address: '',
-        state: '',
-        zip_code: '',
-        // 账户类型:2=DME,4=Physician
-        type: '',
-    };
-
-    const formData = ref({
-        ...formDataInit,
+        type: 2,
     });
     const { dmeName, practiceName, firstName, lastName, email } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
-            usename: props.tabType === 'registerDme' ? dmeName : practiceName,
+            username: props.tabType === 'registerDme' ? dmeName : practiceName,
             first_name: firstName,
             last_name: lastName,
             email,
@@ -244,7 +248,7 @@
             // 注册
             registerAccount({
                 ...formData.value,
-                type: props.tabType === 'registerDme' ? '2' : '4',
+                type: props.tabType === 'registerDme' ? 2 : 4,
             })
                 .then(res => {
                     if (res.code === 1) {

@@ -86,7 +86,7 @@
                     {{ $t('login.login') }}
                 </base-button>
                 <p
-                    class="link text-center m-t-[50px]"
+                    class="link text-center m-t-[50px] block!"
                     @click="linkTo('resetPwd')"
                 >
                     {{ $t('login.resetPwd') }}

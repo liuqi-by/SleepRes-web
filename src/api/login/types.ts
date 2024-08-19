@@ -10,10 +10,10 @@ export interface LoginRes {
     nickname: string;
     first_name: string;
     last_name: string;
-    account_id: string | null;
-    address: string | null;
-    state: string | null;
-    zip_code: string | null;
+    account_id: string;
+    address: string;
+    state: string;
+    zip_code: string;
     avatar: string;
     email: string;
     mobile: string;
@@ -35,10 +35,10 @@ export interface UserInfo {
     nickname: string;
     first_name: string;
     last_name: string;
-    account_id: string | null;
-    address: string | null;
-    state: string | null;
-    zip_code: string | null;
+    account_id: string;
+    address: string;
+    state: string;
+    zip_code: string;
     avatar: string;
     email: string;
     mobile: string;
@@ -50,7 +50,7 @@ export interface UserInfo {
     token: string;
     status: string;
     parentid: number;
-    group_id: number;
+    group_id: string | number;
     frozen: number;
     account_num: string;
     institution_id: string; // 医疗机构id
@@ -61,18 +61,18 @@ export interface UserInfo {
 export interface RegisterReq {
     username: string;
     email: string;
-    mobile: string;
+    mobile?: string;
     first_name: string;
     last_name: string;
-    account_id: string;
-    account_num: string;
-    address: string;
-    state: string;
-    zip_code: string;
+    account_id?: string;
+    account_num?: string;
+    address?: string;
+    state?: string;
+    zip_code?: string;
     /**
      *  账户类型:2=DME,4=Physician
      * */
-    type: string;
+    type: number;
 }
 
 // 修改密码
