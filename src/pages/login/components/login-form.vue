@@ -60,6 +60,7 @@
             </el-form-item>
             <p>SleepRes Admin: admin a654321</p>
             <p>DME Admin: dme-admin 123456</p>
+            <p>Physician Admin: 1234567 123456</p>
             <div class="m-t-[48px]">
                 <div class="form-bottom">
                     <!-- 注册DME -->

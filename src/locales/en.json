@@ -115,7 +115,10 @@
         "EditUser": "Edit User",
         "EditUserInfo": "Edit User Information",
         "CreateUser": "Create User",
-        "searchPlaceholder": "Name / Email / Mobile"
+        "CreateUserAccount": "Create User Account",
+        "searchPlaceholder": "Name / Email / Mobile",
+        "NPI": "NPI",
+        "Modify": "Modify"
     },
     "office": {
         "CreateOffice": "Create Office",

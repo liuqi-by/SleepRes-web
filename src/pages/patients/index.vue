@@ -46,37 +46,31 @@
                 </el-table-column>
 
                 <el-table-column
-                    prop="Patient ID"
+                    prop="patient.patientid"
                     :label="$t('patients.PatientID')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="Birthdate"
+                    prop="patient.birthdate"
                     :label="$t('patients.Birthdate')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="institution_name"
-                    :label="$t('users.OfficeLocation')"
-                    min-width="120"
-                    align="center"
-                />
-                <el-table-column
-                    prop="SerialNumber"
+                    prop="sn"
                     :label="$t('patients.SerialNumber')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="Office"
+                    prop="institution_name"
                     :label="$t('patients.Office')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="TherapyStartDate"
+                    prop="patient.setup_date"
                     :label="$t('patients.TherapyStartDate')"
                     min-width="120"
                     align="center"
@@ -88,7 +82,7 @@
                     align="center"
                 />
                 <el-table-column
-                    prop="LastUpdateDate"
+                    prop="updatetime"
                     :label="$t('patients.LastUpdateDate')"
                     min-width="120"
                     align="center"
@@ -136,7 +130,10 @@
         })
             .then(res => {
                 if (res.code === 1) {
-                    tableList.value = res.data;
+                    tableList.value = res.data.map(item => {
+                        return { ...item, patient: item.patient ? JSON.parse(item.patient as string) : '' };
+                    });
+                    console.log(tableList.value);
                     pageOption.value.total = res.data_other.num;
                 }
             })

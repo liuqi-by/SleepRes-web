@@ -22,6 +22,7 @@
                 <div class="form-module">
                     <div class="module-title">{{ $t('patients.PatientDetails') }}</div>
                     <div class="module-content">
+                        <!-- first_name -->
                         <el-form-item
                             prop="first_name"
                             :label="$t('login.FirstName')"
@@ -35,6 +36,7 @@
                                 />
                             </div>
                         </el-form-item>
+                        <!-- last_name -->
                         <el-form-item
                             prop="last_name"
                             :label="$t('login.LastName')"
@@ -48,6 +50,7 @@
                                 />
                             </div>
                         </el-form-item>
+                        <!-- birthdate -->
                         <el-form-item
                             prop="birthdate"
                             :label="$t('patients.DateOfBirth')"
@@ -58,6 +61,7 @@
                                     type="date"
                                     :placeholder="$t('patients.DateOfBirth')"
                                     :disabled-date="disabledDateFun"
+                                    value-format="YYYY-MM-DD"
                                 />
                             </div>
                         </el-form-item>
@@ -113,6 +117,7 @@
                                     v-model="formData.setup_date"
                                     type="date"
                                     :placeholder="$t('patients.SetupDate')"
+                                    value-format="YYYY-MM-DD"
                                 />
                             </div>
                         </el-form-item>
@@ -361,6 +366,7 @@
             // 新增
             addPatient({
                 ...formData.value,
+                physician_id: formData.value?.physician_id ? (formData.value?.physician_id as any).value : '',
             })
                 .then(res => {
                     if (res.code === 1) {

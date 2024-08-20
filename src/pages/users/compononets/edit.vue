@@ -128,6 +128,21 @@
                         />
                     </div>
                 </el-form-item>
+                <!-- NPI -->
+                <el-form-item
+                    prop="account_id"
+                    :label="$t('users.NPI')"
+                    v-if="userStore.userInfo?.group_id === 4"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.account_id"
+                            class="form-input"
+                            :placeholder="$t('users.NPI')"
+                            type="text"
+                        />
+                    </div>
+                </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
@@ -137,7 +152,7 @@
                         class="m-r-[10px]"
                         :loading="loading"
                     >
-                        {{ formData.id ? $t('form.Save') : $t('form.Confirm') }}
+                        {{ $t('form.Save') }}
                     </base-button>
                     <base-button @click="dialogVisible = false">{{ $t('form.Cancel') }}</base-button>
                 </div>
@@ -221,6 +236,7 @@
                     email: formData.value.email,
                     mobile: formData.value.mobile,
                     frozen: formData.value.frozen,
+                    account_id: formData.value.account_id,
                 })
                     .then(res => {
                         if (res.code === 1) {

@@ -12,7 +12,7 @@
             <el-button
                 type="primary"
                 @click="createUser"
-                >{{ $t('users.CreateUser') }}
+                >{{ userSotre.userInfo?.group_id !== 4 ? $t('users.CreateUser') : $t('users.CreateUserAccount') }}
             </el-button>
         </div>
         <!-- 表格模块 -->
@@ -29,12 +29,18 @@
                 @current-change="handleCurrentChange"
             >
                 <el-table-column
+                    :label="$t('message.NO')"
+                    min-width="60"
+                    align="center"
+                    type="index"
+                    v-if="userSotre.userInfo?.group_id === 4"
+                />
+                <el-table-column
                     prop="nickname"
                     :label="$t('users.FullName')"
                     min-width="120"
                     align="center"
                 />
-
                 <el-table-column
                     prop="email"
                     :label="$t('login.Email')"
@@ -56,6 +62,12 @@
                 <el-table-column
                     prop="group_name"
                     :label="$t('users.Role')"
+                    min-width="120"
+                    align="center"
+                />
+                <el-table-column
+                    prop="account_id"
+                    :label="$t('users.NPI')"
                     min-width="120"
                     align="center"
                 />
@@ -84,7 +96,7 @@
                         <span
                             class="link"
                             @click="editUser(row)"
-                            >{{ $t('users.EditUser') }}</span
+                            >{{ $t('users.Modify') }}</span
                         >
                     </template>
                 </el-table-column>
@@ -118,6 +130,9 @@
     import EditUserDialog from './compononets/edit.vue';
     import { frozenUser, getUserlist } from '~/api/admin';
     import type { UserInfo } from '~/api/login/types';
+    import { useUserStore } from '~/stores/modules/user';
+
+    const userSotre = useUserStore();
 
     const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
 
