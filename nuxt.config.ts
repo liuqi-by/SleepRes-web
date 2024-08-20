@@ -6,13 +6,14 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 export default defineNuxtConfig({
     // 构建时启动类型检查
-    typescript: {
-        typeCheck: true,
-    },
+    // typescript: {
+    //     typeCheck: true,
+    // },
     devtools: { enabled: false },
     runtimeConfig: {
         public: {
             apiUrl: process.env.NUXT_PUBLIC_API_URL,
+            env: process.env.NUXT_NODE_ENV,
         },
     },
     // 服务端

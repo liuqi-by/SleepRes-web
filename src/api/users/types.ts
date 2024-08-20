@@ -10,9 +10,9 @@ export interface AddUserReq {
     institution_id: string;
     institution_name: string;
     username: string;
-    account_id: string | number;
-    zip_code: string;
-    state: string;
+    account_id?: string | number;
+    zip_code?: string;
+    state?: string;
 }
 
 export interface UpdateUserReq {
@@ -27,4 +27,5 @@ export interface UpdateUserReq {
     first_name: string;
     last_name: string;
     mobile: string;
+    account_id?: string;
 }

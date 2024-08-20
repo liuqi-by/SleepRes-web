@@ -31,20 +31,36 @@ export const routes: RouteRecordRaw[] = [
         path: '/admin',
         component: () => import('@/pages/admin/index.vue'),
         name: '管理页',
-        meta: { title: 'admin', affix: true, icon: 'homepage', keepalive: true, roles: ['SleepRes'] },
+        meta: {
+            title: 'admin',
+            affix: true,
+            icon: 'homepage',
+            keepalive: true,
+            roles: process.env.NODE_ENV === 'development' ? ['SleepRes'] : ['SleepRes'],
+        },
     },
 
     {
         path: '/users',
         component: () => import('@/pages/users/index.vue'),
         name: '用户',
-        meta: { title: 'users', icon: 'homepage', keepalive: true, roles: ['DME', 'Physician', 'SleepRes'] },
+        meta: {
+            title: 'users',
+            icon: 'homepage',
+            keepalive: true,
+            roles: process.env.NODE_ENV === 'development' ? ['DME', 'Physician', 'SleepRes'] : ['DME', 'Physician'],
+        },
     },
     {
         path: '/organization',
         component: () => import('@/pages/organization/index.vue'),
         name: '机构',
-        meta: { title: 'organization', icon: 'homepage', keepalive: true, roles: ['DME', 'Physician', 'SleepRes'] },
+        meta: {
+            title: 'organization',
+            icon: 'homepage',
+            keepalive: true,
+            roles: process.env.NODE_ENV === 'development' ? ['DME', 'Physician', 'SleepRes'] : ['DME', 'Physician'],
+        },
     },
     {
         path: '/patients',
@@ -54,7 +70,10 @@ export const routes: RouteRecordRaw[] = [
             title: 'patients',
             icon: 'homepage',
             keepalive: true,
-            roles: ['DME User', 'DME', 'Physician User', 'SleepRes'],
+            roles:
+                process.env.NODE_ENV === 'development'
+                    ? ['DME', 'Physician', 'SleepRes', 'DME User', 'Physician User']
+                    : ['DME User', 'Physician User'],
         },
     },
 ];
