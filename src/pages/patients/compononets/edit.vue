@@ -409,7 +409,7 @@
 
 <style lang="scss" scoped>
     .el-form-item {
-        margin-bottom: 18px !important;
+        margin-bottom: 15px !important;
     }
 
     :deep(.el-dialog) {
@@ -439,9 +439,5 @@
             min-width: 101px;
             font-size: $font-standard;
         }
-
-        // :deep(.el-form-item__content) {
-        //     max-width: 150px;
-        // }
     }
 </style>

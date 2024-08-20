@@ -25,7 +25,7 @@ export default defineNuxtRouteMiddleware(async to => {
             await userStore.getUserInfo();
         }
 
-        let menuRoute = permissionStore.permissionRoutes.filter(route => !route.meta?.hidden);
+        let menuRoute = permissionStore.permissionRoutes.filter(route => route.meta?.title || !route.meta?.hidden);
         // 菜单访问的路由
         console.log('路由', menuRoute);
 
@@ -35,7 +35,8 @@ export default defineNuxtRouteMiddleware(async to => {
             });
         }
         // 如果跳转的路由不在权限路由中，跳转到第一个菜单路由
-        if (menuRoute.findIndex(route => route.path === to.path) === -1) {
+        console.log('跳转的路由', to);
+        if (menuRoute.findIndex(route => route.meta?.title === to.meta.title) === -1) {
             if (to.path === '/') {
                 return navigateTo(menuRoute[0].path);
             } else {

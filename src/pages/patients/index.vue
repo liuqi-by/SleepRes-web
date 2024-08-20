@@ -41,7 +41,17 @@
                     align="center"
                 >
                     <template #default="{ row }">
-                        <span class="link">{{ row.nickname }} </span>
+                        <!-- <nuxt-link
+                            class="link"
+                            :to="`/patientReport?id=` + row.id"
+                            >{{ row.nickname }}
+                        </nuxt-link> -->
+                        <span
+                            class="link"
+                            @click="showPatientReport(row)"
+                        >
+                            {{ row.nickname }}
+                        </span>
                     </template>
                 </el-table-column>
 
@@ -76,23 +86,40 @@
                     align="center"
                 />
                 <el-table-column
-                    prop="PercentUsage"
+                    prop="patient.percent_usage"
                     :label="$t('patients.PercentUsage')"
                     min-width="120"
                     align="center"
-                />
+                >
+                    <template #default="{ row }">
+                        <span>{{ row.patient.percent_usage }}%</span>
+                    </template>
+                </el-table-column>
                 <el-table-column
-                    prop="updatetime"
+                    prop="patient.use_end_time"
                     :label="$t('patients.LastUpdateDate')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="Compliant"
+                    prop="patient.compliant"
                     :label="$t('patients.Compliant')"
                     min-width="120"
                     align="center"
-                />
+                >
+                    <template #default="{ row }">
+                        <Select
+                            size="6"
+                            color="var(--el-color-success)"
+                            v-if="row.patient.compliant === 1"
+                        />
+                        <CloseBold
+                            size="6"
+                            color="var(--el-color-danger)"
+                            v-else
+                        />
+                    </template>
+                </el-table-column>
             </table-module>
         </div>
 
@@ -101,11 +128,15 @@
             ref="editUserDialog"
             @refresh="getList"
         />
+        <!-- 患者记录 -->
+        <patient-record ref="patientRecordRef" />
     </div>
 </template>
 
 <script setup lang="ts">
+    import { Select, CloseBold } from '@element-plus/icons-vue';
     import EditUserDialog from './compononets/edit.vue';
+    import PatientRecord from './compononets/patient-record.vue';
     import { getPatient as getListApi } from '~/api/patient';
 
     import type { UserInfo } from '~/api/login/types';
@@ -163,5 +194,11 @@
     const editUserDialog = ref<InstanceType<typeof EditUserDialog>>();
     const create = () => {
         editUserDialog.value?.showDialog();
+    };
+
+    // 查看患者信息
+    const patientRecordRef = ref<InstanceType<typeof PatientRecord>>();
+    const showPatientReport = (id: string) => {
+        patientRecordRef.value?.showDialog();
     };
 </script>

@@ -65,7 +65,9 @@
         "dashboard": "Dashboard",
         "patients": "Patients",
         "users": "Users",
-        "organization": "Organization"
+        "login": "login",
+        "organization": "Organization",
+        "patientReport": "Patient Report"
     },
     "layout": {
         "screenfull": "Full Screen",
