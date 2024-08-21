@@ -198,7 +198,7 @@
 
     // 查看患者信息
     const patientRecordRef = ref<InstanceType<typeof PatientRecord>>();
-    const showPatientReport = (id: string) => {
+    const showPatientReport = () => {
         patientRecordRef.value?.showDialog();
     };
 </script>

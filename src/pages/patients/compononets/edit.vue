@@ -239,6 +239,7 @@
                                     v-model="formData.address"
                                     class="form-input"
                                     :placeholder="$t('login.Address')"
+                                    :maxlength="inputLength.address"
                                 />
                             </div>
                         </el-form-item>
@@ -271,6 +272,7 @@
                                     v-model="formData.zip_code"
                                     class="form-input"
                                     :placeholder="$t('login.ZipCode')"
+                                    :maxlength="inputLength.zipCode"
                                 />
                             </div>
                         </el-form-item>
@@ -283,6 +285,7 @@
                                     v-model="formData.email"
                                     class="form-input"
                                     :placeholder="$t('login.Email')"
+                                    :maxlength="inputLength.email"
                                 />
                             </div>
                         </el-form-item>
@@ -295,6 +298,7 @@
                                     v-model="formData.mobile"
                                     class="form-input"
                                     :placeholder="$t('login.PhoneNumber')"
+                                    :maxlength="inputLength.mobile"
                                 />
                             </div>
                         </el-form-item>
