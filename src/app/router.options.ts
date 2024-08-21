@@ -76,6 +76,21 @@ export const routes: RouteRecordRaw[] = [
                     : ['DME User', 'Physician User'],
         },
     },
+    // {
+    //     path: '/patientReport',
+    //     component: () => import('@/pages/patients/detail.vue'),
+    //     name: '患者详情',
+    //     meta: {
+    //         title: 'patientReport',
+    //         icon: 'homepage',
+    //         keepAlive: false,
+    //         hidden: true,
+    //         roles:
+    //             process.env.NODE_ENV === 'development'
+    //                 ? ['DME', 'Physician', 'SleepRes', 'DME User', 'Physician User']
+    //                 : ['DME User', 'Physician User'],
+    //     },
+    // },
 ];
 
 export default {

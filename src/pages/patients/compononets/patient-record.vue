@@ -8,13 +8,224 @@
             @close="close"
             class="form form-dialog"
         >
-            <div class="form-title">
-                {{ $t('users.EditUserInfo') }}
+            <div class="form-title">Patient Name</div>
+            <base-button
+                type="primary"
+                class="absolute right-[80px] top-[40px]"
+                >{{ $t('patients.SDCardUpload') }}
+            </base-button>
+            <el-form
+                class="form"
+                label-position="left"
+                inline
+                label-width="105px"
+            >
+                <!-- PatientID -->
+                <el-form-item
+                    prop="first_name"
+                    :label="$t('patients.PatientID')"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.first_name"
+                            class="form-input"
+                            :placeholder="$t('patients.PatientID')"
+                            readonly
+                        />
+                    </div>
+                </el-form-item>
+                <!-- Equipment -->
+                <el-form-item
+                    prop="first_name"
+                    :label="$t('patients.Equipment')"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.first_name"
+                            class="form-input"
+                            :placeholder="$t('patients.Equipment')"
+                            readonly
+                        />
+                    </div>
+                </el-form-item>
+                <!-- DateOfBirth -->
+                <el-form-item
+                    prop="first_name"
+                    :label="$t('patients.DateOfBirth')"
+                    label-width="120px"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.first_name"
+                            class="form-input"
+                            :placeholder="$t('patients.DateOfBirth')"
+                            readonly
+                        />
+                    </div>
+                </el-form-item>
+                <!-- SetupDate -->
+                <el-form-item
+                    prop="first_name"
+                    :label="$t('patients.SetupDate')"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.first_name"
+                            class="form-input"
+                            :placeholder="$t('patients.SetupDate')"
+                            readonly
+                        />
+                    </div>
+                </el-form-item>
+                <!-- Compliant -->
+                <el-form-item
+                    prop="first_name"
+                    :label="$t('patients.Compliant')"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.first_name"
+                            class="form-input"
+                            :placeholder="$t('patients.Compliant')"
+                            readonly
+                        />
+                    </div>
+                </el-form-item>
+            </el-form>
+            <!-- Tabs -->
+            <div
+                class="tabs"
+                @click="selectTab"
+            >
+                <div
+                    class="tab-item"
+                    v-for="tab in Tabs"
+                    :key="tab.index"
+                    :class="{ active: tab.index === activeIndex }"
+                    :data-index="tab.index"
+                >
+                    {{ $t('patients.' + tab.name) }}
+                </div>
+            </div>
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <Prescription v-if="activeIndex === 2" />
+                <Notes v-if="activeIndex === 4" />
+                <Logs v-if="activeIndex === 5" />
             </div>
         </el-dialog>
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+    import Logs from './tabs/logs.vue';
+    import Notes from './tabs/notes.vue';
+    import Prescription from './tabs/prescription.vue';
 
-<style lang="scss" scoped></style>
+    const dialogVisible = ref(false);
+
+    const formData = ref({
+        first_name: '',
+    });
+
+    const close = () => {
+        dialogVisible.value = false;
+    };
+
+    const showDialog = () => {
+        activeIndex.value = 1;
+        dialogVisible.value = true;
+    };
+
+    const Tabs = ref([
+        {
+            name: 'TherapyData',
+            index: 1,
+        },
+        {
+            name: 'Prescription',
+            index: 2,
+        },
+        {
+            name: 'PatientDetails',
+            index: 3,
+        },
+        {
+            name: 'Notes',
+            index: 4,
+        },
+        {
+            name: 'Logs',
+            index: 5,
+        },
+    ]);
+
+    const activeIndex = ref(1);
+    const selectTab = (e: any) => {
+        if (e.target.dataset.index) {
+            activeIndex.value = Number(e.target.dataset.index);
+        }
+    };
+
+    defineExpose({
+        showDialog,
+    });
+</script>
+
+<style lang="scss" scoped>
+    .el-form-item {
+        margin-bottom: 10px !important;
+    }
+
+    :deep(.el-dialog) {
+        margin-top: 2vh;
+        margin-bottom: 20px;
+    }
+
+    .tabs {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        font-size: $font-middle;
+
+        .tab-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 180px;
+            height: 50px;
+            padding: 0 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: #d7d7d7;
+            border-radius: 5px 5px 0 0;
+
+            &.active,
+            &:hover {
+                color: #fff;
+                background-color: var(--el-color-primary);
+            }
+        }
+    }
+
+    .tab-content {
+        position: relative;
+        min-height: 500px;
+        background-color: #f0f8fa;
+        border-radius: 2px;
+    }
+
+    :deep(.footer-btn) {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+
+        .el-button {
+            margin-right: 20px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+</style>

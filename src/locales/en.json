@@ -65,7 +65,9 @@
         "dashboard": "Dashboard",
         "patients": "Patients",
         "users": "Users",
-        "organization": "Organization"
+        "login": "login",
+        "organization": "Organization",
+        "patientReport": "Patient Report"
     },
     "layout": {
         "screenfull": "Full Screen",
@@ -153,12 +155,22 @@
         "Pressure": "Pressure",
         "Ramp": "Ramp",
         "Mask": "Mask",
+        "Tubing": "Tubing",
         "Demographics": "Demographics",
         "ContactDetails": "Contact Details",
         "searchPlaceholder": "Name / Email ",
         "unknown": "Unknown",
         "Male": "Male",
         "Female": "Female",
-        "searchPlaceholderDoctor": "Name / NPI / Organization / City / State / Zip Code"
+        "searchPlaceholderDoctor": "Name / NPI / Organization / City / State / Zip Code",
+        "TherapyData": "Therapy Data",
+        "Prescription": "Prescription",
+        "Notes": "Notes",
+        "Logs": "Logs",
+        "revision": "Revision",
+        "modifyTime": "modifyTime",
+        "RevisionPersonnel": "Revision Personnel",
+        "TakeNotes": "Take notes",
+        "SendRx": "Send Rx"
     }
 }

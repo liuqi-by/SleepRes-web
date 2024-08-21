@@ -9,16 +9,16 @@
         />
         <!-- 功能模块 -->
         <div class="function-module m-b-[20px] flex justify-between">
-            <el-button
+            <base-button
                 type="primary"
                 @click="create"
                 >{{ $t('patients.AddPatient') }}
-            </el-button>
-            <el-button
+            </base-button>
+            <base-button
                 type="primary"
                 @click="create"
                 >{{ $t('patients.SDCardUpload') }}
-            </el-button>
+            </base-button>
         </div>
         <!-- 表格模块 -->
         <div class="table-module">
@@ -41,7 +41,17 @@
                     align="center"
                 >
                     <template #default="{ row }">
-                        <span class="link">{{ row.nickname }} </span>
+                        <!-- <nuxt-link
+                            class="link"
+                            :to="`/patientReport?id=` + row.id"
+                            >{{ row.nickname }}
+                        </nuxt-link> -->
+                        <span
+                            class="link"
+                            @click="showPatientReport(row)"
+                        >
+                            {{ row.nickname }}
+                        </span>
                     </template>
                 </el-table-column>
 
@@ -76,92 +86,71 @@
                     align="center"
                 />
                 <el-table-column
-                    prop="PercentUsage"
+                    prop="patient.percent_usage"
                     :label="$t('patients.PercentUsage')"
                     min-width="120"
                     align="center"
-                />
+                >
+                    <template #default="{ row }">
+                        <span>{{ row.patient.percent_usage || 0 }}%</span>
+                    </template>
+                </el-table-column>
                 <el-table-column
-                    prop="updatetime"
+                    prop="patient.use_end_time"
                     :label="$t('patients.LastUpdateDate')"
                     min-width="120"
                     align="center"
                 />
                 <el-table-column
-                    prop="Compliant"
+                    prop="patient.compliant"
                     :label="$t('patients.Compliant')"
                     min-width="120"
                     align="center"
-                />
+                >
+                    <template #default="{ row }">
+                        <Select
+                            size="6"
+                            color="var(--el-color-success)"
+                            v-if="row.patient.compliant === 1"
+                        />
+                        <CloseBold
+                            size="6"
+                            color="var(--el-color-danger)"
+                            v-else
+                        />
+                    </template>
+                </el-table-column>
             </table-module>
         </div>
 
         <!-- 新增/编辑用户 -->
         <EditUserDialog
             ref="editUserDialog"
-            @refresh="getList"
+            @refresh="getData"
         />
+        <!-- 患者记录 -->
+        <patient-record ref="patientRecordRef" />
     </div>
 </template>
 
 <script setup lang="ts">
+    import { Select, CloseBold } from '@element-plus/icons-vue';
     import EditUserDialog from './compononets/edit.vue';
-    import { getPatient as getListApi } from '~/api/patient';
+    import PatientRecord from './compononets/patient-record.vue';
+    import { getPatient } from '~/api/patient';
 
-    import type { UserInfo } from '~/api/login/types';
-
-    const searchOption = ref('');
-
-    const pageOption = ref({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-    });
-    const loading = ref(true);
-    const tableList = ref<UserInfo[]>([]);
-    // 获取机构列表
-    const getList = useDebounceFn(() => {
-        loading.value = true;
-
-        getListApi({
-            page: pageOption.value.currentPage - 1,
-            pagesize: pageOption.value.pageSize,
-            val: searchOption.value,
-        })
-            .then(res => {
-                if (res.code === 1) {
-                    tableList.value = res.data.map(item => {
-                        return { ...item, patient: item.patient ? JSON.parse(item.patient as string) : '' };
-                    });
-                    console.log(tableList.value);
-                    pageOption.value.total = res.data_other.num;
-                }
-            })
-            .finally(() => {
-                loading.value = false;
-            });
-    }, 300);
-
-    // 搜索
-    const search = () => {
-        pageOption.value.currentPage = 1;
-        getList();
-    };
-
-    const handleSizeChange = () => {
-        getList();
-    };
-    const handleCurrentChange = () => {
-        getList();
-    };
-
-    onActivated(() => {
-        getList();
-    });
+    const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
+        usePageTable(getPatient);
 
     // 创建
     const editUserDialog = ref<InstanceType<typeof EditUserDialog>>();
     const create = () => {
         editUserDialog.value?.showDialog();
+    };
+
+    // 查看患者信息
+    const patientRecordRef = ref<InstanceType<typeof PatientRecord>>();
+    const showPatientReport = () => {
+        patientRecordRef.value?.showDialog();
     };
 </script>

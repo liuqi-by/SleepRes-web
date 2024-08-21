@@ -65,6 +65,7 @@
                                 />
                             </div>
                         </el-form-item>
+                        <!-- patientid -->
                         <el-form-item
                             prop="patientid"
                             :label="$t('patients.PatientID')"
@@ -238,6 +239,7 @@
                                     v-model="formData.address"
                                     class="form-input"
                                     :placeholder="$t('login.Address')"
+                                    :maxlength="inputLength.address"
                                 />
                             </div>
                         </el-form-item>
@@ -270,6 +272,7 @@
                                     v-model="formData.zip_code"
                                     class="form-input"
                                     :placeholder="$t('login.ZipCode')"
+                                    :maxlength="inputLength.zipCode"
                                 />
                             </div>
                         </el-form-item>
@@ -282,6 +285,7 @@
                                     v-model="formData.email"
                                     class="form-input"
                                     :placeholder="$t('login.Email')"
+                                    :maxlength="inputLength.email"
                                 />
                             </div>
                         </el-form-item>
@@ -294,6 +298,7 @@
                                     v-model="formData.mobile"
                                     class="form-input"
                                     :placeholder="$t('login.PhoneNumber')"
+                                    :maxlength="inputLength.mobile"
                                 />
                             </div>
                         </el-form-item>
@@ -328,7 +333,7 @@
 
     const dialogVisible = ref(false);
 
-    const formRef = ref<FormInstance>(); // 登录表单ref
+    const formRef = ref<FormInstance>(); // 表单ref
 
     const formData = ref<Partial<AddPatientReq>>({
         gender: 0,
@@ -408,7 +413,7 @@
 
 <style lang="scss" scoped>
     .el-form-item {
-        margin-bottom: 18px !important;
+        margin-bottom: 15px !important;
     }
 
     :deep(.el-dialog) {
@@ -438,9 +443,5 @@
             min-width: 101px;
             font-size: $font-standard;
         }
-
-        // :deep(.el-form-item__content) {
-        //     max-width: 150px;
-        // }
     }
 </style>

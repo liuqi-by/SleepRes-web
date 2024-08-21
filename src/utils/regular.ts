@@ -9,7 +9,7 @@ export const REGULAR = {
 // input 长度限制
 export const inputLength = {
     address: 100,
-    name: 30,
+    name: 20,
     remarkName: 20,
     password: 16,
     sn: 12,
@@ -18,4 +18,6 @@ export const inputLength = {
     height: 3,
     weight: 3,
     remark: 225,
+    zipCode: 5,
+    note: 1000,
 };

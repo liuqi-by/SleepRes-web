@@ -69,6 +69,7 @@
                             class="form-input"
                             :placeholder="`${$t('login.ZipCode')}`"
                             type="text"
+                            :maxlength="inputLength.zipCode"
                         />
                     </div>
                 </el-form-item>
@@ -83,6 +84,7 @@
                             class="form-input"
                             :placeholder="`${$t('login.Address')}`"
                             type="text"
+                            :maxlength="inputLength.address"
                         />
                     </div>
                 </el-form-item>
@@ -97,6 +99,7 @@
                             class="form-input"
                             :placeholder="`${$t('office.Telephone')}`"
                             type="text"
+                            :maxlength="inputLength.mobile"
                         />
                     </div>
                 </el-form-item>
@@ -112,6 +115,7 @@
                             class="form-input"
                             :placeholder="$t('login.Email')"
                             type="text"
+                            :maxlength="inputLength.email"
                         />
                     </div>
                 </el-form-item>
