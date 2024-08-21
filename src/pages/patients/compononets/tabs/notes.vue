@@ -35,7 +35,7 @@
                 />
             </el-form-item>
         </el-form>
-        <div class="justify-center flex">
+        <div class="footer-btn">
             <base-button
                 type="primary"
                 @click="save"

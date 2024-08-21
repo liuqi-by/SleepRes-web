@@ -155,6 +155,7 @@
         "Pressure": "Pressure",
         "Ramp": "Ramp",
         "Mask": "Mask",
+        "Tubing": "Tubing",
         "Demographics": "Demographics",
         "ContactDetails": "Contact Details",
         "searchPlaceholder": "Name / Email ",
@@ -169,6 +170,7 @@
         "revision": "Revision",
         "modifyTime": "modifyTime",
         "RevisionPersonnel": "Revision Personnel",
-        "TakeNotes": "Take notes"
+        "TakeNotes": "Take notes",
+        "SendRx": "Send Rx"
     }
 }

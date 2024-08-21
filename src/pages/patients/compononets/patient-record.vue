@@ -109,6 +109,7 @@
             </div>
             <!-- Tab Content -->
             <div class="tab-content">
+                <Prescription v-if="activeIndex === 2" />
                 <Notes v-if="activeIndex === 4" />
                 <Logs v-if="activeIndex === 5" />
             </div>
@@ -119,6 +120,7 @@
 <script setup lang="ts">
     import Logs from './tabs/logs.vue';
     import Notes from './tabs/notes.vue';
+    import Prescription from './tabs/prescription.vue';
 
     const dialogVisible = ref(false);
 
@@ -207,8 +209,23 @@
     }
 
     .tab-content {
+        position: relative;
         min-height: 500px;
         background-color: #f0f8fa;
         border-radius: 2px;
+    }
+
+    :deep(.footer-btn) {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+
+        .el-button {
+            margin-right: 20px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
     }
 </style>
