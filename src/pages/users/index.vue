@@ -19,7 +19,7 @@
         <div class="table-module">
             <table-module
                 border
-                :data="accountList"
+                :data="tableList"
                 v-loading="loading"
                 height="calc(100vh - 340px)"
                 v-model:current-page="pageOption.currentPage"
@@ -122,7 +122,7 @@
         <!-- 新增/编辑用户 -->
         <EditUserDialog
             ref="editUserDialog"
-            @refresh="getAccountList"
+            @refresh="getData"
         />
     </div>
 </template>
@@ -137,53 +137,13 @@
 
     const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
 
-    const searchOption = ref('');
-
-    const pageOption = ref({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-    });
-    const loading = ref(false);
-    const accountList = ref<UserInfo[]>([]);
+    const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
+        usePageTable(getUserlist);
 
     // 重置密码
     const resetPasswordForm = ref<InstanceType<typeof ResetPasswordForm> | null>(null);
     const resetPwd = (row: any) => {
         resetPasswordForm.value?.showResetPassword(row);
-    };
-
-    // 获取用户列表
-    const getAccountList = useDebounceFn(() => {
-        loading.value = true;
-
-        getUserlist({
-            page: pageOption.value.currentPage - 1,
-            pagesize: pageOption.value.pageSize,
-            val: searchOption.value,
-        })
-            .then(res => {
-                if (res.code === 1) {
-                    accountList.value = res.data;
-                    pageOption.value.total = res.data_other.num;
-                }
-            })
-            .finally(() => {
-                loading.value = false;
-            });
-    }, 300);
-
-    // 搜索
-    const search = () => {
-        pageOption.value.currentPage = 1;
-        getAccountList();
-    };
-
-    const handleSizeChange = () => {
-        getAccountList();
-    };
-    const handleCurrentChange = () => {
-        getAccountList();
     };
 
     // 冻结/解冻
@@ -201,10 +161,6 @@
                 row.frozen = row.frozen === 1 ? 0 : 1;
             });
     }, 300);
-
-    onActivated(() => {
-        getAccountList();
-    });
 
     // 创建用户
     const editUserDialog = ref<InstanceType<typeof EditUserDialog>>();

@@ -5,12 +5,13 @@
             @search="search"
             v-model="searchOption"
             :placeholder="$t('admin.searchPlaceholder')"
+            class="m-b-[20px]"
         />
         <!-- 表格模块 -->
         <div class="table-module">
             <table-module
                 border
-                :data="accountList"
+                :data="tableList"
                 v-loading="loading"
                 height="calc(100vh - 280px)"
                 v-model:current-page="pageOption.currentPage"
@@ -116,15 +117,8 @@
 
     const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
 
-    const searchOption = ref('');
-
-    const pageOption = ref({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-    });
-    const loading = ref(true);
-    const accountList = ref<UserInfo[]>([]);
+    const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
+        usePageTable(getUserlist);
 
     // 重置密码
     const resetPasswordForm = ref<InstanceType<typeof ResetPasswordForm> | null>(null);
@@ -144,39 +138,6 @@
     //         dangerouslyUseHTMLString: true,
     //     }).then(res => {});
     // };
-
-    // 获取用户列表
-    const getAccountList = useDebounceFn(() => {
-        loading.value = true;
-
-        getUserlist({
-            page: pageOption.value.currentPage - 1,
-            pagesize: pageOption.value.pageSize,
-            val: searchOption.value,
-        })
-            .then(res => {
-                if (res.code === 1) {
-                    accountList.value = res.data;
-                    pageOption.value.total = res.data_other.num;
-                }
-            })
-            .finally(() => {
-                loading.value = false;
-            });
-    }, 300);
-
-    // 搜索
-    const search = () => {
-        pageOption.value.currentPage = 1;
-        getAccountList();
-    };
-
-    const handleSizeChange = () => {
-        getAccountList();
-    };
-    const handleCurrentChange = () => {
-        getAccountList();
-    };
 
     // 冻结/解冻
     const frozenAccount = useDebounceFn((row: UserInfo) => {
@@ -201,13 +162,12 @@
 
     onActivated(() => {
         getMessageNum();
-        getAccountList();
     });
 
     watch(
         () => useUserStore().messageCount,
         () => {
-            getAccountList();
+            getData();
         },
     );
 </script>

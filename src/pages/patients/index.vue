@@ -92,7 +92,7 @@
                     align="center"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage }}%</span>
+                        <span>{{ row.patient.percent_usage || 0 }}%</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -126,7 +126,7 @@
         <!-- 新增/编辑用户 -->
         <EditUserDialog
             ref="editUserDialog"
-            @refresh="getList"
+            @refresh="getData"
         />
         <!-- 患者记录 -->
         <patient-record ref="patientRecordRef" />
@@ -137,58 +137,10 @@
     import { Select, CloseBold } from '@element-plus/icons-vue';
     import EditUserDialog from './compononets/edit.vue';
     import PatientRecord from './compononets/patient-record.vue';
-    import { getPatient as getListApi } from '~/api/patient';
+    import { getPatient } from '~/api/patient';
 
-    import type { UserInfo } from '~/api/login/types';
-
-    const searchOption = ref('');
-
-    const pageOption = ref({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-    });
-    const loading = ref(true);
-    const tableList = ref<UserInfo[]>([]);
-    // 获取机构列表
-    const getList = useDebounceFn(() => {
-        loading.value = true;
-
-        getListApi({
-            page: pageOption.value.currentPage - 1,
-            pagesize: pageOption.value.pageSize,
-            val: searchOption.value,
-        })
-            .then(res => {
-                if (res.code === 1) {
-                    tableList.value = res.data.map(item => {
-                        return { ...item, patient: item.patient ? JSON.parse(item.patient as string) : '' };
-                    });
-                    console.log(tableList.value);
-                    pageOption.value.total = res.data_other.num;
-                }
-            })
-            .finally(() => {
-                loading.value = false;
-            });
-    }, 300);
-
-    // 搜索
-    const search = () => {
-        pageOption.value.currentPage = 1;
-        getList();
-    };
-
-    const handleSizeChange = () => {
-        getList();
-    };
-    const handleCurrentChange = () => {
-        getList();
-    };
-
-    onActivated(() => {
-        getList();
-    });
+    const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
+        usePageTable(getPatient);
 
     // 创建
     const editUserDialog = ref<InstanceType<typeof EditUserDialog>>();

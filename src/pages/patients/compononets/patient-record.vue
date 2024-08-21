@@ -9,6 +9,11 @@
             class="form form-dialog"
         >
             <div class="form-title">Patient Name</div>
+            <el-button
+                type="primary"
+                class="absolute right-[80px] top-[40px]"
+                >{{ $t('patients.SDCardUpload') }}
+            </el-button>
             <el-form
                 class="form"
                 label-position="left"

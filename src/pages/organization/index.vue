@@ -109,58 +109,19 @@
         <!-- 新增/编辑用户 -->
         <EditOffice
             ref="editOffice"
-            @refresh="getList"
+            @refresh="getData"
         />
     </div>
 </template>
 
 <script setup lang="ts">
     import EditOffice from './compononets/edit.vue';
-    import { deleteOrganization, editOrganization, getOrganization as getListApi } from '~/api/organization';
+    import { deleteOrganization, editOrganization, getOrganization } from '~/api/organization';
 
     import type { Organization } from '~/api/organization/types';
 
-    const searchOption = ref('');
-
-    const pageOption = ref({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-    });
-    const loading = ref(true);
-    const tableList = ref<Organization[]>([]);
-    // 获取机构列表
-    const getList = useDebounceFn(() => {
-        loading.value = true;
-
-        getListApi({
-            page: pageOption.value.currentPage - 1,
-            pagesize: pageOption.value.pageSize,
-            val: searchOption.value,
-        })
-            .then(res => {
-                if (res.code === 1) {
-                    tableList.value = res.data;
-                    pageOption.value.total = res.data_other.num;
-                }
-            })
-            .finally(() => {
-                loading.value = false;
-            });
-    }, 300);
-
-    // 搜索
-    const search = () => {
-        pageOption.value.currentPage = 1;
-        getList();
-    };
-
-    const handleSizeChange = () => {
-        getList();
-    };
-    const handleCurrentChange = () => {
-        getList();
-    };
+    const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
+        usePageTable(getOrganization);
 
     // 冻结/解冻
     const frozen = useDebounceFn((row: Organization) => {
@@ -175,10 +136,6 @@
                 loading.value = false;
             });
     }, 300);
-
-    onActivated(() => {
-        getList();
-    });
 
     // 创建用户
     const editOffice = ref<InstanceType<typeof EditOffice>>();
@@ -206,7 +163,7 @@
             deleteOrganization(row.id).then(res => {
                 if (res.code === 1) {
                     ElMessage.success(t('admin.DeleteSuccess'));
-                    getList();
+                    getData();
                 }
             });
         });
