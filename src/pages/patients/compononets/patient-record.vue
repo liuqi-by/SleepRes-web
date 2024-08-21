@@ -9,11 +9,11 @@
             class="form form-dialog"
         >
             <div class="form-title">Patient Name</div>
-            <el-button
+            <base-button
                 type="primary"
                 class="absolute right-[80px] top-[40px]"
                 >{{ $t('patients.SDCardUpload') }}
-            </el-button>
+            </base-button>
             <el-form
                 class="form"
                 label-position="left"
@@ -92,11 +92,34 @@
                     </div>
                 </el-form-item>
             </el-form>
+            <!-- Tabs -->
+            <div
+                class="tabs"
+                @click="selectTab"
+            >
+                <div
+                    class="tab-item"
+                    v-for="tab in Tabs"
+                    :key="tab.index"
+                    :class="{ active: tab.index === activeIndex }"
+                    :data-index="tab.index"
+                >
+                    {{ $t('patients.' + tab.name) }}
+                </div>
+            </div>
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <Notes v-if="activeIndex === 4" />
+                <Logs v-if="activeIndex === 5" />
+            </div>
         </el-dialog>
     </div>
 </template>
 
 <script setup lang="ts">
+    import Logs from './tabs/logs.vue';
+    import Notes from './tabs/notes.vue';
+
     const dialogVisible = ref(false);
 
     const formData = ref({
@@ -108,7 +131,38 @@
     };
 
     const showDialog = () => {
+        activeIndex.value = 1;
         dialogVisible.value = true;
+    };
+
+    const Tabs = ref([
+        {
+            name: 'TherapyData',
+            index: 1,
+        },
+        {
+            name: 'Prescription',
+            index: 2,
+        },
+        {
+            name: 'PatientDetails',
+            index: 3,
+        },
+        {
+            name: 'Notes',
+            index: 4,
+        },
+        {
+            name: 'Logs',
+            index: 5,
+        },
+    ]);
+
+    const activeIndex = ref(1);
+    const selectTab = (e: any) => {
+        if (e.target.dataset.index) {
+            activeIndex.value = Number(e.target.dataset.index);
+        }
     };
 
     defineExpose({
@@ -124,5 +178,37 @@
     :deep(.el-dialog) {
         margin-top: 2vh;
         margin-bottom: 20px;
+    }
+
+    .tabs {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        font-size: $font-middle;
+
+        .tab-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 180px;
+            height: 50px;
+            padding: 0 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: #d7d7d7;
+            border-radius: 5px 5px 0 0;
+
+            &.active,
+            &:hover {
+                color: #fff;
+                background-color: var(--el-color-primary);
+            }
+        }
+    }
+
+    .tab-content {
+        min-height: 500px;
+        background-color: #f0f8fa;
+        border-radius: 2px;
     }
 </style>

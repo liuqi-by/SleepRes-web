@@ -167,5 +167,13 @@ export function useFormRules(formData?: any) {
                 message: t('form.PleasePick') + t('patients.SetupDate'),
             },
         ],
+        // notes
+        notes: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('patients.Notes'),
+            },
+        ],
     };
 }

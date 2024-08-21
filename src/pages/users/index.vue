@@ -9,11 +9,11 @@
         />
         <!-- 功能模块 -->
         <div class="function-module m-b-[20px]">
-            <el-button
+            <base-button
                 type="primary"
                 @click="createUser"
                 >{{ userSotre.userInfo?.group_id !== 4 ? $t('users.CreateUser') : $t('users.CreateUserAccount') }}
-            </el-button>
+            </base-button>
         </div>
         <!-- 表格模块 -->
         <div class="table-module">

@@ -9,16 +9,16 @@
         />
         <!-- 功能模块 -->
         <div class="function-module m-b-[20px] flex justify-between">
-            <el-button
+            <base-button
                 type="primary"
                 @click="create"
                 >{{ $t('patients.AddPatient') }}
-            </el-button>
-            <el-button
+            </base-button>
+            <base-button
                 type="primary"
                 @click="create"
                 >{{ $t('patients.SDCardUpload') }}
-            </el-button>
+            </base-button>
         </div>
         <!-- 表格模块 -->
         <div class="table-module">

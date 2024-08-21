@@ -19,4 +19,5 @@ export const inputLength = {
     weight: 3,
     remark: 225,
     zipCode: 5,
+    note: 1000,
 };

@@ -161,6 +161,14 @@
         "unknown": "Unknown",
         "Male": "Male",
         "Female": "Female",
-        "searchPlaceholderDoctor": "Name / NPI / Organization / City / State / Zip Code"
+        "searchPlaceholderDoctor": "Name / NPI / Organization / City / State / Zip Code",
+        "TherapyData": "Therapy Data",
+        "Prescription": "Prescription",
+        "Notes": "Notes",
+        "Logs": "Logs",
+        "revision": "Revision",
+        "modifyTime": "modifyTime",
+        "RevisionPersonnel": "Revision Personnel",
+        "TakeNotes": "Take notes"
     }
 }

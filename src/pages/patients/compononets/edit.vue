@@ -333,7 +333,7 @@
 
     const dialogVisible = ref(false);
 
-    const formRef = ref<FormInstance>(); // 登录表单ref
+    const formRef = ref<FormInstance>(); // 表单ref
 
     const formData = ref<Partial<AddPatientReq>>({
         gender: 0,
