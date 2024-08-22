@@ -127,12 +127,6 @@
                             :label="$t('patients.Therapist')"
                         >
                             <div class="form-item">
-                                <!-- <el-input
-                                    v-model="formData.therapist_id"
-                                    class="form-input"
-                                    :placeholder="$t('patients.Therapist')"
-                                    :maxlength="inputLength.name"
-                                /> -->
                                 <el-select
                                     v-model="formData.therapist_id"
                                     placeholder="Please select"

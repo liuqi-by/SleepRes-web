@@ -110,6 +110,7 @@
             <!-- Tab Content -->
             <div class="tab-content">
                 <Prescription v-if="activeIndex === 2" />
+                <PatientDetails v-if="activeIndex === 3" />
                 <Notes v-if="activeIndex === 4" />
                 <Logs v-if="activeIndex === 5" />
             </div>
@@ -121,6 +122,7 @@
     import Logs from './tabs/logs.vue';
     import Notes from './tabs/notes.vue';
     import Prescription from './tabs/prescription.vue';
+    import PatientDetails from './tabs/patient-details.vue';
 
     const dialogVisible = ref(false);
 

@@ -89,10 +89,14 @@
                 type="primary"
                 @click="save"
                 :loading="loading"
+                :disabled="!isEdit"
             >
                 {{ $t('form.Save') }}
             </base-button>
-            <base-button @click="isEdit = false">
+            <base-button
+                @click="isEdit = false"
+                :disabled="!isEdit"
+            >
                 {{ $t('form.Cancel') }}
             </base-button>
             <base-button>
