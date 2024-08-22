@@ -1,7 +1,7 @@
 <template>
     <div class="edit-btn">
         <base-button
-            :type="isEdit ? 'primary' : 'default'"
+            :type="!isEdit ? 'primary' : 'default'"
             @click="isEdit = !isEdit"
             >{{ $t('admin.edit') }}</base-button
         >

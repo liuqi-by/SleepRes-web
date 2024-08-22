@@ -17,8 +17,9 @@
                     <el-input
                         v-model="formData.sn"
                         class="form-input"
-                        :placeholder="$t('patients.DeviceSerialNumber')"
+                        ref="snInput"
                         :maxlength="inputLength.sn"
+                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -30,7 +31,7 @@
                     <el-input
                         v-model="formData.mode_name"
                         class="form-input"
-                        :placeholder="$t('patients.Mode')"
+                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -42,7 +43,7 @@
                     <el-input
                         v-model="formData.pressure"
                         class="form-input"
-                        :placeholder="$t('patients.Pressure')"
+                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -54,7 +55,7 @@
                     <el-input
                         v-model="formData.ramp"
                         class="form-input"
-                        :placeholder="$t('patients.Ramp')"
+                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -66,7 +67,7 @@
                     <el-input
                         v-model="formData.mask"
                         class="form-input"
-                        :placeholder="$t('patients.Mask')"
+                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -78,7 +79,7 @@
                     <el-input
                         v-model="formData.mask"
                         class="form-input"
-                        :placeholder="$t('patients.Tubing')"
+                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -102,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { FormInstance } from 'element-plus';
+    import type { FormInstance, InputInstance } from 'element-plus';
     import editBtn from './edit-btn.vue';
 
     const isEdit = ref(false);
@@ -125,6 +126,13 @@
             }
         });
     };
+
+    const snInput = ref<InputInstance>();
+    watch(isEdit, val => {
+        if (val) {
+            snInput.value?.focus();
+        }
+    });
 </script>
 
 <style lang="scss" scoped>
