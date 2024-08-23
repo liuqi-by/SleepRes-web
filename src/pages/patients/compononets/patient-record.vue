@@ -109,6 +109,7 @@
             </div>
             <!-- Tab Content -->
             <div class="tab-content">
+                <TherapyData v-if="activeIndex === 1" />
                 <Prescription v-if="activeIndex === 2" />
                 <PatientDetails v-if="activeIndex === 3" />
                 <Notes v-if="activeIndex === 4" />
@@ -123,6 +124,7 @@
     import Notes from './tabs/notes.vue';
     import Prescription from './tabs/prescription.vue';
     import PatientDetails from './tabs/patient-details.vue';
+    import TherapyData from './tabs/therapy-data.vue';
 
     const dialogVisible = ref(false);
 
@@ -202,11 +204,12 @@
             background-color: #d7d7d7;
             border-radius: 5px 5px 0 0;
 
-            &.active,
-            &:hover {
-                color: #fff;
-                background-color: var(--el-color-primary);
-            }
+            // &.active,
+            // &:hover {
+            //     color: #fff;
+            //     background-color: var(--el-color-primary);
+            // }
+            @include active;
         }
     }
 

@@ -171,6 +171,14 @@
         "modifyTime": "modifyTime",
         "RevisionPersonnel": "Revision Personnel",
         "TakeNotes": "Take notes",
-        "SendRx": "Send Rx"
+        "SendRx": "Send Rx",
+        "CreateReport": "Create Report",
+        "TherapyReport": "Therapy Report",
+        "ReportType": "Report Type",
+        "Timeframe": "Timeframe",
+        "ComplianceReport": "Compliance Report",
+        "Best30Days": "Best 30 Days",
+        "First90Days": "First 90 Days",
+        "CustomDateRange": "Custom Date Range"
     }
 }

@@ -28,3 +28,12 @@ $tags-view-height: 50px; // TagsView 高度
     font-family: $family;
     font-size: $size;
 }
+
+@mixin active {
+    &.active,
+    &:hover {
+        color: #fff;
+        background-color: var(--el-color-primary);
+        border-color: var(--el-color-primary);
+    }
+}
