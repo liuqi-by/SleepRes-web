@@ -138,6 +138,7 @@
     import EditUserDialog from './compononets/edit.vue';
     import PatientRecord from './compononets/patient-record.vue';
     import { getPatient } from '~/api/patient';
+    import type { UserInfo } from '~/api/login/types';
 
     const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
         usePageTable(getPatient);
@@ -150,7 +151,7 @@
 
     // 查看患者信息
     const patientRecordRef = ref<InstanceType<typeof PatientRecord>>();
-    const showPatientReport = () => {
-        patientRecordRef.value?.showDialog();
+    const showPatientReport = (row: UserInfo) => {
+        patientRecordRef.value?.showDialog(row);
     };
 </script>
