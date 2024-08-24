@@ -41,39 +41,40 @@ body {
     }
 
     // table
+    .module-table {
+        .el-table {
+            text-indent: 0 !important;
+        }
 
-    .el-table {
-        text-indent: 0 !important;
-    }
+        .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+            background: #f5f8ff;
+        }
 
-    .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
-        background: #f5f8ff;
-    }
+        .el-table thead {
+            font-family: var(--font-family);
+            font-size: $font-standard;
+            font-weight: 500;
+            line-height: 22px;
+        }
 
-    .el-table thead {
-        font-family: var(--font-family);
-        font-size: $font-standard;
-        font-weight: 500;
-        line-height: 22px;
-    }
+        .el-table th.el-table__cell,
+        .el-table__header-wrapper tr th.el-table-fixed-column--left,
+        .el-table__header-wrapper tr th.el-table-fixed-column--right {
+            background-color: #f1f2f2;
+        }
 
-    .el-table th.el-table__cell,
-    .el-table__header-wrapper tr th.el-table-fixed-column--left,
-    .el-table__header-wrapper tr th.el-table-fixed-column--right {
-        background-color: #f1f2f2;
-    }
+        .el-table td.el-table__cell div {
+            font-family: var(--font-family);
+            font-size: $font-standard;
+            font-weight: 350;
+            line-height: 22px;
+        }
 
-    .el-table td.el-table__cell div {
-        font-family: var(--font-family);
-        font-size: $font-standard;
-        font-weight: 350;
-        line-height: 22px;
-    }
-
-    .el-table.is-scrolling-none th.el-table-fixed-column--left,
-    .el-table.is-scrolling-none th.el-table-fixed-column--right,
-    .el-table.is-scrolling-right th.el-table-fixed-column--right {
-        background-color: #f1f2f2;
+        .el-table.is-scrolling-none th.el-table-fixed-column--left,
+        .el-table.is-scrolling-none th.el-table-fixed-column--right,
+        .el-table.is-scrolling-right th.el-table-fixed-column--right {
+            background-color: #f1f2f2;
+        }
     }
 
     // 提示框

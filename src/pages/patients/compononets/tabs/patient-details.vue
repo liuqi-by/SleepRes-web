@@ -69,7 +69,7 @@
                 prop="institution_id"
                 :label="$t('patients.Office')"
             >
-                <div class="min-w-[192px] form-item">
+                <div class="min-w-[192px]">
                     <select-office
                         :model-value="{
                             id: formData.institution_id,
@@ -100,7 +100,7 @@
                 prop="therapist_id"
                 :label="$t('patients.Therapist')"
             >
-                <div class="form-item min-w-[192px]">
+                <div class="min-w-[192px]">
                     <el-select
                         v-model="formData.therapist_id"
                         placeholder="Please select"
@@ -156,7 +156,7 @@
                 prop="state"
                 :label="$t('login.State')"
             >
-                <div class="form-item min-w-[192px]">
+                <div class="min-w-[192px]">
                     <select-state
                         v-model="formData.state"
                         :disabled="!isEdit"

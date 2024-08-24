@@ -79,7 +79,7 @@ export default defineNuxtConfig({
         // 18n配置路径
         vueI18n: './config/i18n.config.ts',
     },
-    plugins: ['./src/plugins/svg.ts', './src/plugins/auth.ts'],
+    plugins: ['./src/plugins/svg.ts', './src/plugins/auth.ts', './src/plugins/upload.ts'],
     postcss: {
         plugins: {
             // css前缀

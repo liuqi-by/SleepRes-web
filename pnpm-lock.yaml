@@ -41,6 +41,9 @@ importers:
       vue-router:
         specifier: ^4.3.0
         version: 4.3.3(vue@3.4.27(typescript@5.4.5))
+      vue-simple-uploader:
+        specifier: ^1.0.3
+        version: 1.0.3(vue@3.4.27(typescript@5.4.5))
       vue-verify-code:
         specifier: ^1.0.5
         version: 1.0.5
@@ -5008,6 +5011,9 @@ packages:
   simple-git@3.25.0:
     resolution: {integrity: sha512-KIY5sBnzc4yEcJXW7Tdv4viEz8KyG+nU0hay+DWZasvdFOYKeUZ6Xc25LUHHjw0tinPT7O1eY6pzX7pRT1K8rw==}
 
+  simple-uploader.js@0.6.0:
+    resolution: {integrity: sha512-EXN+o+LD6PVnfzTq/usP8k8yYrI6wKrAx8e+fPcPLVzzttonkyn1KT+Ycx5JnPBSnp6lpiVhNG4JhDJucdPnhA==}
+
   sirv@2.0.4:
     resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
     engines: {node: '>= 10'}
@@ -5898,6 +5904,12 @@ packages:
     resolution: {integrity: sha512-8Q+u+WP4N2SXY38FDcF2H1dUEbYVHVPtPCPZj/GTZx8RCbiB8AtJP9+YIxn4Vs0svMTNQcLIzka4GH7Utkx9xQ==}
     peerDependencies:
       vue: ^3.2.0
+
+  vue-simple-uploader@1.0.3:
+    resolution: {integrity: sha512-RIghV5rG1CaA41R7VlQP0UG9xevs+cRaCN0k7gH4cFHdG9yIf4206fGKA90NRKzlPxGSBTwLm5dCajLHfqd2+w==}
+    engines: {node: '>= 4.0.0', npm: '>= 3.0.0'}
+    peerDependencies:
+      vue: '>=3.1'
 
   vue-template-compiler@2.7.16:
     resolution: {integrity: sha512-AYbUWAJHLGGQM7+cNTELw+KsOG9nl2CnSv467WobS5Cv9uk3wFcnr1Etsz2sEIHEZvw1U+o9mRlEO6QbZvUPGQ==}
@@ -11830,6 +11842,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  simple-uploader.js@0.6.0: {}
+
   sirv@2.0.4:
     dependencies:
       '@polka/url': 1.0.0-next.25
@@ -12859,6 +12873,11 @@ snapshots:
   vue-router@4.3.3(vue@3.4.27(typescript@5.4.5)):
     dependencies:
       '@vue/devtools-api': 6.6.3
+      vue: 3.4.27(typescript@5.4.5)
+
+  vue-simple-uploader@1.0.3(vue@3.4.27(typescript@5.4.5)):
+    dependencies:
+      simple-uploader.js: 0.6.0
       vue: 3.4.27(typescript@5.4.5)
 
   vue-template-compiler@2.7.16:

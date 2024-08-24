@@ -1,17 +1,18 @@
 <!-- 患者记录 -->
 <template>
-    <div>
+    <div class="patient-record">
         <el-dialog
             v-model="dialogVisible"
             title=""
             width="1250"
             @close="close"
-            class="form form-dialog"
+            class="form form-dialog patient-record-dialog"
         >
             <div class="form-title">Patient Name</div>
             <base-button
                 type="primary"
                 class="absolute right-[80px] top-[40px]"
+                @click="showUploadFiles"
                 >{{ $t('patients.SDCardUpload') }}
             </base-button>
             <el-form
@@ -125,18 +126,20 @@
     import Prescription from './tabs/prescription.vue';
     import PatientDetails from './tabs/patient-details.vue';
     import TherapyData from './tabs/therapy-data.vue';
+    import type { UserInfo } from '~/api/login/types';
 
     const dialogVisible = ref(false);
 
-    const formData = ref({
-        first_name: '',
-    });
+    const formData = ref<Partial<UserInfo>>({});
 
     const close = () => {
         dialogVisible.value = false;
     };
 
-    const showDialog = () => {
+    const showDialog = (item: UserInfo) => {
+        formData.value = {
+            ...item,
+        };
         activeIndex.value = 1;
         dialogVisible.value = true;
     };
@@ -171,6 +174,16 @@
         }
     };
 
+    const emit = defineEmits<{
+        (e: 'showUploadFiles', id: string): void;
+    }>();
+    const showUploadFiles = () => {
+        if (!formData.value.id) {
+            return;
+        }
+        emit('showUploadFiles', formData.value.id);
+    };
+
     defineExpose({
         showDialog,
     });
@@ -181,7 +194,7 @@
         margin-bottom: 10px !important;
     }
 
-    :deep(.el-dialog) {
+    :deep(.patient-record-dialog) {
         margin-top: 2vh;
         margin-bottom: 20px;
     }

@@ -76,6 +76,7 @@ export const routes: RouteRecordRaw[] = [
                     : ['DME User', 'Physician User'],
         },
     },
+
     // {
     //     path: '/patientReport',
     //     component: () => import('@/pages/patients/detail.vue'),
