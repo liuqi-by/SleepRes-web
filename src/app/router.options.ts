@@ -48,7 +48,10 @@ export const routes: RouteRecordRaw[] = [
             title: 'users',
             icon: 'homepage',
             keepalive: true,
-            roles: process.env.NODE_ENV === 'development' ? ['DME', 'Physician', 'SleepRes'] : ['DME', 'Physician'],
+            roles:
+                process.env.NODE_ENV === 'development'
+                    ? ['DME', 'Physician', 'SleepRes']
+                    : ['DME User', 'Physician User', 'Physician', 'DME'],
         },
     },
     {
@@ -59,7 +62,10 @@ export const routes: RouteRecordRaw[] = [
             title: 'organization',
             icon: 'homepage',
             keepalive: true,
-            roles: process.env.NODE_ENV === 'development' ? ['DME', 'Physician', 'SleepRes'] : ['DME', 'Physician'],
+            roles:
+                process.env.NODE_ENV === 'development'
+                    ? ['DME', 'Physician', 'SleepRes']
+                    : ['DME User', 'Physician User', 'Physician', 'DME'],
         },
     },
     {
@@ -73,7 +79,7 @@ export const routes: RouteRecordRaw[] = [
             roles:
                 process.env.NODE_ENV === 'development'
                     ? ['DME', 'Physician', 'SleepRes', 'DME User', 'Physician User']
-                    : ['DME User', 'Physician User'],
+                    : ['DME User', 'Physician User', 'Physician', 'DME'],
         },
     },
 

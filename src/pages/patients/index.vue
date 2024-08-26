@@ -24,7 +24,7 @@
         <div class="table-module">
             <table-module
                 border
-                :data="tableList"
+                :data="tableListPaient"
                 v-loading="loading"
                 height="calc(100vh - 340px)"
                 v-model:current-page="pageOption.currentPage"
@@ -150,6 +150,15 @@
     const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
         usePageTable(getPatient);
 
+    const tableListPaient = computed(() => {
+        return tableList.value?.map(item => {
+            return {
+                ...item,
+                patient: JSON.parse(item.patient),
+            };
+        });
+    });
+
     // 创建
     const editUserDialog = ref<InstanceType<typeof EditUserDialog>>();
     const create = () => {
@@ -166,4 +175,6 @@
     const showUploadFiles = (userId?: string) => {
         uploadFilesRef.value?.showDialog(userId);
     };
+
+    provide('update', getData);
 </script>

@@ -34,3 +34,19 @@ export function calculateBMI(weight: number, height: number) {
     }
     return (weight / (height / 100) ** 2).toFixed(2);
 }
+
+/**
+ * 将对象内所有存在的数据为undefined修改为空字符串
+ * @param obj 参数
+ * @returns
+ */
+export const handleQueryFields = (obj: any) => {
+    for (const key in obj) {
+        if (typeof obj[key] === 'object') {
+            handleQueryFields(obj[key]);
+        } else if (!obj[key]) {
+            obj[key] = '';
+        }
+    }
+    return obj;
+};

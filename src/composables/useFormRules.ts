@@ -175,5 +175,21 @@ export function useFormRules(formData?: any) {
                 message: t('form.PleaseEnter') + t('patients.Notes'),
             },
         ],
+        // birthdate
+        birthdate: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleasePick') + t('patients.Birthdate'),
+            },
+        ],
+        // 序列号
+        sn: [
+            {
+                max: 12,
+                min: 10,
+                trigger: 'blur',
+            },
+        ],
     };
 }
