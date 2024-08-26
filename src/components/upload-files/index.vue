@@ -138,10 +138,14 @@
 <script setup lang="ts">
     import { ArrowDown, Select, CloseBold } from '@element-plus/icons-vue';
 
-    const dialogVisible = defineModel({
-        type: Boolean,
-        default: false,
-    });
+    const dialogVisible = ref(false);
+
+    let userId;
+
+    const showDialog = (id?: string) => {
+        dialogVisible.value = true;
+        userId = id;
+    };
 
     const close = () => {
         dialogVisible.value = false;
@@ -193,6 +197,10 @@
     const onFileComplete = () => {
         console.log('onComplete');
     };
+
+    defineExpose({
+        showDialog,
+    });
 </script>
 
 <style lang="scss" scoped>

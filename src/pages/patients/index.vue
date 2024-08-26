@@ -16,7 +16,7 @@
             </base-button>
             <base-button
                 type="primary"
-                @click="create"
+                @click="showUploadFiles"
                 >{{ $t('patients.SDCardUpload') }}
             </base-button>
         </div>
@@ -129,7 +129,13 @@
             @refresh="getData"
         />
         <!-- 患者记录 -->
-        <patient-record ref="patientRecordRef" />
+        <patient-record
+            ref="patientRecordRef"
+            @show-upload-files="showUploadFiles"
+        />
+
+        <!-- 上传SD -->
+        <lazy-upload-files ref="uploadFilesRef" />
     </div>
 </template>
 
@@ -139,6 +145,7 @@
     import PatientRecord from './compononets/patient-record.vue';
     import { getPatient } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
+    import type { UploadFiles } from '#build/components';
 
     const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
         usePageTable(getPatient);
@@ -153,5 +160,10 @@
     const patientRecordRef = ref<InstanceType<typeof PatientRecord>>();
     const showPatientReport = (row: UserInfo) => {
         patientRecordRef.value?.showDialog(row);
+    };
+
+    const uploadFilesRef = ref<InstanceType<typeof UploadFiles>>();
+    const showUploadFiles = (userId?: string) => {
+        uploadFilesRef.value?.showDialog(userId);
     };
 </script>

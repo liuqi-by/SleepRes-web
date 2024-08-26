@@ -117,10 +117,6 @@
                 <Logs v-if="activeIndex === 5" />
             </div>
         </el-dialog>
-        <lazy-upload-files
-            v-if="isShowUploadFiles"
-            v-model="isShowUploadFiles"
-        />
     </div>
 </template>
 
@@ -133,12 +129,6 @@
     import type { UserInfo } from '~/api/login/types';
 
     const dialogVisible = ref(false);
-
-    const isShowUploadFiles = ref(false);
-
-    const showUploadFiles = () => {
-        isShowUploadFiles.value = true;
-    };
 
     const formData = ref<Partial<UserInfo>>({});
 
@@ -182,6 +172,16 @@
         if (e.target.dataset.index) {
             activeIndex.value = Number(e.target.dataset.index);
         }
+    };
+
+    const emit = defineEmits<{
+        (e: 'showUploadFiles', id: string): void;
+    }>();
+    const showUploadFiles = () => {
+        if (!formData.value.id) {
+            return;
+        }
+        emit('showUploadFiles', formData.value.id);
     };
 
     defineExpose({
