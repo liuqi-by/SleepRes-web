@@ -28,14 +28,14 @@
                 <div class="top-header">
                     <el-dropdown type="primary">
                         <el-button type="primary">
-                            上传文件<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                            {{ $t('upload.Select') }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
                         </el-button>
 
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item>
                                     <uploader-btn class="btn">
-                                        <span>上传文件</span>
+                                        <span> {{ $t('upload.UploadFiles') }}</span>
                                     </uploader-btn>
                                 </el-dropdown-item>
                                 <el-dropdown-item>
@@ -43,13 +43,13 @@
                                         class="btn"
                                         :directory="true"
                                     >
-                                        <span>上传文件夹</span>
+                                        <span>{{ $t('upload.UploadFolder') }}</span>
                                     </uploader-btn>
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
-                    <base-button @click="clearFiles"> 清空列表</base-button>
+                    <base-button @click="clearFiles">{{ $t('upload.ClearFiles') }}</base-button>
                 </div>
                 <!-- 定义文件列表 -->
                 <uploader-files>
@@ -123,7 +123,7 @@
                                         size="small"
                                         @click="retry(row)"
                                     >
-                                        retry
+                                        {{ $t('upload.retry') }}
                                     </el-button>
                                 </template>
                             </el-table-column>

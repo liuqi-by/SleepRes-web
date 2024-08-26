@@ -33,3 +33,24 @@ export interface AddPatientReq {
     email: string;
     mobile: string;
 }
+
+export interface editPatientReq {
+    first_name: string;
+    last_name: string;
+    birthdate: string;
+    patientid: string;
+    institution_id: string;
+    institution_name: string;
+    setup_date: string;
+    therapist_id: string;
+    therapist_name: string;
+    physician_id: string;
+    physician_name: string;
+    sn: string;
+    city: string;
+    state: string;
+    address: string;
+    email: string;
+    mobile: string;
+    user_id: string;
+}

@@ -180,5 +180,12 @@
         "Best30Days": "Best 30 Days",
         "First90Days": "First 90 Days",
         "CustomDateRange": "Custom Date Range"
+    },
+    "upload": {
+        "Select": "Select",
+        "UploadFiles": "Upload files",
+        "UploadFolder": "Upload folder",
+        "ClearFiles": "Clear files",
+        "retry": "retry"
     }
 }

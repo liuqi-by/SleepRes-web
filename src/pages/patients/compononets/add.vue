@@ -336,7 +336,7 @@
         therapist_id: userStore.userInfo?.id || '',
     });
 
-    const { firstName, lastName, email, role, office, setupDate } = useFormRules();
+    const { firstName, lastName, email, role, office, setupDate, birthdate, sn } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
@@ -345,7 +345,9 @@
             email,
             group_id: role,
             institution_id: office,
-            setupDate,
+            setup_date: setupDate,
+            birthdate,
+            sn,
         };
     });
 

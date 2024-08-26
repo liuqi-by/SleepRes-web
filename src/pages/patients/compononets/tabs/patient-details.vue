@@ -1,3 +1,4 @@
+<!-- 用户详情 -->
 <template>
     <div class="patient-details">
         <edit-btn v-model="isEdit" />
@@ -75,7 +76,7 @@
                             id: formData.institution_id,
                             name: formData.institution_name,
                         }"
-                        @change="handleChangeOffice"
+                        @change="handleChangeSelect('institution', 'name', $event)"
                         ref="selectOfficeRef"
                         :key="formData.institution_id"
                         :disabled="!isEdit"
@@ -101,7 +102,7 @@
                 :label="$t('patients.Therapist')"
             >
                 <div class="min-w-[192px]">
-                    <el-select
+                    <!-- <el-select
                         v-model="formData.therapist_id"
                         placeholder="Please select"
                         :disabled="!isEdit"
@@ -109,9 +110,24 @@
                         <el-option
                             v-if="userStore.userInfo"
                             :label="userStore.userInfo?.nickname"
-                            :value="userStore.userInfo.id"
+                            :value="String(userStore.userInfo.id)"
                         />
-                    </el-select>
+
+                        <el-option
+                            v-if="userStore.userInfo?.id != formData.therapist_id"
+                            :label="formData.therapist_name"
+                            :value="String(formData.therapist_id)"
+                        />
+                    </el-select> -->
+                    <select-physician
+                        :model-value="{
+                            id: Number(formData.therapist_id),
+                            nickname: formData.therapist_name,
+                        }"
+                        :disabled="!isEdit"
+                        @change="handleChangeSelect('therapist', 'nickname', $event)"
+                        :key="formData.therapist_id"
+                    />
                 </div>
             </el-form-item>
             <el-form-item
@@ -120,8 +136,13 @@
             >
                 <div class="min-w-[192px] form-item">
                     <select-physician
-                        v-model="formData.physician_id"
+                        :model-value="{
+                            id: Number(formData.physician_id),
+                            nickname: formData.physician_name,
+                        }"
                         :disabled="!isEdit"
+                        @change="handleChangeSelect('physician', 'nickname', $event)"
+                        :key="formData.physician_id"
                     />
                 </div>
             </el-form-item>
@@ -213,7 +234,7 @@
                 {{ $t('form.Save') }}
             </base-button>
             <base-button
-                @click="isEdit = false"
+                @click="cancel"
                 :disabled="!isEdit"
             >
                 {{ $t('form.Cancel') }}
@@ -223,20 +244,137 @@
 </template>
 
 <script setup lang="ts">
+    import type { FormInstance } from 'element-plus';
     import editBtn from './edit-btn.vue';
     import { useUserStore } from '~/stores/modules/user';
+    import { editPatient } from '~/api/patient';
 
     const isEdit = ref(false);
 
     const userStore = useUserStore();
 
-    const formData = ref({
-        first_name: '',
+    const props = defineProps({
+        patient: {
+            type: Object,
+            default: () => ({}),
+        },
     });
 
-    const formRules = computed(() => {
-        return {};
+    const formData = ref({
+        first_name: '',
+        last_name: '',
+        birthdate: '',
+        patientid: '',
+        institution_id: '',
+        institution_name: '',
+        setup_date: '',
+        therapist_id: '',
+        therapist_name: '',
+        physician_id: '',
+        physician_name: '',
+        sn: '',
+        city: '',
+        state: '',
+        address: '',
+        email: '',
+        mobile: '',
+        user_id: '',
     });
+
+    watch(
+        () => props.patient,
+        val => {
+            formData.value = {
+                first_name: val.first_name || '',
+                last_name: val.last_name || '',
+                birthdate: val.patient.birthdate || '',
+                patientid: val.patient.patientid || '',
+                institution_id: val.institution_id || '',
+                institution_name: val.institution_name || '',
+                setup_date: val.patient.setup_date || '',
+                therapist_id: val.patient.therapist_id || '',
+                therapist_name: val.patient.therapist_name || '',
+                physician_id: val.patient.physician_id || '',
+                physician_name: val.patient.physician_name || '',
+                sn: val.sn || '',
+                city: val.patient.city || '',
+                state: val.state || '',
+                address: val.address || '',
+                email: val.email || '',
+                mobile: val.mobile || '',
+                user_id: val.id || '',
+            };
+        },
+        {
+            immediate: true,
+            deep: true,
+        },
+    );
+
+    const { firstName, lastName, email, sn } = useFormRules();
+    const formRules = computed(() => {
+        return {
+            first_name: firstName,
+            last_name: lastName,
+            email,
+            sn,
+        };
+    });
+
+    const emit = defineEmits(['update']);
+    const update = inject<Function>('update');
+    const formRef = ref<FormInstance>();
+    const loading = ref(false);
+    const save = () => {
+        formRef.value?.validate(valid => {
+            if (valid) {
+                loading.value = true;
+                editPatient({ ...formData.value })
+                    .then(res => {
+                        loading.value = false;
+                        if (res.code === 1) {
+                            ElMessage.success('Update success');
+                            isEdit.value = false;
+                            emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
+                            update && update();
+                        }
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    });
+            }
+        });
+    };
+
+    const cancel = () => {
+        isEdit.value = false;
+        let val = props.patient;
+        formData.value = {
+            first_name: val.first_name || '',
+            last_name: val.last_name || '',
+            birthdate: val.patient.birthdate || '',
+            patientid: val.patient.patientid || '',
+            institution_id: val.institution_id || '',
+            institution_name: val.institution_name || '',
+            setup_date: val.patient.setup_date || '',
+            therapist_id: val.patient.therapist_id || '',
+            therapist_name: val.patient.therapist_name || '',
+            physician_id: val.patient.physician_id || '',
+            physician_name: val.patient.physician_name || '',
+            sn: val.sn || '',
+            city: val.patient.city || '',
+            state: val.state || '',
+            address: val.address || '',
+            email: val.email || '',
+            mobile: val.mobile || '',
+            user_id: val.id || '',
+        };
+    };
+
+    const handleChangeSelect = (key: string, label: string, val: any) => {
+        formData.value[(key + '_id') as keyof typeof formData.value] = val.id;
+        formData.value[(key + '_name') as keyof typeof formData.value] = val[label];
+    };
 </script>
 
 <style lang="scss" scoped>

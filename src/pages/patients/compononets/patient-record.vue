@@ -8,7 +8,7 @@
             @close="close"
             class="form form-dialog patient-record-dialog"
         >
-            <div class="form-title">Patient Name</div>
+            <div class="form-title">{{ formData.nickname }}</div>
             <base-button
                 type="primary"
                 class="absolute right-[80px] top-[40px]"
@@ -23,73 +23,77 @@
             >
                 <!-- PatientID -->
                 <el-form-item
-                    prop="first_name"
+                    prop="patient.patientid"
                     :label="$t('patients.PatientID')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.first_name"
+                            v-model="formData.patient.patientid"
                             class="form-input"
-                            :placeholder="$t('patients.PatientID')"
                             readonly
                         />
                     </div>
                 </el-form-item>
                 <!-- Equipment -->
                 <el-form-item
-                    prop="first_name"
+                    prop="equipment"
                     :label="$t('patients.Equipment')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.first_name"
+                            v-model="formData.patient.equipment"
                             class="form-input"
-                            :placeholder="$t('patients.Equipment')"
                             readonly
                         />
                     </div>
                 </el-form-item>
                 <!-- DateOfBirth -->
                 <el-form-item
-                    prop="first_name"
+                    prop="birthdate"
                     :label="$t('patients.DateOfBirth')"
                     label-width="120px"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.first_name"
+                            v-model="formData.patient.birthdate"
                             class="form-input"
-                            :placeholder="$t('patients.DateOfBirth')"
                             readonly
                         />
                     </div>
                 </el-form-item>
                 <!-- SetupDate -->
                 <el-form-item
-                    prop="first_name"
+                    prop="setup_date"
                     :label="$t('patients.SetupDate')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.first_name"
+                            v-model="formData.patient.setup_date"
                             class="form-input"
-                            :placeholder="$t('patients.SetupDate')"
                             readonly
                         />
                     </div>
                 </el-form-item>
                 <!-- Compliant -->
                 <el-form-item
-                    prop="first_name"
+                    prop="compliant"
                     :label="$t('patients.Compliant')"
                 >
                     <div class="form-item">
-                        <el-input
-                            v-model="formData.first_name"
-                            class="form-input"
-                            :placeholder="$t('patients.Compliant')"
-                            readonly
-                        />
+                        <div class="el-input">
+                            <div class="el-input__wrapper w-192px h-40px">
+                                <Select
+                                    size="6"
+                                    color="var(--el-color-success)"
+                                    v-if="formData.patient.compliant === 1"
+                                />
+                                <CloseBold
+                                    size="6"
+                                    color="var(--el-color-danger)"
+                                    v-else
+                                />
+                            </div>
+                        </div>
                     </div>
                 </el-form-item>
             </el-form>
@@ -112,7 +116,11 @@
             <div class="tab-content">
                 <TherapyData v-if="activeIndex === 1" />
                 <Prescription v-if="activeIndex === 2" />
-                <PatientDetails v-if="activeIndex === 3" />
+                <PatientDetails
+                    v-if="activeIndex === 3"
+                    :patient="formData"
+                    @update="updatePatient"
+                />
                 <Notes v-if="activeIndex === 4" />
                 <Logs v-if="activeIndex === 5" />
             </div>
@@ -121,6 +129,7 @@
 </template>
 
 <script setup lang="ts">
+    import { Select, CloseBold } from '@element-plus/icons-vue';
     import Logs from './tabs/logs.vue';
     import Notes from './tabs/notes.vue';
     import Prescription from './tabs/prescription.vue';
@@ -137,9 +146,7 @@
     };
 
     const showDialog = (item: UserInfo) => {
-        formData.value = {
-            ...item,
-        };
+        formData.value = item;
         activeIndex.value = 1;
         dialogVisible.value = true;
     };
@@ -182,6 +189,10 @@
             return;
         }
         emit('showUploadFiles', formData.value.id);
+    };
+
+    const updatePatient = (item: UserInfo) => {
+        formData.value = item;
     };
 
     defineExpose({

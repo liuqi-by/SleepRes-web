@@ -1,5 +1,5 @@
 import type { UserInfo } from '../login/types';
-import type { AddPatientReq, GetPatientReq } from './types';
+import type { AddPatientReq, editPatientReq, GetPatientReq } from './types';
 
 /**
  * @description 搜索患者列表&患者列表搜索
@@ -28,5 +28,15 @@ export const getDoctor = (data: GetPatientReq & PageQuery) => {
     return useClientRequest<ResPonseType<UserInfo[]>>('/api/patient/pySearch', {
         method: 'GET',
         query: data,
+    });
+};
+
+/**
+ * @description 修改患者
+ */
+export const editPatient = (data: Partial<editPatientReq>) => {
+    return useClientRequest<ResPonseType<UserInfo>>('/api/patient/edit', {
+        method: 'POST',
+        body: queryString(data),
     });
 };

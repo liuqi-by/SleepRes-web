@@ -7,6 +7,7 @@
         value="id"
         label="nickname"
         searchWidth="400px"
+        v-bind="$attrs"
     >
         <template #option="{ data }">
             <div class="flex justify-between">
@@ -21,8 +22,8 @@
     import { getDoctor } from '~/api/patient';
 
     const value = defineModel({
-        type: String,
-        default: '',
+        type: Object,
+        default: {},
     });
 </script>
 
