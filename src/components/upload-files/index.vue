@@ -140,23 +140,26 @@
 
     const dialogVisible = ref(false);
 
-    let userId;
+    let userId: number | string = 0;
 
     const showDialog = (id?: string) => {
         dialogVisible.value = true;
-        userId = id;
+        userId = id || 0;
     };
 
     const close = () => {
         dialogVisible.value = false;
+        userId = 0;
+        clearFiles();
     };
 
     const options = {
         testChunks: false,
-        target: '/api/common/upload',
+        target: '/api/patient/sd_upload',
         processParams: (file: any) => {
             return {
                 name: file.filename,
+                user_id: userId || 0,
             };
         },
     };

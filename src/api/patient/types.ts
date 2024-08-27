@@ -59,3 +59,13 @@ export interface AddNoteReq {
     note: string;
     user_id: string;
 }
+
+export interface GetLogsReq {
+    user_id: string;
+}
+
+export interface Log {
+    update_content: string;
+    updatetime: string;
+    admin_name: string;
+}
