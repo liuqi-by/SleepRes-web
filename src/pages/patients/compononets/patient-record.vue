@@ -121,7 +121,10 @@
                     :patient="formData"
                     @update="updatePatient"
                 />
-                <Notes v-if="activeIndex === 4" />
+                <Notes
+                    v-if="activeIndex === 4"
+                    @update="updatePatient"
+                />
                 <Logs v-if="activeIndex === 5" />
             </div>
         </el-dialog>
@@ -190,6 +193,8 @@
         }
         emit('showUploadFiles', formData.value.id);
     };
+
+    provide('patient', formData);
 
     const updatePatient = (item: UserInfo) => {
         formData.value = item;

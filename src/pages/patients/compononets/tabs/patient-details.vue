@@ -246,19 +246,17 @@
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
     import editBtn from './edit-btn.vue';
-    import { useUserStore } from '~/stores/modules/user';
     import { editPatient } from '~/api/patient';
+    import type { UserInfo } from '~/api/login/types';
 
     const isEdit = ref(false);
 
-    const userStore = useUserStore();
-
-    const props = defineProps({
-        patient: {
-            type: Object,
-            default: () => ({}),
-        },
-    });
+    // const props = defineProps({
+    //     patient: {
+    //         type: Object,
+    //         default: () => ({}),
+    //     },
+    // });
 
     const formData = ref({
         first_name: '',
@@ -281,29 +279,33 @@
         user_id: '',
     });
 
+    const patient = inject<Ref<UserInfo>>('patient');
+
     watch(
-        () => props.patient,
+        () => patient?.value,
         val => {
-            formData.value = {
-                first_name: val.first_name || '',
-                last_name: val.last_name || '',
-                birthdate: val.patient.birthdate || '',
-                patientid: val.patient.patientid || '',
-                institution_id: val.institution_id || '',
-                institution_name: val.institution_name || '',
-                setup_date: val.patient.setup_date || '',
-                therapist_id: val.patient.therapist_id || '',
-                therapist_name: val.patient.therapist_name || '',
-                physician_id: val.patient.physician_id || '',
-                physician_name: val.patient.physician_name || '',
-                sn: val.sn || '',
-                city: val.patient.city || '',
-                state: val.state || '',
-                address: val.address || '',
-                email: val.email || '',
-                mobile: val.mobile || '',
-                user_id: val.id || '',
-            };
+            if (val) {
+                formData.value = {
+                    first_name: val.first_name || '',
+                    last_name: val.last_name || '',
+                    birthdate: val.patient.birthdate || '',
+                    patientid: val.patient.patientid || '',
+                    institution_id: val.institution_id || '',
+                    institution_name: val.institution_name || '',
+                    setup_date: val.patient.setup_date || '',
+                    therapist_id: val.patient.therapist_id || '',
+                    therapist_name: val.patient.therapist_name || '',
+                    physician_id: val.patient.physician_id || '',
+                    physician_name: val.patient.physician_name || '',
+                    sn: val.sn || '',
+                    city: val.patient.city || '',
+                    state: val.state || '',
+                    address: val.address || '',
+                    email: val.email || '',
+                    mobile: val.mobile || '',
+                    user_id: val.id || '',
+                };
+            }
         },
         {
             immediate: true,
@@ -348,7 +350,8 @@
 
     const cancel = () => {
         isEdit.value = false;
-        let val = props.patient;
+        let val = patient!.value;
+
         formData.value = {
             first_name: val.first_name || '',
             last_name: val.last_name || '',

@@ -12,11 +12,14 @@
             <el-form-item label="Note">
                 <div class="note-list">
                     <li
-                        v-for="item in notesList"
-                        :key="item.date"
+                        v-for="(item, index) in noteList"
+                        :key="index"
                     >
-                        <p>{{ item.date }}</p>
-                        <p>{{ item.content }}</p>
+                        <p>
+                            <b class="m-r-10px">{{ item.nickname }}</b>
+                            {{ item.add_time && moment(item.add_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}
+                        </p>
+                        <p class="m-t-5px">{{ item.note }}</p>
                     </li>
                 </div>
             </el-form-item>
@@ -52,26 +55,19 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
+    import moment from 'moment';
+    import type { UserInfo } from '~/api/login/types';
+    import { addNote } from '~/api/patient';
+
+    const patient = inject<Ref<UserInfo>>('patient');
+
+    const noteList = computed(() => {
+        return patient?.value?.note ? JSON.parse(patient?.value?.note).reverse() : [];
+    });
 
     const formData = reactive({
         notes: '',
     });
-
-    const notesList = ref([
-        {
-            content: '123',
-            date: '2022-01-01',
-        },
-        {
-            content:
-                '测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
-            date: '2022-01-02',
-        },
-        {
-            content: '测试',
-            date: '2022-01-02',
-        },
-    ]);
 
     const { notes } = useFormRules();
     const formRules = computed(() => {
@@ -82,11 +78,31 @@
 
     const loading = ref(false);
     const formRef = ref<FormInstance>(); // 表单ref
+    const emit = defineEmits(['update']);
+    const update = inject<Function>('update');
     // 保存
     const save = () => {
         formRef.value?.validate(valid => {
             if (valid) {
                 loading.value = true;
+                if (!patient?.value.id) {
+                    return;
+                }
+                addNote({
+                    note: formData.notes,
+                    user_id: patient.value.id,
+                })
+                    .then(res => {
+                        if (res.code === 1) {
+                            ElMessage.success(res.msg);
+                            emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
+                            update && update();
+                            formData.notes = '';
+                        }
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    });
             }
         });
     };

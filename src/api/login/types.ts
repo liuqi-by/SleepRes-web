@@ -56,6 +56,8 @@ export interface UserInfo {
     institution_id: string; // 医疗机构id
     institution_name: string; // 医疗机构名称
     patient?: any;
+    note: string;
+    sn: string;
 }
 
 // 注册

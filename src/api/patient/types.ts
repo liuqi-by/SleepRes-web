@@ -54,3 +54,8 @@ export interface editPatientReq {
     mobile: string;
     user_id: string;
 }
+
+export interface AddNoteReq {
+    note: string;
+    user_id: string;
+}
