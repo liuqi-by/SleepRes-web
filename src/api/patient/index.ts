@@ -1,5 +1,5 @@
 import type { UserInfo } from '../login/types';
-import type { AddNoteReq, AddPatientReq, editPatientReq, GetPatientReq } from './types';
+import type { AddNoteReq, AddPatientReq, editPatientReq, GetLogsReq, GetPatientReq, Log } from './types';
 
 /**
  * @description 搜索患者列表&患者列表搜索
@@ -54,9 +54,9 @@ export const addNote = (data: AddNoteReq) => {
 /**
  * @description 获取患者log信息
  */
-export const getLogs = (data: AddNoteReq) => {
-    return useClientRequest<ResPonseType<UserInfo>>('/api/patient/get_log', {
+export const getLogs = (data: GetLogsReq & PageQuery) => {
+    return useClientRequest<ResPonseType<Log[]>>('/api/patient/log_list', {
         method: 'GET',
-        body: queryString(data),
+        query: data,
     });
 };
