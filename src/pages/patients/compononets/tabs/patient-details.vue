@@ -1,3 +1,4 @@
+<!-- 用户详情 -->
 <template>
     <div class="patient-details">
         <edit-btn v-model="isEdit" />

@@ -123,9 +123,9 @@
             </table-module>
         </div>
 
-        <!-- 新增/编辑用户 -->
-        <EditUserDialog
-            ref="editUserDialog"
+        <!-- 新增用户 -->
+        <add-user-dialog
+            ref="addUserDialog"
             @refresh="getData"
         />
         <!-- 患者记录 -->
@@ -141,7 +141,7 @@
 
 <script setup lang="ts">
     import { Select, CloseBold } from '@element-plus/icons-vue';
-    import EditUserDialog from './compononets/edit.vue';
+    import AddUserDialog from './compononets/add.vue';
     import PatientRecord from './compononets/patient-record.vue';
     import { getPatient } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
@@ -160,9 +160,9 @@
     });
 
     // 创建
-    const editUserDialog = ref<InstanceType<typeof EditUserDialog>>();
+    const addUserDialog = ref<InstanceType<typeof AddUserDialog>>();
     const create = () => {
-        editUserDialog.value?.showDialog();
+        addUserDialog.value?.showDialog();
     };
 
     // 查看患者信息
