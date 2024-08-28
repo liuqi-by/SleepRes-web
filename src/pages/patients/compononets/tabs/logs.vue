@@ -50,7 +50,7 @@
     import { getLogs } from '~/api/patient';
     import type { Log } from '~/api/patient/types';
 
-    const pageOption = reactive({
+    const pageOption = ref({
         currentPage: 1,
         pageSize: 25,
         total: 0,
@@ -66,14 +66,14 @@
             return;
         }
         getLogs({
-            page: pageOption.currentPage - 1,
-            pagesize: pageOption.pageSize,
+            page: pageOption.value.currentPage - 1,
+            pagesize: pageOption.value.pageSize,
             user_id: patient.value.id,
         })
             .then(res => {
                 if (res.code === 1) {
                     tableList.value = res.data;
-                    pageOption.total = res.total;
+                    pageOption.value.total = res.data_other.num;
                 }
             })
             .finally(() => {
