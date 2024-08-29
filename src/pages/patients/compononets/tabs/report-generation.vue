@@ -45,34 +45,41 @@
                     range-separator="To"
                     start-placeholder="Start Date"
                     end-placeholder="End Date"
-                    v-if="selectTime === 3"
                 />
             </div>
 
             <template #footer>
-                <span class="dialog-footer">
+                <span class="dialog-footer justify-end!">
                     <el-button
-                        @click="close"
+                        @click="showReportPreview"
                         type="primary"
                         >{{ $t('patients.CreateReport') }}</el-button
                     >
                 </span>
             </template>
         </el-dialog>
+        <report-preview ref="reportPreviewRef" />
     </div>
 </template>
 
 <script setup lang="ts">
+    import ReportPreview from './report-preview.vue';
+
     const dialogVisible = defineModel({
         default: false,
         type: Boolean,
     });
 
+    const reportPreviewRef = ref<InstanceType<typeof ReportPreview>>();
+    const showReportPreview = () => {
+        reportPreviewRef.value?.show(reportType.value);
+    };
+
     const close = () => {
         dialogVisible.value = false;
     };
 
-    // 报告类型
+    // 报告类型 1 合规报告 2 治疗报告
     const reportType = ref(1);
 
     // 选择时间
@@ -84,7 +91,7 @@
 
 <style lang="scss" scoped>
     :deep(.el-dialog) {
-        margin-top: 10vh !important;
+        margin-top: 10vh;
     }
 
     :deep(.el-radio__inner) {

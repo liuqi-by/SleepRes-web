@@ -187,5 +187,10 @@
         "UploadFolder": "Upload folder",
         "ClearFiles": "Clear files",
         "retry": "retry"
+    },
+    "charts": {
+        "use": "Usage",
+        "Abnormal_power_outage_shutdown": "Abnormal power outage shutdown",
+        "unkonwn": "unkonwn"
     }
 }

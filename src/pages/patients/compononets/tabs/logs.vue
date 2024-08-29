@@ -11,6 +11,7 @@
             :total="pageOption.total"
             @size-change="getData"
             @current-change="getData"
+            :pageSizes="[25, 50, 100]"
         >
             <el-table-column
                 type="index"
@@ -92,6 +93,7 @@
             padding: 0 20px 20px;
 
             .el-select {
+                width: 120px;
                 height: 32px;
             }
         }

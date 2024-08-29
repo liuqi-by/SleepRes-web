@@ -19,6 +19,7 @@
                 :total="pageOption.total"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
+                :page-sizes="[25, 50, 100]"
             >
                 <el-table-column
                     prop="account_num"

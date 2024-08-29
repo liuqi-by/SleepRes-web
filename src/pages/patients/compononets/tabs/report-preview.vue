@@ -1,54 +1,237 @@
+<!-- 报告打印预览 -->
 <template>
-    <div class="therapy-data">
-        <!-- 静态信息 -->
-        <div class="static-datas">
-            <div class="static-data-list">
-                <div
-                    class="static-data-item"
-                    v-for="(item, key) in staticList"
-                    :key="key"
-                >
-                    <div class="static-data-label">{{ key }}:</div>
-                    <div class="static-data-value">{{ item }}</div>
+    <div class="report-preview">
+        <el-dialog
+            v-model="dialogVisible"
+            width="900"
+            @close="close"
+            class="form form-dialog"
+        >
+            <div class="form-title">Compliance Report</div>
+            <div class="top-Info">
+                <div class="report-row">
+                    <div class="title">mingzi</div>
+                </div>
+                <div class="report-row-content">
+                    <div class="info-box flex-1">
+                        <div class="label">Date of Birth:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+                </div>
+                <div class="report-row-content">
+                    <div class="info-box">
+                        <div class="label">Patient ID:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">DME Office Name:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Date range of report:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+                </div>
+                <div class="report-row-content">
+                    <div class="info-box">
+                        <div class="label">Patient Phone #:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">DME Office Address:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="label">Mask:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+                </div>
+                <div class="report-row-content">
+                    <div class="info-box">
+                        <div class="label">Therapy Start Date:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">DME Phone #:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Device Name:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
+                </div>
+                <div class="report-row-content">
+                    <div class="info-box flex-1">
+                        <div class="label">Device Serial #:</div>
+                        <div class="detail">123123123123123123</div>
+                    </div>
                 </div>
             </div>
-            <div class="create-btn">
-                <base-button
-                    type="primary"
-                    @click="createReport"
-                    >{{ $t('patients.CreateReport') }}</base-button
-                >
-            </div>
-        </div>
-        <!-- 图表 -->
-        <div class="charts">
-            <div class="time-list">
-                <div
-                    class="time-item"
-                    v-for="item in timeList"
-                    :key="item.label"
-                    :class="{ active: item.value === activeTime }"
-                    @click="handleSelectTime(item.value)"
-                >
-                    {{ item.label }}
+            <div class="mid-content">
+                <div class="compliance-information">
+                    <div class="compliance-module">
+                        <div class="title">Compliance Summary Information</div>
+                        <div class="compliance-row">
+                            <div class="label">Compliance Achieved</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Days with usage</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Days without usage</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Days with usage greater or equal to 4 hrs</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Days with usage less than 4 hrs</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Average Usage per day</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Percentage of days with usage</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                    </div>
+                    <div class="compliance-module">
+                        <div class="title">Auto CPAP Summary</div>
+                        <div class="compliance-row">
+                            <div class="label">Mean Pressure</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Average pressure</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">{{ 'Device pressure <= 95% of the time' }}</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Average time in large leak per day</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Average AHI</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Average AI</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Average HI</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Average CA</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                    </div>
+                    <div class="compliance-module">
+                        <div class="title">Device Settings</div>
+                        <div class="compliance-row">
+                            <div class="label">Min Pressure</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Max Pressure</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Ramp Time</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Ramp Start Pressure</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                        <div class="compliance-row">
+                            <div class="label">Tubing</div>
+                            <div class="detail">123123123123123123</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="chart h-400px">
-                <usage-chart
-                    :usetimes="barChartData.usetimes"
-                    :dates="barChartData.dates"
-                    :sumtime="barChartData.sumtime"
-                    :usetime="barChartData.usetime"
-                />
+            <!-- 底部的图表 -->
+            <div
+                class="bottom-charts"
+                v-if="reportType === 1"
+            >
+                <div class="chart-module">
+                    <div class="chart">
+                        <usage-chart
+                            :usetimes="barChartData.usetimes"
+                            :dates="barChartData.dates"
+                            :sumtime="barChartData.sumtime"
+                            :usetime="barChartData.usetime"
+                        />
+                    </div>
+                </div>
             </div>
-        </div>
-        <!-- 报告生成 -->
-        <report-generation v-model="isShowReportDialog" />
+
+            <div
+                class="bottom-charts"
+                v-else
+            >
+                <div class="chart-module">
+                    <div class="title">Therapy Usage Graph</div>
+                    <div class="chart">
+                        <usage-chart
+                            :usetimes="barChartData.usetimes"
+                            :dates="barChartData.dates"
+                            :sumtime="barChartData.sumtime"
+                            :usetime="barChartData.usetime"
+                        />
+                    </div>
+                </div>
+                <div class="chart-module">
+                    <div class="title">Leak Graph</div>
+                    <div class="chart">
+                        <usage-chart
+                            :usetimes="barChartData.usetimes"
+                            :dates="barChartData.dates"
+                            :sumtime="barChartData.sumtime"
+                            :usetime="barChartData.usetime"
+                        />
+                    </div>
+                </div>
+                <div class="chart-module">
+                    <div class="title">AHI Graph</div>
+                    <div class="chart">
+                        <usage-chart
+                            :usetimes="barChartData.usetimes"
+                            :dates="barChartData.dates"
+                            :sumtime="barChartData.sumtime"
+                            :usetime="barChartData.usetime"
+                        />
+                    </div>
+                </div>
+                <div class="chart-module">
+                    <div class="title">Events Graph</div>
+                    <div class="chart">
+                        <usage-chart
+                            :usetimes="barChartData.usetimes"
+                            :dates="barChartData.dates"
+                            :sumtime="barChartData.sumtime"
+                            :usetime="barChartData.usetime"
+                        />
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script setup lang="ts">
-    import ReportGeneration from './report-generation.vue';
     import UsageChart from './charts/usage-chart.vue';
 
     const barChartData = ref({
@@ -683,105 +866,112 @@
         pulse_min: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 93, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     });
 
-    const staticList = ref({
-        'Days ≥ 4hrs': '20/30',
-        'Avg Pressure 95%': '8.1',
-        'Average AHI': '6.4',
-        'Days < 4 hrs': '10/30',
-        'Average HI': '0.3',
-        'Average CA': '2.3',
-        'Average hours of use': ' 4.5',
-        'Best 30 Days': '66.6%',
-        'Average AI': '4.2',
-        'Average pressure': '7.4',
-        'Average time in High Leak': '00:20',
-        'Average Leak': '10.3 lpm',
+    const dialogVisible = ref(false);
+
+    const close = () => {
+        dialogVisible.value = false;
+    };
+
+    const reportType = ref(1);
+
+    const show = (type: number) => {
+        reportType.value = type;
+        dialogVisible.value = true;
+    };
+
+    defineExpose({
+        show,
     });
-
-    const timeList = ref([
-        { label: '7 Days', value: 7 },
-        { label: '14 Days', value: 14 },
-        { label: '30 Days', value: 30 },
-        { label: '90 Days', value: 90 },
-        { label: '180 Days', value: 180 },
-        { label: '365 Days', value: 365 },
-        { label: 'Best 30', value: 30 },
-    ]);
-
-    const activeTime = ref(7);
-
-    // 选择时间
-    const handleSelectTime = (value: number) => {
-        activeTime.value = value;
-    };
-
-    const isShowReportDialog = ref(false);
-    // 创建报告
-    const createReport = () => {
-        isShowReportDialog.value = true;
-    };
 </script>
 
 <style lang="scss" scoped>
-    .therapy-data {
-        padding: 30px;
-    }
-
-    .static-datas {
-        display: flex;
-    }
-
-    .static-data-list {
-        display: grid;
-        flex: 4;
-        grid-template-columns: repeat(3, 1fr); /* 三列，每列宽度相等 */
-        gap: 10px; /* 网格项之间的间隙 */
-        padding-top: 10px;
-        font-size: $font-small;
-        text-align: center;
-
-        .static-data-item {
-            display: flex;
-            margin-bottom: 10px;
+    .report-preview {
+        :deep(.el-dialog) {
+            margin-top: 2vh;
         }
 
-        .static-data-label {
-            white-space: nowrap;
+        :deep(.el-dialog__body) {
+            color: #000;
         }
     }
 
-    .create-btn {
+    .report-row {
         display: flex;
-        flex: 1;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
     }
 
-    .time-list {
+    .title {
+        font-size: $font-middle;
+        font-weight: bold;
+    }
+
+    .report-row-content {
         display: flex;
-        margin-top: 20px;
+        margin-bottom: 20px;
 
-        .time-item {
+        .info-box {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 80px;
-            height: 40px;
-            cursor: pointer;
-            background-color: #fff;
-            border: 1px solid #ccc;
+            flex-basis: 250px;
+            margin-right: 20px;
 
-            &:not(:last-child) {
-                border-right: 0;
+            &:last-child {
+                margin-right: 0;
             }
 
-            // &.active,
-            // &:hover {
-            //     color: #fff;
-            //     background-color: var(--el-color-primary);
-            //     border-color: var(--el-color-primary);
-            // }
-            @include active;
+            .label {
+                flex-shrink: 0;
+                font-weight: bold;
+            }
+
+            .detail {
+                word-break: break-all;
+                white-space: wrap;
+            }
+        }
+    }
+
+    .mid-content {
+        padding: 10px 40px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        border: 1px solid#000;
+
+        .compliance-module {
+            margin-bottom: 20px;
+
+            .title {
+                font-size: $font-middle;
+            }
+
+            .compliance-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-left: 10px;
+                margin-top: 10px;
+            }
+        }
+    }
+
+    .chart-module {
+        border: 1px solid #000;
+
+        &:not(:last-child) {
+            border-bottom: 0;
+        }
+
+        .title {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            border-bottom: 1px solid #000;
+        }
+
+        .chart {
+            height: 300px;
+            padding: 10px;
         }
     }
 </style>
