@@ -3,7 +3,7 @@
     <div class="report-preview">
         <el-dialog
             v-model="dialogVisible"
-            width="900"
+            width="920"
             @close="close"
             class="form form-dialog"
         >
@@ -186,21 +186,43 @@
                     <div class="title">Therapy Usage Graph</div>
                     <div class="chart">
                         <usage-chart
-                            :usetimes="barChartData.usetimes"
                             :dates="barChartData.dates"
                             :sumtime="barChartData.sumtime"
-                            :usetime="barChartData.usetime"
                         />
+                        <div class="chart-info">
+                            <div class="chart-info-item">
+                                <div class="chart-info-label">Usage days</div>
+                                <div class="chart-info-value">27/28(96%)</div>
+                            </div>
+                            <div class="chart-info-item color-[#00CE79]">
+                                <div class="chart-info-label">>= 4 hour days</div>
+                                <div class="chart-info-value">27(96%)</div>
+                            </div>
+                            <div class="chart-info-item color-[#FF9795]">
+                                <div class="chart-info-label">{{ '< 4 hour days' }}</div>
+                                <div class="chart-info-value">27(96%)</div>
+                            </div>
+                            <div class="chart-info-item">
+                                <div class="chart-info-label">Days not used</div>
+                                <div class="chart-info-value">27(96%)</div>
+                            </div>
+                            <div class="chart-info-item">
+                                <div class="chart-info-label">Days no data</div>
+                                <div class="chart-info-value">27(96%)</div>
+                            </div>
+                            <div class="chart-info-item">
+                                <div class="chart-info-label">Used/day(avg)</div>
+                                <div class="chart-info-value">9.3hrs</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="chart-module">
                     <div class="title">Leak Graph</div>
                     <div class="chart">
                         <usage-chart
-                            :usetimes="barChartData.usetimes"
                             :dates="barChartData.dates"
                             :sumtime="barChartData.sumtime"
-                            :usetime="barChartData.usetime"
                         />
                     </div>
                 </div>
@@ -208,10 +230,8 @@
                     <div class="title">AHI Graph</div>
                     <div class="chart">
                         <usage-chart
-                            :usetimes="barChartData.usetimes"
                             :dates="barChartData.dates"
                             :sumtime="barChartData.sumtime"
-                            :usetime="barChartData.usetime"
                         />
                     </div>
                 </div>
@@ -219,10 +239,8 @@
                     <div class="title">Events Graph</div>
                     <div class="chart">
                         <usage-chart
-                            :usetimes="barChartData.usetimes"
                             :dates="barChartData.dates"
                             :sumtime="barChartData.sumtime"
-                            :usetime="barChartData.usetime"
                         />
                     </div>
                 </div>
@@ -970,8 +988,24 @@
         }
 
         .chart {
+            display: flex;
             height: 300px;
             padding: 10px;
+        }
+
+        .chart-info {
+            flex-shrink: 0;
+        }
+
+        .chart-info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+
+            .chart-info-label {
+                flex-shrink: 0;
+                margin-right: 10px;
+            }
         }
     }
 </style>

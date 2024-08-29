@@ -35,10 +35,8 @@
             </div>
             <div class="chart h-400px">
                 <usage-chart
-                    :usetimes="barChartData.usetimes"
                     :dates="barChartData.dates"
                     :sumtime="barChartData.sumtime"
-                    :usetime="barChartData.usetime"
                 />
             </div>
         </div>
@@ -760,6 +758,7 @@
     .time-list {
         display: flex;
         margin-top: 20px;
+        margin-bottom: 20px;
 
         .time-item {
             display: flex;

@@ -191,6 +191,8 @@
     "charts": {
         "use": "Usage",
         "Abnormal_power_outage_shutdown": "Abnormal power outage shutdown",
-        "unkonwn": "unkonwn"
+        "unkonwn": "unkonwn",
+        "hour": "hrs",
+        "Usage": "Usage"
     }
 }

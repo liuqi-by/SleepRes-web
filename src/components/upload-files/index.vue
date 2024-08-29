@@ -33,11 +33,11 @@
 
                         <template #dropdown>
                             <el-dropdown-menu>
-                                <el-dropdown-item>
+                                <!-- <el-dropdown-item>
                                     <uploader-btn class="btn">
                                         <span> {{ $t('upload.UploadFiles') }}</span>
                                     </uploader-btn>
-                                </el-dropdown-item>
+                                </el-dropdown-item> -->
                                 <el-dropdown-item>
                                     <uploader-btn
                                         class="btn"
@@ -155,7 +155,7 @@
 
     const options = {
         testChunks: false,
-        target: '/api/patient/sd_upload',
+        target: '/api/common/sd_upload',
         processParams: (file: any) => {
             return {
                 name: file.filename,

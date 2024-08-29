@@ -65,7 +65,7 @@ export function useStaticChartCommonOption(dates: BarChartRes['dates']) {
         ],
         yAxis: {
             type: 'value',
-            splitLine: { show: true, lineStyle: { type: 'dashed' } },
+            splitLine: { show: true },
         },
     };
     return {
