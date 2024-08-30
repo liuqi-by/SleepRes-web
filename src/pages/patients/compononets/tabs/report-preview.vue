@@ -7,7 +7,7 @@
             @close="close"
             class="form form-dialog"
         >
-            <div class="form-title">Compliance Report</div>
+            <div class="form-title">{{ reportType === 1 ? 'Compliance Report' : 'Therapy Report' }}</div>
             <div class="top-Info">
                 <div class="report-row">
                     <div class="title">mingzi</div>
@@ -249,10 +249,26 @@
                 <div class="chart-module">
                     <div class="title">AHI Graph</div>
                     <div class="chart">
-                        <usage-chart
+                        <ahi-chart
+                            :ai="barChartData.ai"
+                            :hi="barChartData.hi"
+                            :ahi="barChartData.ahi"
                             :dates="barChartData.dates"
-                            :sumtime="barChartData.sumtime"
                         />
+                        <div class="chart-info">
+                            <div class="chart-info-item">
+                                <div class="chart-info-label">AHI</div>
+                                <div class="chart-info-value">24.0 L/min</div>
+                            </div>
+                            <div class="chart-info-item color-[#b89dc4]">
+                                <div class="chart-info-label">HI</div>
+                                <div class="chart-info-value">23.8</div>
+                            </div>
+                            <div class="chart-info-item color-[#8e62a1]">
+                                <div class="chart-info-label">AI</div>
+                                <div class="chart-info-value">27(96%)</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="chart-module">
@@ -272,6 +288,7 @@
 <script setup lang="ts">
     import UsageChart from './charts/usage-chart.vue';
     import leakChart from './charts/leak-chart.vue';
+    import AhiChart from './charts/ahi-chart.vue';
 
     const barChartData = ref({
         dates: [

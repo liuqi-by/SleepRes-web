@@ -64,9 +64,10 @@
                 max: max >= 200 ? max : 200,
                 min: 0,
             },
+
             series: [
                 {
-                    name: t('report.avg'),
+                    name: t('charts.avg'),
                     type: 'pictorialBar',
                     itemStyle: {
                         color: '#736111',
@@ -76,7 +77,7 @@
                     symbolPosition: 'top',
                     data: props.leak_avg.map(item => {
                         if (!item) {
-                            return null;
+                            return '-';
                         } else {
                             return item;
                         }
@@ -84,9 +85,9 @@
                     zlevel: 10,
                 },
                 {
-                    name: t('report.max'),
+                    name: t('charts.max'),
                     type: 'bar',
-                    barMaxWidth: 21,
+                    barMaxWidth: 40,
 
                     itemStyle: {
                         color: '#f4c430',
