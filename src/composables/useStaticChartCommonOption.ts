@@ -8,16 +8,16 @@ export function useStaticChartCommonOption(dates: BarChartRes['dates']) {
                 rich: {
                     a: {
                         fontFamily: 'Source Han Sans CN',
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: 'bold',
-                        lineHeight: 25,
+
                         color: '#0F1B33',
                     },
                     b: {
                         fontFamily: 'Source Han Sans CN',
-                        fontSize: '16',
+                        fontSize: 14,
                         fontWeight: 350,
-                        lineHeight: 25,
+
                         color: '#6F7685',
                     },
                 },
@@ -48,7 +48,7 @@ export function useStaticChartCommonOption(dates: BarChartRes['dates']) {
             left: '50',
             right: '20',
             bottom: '25',
-            top: '20',
+            top: '35',
             containLabel: false,
         },
 

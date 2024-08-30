@@ -188,6 +188,7 @@
                         <usage-chart
                             :dates="barChartData.dates"
                             :sumtime="barChartData.sumtime"
+                            isShowTitle
                         />
                         <div class="chart-info">
                             <div class="chart-info-item">
@@ -220,10 +221,29 @@
                 <div class="chart-module">
                     <div class="title">Leak Graph</div>
                     <div class="chart">
-                        <usage-chart
+                        <leak-chart
                             :dates="barChartData.dates"
-                            :sumtime="barChartData.sumtime"
+                            :leak_max="barChartData.leak_max"
+                            :leak_avg="barChartData.leak_avg"
                         />
+                        <div class="chart-info">
+                            <div class="chart-info-item">
+                                <div class="chart-info-label">Set threshold</div>
+                                <div class="chart-info-value">24.0 L/min</div>
+                            </div>
+                            <div class="chart-info-item">
+                                <div class="chart-info-label">Maximum(avg)</div>
+                                <div class="chart-info-value">23.8</div>
+                            </div>
+                            <div class="chart-info-item color-[#f4c430]">
+                                <div class="chart-info-label">95th %(avg)</div>
+                                <div class="chart-info-value">27(96%)</div>
+                            </div>
+                            <div class="chart-info-item">
+                                <div class="chart-info-label">Median(avg)</div>
+                                <div class="chart-info-value">20.1</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="chart-module">
@@ -251,6 +271,7 @@
 
 <script setup lang="ts">
     import UsageChart from './charts/usage-chart.vue';
+    import leakChart from './charts/leak-chart.vue';
 
     const barChartData = ref({
         dates: [

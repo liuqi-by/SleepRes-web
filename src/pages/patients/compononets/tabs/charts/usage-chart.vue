@@ -23,7 +23,7 @@
         LegendComponent,
         MarkLineComponent,
     } from 'echarts/components';
-    import type { EChartsOption, YAXisOption } from 'echarts/types/dist/shared.js';
+    import type { YAXisOption } from 'echarts/types/dist/shared.js';
 
     import type { BarChartRes } from '@/api/report/types';
     use([
@@ -41,6 +41,7 @@
     interface PropsInterface {
         dates: BarChartRes['dates'];
         sumtime: BarChartRes['sumtime'];
+        isShowTitle?: boolean;
     }
 
     const props = defineProps<PropsInterface>();
@@ -56,6 +57,21 @@
 
             option.value = {
                 ...commonOption,
+                title: props.isShowTitle
+                    ? {
+                          text: [`{a|${t('charts.Usage')}}`, `{b|（${t('charts.hour')}）}`].join(''),
+                          ...commonOption.title,
+                      }
+                    : {},
+                grid: props.isShowTitle
+                    ? { ...commonOption.grid }
+                    : {
+                          left: '50',
+                          right: '20',
+                          bottom: '25',
+                          top: '20',
+                          containLabel: false,
+                      },
 
                 yAxis: {
                     type: 'value',
