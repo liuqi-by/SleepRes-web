@@ -2,6 +2,7 @@
     "name": "vhealth-web",
     "private": true,
     "type": "module",
+    "version": "0.0.1",
     "scripts": {
         "dev": "nuxt dev --dotenv .env.development --exec",
         "build": "nuxt build --dotenv .env.development --exec",

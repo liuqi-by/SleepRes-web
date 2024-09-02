@@ -12,11 +12,13 @@
             <!-- 页面 -->
             <NuxtPage />
         </NuxtLayout>
+        <div class="version">v{{ version }}</div>
     </ElConfigProvider>
 </template>
 <script setup lang="ts">
     import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
     import en from 'element-plus/dist/locale/en.mjs';
+    import { version } from '../package.json';
     import { DeviceEnum } from './enums/AppSettingsEnum';
     import { useAppStore } from '@/stores/modules/app';
     import { useUserStore } from '@/stores/modules/user';
@@ -80,5 +82,14 @@
     .page-enter-from,
     .page-leave-to {
         opacity: 0;
+    }
+
+    .version {
+        position: fixed;
+        bottom: 0;
+        width: 100vw;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
     }
 </style>
