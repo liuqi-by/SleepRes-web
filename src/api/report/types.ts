@@ -147,3 +147,36 @@ export type AllDataRes = {
 };
 
 export interface UsageInfoRes {}
+
+export interface DeviceReportRes {
+    start_date: string;
+    end_date: string;
+    sn: string;
+    select_days: string;
+    usage_days_use_not: string;
+    usage_days_select_not: string;
+    usage_days_use: string;
+    usage_days_select: string;
+    usetime_avg_use: string;
+    usetime_avg_select: string;
+    usetime: string;
+    not_use_days: string;
+    use_days: string;
+    pulse_avg: string;
+    spo_avg: string;
+    rr_avg: string;
+    rr_max: string;
+    tv_avg: string;
+    tv_max: string;
+    leak_avg: string;
+    leak_max: string;
+    pressure_95: string;
+    pressure_avg: string;
+    pressure_max: string;
+    odi: string;
+    ahi: string;
+    hi: string;
+    ai: string;
+    apnea: string;
+    usetimes: string;
+}

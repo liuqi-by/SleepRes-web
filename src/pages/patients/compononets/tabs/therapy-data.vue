@@ -5,10 +5,11 @@
             <div class="static-data-list">
                 <div
                     class="static-data-item"
-                    v-for="(item, key) in staticList"
+                    v-for="(item, key) in deviceReport"
                     :key="key"
                 >
-                    <div class="static-data-label">{{ key }}:</div>
+                    <div class="static-data-label">{{ EnumStaticInfo[key] }}:</div>
+                    &nbsp;
                     <div class="static-data-value">{{ item }}</div>
                 </div>
             </div>
@@ -49,7 +50,8 @@
     import moment from 'moment';
     import ReportGeneration from './report-generation.vue';
     import UsageChart from './charts/usage-chart.vue';
-    import { getStaticInfo, getUsageInfo } from '~/api/report';
+    import { getDeviceReport, getUsageInfo } from '~/api/report';
+    import type { UserInfo } from '~/api/login/types';
 
     const barChartData = ref({
         dates: [
@@ -683,21 +685,6 @@
         pulse_min: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 93, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     });
 
-    const staticList = ref({
-        'Days ≥ 4hrs': '20/30',
-        'Avg Pressure 95%': '8.1',
-        'Average AHI': '6.4',
-        'Days < 4 hrs': '10/30',
-        'Average HI': '0.3',
-        'Average CA': '2.3',
-        'Average hours of use': ' 4.5',
-        'Best 30 Days': '66.6%',
-        'Average AI': '4.2',
-        'Average pressure': '7.4',
-        'Average time in High Leak': '00:20',
-        'Average Leak': '10.3 lpm',
-    });
-
     const timeList = ref([
         { label: '7 Days', value: 7 },
         { label: '14 Days', value: 14 },
@@ -735,21 +722,65 @@
         isShowReportDialog.value = true;
     };
 
+    const deviceReport = ref({
+        usage_days_select: '-',
+        pressure_95: '-',
+        ahi: '-',
+        usage_days_select_not: '-',
+        hi: '-',
+        'Average CA': '-',
+        usetime_avg_select: '-',
+        'Best 30 Days': '-',
+        ai: '-',
+        pressure_avg: '-',
+        'Average time in High Leak': '-',
+        leak_avg: '-',
+    });
+    enum EnumStaticInfo {
+        usage_days_select = 'Days ≥ 4hrs',
+        pressure_95 = 'Avg Pressure 95%',
+        ahi = 'Average AHI',
+        usage_days_select_not = 'Days < 4 hrs',
+        hi = 'Average HI',
+        'Average CA' = 'Average CA',
+        usetime_avg_select = 'Average hours of use',
+        'Best 30 Days' = 'Best 30 Days',
+        ai = 'Average AI',
+        pressure_avg = 'Average pressure',
+        'Average time in High Leak' = 'Average time in High Leak',
+        leak_avg = 'Average Leak',
+    }
     // 获取静态信息
-    const getStaticData = (rangeDate: string[]) => {
-        getStaticInfo({
-            sn: '',
+    const getStaticReport = (rangeDate: string[]) => {
+        if (!patient || !patient.value.sn) {
+            return;
+        }
+
+        getDeviceReport({
+            sn: patient.value.sn,
             start_date: rangeDate[0],
             end_date: rangeDate[1],
         }).then(res => {
-            console.log(res);
+            if (res.code === 1) {
+                for (const key of Object.keys(deviceReport.value) as Array<keyof typeof deviceReport.value>) {
+                    if (res.data[key]) {
+                        deviceReport.value[key] = res.data[key];
+                    }
+                }
+            }
         });
     };
 
+    const patient = inject<Ref<UserInfo>>('patient');
+
     // 获取图表信息
     const getChartData = (rangeDate: string[]) => {
+        if (!patient || !patient.value.sn) {
+            return;
+        }
+
         getUsageInfo({
-            sn: '',
+            sn: patient.value.sn,
             start_date: rangeDate[0],
             end_date: rangeDate[1],
         }).then(res => {
@@ -761,7 +792,7 @@
         activeTime,
         () => {
             const rangeDate = getRangeDate();
-            getStaticData(rangeDate);
+            getStaticReport(rangeDate);
             getChartData(rangeDate);
         },
         {
