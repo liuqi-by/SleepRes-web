@@ -75,6 +75,7 @@
                             class="form-input"
                             :placeholder="$t('login.SleepResAccountNumber')"
                             type="text"
+                            maxlength="20"
                         />
                     </div>
                 </el-form-item>
@@ -89,6 +90,7 @@
                             class="form-input"
                             :placeholder="$t('login.PhysicianNPI')"
                             type="text"
+                            maxlength="20"
                         />
                     </div>
                 </el-form-item>
@@ -119,6 +121,7 @@
                             :placeholder="`${$t('login.PhoneNumber')}`"
                             type="text"
                             :maxlength="inputLength.mobile"
+                            @input="filterMobile('mobile')"
                         />
                     </div>
                 </el-form-item>
@@ -218,6 +221,7 @@
         last_name: '',
         type: 2,
     });
+    const { filterMobile } = useFilterInput(formData);
     const { dmeName, practiceName, firstName, lastName, email } = useFormRules();
     // 表单规则
     const formRules = computed(() => {

@@ -9,8 +9,13 @@ export default function useFilterInput(formData: Ref<any>) {
         formData.value[key] = formData.value[key].replace(/[^a-zA-Z0-9]/gi, '');
     };
 
+    const filterMobile = (key: string) => {
+        // 只显示数字
+        formData.value[key] = formData.value[key].replace(/[^0-9-]/gi, '');
+    };
     return {
         filterChart,
         filterNumberAndChart,
+        filterMobile,
     };
 }

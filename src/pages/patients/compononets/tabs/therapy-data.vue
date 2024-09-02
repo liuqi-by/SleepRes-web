@@ -46,8 +46,10 @@
 </template>
 
 <script setup lang="ts">
+    import moment from 'moment';
     import ReportGeneration from './report-generation.vue';
     import UsageChart from './charts/usage-chart.vue';
+    import { getStaticInfo, getUsageInfo } from '~/api/report';
 
     const barChartData = ref({
         dates: [
@@ -703,13 +705,27 @@
         { label: '90 Days', value: 90 },
         { label: '180 Days', value: 180 },
         { label: '365 Days', value: 365 },
-        { label: 'Best 30', value: 30 },
+        { label: 'Best 30', value: 'best30' },
     ]);
 
-    const activeTime = ref(7);
+    // 时间默认是30天
+    const activeTime = ref<string | number>(30);
+
+    const getRangeDate = () => {
+        if (typeof activeTime.value === 'string') {
+            return [moment().subtract(29, 'day').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')];
+        } else {
+            return [
+                moment()
+                    .subtract(activeTime.value - 1, 'day')
+                    .format('YYYY-MM-DD'),
+                moment().format('YYYY-MM-DD'),
+            ];
+        }
+    };
 
     // 选择时间
-    const handleSelectTime = (value: number) => {
+    const handleSelectTime = (value: number | string) => {
         activeTime.value = value;
     };
 
@@ -718,6 +734,40 @@
     const createReport = () => {
         isShowReportDialog.value = true;
     };
+
+    // 获取静态信息
+    const getStaticData = (rangeDate: string[]) => {
+        getStaticInfo({
+            sn: '',
+            start_date: rangeDate[0],
+            end_date: rangeDate[1],
+        }).then(res => {
+            console.log(res);
+        });
+    };
+
+    // 获取图表信息
+    const getChartData = (rangeDate: string[]) => {
+        getUsageInfo({
+            sn: '',
+            start_date: rangeDate[0],
+            end_date: rangeDate[1],
+        }).then(res => {
+            console.log(res);
+        });
+    };
+
+    watch(
+        activeTime,
+        () => {
+            const rangeDate = getRangeDate();
+            getStaticData(rangeDate);
+            getChartData(rangeDate);
+        },
+        {
+            immediate: true,
+        },
+    );
 </script>
 
 <style lang="scss" scoped>

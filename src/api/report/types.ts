@@ -145,3 +145,5 @@ type ConnectChart = 'pressure' | 'flow' | 'leak' | 'spo' | 'pulse';
 export type AllDataRes = {
     [key in ConnectChart]: ConnectChartRes;
 };
+
+export interface UsageInfoRes {}

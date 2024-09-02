@@ -9,11 +9,11 @@ export const REGULAR = {
 // input 长度限制
 export const inputLength = {
     address: 100,
-    name: 20,
+    name: 18,
     remarkName: 20,
     password: 16,
     sn: 12,
-    mobile: 20,
+    mobile: 12,
     email: 50,
     height: 3,
     weight: 3,
