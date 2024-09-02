@@ -90,7 +90,7 @@
                             class="form-input"
                             :placeholder="$t('login.PhysicianNPI')"
                             type="text"
-                            maxlength="20"
+                            :maxlength="inputLength.account_id"
                         />
                     </div>
                 </el-form-item>

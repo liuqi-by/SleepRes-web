@@ -42,7 +42,7 @@
         "PhysicianNPI": "Physician NPI number",
         "logout": "Login Out",
         "ConfirmLogout": "Are you sure you want to log out?",
-        "passwordRule": "Password must be 6-16 characters",
+        "passwordRule": "Password must be 10-20 characters,And with 1 special character",
         "resetPwdSuccess": "Password reset success"
     },
     "message": {

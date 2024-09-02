@@ -20,4 +20,7 @@ export const inputLength = {
     remark: 225,
     zipCode: 5,
     note: 1000,
+    account_num: 20,
+    account_id: 20,
+    accountName: 18,
 };

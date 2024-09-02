@@ -140,6 +140,7 @@
                             class="form-input"
                             :placeholder="$t('users.NPI')"
                             type="text"
+                            :maxlength="inputLength.account_id"
                         />
                     </div>
                 </el-form-item>

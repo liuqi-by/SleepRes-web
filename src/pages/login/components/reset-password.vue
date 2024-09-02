@@ -31,6 +31,7 @@
                             class="form-input"
                             :placeholder="`${$t('login.Email')}`"
                             :readonly="isEdit"
+                            :maxlength="inputLength.email"
                         />
                     </div>
                 </el-form-item>

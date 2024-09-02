@@ -80,9 +80,14 @@ export function useFormRules(formData?: any) {
                 message: t('form.PleaseEnter') + t('login.password'),
             },
             {
-                min: 6,
-                max: 16,
-                message: t('login.passwordRule'),
+                validator: (_rule: any, value: string, callback: any) => {
+                    if (value && value.length <= 20 && value.length >= 10 && /^(?=\S*[!@#$%^&*? ])\S*$/.test(value)) {
+                        callback();
+                    } else {
+                        return callback(new Error(t('login.passwordRule')));
+                    }
+                },
+                // message: t('login.passwordRule'),
                 trigger: 'blur',
             },
         ],

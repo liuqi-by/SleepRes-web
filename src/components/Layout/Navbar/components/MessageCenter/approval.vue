@@ -76,6 +76,7 @@
                             class="form-input"
                             :placeholder="$t('login.SleepResAccountNumber')"
                             type="text"
+                            :maxlength="inputLength.account_num"
                         />
                     </div>
                 </el-form-item>
@@ -90,6 +91,7 @@
                             class="form-input"
                             :placeholder="$t('login.PhysicianNPI')"
                             type="text"
+                            :maxlength="inputLength.account_id"
                         />
                     </div>
                 </el-form-item>
@@ -150,10 +152,11 @@
                             class="form-input"
                             :placeholder="`${$t('message.AccountName')}`"
                             type="text"
+                            :maxlength="inputLength.accountName"
                         />
                     </div>
                 </el-form-item>
-                <!-- AccountName -->
+                <!-- AccountNumber -->
                 <el-form-item
                     prop="account_num"
                     :label="$t('message.AccountNumber')"
@@ -165,6 +168,7 @@
                             class="form-input"
                             :placeholder="`${$t('message.AccountNumber')}`"
                             type="text"
+                            :maxlength="inputLength.account_num"
                         />
                     </div>
                 </el-form-item>

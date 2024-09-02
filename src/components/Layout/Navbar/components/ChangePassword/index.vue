@@ -38,6 +38,8 @@
                             name="password"
                             class="form-input"
                             show-password
+                            :maxlength="inputLength.password"
+                            @input="filterChart('password')"
                         />
                     </div>
                 </el-form-item>
@@ -89,6 +91,7 @@
     };
     const editFormData = ref({ ...initEditFormData });
 
+    const { filterChart } = useFilterInput(editFormData);
     const { password, confirmPassword, oldPassword } = useFormRules(editFormData);
     const editFormRules = computed(() => {
         return {
