@@ -19,8 +19,8 @@
                     v-model="reportType"
                     size="large"
                 >
-                    <el-radio :label="1">{{ $t('patients.ComplianceReport') }}</el-radio>
-                    <el-radio :label="2">{{ $t('patients.TherapyReport') }}</el-radio>
+                    <el-radio :value="1">{{ $t('patients.ComplianceReport') }}</el-radio>
+                    <el-radio :value="2">{{ $t('patients.TherapyReport') }}</el-radio>
                 </el-radio-group>
             </div>
             <!-- Timeframe -->
@@ -33,9 +33,9 @@
                         v-model="selectTime"
                         size="large"
                     >
-                        <el-radio :label="1">{{ $t('patients.Best30Days') }}</el-radio>
-                        <el-radio :label="2">{{ $t('patients.First90Days') }}</el-radio>
-                        <el-radio :label="3">{{ $t('patients.CustomDateRange') }}</el-radio>
+                        <el-radio :value="1">{{ $t('patients.Best30Days') }}</el-radio>
+                        <el-radio :value="2">{{ $t('patients.First90Days') }}</el-radio>
+                        <el-radio :value="3">{{ $t('patients.CustomDateRange') }}</el-radio>
                     </el-radio-group>
                 </div>
                 <el-date-picker
@@ -45,6 +45,9 @@
                     range-separator="To"
                     start-placeholder="Start Date"
                     end-placeholder="End Date"
+                    v-if="selectTime === 3"
+                    :disabled-date="disabledDateFun"
+                    value-format="YYYY-MM-DD"
                 />
             </div>
 
@@ -72,11 +75,35 @@
 
     const reportPreviewRef = ref<InstanceType<typeof ReportPreview>>();
     const showReportPreview = () => {
-        reportPreviewRef.value?.show(reportType.value);
+        let dates: (string | number)[] = [];
+        switch (selectTime.value) {
+            case 1:
+                dates = [30, 30];
+                break;
+            case 2:
+                dates = [90, 90];
+                break;
+            case 3:
+                if (!customDate.value) {
+                    ElMessage.error('Please select custom date range');
+                    return;
+                }
+                dates = [customDate.value[0], customDate.value[1]];
+                break;
+        }
+
+        reportPreviewRef.value?.show({
+            reportType: reportType.value,
+            customDate: dates,
+            selectTime: selectTime.value,
+        });
     };
 
     const close = () => {
         dialogVisible.value = false;
+        reportType.value = 1;
+        selectTime.value = 1;
+        customDate.value = [];
     };
 
     // 报告类型 1 合规报告 2 治疗报告
@@ -86,7 +113,7 @@
     const selectTime = ref(1);
 
     // 自定义时间
-    const customDate = ref();
+    const customDate = ref<string[]>([]);
 </script>
 
 <style lang="scss" scoped>

@@ -10,7 +10,7 @@
                 >
                     <div class="static-data-label">{{ EnumStaticInfo[key] }}:</div>
                     &nbsp;
-                    <div class="static-data-value">{{ item }}</div>
+                    <div class="static-data-value">{{ key === 'best30' ? item + '%' : item }}</div>
                 </div>
             </div>
             <div class="create-btn">
@@ -53,7 +53,7 @@
     import moment from 'moment';
     import ReportGeneration from './report-generation.vue';
     import UsageChart from './charts/usage-chart.vue';
-    import { getDeviceReport, getUsageInfo, getBarChart } from '~/api/report';
+    import { getDeviceReport, getBarChart } from '~/api/report';
     import type { UserInfo } from '~/api/login/types';
     import type { BarChartRes } from '~/api/report/types';
 
@@ -93,9 +93,9 @@
     const activeTime = ref<string | number>(30);
 
     const getRangeDate = () => {
-        if (typeof activeTime.value === 'string') {
-            return [moment().subtract(29, 'day').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')];
-        } else {
+        if (activeTime.value === 'best30') {
+            return [30, 30];
+        } else if (typeof activeTime.value === 'number') {
             return [
                 moment()
                     .subtract(activeTime.value - 1, 'day')
@@ -124,7 +124,7 @@
         hi: '-',
         'Average CA': '-',
         usetime_avg_select: '-',
-        'Best 30 Days': '-',
+        best30: '0',
         ai: '-',
         pressure_avg: '-',
         'Average time in High Leak': '-',
@@ -138,12 +138,13 @@
         hi = 'Average HI',
         'Average CA' = 'Average CA',
         usetime_avg_select = 'Average hours of use',
-        'Best 30 Days' = 'Best 30 Days',
+        best30 = 'Best 30 Days',
         ai = 'Average AI',
         pressure_avg = 'Average pressure',
         'Average time in High Leak' = 'Average time in High Leak',
         leak_avg = 'Average Leak',
     }
+
     // 获取静态信息
     const getStaticReport = (rangeDate: string[]) => {
         if (!patient || !patient.value.sn) {

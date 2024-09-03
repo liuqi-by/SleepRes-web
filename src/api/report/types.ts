@@ -1,8 +1,8 @@
 // 静态信息
 export interface StaticInfoReq {
     sn: string;
-    start_date: string;
-    end_date: string;
+    start_date: string | number;
+    end_date: string | number;
 }
 
 export interface BarChartRes {
@@ -38,27 +38,8 @@ export interface ParamInfoRes {
 // 柱状图表数据
 export interface BarChartReq {
     sn: string;
-    start_date: string;
-    end_date: string;
-}
-
-export interface BarChartRes {
-    dates: string[];
-    sumtime: number[];
-    usetime: string[];
-    usetimes: (null | number)[][];
-    pressure_max: (number | string)[];
-    pressure_95: (number | string)[];
-    pressure_avg: (number | string)[];
-    leak_max: number[];
-    leak_avg: number[];
-    ahi: number[];
-    hi: number[];
-    ai: number[];
-    spo_avg: number[];
-    spo_min: number[];
-    pulse_avg: number[];
-    pulse_min: number[];
+    start_date: string | number;
+    end_date: string | number;
 }
 
 // 曲线图表数据

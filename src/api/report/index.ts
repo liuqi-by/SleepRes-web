@@ -1,4 +1,4 @@
-import type { StaticInfoReq, UsageInfoRes, DeviceReportRes, BarChartReq, BarChartRes } from './types';
+import type { StaticInfoReq, UsageInfoRes, DeviceReportRes, BarChartReq, BarChartRes, ParamInfoRes } from './types';
 
 /**
  * @description 获取静态信息\图表
@@ -39,3 +39,13 @@ export const getDeviceReport = (data: StaticInfoReq) => {
 //         params: { sn },
 //     });
 // };
+
+/**
+ * @description 获取参数信息
+ */
+export const getParamInfo = (data: StaticInfoReq) => {
+    return useClientRequest<ResPonseType<ParamInfoRes>>('/api/report/log', {
+        method: 'GET',
+        params: data,
+    });
+};

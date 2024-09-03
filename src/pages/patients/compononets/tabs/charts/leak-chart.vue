@@ -40,7 +40,7 @@
         dates: BarChartRes['dates'];
         leak_max: BarChartRes['leak_max'];
         leak_avg: BarChartRes['leak_avg'];
-        leak_95: BarChartRes['leak_avg'];
+        // leak_95: BarChartRes['leak_avg'];
     }
 
     const props = defineProps<PropsInterface>();
@@ -73,7 +73,7 @@
                         color: '#736111',
                     },
                     symbol: 'rect',
-                    symbolSize: [16, 2],
+                    symbolSize: ['100%', 2],
                     symbolPosition: 'top',
                     data: props.leak_avg.map(item => {
                         if (!item) {

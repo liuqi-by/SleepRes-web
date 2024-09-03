@@ -7,64 +7,66 @@
             @close="close"
             class="form form-dialog"
         >
-            <div class="form-title">{{ reportType === 1 ? 'Compliance Report' : 'Therapy Report' }}</div>
+            <div class="form-title">{{ options.reportType === 1 ? 'Compliance Report' : 'Therapy Report' }}</div>
             <div class="top-Info">
                 <div class="report-row">
-                    <div class="title">mingzi</div>
+                    <div class="title">{{ patient?.nickname }}</div>
                 </div>
                 <div class="report-row-content">
-                    <div class="info-box flex-1">
+                    <div class="info-box">
                         <div class="label">Date of Birth:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.patient.birthdate }}</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Date range of report:</div>
+                        <div class="detail text-nowrap!">
+                            {{ barChartData.dates[0] }} - {{ barChartData.dates[barChartData.dates.length - 1] }}
+                        </div>
                     </div>
                 </div>
                 <div class="report-row-content">
                     <div class="info-box">
                         <div class="label">Patient ID:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.patient.patientid }}</div>
                     </div>
                     <div class="info-box">
                         <div class="label">DME Office Name:</div>
-                        <div class="detail">123123123123123123</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="label">Date range of report:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.institution_name }}</div>
                     </div>
                 </div>
                 <div class="report-row-content">
                     <div class="info-box">
                         <div class="label">Patient Phone #:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.mobile }}</div>
                     </div>
                     <div class="info-box">
                         <div class="label">DME Office Address:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.address }}</div>
                     </div>
 
                     <div class="info-box">
                         <div class="label">Mask:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.patient.mask }}</div>
                     </div>
                 </div>
                 <div class="report-row-content">
                     <div class="info-box">
                         <div class="label">Therapy Start Date:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.patient.setup_date }}</div>
                     </div>
                     <div class="info-box">
                         <div class="label">DME Phone #:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.mobile }}</div>
                     </div>
                     <div class="info-box">
                         <div class="label">Device Name:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.device_type }}</div>
                     </div>
                 </div>
                 <div class="report-row-content">
                     <div class="info-box flex-1">
                         <div class="label">Device Serial #:</div>
-                        <div class="detail">123123123123123123</div>
+                        <div class="detail">{{ patient?.sn }}</div>
                     </div>
                 </div>
             </div>
@@ -78,28 +80,28 @@
                         </div>
                         <div class="compliance-row">
                             <div class="label">Days with usage</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.use_days }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Days without usage</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.not_use_days }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Days with usage greater or equal to 4 hrs</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.usage_days_use }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Days with usage less than 4 hrs</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.usage_days_use_not }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average Usage per day</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.usetime_avg_select }}</div>
                         </div>
-                        <div class="compliance-row">
+                        <!-- <div class="compliance-row">
                             <div class="label">Percentage of days with usage</div>
                             <div class="detail">123123123123123123</div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="compliance-module">
                         <div class="title">Auto CPAP Summary</div>
@@ -109,11 +111,11 @@
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average pressure</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.pressure_avg }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">{{ 'Device pressure <= 95% of the time' }}</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ 123123123123123123 }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average time in large leak per day</div>
@@ -121,163 +123,158 @@
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average AHI</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.ahi }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average AI</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.ai }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average HI</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.hi }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average CA</div>
                             <div class="detail">123123123123123123</div>
                         </div>
                     </div>
-                    <div class="compliance-module">
+                    <div
+                        class="compliance-module"
+                        v-if="deviceSettings && deviceSettings.length > 0"
+                    >
                         <div class="title">Device Settings</div>
-                        <div class="compliance-row">
-                            <div class="label">Min Pressure</div>
-                            <div class="detail">123123123123123123</div>
-                        </div>
-                        <div class="compliance-row">
-                            <div class="label">Max Pressure</div>
-                            <div class="detail">123123123123123123</div>
-                        </div>
-                        <div class="compliance-row">
-                            <div class="label">Ramp Time</div>
-                            <div class="detail">123123123123123123</div>
-                        </div>
-                        <div class="compliance-row">
-                            <div class="label">Ramp Start Pressure</div>
-                            <div class="detail">123123123123123123</div>
-                        </div>
-                        <div class="compliance-row">
-                            <div class="label">Tubing</div>
-                            <div class="detail">123123123123123123</div>
+
+                        <div
+                            class="compliance-row"
+                            v-for="(item, index) in deviceSettings"
+                            :key="index"
+                        >
+                            <div class="label">{{ item.label }}</div>
+                            <div class="detail">{{ item.value }}</div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- 底部的图表 -->
-            <div
-                class="bottom-charts"
-                v-if="reportType === 1"
-            >
-                <div class="chart-module">
-                    <div class="chart">
-                        <usage-chart
-                            :usetimes="barChartData.usetimes"
-                            :dates="barChartData.dates"
-                            :sumtime="barChartData.sumtime"
-                            :usetime="barChartData.usetime"
-                        />
+            <div v-loading="loading">
+                <div
+                    class="bottom-charts"
+                    v-if="options.reportType === 1"
+                >
+                    <div class="chart-module">
+                        <div class="chart">
+                            <usage-chart
+                                :usetimes="barChartData.usetimes"
+                                :dates="barChartData.dates"
+                                :sumtime="barChartData.sumtime"
+                                :usetime="barChartData.usetime"
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div
-                class="bottom-charts"
-                v-else
-            >
-                <div class="chart-module">
-                    <div class="title">Therapy Usage Graph</div>
-                    <div class="chart">
-                        <usage-chart
-                            :dates="barChartData.dates"
-                            :sumtime="barChartData.sumtime"
-                            isShowTitle
-                        />
-                        <div class="chart-info">
-                            <div class="chart-info-item">
-                                <div class="chart-info-label">Usage days</div>
-                                <div class="chart-info-value">27/28(96%)</div>
-                            </div>
-                            <div class="chart-info-item color-[#00CE79]">
-                                <div class="chart-info-label">>= 4 hour days</div>
-                                <div class="chart-info-value">27(96%)</div>
-                            </div>
-                            <div class="chart-info-item color-[#FF9795]">
-                                <div class="chart-info-label">{{ '< 4 hour days' }}</div>
-                                <div class="chart-info-value">27(96%)</div>
-                            </div>
-                            <div class="chart-info-item">
-                                <div class="chart-info-label">Days not used</div>
-                                <div class="chart-info-value">27(96%)</div>
-                            </div>
-                            <div class="chart-info-item">
-                                <div class="chart-info-label">Days no data</div>
-                                <div class="chart-info-value">27(96%)</div>
-                            </div>
-                            <div class="chart-info-item">
-                                <div class="chart-info-label">Used/day(avg)</div>
-                                <div class="chart-info-value">9.3hrs</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="chart-module">
-                    <div class="title">Leak Graph</div>
-                    <div class="chart">
-                        <leak-chart
-                            :dates="barChartData.dates"
-                            :leak_max="barChartData.leak_max"
-                            :leak_avg="barChartData.leak_avg"
-                        />
-                        <div class="chart-info">
-                            <div class="chart-info-item">
-                                <div class="chart-info-label">Set threshold</div>
-                                <div class="chart-info-value">24.0 L/min</div>
-                            </div>
-                            <div class="chart-info-item">
-                                <div class="chart-info-label">Maximum(avg)</div>
-                                <div class="chart-info-value">23.8</div>
-                            </div>
-                            <div class="chart-info-item color-[#f4c430]">
-                                <div class="chart-info-label">95th %(avg)</div>
-                                <div class="chart-info-value">27(96%)</div>
-                            </div>
-                            <div class="chart-info-item">
-                                <div class="chart-info-label">Median(avg)</div>
-                                <div class="chart-info-value">20.1</div>
+                <div
+                    class="bottom-charts"
+                    v-else
+                >
+                    <div class="chart-module">
+                        <div class="title">Therapy Usage Graph</div>
+                        <div class="chart">
+                            <usage-chart
+                                :dates="barChartData.dates"
+                                :sumtime="barChartData.sumtime"
+                                isShowTitle
+                            />
+                            <div class="chart-info">
+                                <div class="chart-info-item">
+                                    <div class="chart-info-label">Usage days</div>
+                                    <div class="chart-info-value">27/28(96%)</div>
+                                </div>
+                                <div class="chart-info-item color-[#00CE79]">
+                                    <div class="chart-info-label">>= 4 hour days</div>
+                                    <div class="chart-info-value">27(96%)</div>
+                                </div>
+                                <div class="chart-info-item color-[#FF9795]">
+                                    <div class="chart-info-label">{{ '< 4 hour days' }}</div>
+                                    <div class="chart-info-value">27(96%)</div>
+                                </div>
+                                <div class="chart-info-item">
+                                    <div class="chart-info-label">Days not used</div>
+                                    <div class="chart-info-value">27(96%)</div>
+                                </div>
+                                <div class="chart-info-item">
+                                    <div class="chart-info-label">Days no data</div>
+                                    <div class="chart-info-value">27(96%)</div>
+                                </div>
+                                <div class="chart-info-item">
+                                    <div class="chart-info-label">Used/day(avg)</div>
+                                    <div class="chart-info-value">9.3hrs</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="chart-module">
-                    <div class="title">AHI Graph</div>
-                    <div class="chart">
-                        <ahi-chart
-                            :ai="barChartData.ai"
-                            :hi="barChartData.hi"
-                            :ahi="barChartData.ahi"
-                            :dates="barChartData.dates"
-                        />
-                        <div class="chart-info">
-                            <div class="chart-info-item">
-                                <div class="chart-info-label">AHI</div>
-                                <div class="chart-info-value">24.0 L/min</div>
-                            </div>
-                            <div class="chart-info-item color-[#b89dc4]">
-                                <div class="chart-info-label">HI</div>
-                                <div class="chart-info-value">23.8</div>
-                            </div>
-                            <div class="chart-info-item color-[#8e62a1]">
-                                <div class="chart-info-label">AI</div>
-                                <div class="chart-info-value">27(96%)</div>
+                    <div class="chart-module">
+                        <div class="title">Leak Graph</div>
+                        <div class="chart">
+                            <leak-chart
+                                :dates="barChartData.dates"
+                                :leak_max="barChartData.leak_max"
+                                :leak_avg="barChartData.leak_avg"
+                            />
+                            <div class="chart-info">
+                                <div class="chart-info-item">
+                                    <div class="chart-info-label">Set threshold</div>
+                                    <div class="chart-info-value">24.0 L/min</div>
+                                </div>
+                                <div class="chart-info-item">
+                                    <div class="chart-info-label">Maximum(avg)</div>
+                                    <div class="chart-info-value">23.8</div>
+                                </div>
+                                <div class="chart-info-item color-[#f4c430]">
+                                    <div class="chart-info-label">95th %(avg)</div>
+                                    <div class="chart-info-value">27(96%)</div>
+                                </div>
+                                <div class="chart-info-item">
+                                    <div class="chart-info-label">Median(avg)</div>
+                                    <div class="chart-info-value">20.1</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="chart-module">
-                    <div class="title">Events Graph</div>
-                    <div class="chart">
-                        <usage-chart
-                            :dates="barChartData.dates"
-                            :sumtime="barChartData.sumtime"
-                        />
+                    <div class="chart-module">
+                        <div class="title">AHI Graph</div>
+                        <div class="chart">
+                            <ahi-chart
+                                :ai="barChartData.ai"
+                                :hi="barChartData.hi"
+                                :ahi="barChartData.ahi"
+                                :dates="barChartData.dates"
+                            />
+
+                            <div class="chart-info">
+                                <div class="chart-info-item">
+                                    <div class="chart-info-label">AHI</div>
+                                    <div class="chart-info-value">24.0 L/min</div>
+                                </div>
+                                <div class="chart-info-item color-[#b89dc4]">
+                                    <div class="chart-info-label">HI</div>
+                                    <div class="chart-info-value">23.8</div>
+                                </div>
+                                <div class="chart-info-item color-[#8e62a1]">
+                                    <div class="chart-info-label">AI</div>
+                                    <div class="chart-info-value">27(96%)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-module">
+                        <div class="title">Events Graph</div>
+                        <div class="chart">
+                            <usage-chart
+                                :dates="barChartData.dates"
+                                :sumtime="barChartData.sumtime"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -289,650 +286,128 @@
     import UsageChart from './charts/usage-chart.vue';
     import leakChart from './charts/leak-chart.vue';
     import AhiChart from './charts/ahi-chart.vue';
-
-    const barChartData = ref({
-        dates: [
-            '2024-07-30',
-            '2024-07-31',
-            '2024-08-01',
-            '2024-08-02',
-            '2024-08-03',
-            '2024-08-04',
-            '2024-08-05',
-            '2024-08-06',
-            '2024-08-07',
-            '2024-08-08',
-            '2024-08-09',
-            '2024-08-10',
-            '2024-08-11',
-            '2024-08-12',
-            '2024-08-13',
-            '2024-08-14',
-            '2024-08-15',
-            '2024-08-16',
-            '2024-08-17',
-            '2024-08-18',
-            '2024-08-19',
-            '2024-08-20',
-            '2024-08-21',
-            '2024-08-22',
-            '2024-08-23',
-            '2024-08-24',
-            '2024-08-25',
-            '2024-08-26',
-            '2024-08-27',
-            '2024-08-28',
-        ],
-        sumtime: [
-            0, 933, 0, 0, 0, 0, 0, 6480, 51488, 68642, 55816, 6120, 0, 6084, 994, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0,
-        ],
-        usetime: [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '08/06 16:52:53#08/06 16:15:18#2255###',
-            '08/07 16:16:54#08/07 16:06:28#626###08/07 16:17:52#08/07 16:17:32#20###08/07 16:34:37#08/07 16:18:02#995###08/07 19:14:40#08/07 18:10:31#3849###08/07 22:41:25#08/07 20:07:13#9252###08/08 10:32:00#08/08 10:16:07#953###08/08 11:59:58#08/08 11:51:50#488###',
-            '08/08 13:36:01#08/08 12:00:00#5761###08/08 13:54:20#08/08 13:52:45#95###08/08 14:51:44#08/08 14:15:20#2184###08/08 21:51:38#08/08 17:38:53#15165###08/09 10:54:06#08/09 08:54:25#7181###',
-            '08/09 14:07:37#08/09 13:37:46#1791###08/09 14:16:56#08/09 14:13:49#187###08/10 08:19:40#08/09 17:20:06#53974###',
-            '08/10 15:27:27#08/10 13:42:03#6324###',
-            '',
-            '08/12 13:52:54#08/12 13:35:25#1049###08/12 14:59:51#08/12 14:21:55#2276###08/12 16:23:29#08/12 15:58:23#1506###08/12 17:02:09#08/12 17:01:58#11###08/12 17:23:57#08/12 17:04:16#1181###08/13 10:42:55#08/13 10:42:31#24###08/13 11:40:27#08/13 11:39:15#72###',
-            '08/13 13:50:24#08/13 13:33:52#992###',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-        ],
-        usetimes: [
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                15318,
-                14788,
-                0,
-                5866,
-                6123,
-                null,
-                5725,
-                5632,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                2255,
-                626,
-                5761,
-                1791,
-                6324,
-                null,
-                1049,
-                992,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                38,
-                1004,
-                372,
-                null,
-                null,
-                1741,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                20,
-                95,
-                187,
-                null,
-                null,
-                2276,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                10,
-                1260,
-                10990,
-                null,
-                null,
-                3512,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                995,
-                2184,
-                53974,
-                null,
-                null,
-                1506,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                5754,
-                10029,
-                null,
-                null,
-                null,
-                2309,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                3849,
-                15165,
-                null,
-                null,
-                null,
-                11,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                3153,
-                39767,
-                null,
-                null,
-                null,
-                127,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                9252,
-                7181,
-                null,
-                null,
-                null,
-                1181,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                41682,
-                null,
-                null,
-                null,
-                null,
-                62314,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                953,
-                null,
-                null,
-                null,
-                null,
-                24,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                4790,
-                null,
-                null,
-                null,
-                null,
-                3380,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-            [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                488,
-                null,
-                null,
-                null,
-                null,
-                72,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            ],
-        ],
-        pressure_max: [
-            '',
-            10,
-            '',
-            '',
-            '',
-            '',
-            '',
-            5,
-            16,
-            12,
-            9,
-            9,
-            '',
-            30,
-            30,
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-        ],
-        pressure_95: [
-            '',
-            10,
-            '',
-            '',
-            '',
-            '',
-            '',
-            5,
-            8.9,
-            11.9,
-            8,
-            9,
-            '',
-            30,
-            12,
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-        ],
-        pressure_avg: [
-            '',
-            10,
-            '',
-            '',
-            '',
-            '',
-            '',
-            5,
-            13.2,
-            10.8,
-            8.9,
-            8.9,
-            '',
-            7.7,
-            10.4,
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-        ],
-        leak_max: [
-            0, 29.1, 0, 0, 0, 0, 0, 200, 93.6, 178.4, 86, 197.1, 0, 104.5, 94.9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0,
-        ],
-        leak_avg: [
-            0, 28.5, 0, 0, 0, 0, 0, 19.1, 17.6, 22.5, 20.5, 22.7, 0, 12.3, 22.2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0,
-        ],
-        ahi: [0, 0, 0, 0, 0, 0, 0, 0, 0.1, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        hi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ai: [0, 0, 0, 0, 0, 0, 0, 0, 0.1, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        spo_avg: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 42, 65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        spo_min: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        pulse_avg: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 94, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        pulse_min: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 93, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    });
+    import type { UserInfo } from '~/api/login/types';
+    import { getBarChart, getDeviceReport, getParamInfo } from '~/api/report';
+    import type { BarChartRes, DeviceReportRes } from '~/api/report/types';
 
     const dialogVisible = ref(false);
 
     const close = () => {
         dialogVisible.value = false;
+        deviceReport.value = undefined;
+        deviceSettings.value = [];
+        barChartData.value = {
+            ...initBartChartData,
+        };
     };
 
-    const reportType = ref(1);
+    interface Options {
+        reportType: number;
+        customDate: (string | number)[];
+        selectTime: number;
+    }
+    const options = ref<Options>({
+        reportType: 1,
+        customDate: [30, 30],
+        selectTime: 1,
+    });
 
-    const show = (type: number) => {
-        reportType.value = type;
+    const show = (option: Options) => {
+        options.value = option;
         dialogVisible.value = true;
+
+        getReportInfo();
+        getDeviceSetting();
+        getChartData(options.value.customDate);
+    };
+
+    const patient = inject<Ref<UserInfo>>('patient');
+
+    // 静态信息
+    const deviceReport = ref<DeviceReportRes>();
+    const getReportInfo = () => {
+        if (!patient || !patient.value.sn) {
+            return;
+        }
+        getDeviceReport({
+            sn: patient.value.sn,
+            start_date: options.value.customDate[0],
+            end_date: options.value.customDate[1],
+        }).then(res => {
+            if (res.code === 1) {
+                deviceReport.value = res.data;
+            }
+        });
+    };
+
+    // 参数信息
+    const deviceSettings = ref<any>([]);
+    const getDeviceSetting = () => {
+        if (!patient || !patient.value.sn) {
+            return;
+        }
+
+        getParamInfo({
+            sn: patient.value.sn,
+            start_date: options.value.customDate[0],
+            end_date: options.value.customDate[1],
+        }).then((res: any) => {
+            if (res.code === 1 && res.data) {
+                deviceSettings.value = res.data[Object.keys(res.data).pop() as string].map((item: string) => {
+                    let arr = item.split(':');
+                    return {
+                        label: arr[0],
+                        value: arr[1],
+                    };
+                });
+            } else {
+                deviceSettings.value = [];
+            }
+        });
+    };
+
+    // 图表
+    const initBartChartData = {
+        usetimes: [],
+        dates: [],
+        sumtime: [],
+        usetime: [],
+        pressure_max: [],
+        pressure_avg: [],
+        pressure_95: [],
+        leak_avg: [],
+        leak_max: [],
+        ahi: [],
+        hi: [],
+        ai: [],
+        spo_avg: [],
+        spo_min: [],
+        pulse_avg: [],
+        pulse_min: [],
+    };
+    const barChartData = ref<BarChartRes>(initBartChartData);
+    // 获取图表信息
+    const loading = ref(false);
+    const getChartData = (rangeDate: (string | number)[]) => {
+        if (!patient || !patient.value.sn) {
+            return;
+        }
+        loading.value = true;
+        getBarChart({
+            sn: patient.value.sn,
+            start_date: rangeDate[0],
+            end_date: rangeDate[1],
+        })
+            .then(res => {
+                if (res.code === 1) {
+                    barChartData.value = res.data;
+                } else {
+                    barChartData.value = initBartChartData;
+                }
+            })
+            .finally(() => {
+                loading.value = false;
+            });
     };
 
     defineExpose({
@@ -978,6 +453,7 @@
 
             .label {
                 flex-shrink: 0;
+                margin-right: 2px;
                 font-weight: bold;
             }
 

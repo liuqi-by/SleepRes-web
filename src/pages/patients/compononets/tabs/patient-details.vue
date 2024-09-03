@@ -106,23 +106,6 @@
                 :label="$t('patients.Therapist')"
             >
                 <div class="min-w-[192px]">
-                    <!-- <el-select
-                        v-model="formData.therapist_id"
-                        placeholder="Please select"
-                        :disabled="!isEdit"
-                    >
-                        <el-option
-                            v-if="userStore.userInfo"
-                            :label="userStore.userInfo?.nickname"
-                            :value="String(userStore.userInfo.id)"
-                        />
-
-                        <el-option
-                            v-if="userStore.userInfo?.id != formData.therapist_id"
-                            :label="formData.therapist_name"
-                            :value="String(formData.therapist_id)"
-                        />
-                    </el-select> -->
                     <select-physician
                         :model-value="
                             formData.therapist_id
