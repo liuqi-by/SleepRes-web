@@ -78,6 +78,9 @@
                     splitLine: (commonOption.yAxis as YAXisOption).splitLine,
                     axisLine: { show: false },
                     axisTick: { show: false },
+                    max: 86400,
+                    min: 0,
+                    interval: 14400,
                     axisLabel: {
                         formatter: function (value: number) {
                             let flag = parseInt(value / 3600 + '');

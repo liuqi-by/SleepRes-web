@@ -125,8 +125,9 @@
 
         <!-- 新增用户 -->
         <add-user-dialog
-            ref="addUserDialog"
+            ref="addUserDialogRef"
             @refresh="getData"
+            v-model="isShowAddUserDialog"
         />
         <!-- 患者记录 -->
         <patient-record
@@ -141,11 +142,14 @@
 
 <script setup lang="ts">
     import { Select, CloseBold } from '@element-plus/icons-vue';
-    import AddUserDialog from './compononets/add.vue';
-    import PatientRecord from './compononets/patient-record.vue';
+    // import AddUserDialog from './compononets/add.vue';
+    // import PatientRecord from './compononets/patient-record.vue';
     import { getPatient } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
     import type { UploadFiles } from '#build/components';
+
+    const PatientRecord = defineAsyncComponent(() => import('./compononets/patient-record.vue'));
+    const AddUserDialog = defineAsyncComponent(() => import('./compononets/add.vue'));
 
     const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
         usePageTable(getPatient);
@@ -160,9 +164,10 @@
     });
 
     // 创建
-    const addUserDialog = ref<InstanceType<typeof AddUserDialog>>();
+    const addUserDialogRef = ref<InstanceType<typeof AddUserDialog>>();
+    const isShowAddUserDialog = ref(false);
     const create = () => {
-        addUserDialog.value?.showDialog();
+        isShowAddUserDialog.value = true;
     };
 
     // 查看患者信息

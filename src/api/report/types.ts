@@ -5,43 +5,23 @@ export interface StaticInfoReq {
     end_date: string;
 }
 
-export interface StaticInfoRes {
-    start_date: string;
-    end_date: string;
-    sn: string;
-    select_days: string;
-    use_days: string;
-    not_use_days: string;
-    usetime: string;
-    usetime_avg_select: string;
-    usetime_avg_use: string;
-    usage_days_select: string;
-    usage_days_use: string;
-    usage_days_select_not: string;
-    usage_days_use_not: string;
-    time_max: string;
-    time_min: string;
-    apnea: number;
-    hi: number;
-    ai: number;
-    ahi: number;
-    odi: number;
-    pressure_max: number;
-    pressure_avg: number;
-    pressure_95: number;
-    leak_max: number;
-    leak_avg: number;
-    tv_max: number;
-    tv_avg: number;
-    rr_max: number;
-    rr_avg: number;
-    spo_avg: number;
-    spo_min: number;
-    pulse_avg: number;
-    img: string;
-    usetimes: number;
-    usage_days_uses: number;
-    usage_days_uses_not: number;
+export interface BarChartRes {
+    dates: string[];
+    sumtime: number[];
+    usetime: string[];
+    usetimes: (null | number)[][];
+    pressure_max: (number | string)[];
+    pressure_95: (number | string)[];
+    pressure_avg: (number | string)[];
+    leak_max: number[];
+    leak_avg: number[];
+    ahi: number[];
+    hi: number[];
+    ai: number[];
+    spo_avg: number[];
+    spo_min: number[];
+    pulse_avg: number[];
+    pulse_min: number[];
 }
 
 // 参数信息
@@ -80,11 +60,6 @@ export interface BarChartRes {
     pulse_avg: number[];
     pulse_min: number[];
 }
-
-export type StaticChartProps = {
-    staticInfo: StaticInfoRes;
-    barChartData: BarChartRes;
-};
 
 // 曲线图表数据
 // 请求参数

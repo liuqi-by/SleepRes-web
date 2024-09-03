@@ -72,10 +72,14 @@
             >
                 <div class="min-w-[192px]">
                     <select-office
-                        :model-value="{
-                            id: formData.institution_id,
-                            name: formData.institution_name,
-                        }"
+                        :model-value="
+                            formData.institution_id
+                                ? {
+                                      id: formData.institution_id,
+                                      name: formData.institution_name,
+                                  }
+                                : ''
+                        "
                         @change="handleChangeSelect('institution', 'name', $event)"
                         ref="selectOfficeRef"
                         :key="formData.institution_id"
@@ -120,10 +124,14 @@
                         />
                     </el-select> -->
                     <select-physician
-                        :model-value="{
-                            id: Number(formData.therapist_id),
-                            nickname: formData.therapist_name,
-                        }"
+                        :model-value="
+                            formData.therapist_id
+                                ? {
+                                      id: Number(formData.therapist_id),
+                                      nickname: formData.therapist_name,
+                                  }
+                                : ''
+                        "
                         :disabled="!isEdit"
                         @change="handleChangeSelect('therapist', 'nickname', $event)"
                         :key="formData.therapist_id"
@@ -136,10 +144,14 @@
             >
                 <div class="min-w-[192px] form-item">
                     <select-physician
-                        :model-value="{
-                            id: Number(formData.physician_id),
-                            nickname: formData.physician_name,
-                        }"
+                        :model-value="
+                            formData.physician_id
+                                ? {
+                                      id: Number(formData.physician_id),
+                                      nickname: formData.physician_name,
+                                  }
+                                : ''
+                        "
                         :disabled="!isEdit"
                         @change="handleChangeSelect('physician', 'nickname', $event)"
                         :key="formData.physician_id"
@@ -375,8 +387,13 @@
     };
 
     const handleChangeSelect = (key: string, label: string, val: any) => {
-        formData.value[(key + '_id') as keyof typeof formData.value] = val.id;
-        formData.value[(key + '_name') as keyof typeof formData.value] = val[label];
+        if (val) {
+            formData.value[(key + '_id') as keyof typeof formData.value] = val.id;
+            formData.value[(key + '_name') as keyof typeof formData.value] = val[label];
+        } else {
+            formData.value[(key + '_id') as keyof typeof formData.value] = '';
+            formData.value[(key + '_name') as keyof typeof formData.value] = '';
+        }
     };
 </script>
 

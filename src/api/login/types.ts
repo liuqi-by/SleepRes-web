@@ -58,6 +58,7 @@ export interface UserInfo {
     patient?: any;
     note: string;
     sn: string;
+    device_type: string;
 }
 
 // 注册

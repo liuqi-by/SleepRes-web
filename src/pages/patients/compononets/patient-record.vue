@@ -36,12 +36,12 @@
                 </el-form-item>
                 <!-- Equipment -->
                 <el-form-item
-                    prop="equipment"
+                    prop="device_type"
                     :label="$t('patients.Equipment')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.patient.equipment"
+                            v-model="formData.device_type"
                             class="form-input"
                             readonly
                         />
@@ -137,8 +137,10 @@
     import Notes from './tabs/notes.vue';
     import Prescription from './tabs/prescription.vue';
     import PatientDetails from './tabs/patient-details.vue';
-    import TherapyData from './tabs/therapy-data.vue';
+    // import TherapyData from './tabs/therapy-data.vue';
     import type { UserInfo } from '~/api/login/types';
+
+    const TherapyData = defineAsyncComponent(() => import('./tabs/therapy-data.vue'));
 
     const dialogVisible = ref(false);
 

@@ -7,6 +7,8 @@
         class="auto-width"
         ref="selectRef"
         :value-key="value"
+        clearable
+        :value-on-clear="valueOnClear"
     >
         <template #header>
             <div class="header">
@@ -75,9 +77,10 @@
     });
 
     const options = ref<any[]>([]);
+    const valueOnClear = '';
     const selectValue = defineModel({
         type: Object,
-        default: {},
+        default: '',
     });
 
     const pageOption = ref({
@@ -87,7 +90,6 @@
     });
 
     const searchVal = ref('');
-
     // const optionLabel = computed(() => {
     //     return selectValue.value[props.label];
     // });
@@ -97,7 +99,6 @@
             ...selectValue.value,
         },
     ];
-
     const getList = () => {
         props
             .getListApi({

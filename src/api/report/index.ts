@@ -1,10 +1,10 @@
-import type { StaticInfoReq, StaticInfoRes, UsageInfoRes, DeviceReportRes } from './types';
+import type { StaticInfoReq, UsageInfoRes, DeviceReportRes, BarChartReq, BarChartRes } from './types';
 
 /**
- * @description 获取静态信息
+ * @description 获取静态信息\图表
  */
-export const getStaticInfo = (data: StaticInfoReq) => {
-    return useClientRequest<ResPonseType<StaticInfoRes>>('/api/report/statistics', {
+export const getBarChart = (data: BarChartReq) => {
+    return useClientRequest<ResPonseType<BarChartRes>>('/api/report/statistics', {
         method: 'GET',
         params: data,
     });

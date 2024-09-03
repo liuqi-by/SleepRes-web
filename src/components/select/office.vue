@@ -24,7 +24,7 @@
 
     const value = defineModel({
         type: Object,
-        default: {},
+        default: '',
     });
 
     // const baseSelectRef = ref<InstanceType<typeof BaseSelectSearch>>();

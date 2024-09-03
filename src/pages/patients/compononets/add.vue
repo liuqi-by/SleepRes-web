@@ -85,10 +85,14 @@
                         >
                             <div class="min-w-[150px]">
                                 <select-office
-                                    :model-value="{
-                                        id: formData.institution_id,
-                                        name: formData.institution_name,
-                                    }"
+                                    :model-value="
+                                        formData.institution_id
+                                            ? {
+                                                  id: formData.institution_id,
+                                                  name: formData.institution_name,
+                                              }
+                                            : ''
+                                    "
                                     @change="handleChangeOffice"
                                     ref="selectOfficeRef"
                                     :key="formData.institution_id"
@@ -325,7 +329,10 @@
 
     const userStore = useUserStore();
 
-    const dialogVisible = ref(false);
+    const dialogVisible = defineModel({
+        default: false,
+        type: Boolean,
+    });
 
     const formRef = ref<FormInstance>(); // 表单ref
 
@@ -334,6 +341,7 @@
         institution_id: userStore.userInfo?.institution_id || '',
         institution_name: userStore.userInfo?.institution_name || '',
         therapist_id: userStore.userInfo?.id || '',
+        physician_id: '',
     });
 
     const { firstName, lastName, email, role, office, setupDate, birthdate, sn } = useFormRules();
@@ -398,8 +406,14 @@
     };
 
     const handleChangeOffice = (val: { id: string; name: string }) => {
-        formData.value.institution_id = val.id;
-        formData.value.institution_name = val.name;
+        console.log(val);
+        if (val) {
+            formData.value.institution_id = val.id;
+            formData.value.institution_name = val.name;
+        } else {
+            formData.value.institution_id = '';
+            formData.value.institution_name = '';
+        }
     };
 
     defineExpose({
