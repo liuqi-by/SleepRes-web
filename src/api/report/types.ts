@@ -1,8 +1,8 @@
 // 静态信息
 export interface StaticInfoReq {
     sn: string;
-    start_date: string | number;
-    end_date: string | number;
+    start_date: string;
+    end_date: string;
 }
 
 export interface BarChartRes {
@@ -24,13 +24,6 @@ export interface BarChartRes {
     pulse_min: number[];
 }
 
-// 参数信息
-export interface ParamInfoReq {
-    sn: string;
-    start_date: string;
-    end_date: string;
-}
-
 export interface ParamInfoRes {
     [key: string]: string[];
 }
@@ -38,8 +31,8 @@ export interface ParamInfoRes {
 // 柱状图表数据
 export interface BarChartReq {
     sn: string;
-    start_date: string | number;
-    end_date: string | number;
+    start_date: string;
+    end_date: string;
 }
 
 // 曲线图表数据

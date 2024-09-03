@@ -303,12 +303,12 @@
 
     interface Options {
         reportType: number;
-        customDate: (string | number)[];
+        customDate: string[];
         selectTime: number;
     }
     const options = ref<Options>({
         reportType: 1,
-        customDate: [30, 30],
+        customDate: ['30', '30'],
         selectTime: 1,
     });
 
@@ -388,7 +388,7 @@
     const barChartData = ref<BarChartRes>(initBartChartData);
     // 获取图表信息
     const loading = ref(false);
-    const getChartData = (rangeDate: (string | number)[]) => {
+    const getChartData = (rangeDate: string[]) => {
         if (!patient || !patient.value.sn) {
             return;
         }

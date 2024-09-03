@@ -57,28 +57,6 @@
     import type { UserInfo } from '~/api/login/types';
     import type { BarChartRes } from '~/api/report/types';
 
-    const initBartChartData = {
-        usetimes: [],
-        dates: [],
-        sumtime: [],
-        usetime: [],
-        pressure_max: [],
-        pressure_avg: [],
-        pressure_95: [],
-        leak_avg: [],
-        leak_max: [],
-        ahi: [],
-        hi: [],
-        ai: [],
-        spo_avg: [],
-        spo_min: [],
-        pulse_avg: [],
-        pulse_min: [],
-    };
-    const barChartData = ref<BarChartRes>({
-        ...initBartChartData,
-    });
-
     const timeList = ref([
         { label: '7 Days', value: 7 },
         { label: '14 Days', value: 14 },
@@ -94,7 +72,7 @@
 
     const getRangeDate = () => {
         if (activeTime.value === 'best30') {
-            return [30, 30];
+            return ['30', '30'];
         } else if (typeof activeTime.value === 'number') {
             return [
                 moment()
@@ -102,6 +80,8 @@
                     .format('YYYY-MM-DD'),
                 moment().format('YYYY-MM-DD'),
             ];
+        } else {
+            return [];
         }
     };
 
@@ -145,6 +125,8 @@
         leak_avg = 'Average Leak',
     }
 
+    const patient = inject<Ref<UserInfo>>('patient');
+
     // 获取静态信息
     const getStaticReport = (rangeDate: string[]) => {
         if (!patient || !patient.value.sn) {
@@ -166,8 +148,27 @@
         });
     };
 
-    const patient = inject<Ref<UserInfo>>('patient');
-
+    const initBartChartData = {
+        usetimes: [],
+        dates: [],
+        sumtime: [],
+        usetime: [],
+        pressure_max: [],
+        pressure_avg: [],
+        pressure_95: [],
+        leak_avg: [],
+        leak_max: [],
+        ahi: [],
+        hi: [],
+        ai: [],
+        spo_avg: [],
+        spo_min: [],
+        pulse_avg: [],
+        pulse_min: [],
+    };
+    const barChartData = ref<BarChartRes>({
+        ...initBartChartData,
+    });
     // 获取图表信息
     const loading = ref(false);
     const getChartData = (rangeDate: string[]) => {

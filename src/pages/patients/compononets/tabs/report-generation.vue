@@ -75,13 +75,13 @@
 
     const reportPreviewRef = ref<InstanceType<typeof ReportPreview>>();
     const showReportPreview = () => {
-        let dates: (string | number)[] = [];
+        let dates: string[] = [];
         switch (selectTime.value) {
             case 1:
-                dates = [30, 30];
+                dates = ['30', '30'];
                 break;
             case 2:
-                dates = [90, 90];
+                dates = ['90', '90'];
                 break;
             case 3:
                 if (!customDate.value) {
