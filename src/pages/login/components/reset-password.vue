@@ -83,19 +83,29 @@
             if (!valid) {
                 return;
             }
-
-            loading.value = true;
-            resetPasswordByEmail(formData.value)
-                .then(res => {
-                    if (res.code === 1) {
-                        ElMessage.success(t('login.resetPwdSuccess'));
-                        dialogVisible.value = false;
-                        formData.value.email = '';
-                    }
+            let msg = t('login.ConfirmResetPassword');
+            ElMessageBox.confirm(' ', msg, {
+                confirmButtonText: t('form.Confirm'),
+                cancelButtonText: t('form.Cancel'),
+                type: 'warning',
+                customStyle: { minHeight: 0, top: '-15vh' },
+                dangerouslyUseHTMLString: true,
+            })
+                .then(() => {
+                    loading.value = true;
+                    resetPasswordByEmail(formData.value)
+                        .then(res => {
+                            if (res.code === 1) {
+                                ElMessage.success(t('login.resetPwdSuccess'));
+                                dialogVisible.value = false;
+                                formData.value.email = '';
+                            }
+                        })
+                        .finally(() => {
+                            loading.value = false;
+                        });
                 })
-                .finally(() => {
-                    loading.value = false;
-                });
+                .catch();
         });
     };
 

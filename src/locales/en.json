@@ -43,7 +43,8 @@
         "logout": "Login Out",
         "ConfirmLogout": "Are you sure you want to log out?",
         "passwordRule": "Password must be 10-20 characters,And with 1 special character",
-        "resetPwdSuccess": "Password reset success"
+        "resetPwdSuccess": "Password reset success",
+        "ConfirmResetPassword": "Are you sure you want to reset the password?"
     },
     "message": {
         "dmeApproval": "DME Account Approval",
