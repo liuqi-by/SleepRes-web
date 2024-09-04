@@ -30,6 +30,7 @@
                             class="form-input"
                             :placeholder="$t('login.FirstName')"
                             :maxlength="inputLength.name"
+                            ref="focusRef"
                         />
                     </div>
                 </el-form-item>
@@ -163,7 +164,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { FormInstance } from 'element-plus';
+    import type { FormInstance, InputInstance } from 'element-plus';
     import type { AddUserReq } from '~/api/users/types';
     import { addUser, updateUser } from '~/api/users';
     import { useUserStore } from '~/stores/modules/user';
@@ -275,14 +276,11 @@
 
     const close = () => {
         dialogVisible.value = false;
-        formRef.value?.clearValidate();
-
-        formData.value = {
-            ...formDataInit,
-        };
+        formRef.value?.resetFields();
     };
 
     const selectOfficeRef = ref<InstanceType<typeof SelectOffice>>();
+    const focusRef = ref<InputInstance>();
     const showDialog = (item?: UserInfo) => {
         if (item) {
             formData.value = { ...item };
@@ -290,6 +288,10 @@
         // selectOfficeRef.value?.initOptions();
 
         dialogVisible.value = true;
+
+        setTimeout(() => {
+            focusRef.value?.focus();
+        }, 0);
     };
 
     const handleChangeOffice = (val: { id: string; name: string }) => {

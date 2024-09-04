@@ -3,6 +3,7 @@
         v-bind="$attrs"
         :style="{ width, height }"
         @click="click"
+        @keyup.enter="click"
     >
         <base-svg-icon
             :icon="icon"

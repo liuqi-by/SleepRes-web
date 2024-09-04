@@ -78,7 +78,6 @@
                             type="text"
                             :maxlength="inputLength.account_num"
                             ref="focusRef"
-                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -95,7 +94,6 @@
                             type="text"
                             :maxlength="inputLength.account_id"
                             ref="focusRef"
-                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -157,17 +155,6 @@
                             :placeholder="`${$t('message.AccountName')}`"
                             type="text"
                             :maxlength="inputLength.accountName"
-                            @keyup.enter="nextInput"
-                            v-if="tabType !== 'DME'"
-                        />
-                        <el-input
-                            v-model="formData.username"
-                            class="form-input"
-                            :placeholder="`${$t('message.AccountName')}`"
-                            type="text"
-                            :maxlength="inputLength.accountName"
-                            @keyup.enter="submit"
-                            v-else
                         />
                     </div>
                 </el-form-item>
@@ -184,7 +171,6 @@
                             :placeholder="`${$t('message.AccountNumber')}`"
                             type="text"
                             :maxlength="inputLength.account_num"
-                            @keyup.enter="submit"
                         />
                     </div>
                 </el-form-item>

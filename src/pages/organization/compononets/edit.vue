@@ -28,6 +28,7 @@
                             class="form-input"
                             :placeholder="$t('office.OfficeName')"
                             :maxlength="inputLength.name"
+                            ref="focusRef"
                         />
                     </div>
                 </el-form-item>
@@ -153,7 +154,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { FormInstance } from 'element-plus';
+    import type { FormInstance, InputInstance } from 'element-plus';
     import { addOrganization, editOrganization } from '~/api/organization';
     import type { EditOrganizationReq, Organization } from '~/api/organization/types';
 
@@ -237,12 +238,17 @@
         formRef.value?.resetFields();
     };
 
+    const focusRef = ref<InputInstance>();
     const showDialog = (item?: Organization) => {
         if (item) {
             formData.value = { ...item };
         }
 
         dialogVisible.value = true;
+
+        setTimeout(() => {
+            focusRef.value?.focus();
+        }, 0);
     };
 
     defineExpose({

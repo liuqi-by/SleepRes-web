@@ -33,6 +33,7 @@
                                     class="form-input"
                                     :placeholder="$t('login.FirstName')"
                                     :maxlength="inputLength.name"
+                                    ref="focusRef"
                                 />
                             </div>
                         </el-form-item>
@@ -321,7 +322,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { FormInstance } from 'element-plus';
+    import type { FormInstance, InputInstance } from 'element-plus';
     import { useUserStore } from '~/stores/modules/user';
     import type { AddPatientReq } from '~/api/patient/types';
     import { addPatient } from '~/api/patient';
@@ -333,6 +334,21 @@
         default: false,
         type: Boolean,
     });
+
+    const focusRef = ref<InputInstance>();
+    watch(
+        dialogVisible,
+        val => {
+            if (val) {
+                setTimeout(() => {
+                    focusRef.value?.focus();
+                }, 0);
+            }
+        },
+        {
+            immediate: true,
+        },
+    );
 
     const formRef = ref<FormInstance>(); // 表单ref
 
@@ -393,7 +409,7 @@
 
     const close = () => {
         dialogVisible.value = false;
-        formRef.value?.clearValidate();
+
         formRef.value?.resetFields();
     };
 
