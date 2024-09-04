@@ -100,7 +100,7 @@
         "401": "Sorry, you do not have permission to access this page"
     },
     "admin": {
-        "searchPlaceholder": "Name / Account / State / Email / Mobile",
+        "searchPlaceholder": "Name / Account / State / Email / Phone number",
         "AccountNumber": "Account #",
         "AccountType": "Account Type",
         "AccountStatus": "Account Status",
@@ -119,7 +119,7 @@
         "EditUserInfo": "Edit User Information",
         "CreateUser": "Create User",
         "CreateUserAccount": "Create User Account",
-        "searchPlaceholder": "Name / Email / Mobile",
+        "searchPlaceholder": "Name / Email / Phone number",
         "NPI": "NPI",
         "Modify": "Modify"
     },
