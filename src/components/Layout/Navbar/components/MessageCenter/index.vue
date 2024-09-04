@@ -120,8 +120,6 @@
     const getMessageList = () => {
         loading.value = true;
 
-        messageData.value = [];
-
         getMessage({
             ...pageOption.value,
             page: pageOption.value.page - 1,

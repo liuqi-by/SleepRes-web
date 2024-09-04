@@ -77,6 +77,8 @@
                             :placeholder="$t('login.SleepResAccountNumber')"
                             type="text"
                             :maxlength="inputLength.account_num"
+                            ref="focusRef"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -92,6 +94,8 @@
                             :placeholder="$t('login.PhysicianNPI')"
                             type="text"
                             :maxlength="inputLength.account_id"
+                            ref="focusRef"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -153,6 +157,17 @@
                             :placeholder="`${$t('message.AccountName')}`"
                             type="text"
                             :maxlength="inputLength.accountName"
+                            @keyup.enter="nextInput"
+                            v-if="tabType !== 'DME'"
+                        />
+                        <el-input
+                            v-model="formData.username"
+                            class="form-input"
+                            :placeholder="`${$t('message.AccountName')}`"
+                            type="text"
+                            :maxlength="inputLength.accountName"
+                            @keyup.enter="submit"
+                            v-else
                         />
                     </div>
                 </el-form-item>
@@ -169,6 +184,7 @@
                             :placeholder="`${$t('message.AccountNumber')}`"
                             type="text"
                             :maxlength="inputLength.account_num"
+                            @keyup.enter="submit"
                         />
                     </div>
                 </el-form-item>
@@ -191,7 +207,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { FormInstance } from 'element-plus';
+    import type { FormInstance, InputInstance } from 'element-plus';
     import { checkMessage } from '~/api/admin';
     import type { MessageRes } from '~/api/admin/types';
     import type { UserInfo } from '~/api/login/types';
@@ -221,6 +237,8 @@
         },
     );
 
+    const focusRef = ref<InputInstance>();
+
     // 打开
     const showApproval = (item: MessageRes) => {
         formData.value = {
@@ -231,6 +249,10 @@
 
         dialogVisible.value = true;
         tabType.value = item.group_id === 2 ? 'DME' : 'Physician';
+
+        setTimeout(() => {
+            focusRef.value?.focus();
+        }, 0);
     };
 
     const loading = ref(false); // 按钮loading
@@ -298,7 +320,6 @@
     };
 
     const close = () => {
-        formRef.value?.clearValidate();
         formRef.value?.resetFields();
     };
 
