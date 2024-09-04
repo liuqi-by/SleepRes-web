@@ -20,14 +20,18 @@
         </div>
 
         <!-- 注册弹窗 -->
-        <RegisterForm
-            v-model="showRegisterForm"
-            :tabType="tabType"
-            :key="tabType"
-        />
+        <client-only>
+            <RegisterForm
+                v-model="showRegisterForm"
+                :tabType="tabType"
+                :key="tabType"
+            />
+        </client-only>
 
         <!-- 重置密码弹窗 -->
-        <ResetPasswordForm ref="resetPasswordForm" />
+        <client-only>
+            <ResetPasswordForm ref="resetPasswordForm" />
+        </client-only>
     </div>
 </template>
 

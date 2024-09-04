@@ -31,6 +31,8 @@
                             :placeholder="tabType === 'registerDme' ? $t('login.dmeName') : $t('login.PracticeName')"
                             type="text"
                             :maxlength="inputLength.name"
+                            @keyup.enter="nextInput"
+                            ref="focusRef"
                         />
                     </div>
                 </el-form-item>
@@ -46,6 +48,7 @@
                             class="form-input"
                             :placeholder="`${$t('login.FirstName')}`"
                             :maxlength="inputLength.name"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -60,6 +63,7 @@
                             class="form-input"
                             :placeholder="`${$t('login.LastName')}`"
                             :maxlength="inputLength.name"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -76,6 +80,7 @@
                             :placeholder="$t('login.SleepResAccountNumber')"
                             type="text"
                             maxlength="20"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -91,6 +96,7 @@
                             :placeholder="$t('login.PhysicianNPI')"
                             type="text"
                             :maxlength="inputLength.account_id"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -106,6 +112,7 @@
                             :placeholder="`${$t('login.Email')}`"
                             type="text"
                             :maxlength="inputLength.email"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -122,6 +129,7 @@
                             type="text"
                             :maxlength="inputLength.mobile"
                             @input="filterMobile('mobile')"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -137,6 +145,7 @@
                             :placeholder="`${$t('login.Address')}`"
                             type="text"
                             :maxlength="inputLength.address"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -150,6 +159,7 @@
                             v-model="formData.state"
                             class="form-input"
                             :placeholder="`${$t('login.State')}`"
+                            @keyup.enter="nextInput"
                         />
                     </div>
                 </el-form-item>
@@ -165,6 +175,7 @@
                             :placeholder="`${$t('login.ZipCode')}`"
                             type="text"
                             :maxlength="inputLength.zipCode"
+                            @keyup.enter="submit"
                         />
                     </div>
                 </el-form-item>
@@ -187,7 +198,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { FormInstance } from 'element-plus';
+    import type { FormInstance, InputInstance } from 'element-plus';
     import type { TabType } from '../index.vue';
     import type { RegisterReq } from '~/api/login/types';
     import { registerAccount } from '~/api/login';
@@ -273,11 +284,24 @@
     };
 
     const close = () => {
-        nextTick(() => {
-            dialogVisible.value = false;
-            formRef.value?.resetFields();
-        });
+        formRef.value?.resetFields();
     };
+
+    // 聚焦第一个输入框
+    const focusRef = ref<InputInstance>();
+    watch(
+        dialogVisible,
+        val => {
+            if (val) {
+                setTimeout(() => {
+                    focusRef.value?.focus();
+                }, 0);
+            }
+        },
+        {
+            immediate: true,
+        },
+    );
 </script>
 
 <style lang="scss" scoped>

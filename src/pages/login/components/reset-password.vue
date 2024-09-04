@@ -18,6 +18,7 @@
                 class="login-form"
                 label-width="80px"
                 label-position="left"
+                @submit.prevent
             >
                 <!-- Email -->
                 <el-form-item
@@ -32,6 +33,8 @@
                             :placeholder="`${$t('login.Email')}`"
                             :readonly="isEdit"
                             :maxlength="inputLength.email"
+                            ref="focusRef"
+                            @keydown.enter="submit"
                         />
                     </div>
                 </el-form-item>
@@ -40,7 +43,7 @@
                 <div class="dialog-footer">
                     <base-button
                         type="primary"
-                        @click="handleConfirm"
+                        @click="submit"
                         class="m-r-[10px]"
                         :loading="loading"
                     >
@@ -54,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { FormInstance } from 'element-plus';
+    import type { FormInstance, InputInstance } from 'element-plus';
     import { resetPasswordByEmail } from '~/api/login';
     const dialogVisible = ref(false); // 弹窗显示
 
@@ -78,7 +81,7 @@
     /**
      * 重置密码
      */
-    const handleConfirm = () => {
+    const submit = () => {
         formRef.value?.validate((valid: boolean) => {
             if (!valid) {
                 return;
@@ -113,18 +116,24 @@
     /**
      * 打开弹窗
      */
+    // 聚焦第一个输入框
+    const focusRef = ref<InputInstance>();
     const showResetPassword = (item?: any) => {
         dialogVisible.value = true;
+
         if (item) {
             formData.value.email = item.email;
             isEdit.value = true;
         }
+
+        setTimeout(() => {
+            focusRef.value?.focus();
+        }, 0);
     };
 
     const close = () => {
-        formRef.value?.clearValidate();
-        formData.value.email = '';
         isEdit.value = false;
+        formRef.value?.resetFields();
     };
 
     defineExpose({

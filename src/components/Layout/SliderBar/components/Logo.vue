@@ -1,18 +1,18 @@
 <template>
     <div class="sidebar-logo-container">
         <transition name="sidebarLogoFade">
-            <NuxtLink
+            <!-- <NuxtLink
                 key="collapse"
                 class="sidebar-logo-link"
                 to="/"
                 no-prefetch
-            >
-                <base-svg-icon
-                    icon="logo"
-                    width="208px"
-                    height="64px"
-                />
-            </NuxtLink>
+            > -->
+            <base-svg-icon
+                icon="logo"
+                width="208px"
+                height="64px"
+            />
+            <!-- </NuxtLink> -->
         </transition>
     </div>
 </template>

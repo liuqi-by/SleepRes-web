@@ -32,6 +32,9 @@ importers:
       pinia:
         specifier: ^2.1.7
         version: 2.1.7(typescript@5.4.5)(vue@3.4.27(typescript@5.4.5))
+      v-focus-next:
+        specifier: ^1.0.4
+        version: 1.0.4
       vue:
         specifier: ^3.4.21
         version: 3.4.27(typescript@5.4.5)
@@ -5697,6 +5700,9 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==, tarball: https://r2.cnpmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz}
+
+  v-focus-next@1.0.4:
+    resolution: {integrity: sha512-ThyRUHOZ5AxtXIeVbGW30z37G9mXFH9SGpojrSV3GKDl0tPGaNe0lES8NNENAAuXXeMHNc7IjOwgeBQ1duGzzg==}
 
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==, tarball: https://r2.cnpmjs.org/validate-npm-package-license/-/validate-npm-package-license-3.0.4.tgz}
@@ -12657,6 +12663,8 @@ snapshots:
   use@3.1.1: {}
 
   util-deprecate@1.0.2: {}
+
+  v-focus-next@1.0.4: {}
 
   validate-npm-package-license@3.0.4:
     dependencies:

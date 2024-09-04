@@ -22,6 +22,8 @@
                         class="form-input"
                         :placeholder="`${$t('login.username')}`"
                         type="text"
+                        @keyup.enter="nextInput"
+                        ref="focusRef"
                     >
                         <template #prefix>
                             <base-svg-icon
@@ -47,6 +49,7 @@
                         name="password"
                         class="form-input"
                         show-password
+                        @keyup.enter="handleLogin"
                     >
                         <template #prefix>
                             <base-svg-icon
@@ -98,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { FormInstance } from 'element-plus';
+    import type { FormInstance, InputInstance } from 'element-plus';
     import type { LocationQuery, LocationQueryValue } from 'vue-router';
     import type { TabType } from '../index.vue';
     import { useUserStore } from '@/stores/modules/user';
@@ -188,6 +191,14 @@
     const linkTo = (path: TabType) => {
         emit('linkTo', path);
     };
+
+    // 聚焦第一个输入框
+    const focusRef = ref<InputInstance>();
+    onMounted(() => {
+        nextTick(() => {
+            focusRef.value?.focus();
+        });
+    });
 </script>
 
 <style lang="scss" scoped>
