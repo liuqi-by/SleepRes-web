@@ -76,7 +76,6 @@
                         <div class="title">Compliance Summary Information</div>
                         <div class="compliance-row">
                             <div class="label">Compliance Achieved</div>
-                            <div class="detail">123123123123123123</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Days with usage</div>

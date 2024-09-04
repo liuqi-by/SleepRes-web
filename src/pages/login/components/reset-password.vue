@@ -113,6 +113,7 @@
 
     const close = () => {
         formRef.value?.clearValidate();
+        formData.value.email = '';
         isEdit.value = false;
     };
 

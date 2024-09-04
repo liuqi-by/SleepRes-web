@@ -394,6 +394,7 @@
     const close = () => {
         dialogVisible.value = false;
         formRef.value?.clearValidate();
+        formRef.value?.resetFields();
     };
 
     const selectOfficeRef = ref<InstanceType<typeof SelectOffice>>();

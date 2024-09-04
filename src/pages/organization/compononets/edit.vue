@@ -145,7 +145,7 @@
                     >
                         {{ $t('form.Confirm') }}
                     </base-button>
-                    <base-button @click="dialogVisible = false">{{ $t('form.Cancel') }}</base-button>
+                    <base-button @click="close">{{ $t('form.Cancel') }}</base-button>
                 </div>
             </template>
         </el-dialog>
@@ -233,9 +233,8 @@
     const close = () => {
         dialogVisible.value = false;
         formRef.value?.clearValidate();
-        if (formData.value.id) {
-            formRef.value?.resetFields();
-        }
+
+        formRef.value?.resetFields();
     };
 
     const showDialog = (item?: Organization) => {

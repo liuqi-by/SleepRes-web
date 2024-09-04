@@ -275,7 +275,7 @@
     const close = () => {
         nextTick(() => {
             dialogVisible.value = false;
-            formRef.value?.clearValidate();
+            formRef.value?.resetFields();
         });
     };
 </script>
