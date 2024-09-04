@@ -137,6 +137,7 @@
 
 <script setup lang="ts">
     import { ArrowDown, Select, CloseBold } from '@element-plus/icons-vue';
+    import { useUserStore } from '~/stores/modules/user';
 
     const dialogVisible = ref(false);
 
@@ -160,6 +161,7 @@
             return {
                 name: file.filename,
                 user_id: userId || 0,
+                token: useUserStore().loginStatus?.token,
             };
         },
     };
