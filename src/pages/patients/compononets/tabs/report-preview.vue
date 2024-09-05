@@ -56,7 +56,7 @@
                     </div>
                     <div class="info-box">
                         <div class="label">DME Phone #:</div>
-                        <div class="detail">{{ patient?.mobile }}</div>
+                        <div class="detail">{{ patient?.institution_mobile }}</div>
                     </div>
                     <div class="info-box">
                         <div class="label">Device Name:</div>
@@ -106,7 +106,7 @@
                         <div class="title">Auto CPAP Summary</div>
                         <div class="compliance-row">
                             <div class="label">Mean Pressure</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.pressure_mean }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average pressure</div>
@@ -114,11 +114,11 @@
                         </div>
                         <div class="compliance-row">
                             <div class="label">{{ 'Device pressure <= 95% of the time' }}</div>
-                            <div class="detail">{{ 123123123123123123 }}</div>
+                            <div class="detail">{{ deviceReport?.pressure_95_time }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average time in large leak per day</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.leak_avg_time }}</div>
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average AHI</div>
@@ -134,7 +134,7 @@
                         </div>
                         <div class="compliance-row">
                             <div class="label">Average CA</div>
-                            <div class="detail">123123123123123123</div>
+                            <div class="detail">{{ deviceReport?.ca_avg }}</div>
                         </div>
                     </div>
                     <div
@@ -334,6 +334,12 @@
             end_date: options.value.customDate[1],
         }).then(res => {
             if (res.code === 1) {
+                // 空值设置成 -
+                for (const key of Object.keys(res.data) as Array<keyof DeviceReportRes>) {
+                    if (res.data[key] === '') {
+                        res.data[key] = '-';
+                    }
+                }
                 deviceReport.value = res.data;
             }
         });

@@ -128,4 +128,10 @@ export interface DeviceReportRes {
     ai: string;
     apnea: string;
     usetimes: string;
+
+    best30: string;
+    pressure_mean: string;
+    pressure_95_time: string;
+    ca_avg: string;
+    leak_avg_time: string;
 }

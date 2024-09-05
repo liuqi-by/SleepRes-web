@@ -102,12 +102,12 @@
         ahi: '-',
         usage_days_select_not: '-',
         hi: '-',
-        'Average CA': '-',
+        ca_avg: '-',
         usetime_avg_select: '-',
         best30: '0',
         ai: '-',
         pressure_avg: '-',
-        'Average time in High Leak': '-',
+        leak_avg_time: '-',
         leak_avg: '-',
     });
     enum EnumStaticInfo {
@@ -116,12 +116,12 @@
         ahi = 'Average AHI',
         usage_days_select_not = 'Days < 4 hrs',
         hi = 'Average HI',
-        'Average CA' = 'Average CA',
+        ca_avg = 'Average CA',
         usetime_avg_select = 'Average hours of use',
         best30 = 'Best 30 Days',
         ai = 'Average AI',
         pressure_avg = 'Average pressure',
-        'Average time in High Leak' = 'Average time in High Leak',
+        leak_avg_time = 'Average time in High Leak',
         leak_avg = 'Average Leak',
     }
 
