@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware(async to => {
     const whiteList = ['/login'];
     // 获取用户信息
     const userStore = useUserStore();
-    const permissionStore = usePermissionStore();
+
     const isLogin = userStore.loginStatus?.token;
 
     // 如果登录
@@ -19,7 +19,7 @@ export default defineNuxtRouteMiddleware(async to => {
         if (whiteList.includes(to.path)) {
             return;
         }
-
+        const permissionStore = usePermissionStore();
         try {
             // 如果登录，获取用户信息
             if (userStore.userInfo === null) {
@@ -49,7 +49,6 @@ export default defineNuxtRouteMiddleware(async to => {
                 // return navigateTo(menuRoute[0].path);
             }
         } catch (error) {
-            console.log('获取用户信息失败', error);
             return navigateTo('/login?redirect=' + to.path);
         }
     }

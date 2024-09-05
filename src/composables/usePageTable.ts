@@ -1,3 +1,5 @@
+// import { useUserStore } from '~/stores/modules/user';
+
 /**
  * @description 表格 分页 搜索
  * @param Fn 请求函数
@@ -54,7 +56,7 @@ export const usePageTable = <T>(
         getData();
     };
 
-    onActivated(() => {
+    onMounted(() => {
         getData();
     });
 

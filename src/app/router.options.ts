@@ -35,7 +35,7 @@ export const routes: RouteRecordRaw[] = [
             title: 'admin',
             affix: true,
             icon: 'homepage',
-            keepalive: true,
+            keepalive: false,
             roles: process.env.NODE_ENV === 'development' ? ['SleepRes'] : ['SleepRes'],
         },
     },
@@ -47,7 +47,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'users',
             icon: 'homepage',
-            keepalive: true,
+            keepalive: false,
             roles:
                 process.env.NODE_ENV === 'development'
                     ? ['DME', 'Physician', 'SleepRes']
@@ -61,7 +61,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'organization',
             icon: 'homepage',
-            keepalive: true,
+            keepalive: false,
             roles:
                 process.env.NODE_ENV === 'development'
                     ? ['DME', 'Physician', 'SleepRes']
@@ -75,7 +75,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'patients',
             icon: 'homepage',
-            keepalive: true,
+            keepalive: false,
             roles:
                 process.env.NODE_ENV === 'development'
                     ? ['DME', 'Physician', 'SleepRes', 'DME User', 'Physician User']

@@ -6,18 +6,18 @@
         >
             {{ title }}
         </div>
-
-        <el-table
-            :data="tableData"
-            style="width: 100%"
-            class="m-b-[20px] flex-1"
-            v-bind="$attrs"
-            ref="tableRef"
-            @wheel="handleMouseWheel"
-        >
-            <slot></slot>
-        </el-table>
-
+        <client-only>
+            <el-table
+                :data="tableData"
+                style="width: 100%"
+                class="m-b-[20px] flex-1"
+                v-bind="$attrs"
+                ref="tableRef"
+                @wheel="handleMouseWheel"
+            >
+                <slot></slot>
+            </el-table>
+        </client-only>
         <base-pagination
             v-model:current-page="currentPage"
             v-model:page-size="pageSize"

@@ -114,7 +114,6 @@ export const useUserStore = defineStore(
             const route = useRoute();
             return new Promise<void>((resolve, reject) => {
                 setTimeout(() => {
-                    console.log(route);
                     if (route.path !== '/login') {
                         if (route.fullPath !== '/') {
                             navigateTo(`/login?redirect=${route.fullPath}`);

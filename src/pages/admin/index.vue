@@ -161,7 +161,7 @@
         useUserStore().getAdminMessage();
     };
 
-    onActivated(() => {
+    onMounted(() => {
         getMessageNum();
     });
 

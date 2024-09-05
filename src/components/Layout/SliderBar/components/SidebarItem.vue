@@ -57,7 +57,7 @@
     import type { RouteRecordRaw } from 'vue-router';
     import path from 'path-browserify';
     import Item from './Item.vue';
-    import AppLink from './Link.vue';
+    // import AppLink from './Link.vue';
     import { isExternal } from '@/utils/index';
 
     const props = defineProps({
