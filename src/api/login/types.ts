@@ -77,7 +77,7 @@ export interface RegisterReq {
     /**
      *  账户类型:2=DME,4=Physician
      * */
-    type: number;
+    group_id: number;
 }
 
 // 修改密码

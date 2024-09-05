@@ -10,29 +10,36 @@ export default defineNuxtConfig({
     //     typeCheck: true,
     // },
     devtools: { enabled: false },
+
     runtimeConfig: {
         public: {
             apiUrl: process.env.NUXT_PUBLIC_API_URL,
             env: process.env.NUXT_NODE_ENV,
         },
     },
+
     // 服务端
     nitro: {
         plugins: ['./plugins/html.render.ts'],
         compressPublicAssets: true,
     },
+
     routeRules: {
         '/api/**': {
             proxy: process.env.NUXT_PUBLIC_API_URL + '/api/**',
         },
     },
+
     build: {
         // 打包文件分析
         analyze: true,
     },
+
     // 修改src目录
     srcDir: 'src/',
+
     ssr: true,
+
     app: {
         baseURL: '/',
         head: {
@@ -55,13 +62,16 @@ export default defineNuxtConfig({
         '@nuxtjs/i18n',
         '@unocss/nuxt',
     ],
+
     elementPlus: {
         // 配置element-plus
         importStyle: 'scss',
     },
+
     vueuse: {
         ssrHandlers: true,
     },
+
     // 配置国际化
     i18n: {
         locales: ['en-US'],
@@ -79,7 +89,9 @@ export default defineNuxtConfig({
         // 18n配置路径
         vueI18n: './config/i18n.config.ts',
     },
+
     plugins: ['./src/plugins/svg.ts', './src/plugins/auth.ts', './src/plugins/upload.ts'],
+
     postcss: {
         plugins: {
             // css前缀
@@ -89,6 +101,7 @@ export default defineNuxtConfig({
             },
         },
     },
+
     vite: {
         define: {
             'process.env': {

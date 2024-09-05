@@ -4,11 +4,12 @@
         v-model="state"
         placeholder="Please select"
         filterable
+        clearable
     >
-        <el-option
+        <!-- <el-option
             label="All"
             value=""
-        />
+        /> -->
         <el-option
             v-for="item in stateJson"
             :key="item"

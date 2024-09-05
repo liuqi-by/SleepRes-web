@@ -221,7 +221,7 @@
         email: '',
         first_name: '',
         last_name: '',
-        type: 2,
+        group_id: 2,
     });
     const { filterMobile } = useFilterInput(formData);
     const { dmeName, practiceName, firstName, lastName, email } = useFormRules();
@@ -258,7 +258,7 @@
             // 注册
             registerAccount({
                 ...formData.value,
-                type: props.tabType === 'registerDme' ? 2 : 4,
+                group_id: props.tabType === 'registerDme' ? 2 : 4,
             })
                 .then(res => {
                     if (res.code === 1) {

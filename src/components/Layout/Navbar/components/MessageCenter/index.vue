@@ -4,7 +4,7 @@
         <el-popover
             placement="bottom"
             trigger="click"
-            width="550"
+            width="630"
             :visible="visiblePopover"
             @show="showEvent"
             @hide="hideEvent"
@@ -28,7 +28,10 @@
                     </client-only>
                 </div>
             </template>
-            <div ref="popover">
+            <div
+                ref="popover"
+                style="max-width: 90vw"
+            >
                 <table-module
                     :data="messageData"
                     border
@@ -38,6 +41,7 @@
                     :total="pageOption.total"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
+                    height="400px"
                 >
                     <el-table-column
                         type="index"
