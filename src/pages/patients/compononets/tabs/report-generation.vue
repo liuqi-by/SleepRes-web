@@ -1,4 +1,5 @@
 <template>
+    <!-- 图表生成选项 -->
     <div class="report-generation">
         <el-dialog
             v-model="dialogVisible"
@@ -21,34 +22,46 @@
                 >
                     <el-radio :value="1">{{ $t('patients.ComplianceReport') }}</el-radio>
                     <el-radio :value="2">{{ $t('patients.TherapyReport') }}</el-radio>
+                    <el-radio :value="3">{{ $t('patients.DetailedReport') }}</el-radio>
                 </el-radio-group>
             </div>
             <!-- Timeframe -->
             <div class="m-b-30px">
-                <div class="radio-group">
-                    <div class="radio-group-title">
-                        {{ $t('patients.Timeframe') }}
+                <div>
+                    <div class="radio-group">
+                        <div class="radio-group-title">
+                            {{ $t('patients.Timeframe') }}
+                        </div>
+                        <el-radio-group
+                            v-model="selectTime"
+                            size="large"
+                            v-if="reportType !== 3"
+                        >
+                            <el-radio :value="1">{{ $t('patients.Best30Days') }}</el-radio>
+                            <el-radio :value="2">{{ $t('patients.First90Days') }}</el-radio>
+                            <el-radio :value="3">{{ $t('patients.CustomDateRange') }}</el-radio>
+                        </el-radio-group>
+                        <el-date-picker
+                            v-model="selDate"
+                            value-format="YYYY-MM-DD"
+                            :disabled-date="disabledDateFun"
+                            :default-value="new Date()"
+                            :clearable="false"
+                            v-else
+                        />
                     </div>
-                    <el-radio-group
-                        v-model="selectTime"
-                        size="large"
-                    >
-                        <el-radio :value="1">{{ $t('patients.Best30Days') }}</el-radio>
-                        <el-radio :value="2">{{ $t('patients.First90Days') }}</el-radio>
-                        <el-radio :value="3">{{ $t('patients.CustomDateRange') }}</el-radio>
-                    </el-radio-group>
+                    <el-date-picker
+                        v-model="customDate"
+                        type="daterange"
+                        unlink-panels
+                        range-separator="To"
+                        start-placeholder="Start Date"
+                        end-placeholder="End Date"
+                        v-if="selectTime === 3 && reportType !== 3"
+                        :disabled-date="disabledDateFun"
+                        value-format="YYYY-MM-DD"
+                    />
                 </div>
-                <el-date-picker
-                    v-model="customDate"
-                    type="daterange"
-                    unlink-panels
-                    range-separator="To"
-                    start-placeholder="Start Date"
-                    end-placeholder="End Date"
-                    v-if="selectTime === 3"
-                    :disabled-date="disabledDateFun"
-                    value-format="YYYY-MM-DD"
-                />
             </div>
 
             <template #footer>
@@ -66,6 +79,7 @@
 </template>
 
 <script setup lang="ts">
+    import moment from 'moment';
     import ReportPreview from './report-preview.vue';
 
     const dialogVisible = defineModel({
@@ -104,6 +118,7 @@
         reportType.value = 1;
         selectTime.value = 1;
         customDate.value = [];
+        selDate.value = moment().format('YYYY-MM-DD');
     };
 
     // 报告类型 1 合规报告 2 治疗报告
@@ -114,6 +129,9 @@
 
     // 自定义时间
     const customDate = ref<string[]>([]);
+
+    // 选择的具体时间
+    const selDate = ref<string>(moment().format('YYYY-MM-DD'));
 </script>
 
 <style lang="scss" scoped>

@@ -156,6 +156,7 @@
             </div>
             <!-- 底部的图表 -->
             <div v-loading="loading">
+                <!-- Compliance Report -->
                 <div
                     class="bottom-charts"
                     v-if="options.reportType === 1"
@@ -172,9 +173,10 @@
                     </div>
                 </div>
 
+                <!-- Therapy Report -->
                 <div
                     class="bottom-charts"
-                    v-else
+                    v-if="options.reportType === 2"
                 >
                     <div class="chart-module">
                         <div class="title">Therapy Usage Graph</div>
@@ -276,6 +278,10 @@
                         </div>
                     </div>
                 </div>
+                <div
+                    class="bottom-charts"
+                    v-if="options.reportType === 3"
+                ></div>
             </div>
         </el-dialog>
     </div>

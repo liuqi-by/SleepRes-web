@@ -175,6 +175,7 @@
         "SendRx": "Send Rx",
         "CreateReport": "Create Report",
         "TherapyReport": "Therapy Report",
+        "DetailedReport": "Detailed Report",
         "ReportType": "Report Type",
         "Timeframe": "Timeframe",
         "ComplianceReport": "Compliance Report",
