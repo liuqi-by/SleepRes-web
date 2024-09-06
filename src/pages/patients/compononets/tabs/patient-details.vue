@@ -241,7 +241,7 @@
 
 <script setup lang="ts">
     import type { FormInstance } from 'element-plus';
-    import editBtn from './edit-btn.vue';
+    import editBtn from './components/edit-btn.vue';
     import { editPatient } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
 

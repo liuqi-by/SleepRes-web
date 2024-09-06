@@ -137,7 +137,7 @@
     import Notes from './tabs/notes.vue';
     import Prescription from './tabs/prescription.vue';
     import PatientDetails from './tabs/patient-details.vue';
-    import TherapyData from './tabs/therapy-data.vue';
+    import TherapyData from './tabs/therapy-data/index.vue';
     import type { UserInfo } from '~/api/login/types';
 
     const dialogVisible = ref(false);

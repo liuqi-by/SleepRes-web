@@ -108,7 +108,7 @@
 
 <script setup lang="ts">
     import type { FormInstance, InputInstance } from 'element-plus';
-    import editBtn from './edit-btn.vue';
+    import editBtn from './components/edit-btn.vue';
 
     const isEdit = ref(false);
 

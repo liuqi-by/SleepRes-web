@@ -266,6 +266,7 @@
 </template>
 
 <script setup lang="ts">
+    import moment from 'moment';
     import TherapyReport from './report-chart-module/therapy-report.vue';
     import DetailedReport from './report-chart-module/detailed-report.vue';
     import ComplianceReport from './report-chart-module/compliance-report.vue';
@@ -307,7 +308,9 @@
 
         if (options.value.reportType === 3) {
             loading.value = true;
-            detailedReportRef.value?.init(options.value.selDate);
+            nextTick(() => {
+                detailedReportRef.value?.initData(options.value.selDate || moment().format('YYYY-MM-DD'));
+            });
         } else {
             getChartData(options.value.customDate);
         }
@@ -462,7 +465,7 @@
         }
     }
 
-    :deep(.mid-content) {
+    .mid-content {
         margin-bottom: 20px;
         border: 1px solid#000;
 

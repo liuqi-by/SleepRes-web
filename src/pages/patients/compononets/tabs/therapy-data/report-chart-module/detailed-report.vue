@@ -232,17 +232,16 @@
 
     // 时间改变时获取data
     watch(
-        [queryOption],
+        queryOption,
         () => {
             queryData();
         },
         {
             deep: true,
-            immediate: true,
         },
     );
 
-    const init = (date?: string) => {
+    const initData = (date?: string) => {
         if (date) {
             queryOption.value.hapdate = date;
         }
@@ -250,7 +249,7 @@
     };
 
     defineExpose({
-        init,
+        initData,
         resetData,
     });
 </script>
