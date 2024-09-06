@@ -242,167 +242,23 @@
             </div>
             <!-- 底部的图表 -->
             <div v-loading="loading">
-                <!-- Compliance Report -->
-                <div
-                    class="bottom-charts"
-                    v-if="options.reportType === 1"
-                >
-                    <div class="chart-module">
-                        <div class="chart">
-                            <usage-chart
-                                :usetimes="barChartData.usetimes"
-                                :dates="barChartData.dates"
-                                :sumtime="barChartData.sumtime"
-                                :usetime="barChartData.usetime"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Therapy Report -->
-                <div
-                    class="bottom-charts"
-                    v-if="options.reportType === 2"
-                >
-                    <div class="chart-module">
-                        <div class="title">Therapy Usage Graph</div>
-                        <div class="chart">
-                            <usage-chart
-                                :dates="barChartData.dates"
-                                :sumtime="barChartData.sumtime"
-                                isShowTitle
-                            />
-                            <div class="chart-info">
-                                <div class="chart-info-item">
-                                    <div class="chart-info-label">Usage days</div>
-                                    <div class="chart-info-value">27/28(96%)</div>
-                                </div>
-                                <div class="chart-info-item color-[#00CE79]">
-                                    <div class="chart-info-label">>= 4 hour days</div>
-                                    <div class="chart-info-value">27(96%)</div>
-                                </div>
-                                <div class="chart-info-item color-[#FF9795]">
-                                    <div class="chart-info-label">{{ '< 4 hour days' }}</div>
-                                    <div class="chart-info-value">27(96%)</div>
-                                </div>
-                                <div class="chart-info-item">
-                                    <div class="chart-info-label">Days not used</div>
-                                    <div class="chart-info-value">27(96%)</div>
-                                </div>
-                                <div class="chart-info-item">
-                                    <div class="chart-info-label">Days no data</div>
-                                    <div class="chart-info-value">27(96%)</div>
-                                </div>
-                                <div class="chart-info-item">
-                                    <div class="chart-info-label">Used/day(avg)</div>
-                                    <div class="chart-info-value">9.3hrs</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-module">
-                        <div class="title">Leak Graph</div>
-                        <div class="chart">
-                            <leak-chart
-                                :dates="barChartData.dates"
-                                :leak_max="barChartData.leak_max"
-                                :leak_avg="barChartData.leak_avg"
-                            />
-                            <div class="chart-info">
-                                <div class="chart-info-item">
-                                    <div class="chart-info-label">Set threshold</div>
-                                    <div class="chart-info-value">24.0 L/min</div>
-                                </div>
-                                <div class="chart-info-item">
-                                    <div class="chart-info-label">Maximum(avg)</div>
-                                    <div class="chart-info-value">23.8</div>
-                                </div>
-                                <div class="chart-info-item color-[#f4c430]">
-                                    <div class="chart-info-label">95th %(avg)</div>
-                                    <div class="chart-info-value">27(96%)</div>
-                                </div>
-                                <div class="chart-info-item">
-                                    <div class="chart-info-label">Median(avg)</div>
-                                    <div class="chart-info-value">20.1</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-module">
-                        <div class="title">AHI Graph</div>
-                        <div class="chart">
-                            <ahi-chart
-                                :ai="barChartData.ai"
-                                :hi="barChartData.hi"
-                                :ahi="barChartData.ahi"
-                                :dates="barChartData.dates"
-                            />
-
-                            <div class="chart-info">
-                                <div class="chart-info-item">
-                                    <div class="chart-info-label">AHI</div>
-                                    <div class="chart-info-value">24.0 L/min</div>
-                                </div>
-                                <div class="chart-info-item color-[#b89dc4]">
-                                    <div class="chart-info-label">HI</div>
-                                    <div class="chart-info-value">23.8</div>
-                                </div>
-                                <div class="chart-info-item color-[#8e62a1]">
-                                    <div class="chart-info-label">AI</div>
-                                    <div class="chart-info-value">27(96%)</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="bottom-charts"
-                    v-if="options.reportType === 3"
-                >
-                    <div class="chart-module">
-                        <div class="chart m-b-30px">
-                            <connect-chart
-                                :date="queryOption.hapdate"
-                                :data="leakData"
-                                @change-option-time="changeOptionTime"
-                                @change-data-zoom="changeDataZoom"
-                                :dataZoom="dataZoom"
-                                :level="level"
-                                :title="[`{a|${$t('charts.Leak')}}`, `{b|（L/min）}`].join('')"
-                                color="#54B22D"
-                                name="Leak"
-                                :yAxis="[0, 200]"
-                                ref="chart"
-                            />
-                        </div>
-                        <div class="chart m-b-30px">
-                            <connect-chart
-                                :date="queryOption.hapdate"
-                                :data="pressureData"
-                                @change-option-time="changeOptionTime"
-                                @change-data-zoom="changeDataZoom"
-                                :dataZoom="dataZoom"
-                                :level="level"
-                                :title="[`{a|${$t('charts.Pressure')}}`, `{b|（cmH2O）}`].join('')"
-                                color="#54B22D"
-                                name="Pressure"
-                                :yAxis="[0, 40]"
-                                ref="chart"
-                            />
-                        </div>
-                        <div class="chart">
-                            <event-chart
-                                ref="chart"
-                                :data="eventData"
-                                :date="queryOption.hapdate"
-                                :dataZoom="dataZoom"
-                                :level="level"
-                                :yAxis="[0, 10]"
-                                @change-data-zoom="changeDataZoom"
-                                @change-option-time="changeOptionTime"
-                            />
-                        </div>
-                    </div>
+                <div class="bottom-charts">
+                    <!-- Compliance Report -->
+                    <compliance-report
+                        :bar-chart-data="barChartData"
+                        v-if="options.reportType === 1"
+                    />
+                    <!-- Therapy Report -->
+                    <therapy-report
+                        :bar-chart-data="barChartData"
+                        v-if="options.reportType === 2"
+                    />
+                    <!-- Detailed Report -->
+                    <detailed-report
+                        ref="detailedReportRef"
+                        v-model:loading="loading"
+                        v-if="options.reportType === 3"
+                    />
                 </div>
             </div>
         </el-dialog>
@@ -410,15 +266,13 @@
 </template>
 
 <script setup lang="ts">
-    import moment from 'moment';
-    import UsageChart from './charts/usage-chart.vue';
-    import leakChart from './charts/leak-chart.vue';
-    import AhiChart from './charts/ahi-chart.vue';
-    import ConnectChart from './charts/detail-chart.vue';
-    import EventChart from './charts/event-chart.vue';
+    import TherapyReport from './report-chart-module/therapy-report.vue';
+    import DetailedReport from './report-chart-module/detailed-report.vue';
+    import ComplianceReport from './report-chart-module/compliance-report.vue';
+
     import type { UserInfo } from '~/api/login/types';
     import { getBarChart, getDeviceReport, getParamInfo } from '~/api/report';
-    import type { AllDataRes, BarChartRes, ConnectChartRes, DeviceReportRes, EventRes } from '~/api/report/types';
+    import type { BarChartRes, DeviceReportRes } from '~/api/report/types';
     const dialogVisible = ref(false);
 
     const close = () => {
@@ -428,7 +282,7 @@
         barChartData.value = {
             ...initBartChartData,
         };
-        resetData();
+        detailedReportRef.value?.resetData();
     };
 
     interface Options {
@@ -443,6 +297,7 @@
         selectTime: 1,
     });
 
+    const detailedReportRef = ref<InstanceType<typeof DetailedReport>>();
     const show = (option: Options) => {
         options.value = option;
         dialogVisible.value = true;
@@ -451,10 +306,8 @@
         getDeviceSetting();
 
         if (options.value.reportType === 3) {
-            queryOption.value.hapdate = options.value.selDate || moment().format('YYYY-MM-DD');
-
             loading.value = true;
-            queryData();
+            detailedReportRef.value?.init(options.value.selDate);
         } else {
             getChartData(options.value.customDate);
         }
@@ -555,179 +408,6 @@
             });
     };
 
-    // 动态图表
-
-    // 请求参数，默认是
-    let queryOption = ref({
-        startValue: '12:00:00',
-        endValue: '11:59:59',
-        hapdate: moment().format('YYYY-MM-DD'),
-    });
-
-    // x start end
-    let dataZoom = ref<number[]>([0, 100]);
-    // 缩放level
-    let level = ref(1);
-
-    // 修改请求参数时间
-    const changeOptionTime = (dates: number[]) => {
-        if (dates.length > 1) {
-            console.log(moment(dates[0]).format('HH:mm:ss'), moment(dates[1]).format('HH:mm:ss'));
-            queryOption.value.startValue = moment(dates[0]).format('HH:mm:ss');
-            queryOption.value.endValue =
-                moment(dates[1]).format('HH:mm:ss') === '12:00:00' ? '11:59:59' : moment(dates[1]).format('HH:mm:ss');
-        } else {
-            queryOption.value.startValue = '12:00:00';
-            queryOption.value.endValue = '11:59:59';
-        }
-    };
-
-    // 同步dataZoom，level
-    const changeDataZoom = (val: number[], lev: number) => {
-        // 异步，以防过度更新性能问题
-
-        dataZoom.value = val;
-        level.value = lev;
-    };
-
-    // 漏气
-    const leakData = ref<ConnectChartRes>([]);
-    // 压力
-    const pressureData = ref<ConnectChartRes>([]);
-    // 事件
-    const eventData = ref<EventRes>({
-        alarm_event: [],
-        ar_event: [],
-        central_event: [],
-        hypopnea_event: [],
-        mixed_events: [],
-        ob_event: [],
-        ore_str: [],
-        pm_event: [],
-        sr_event: [],
-    });
-
-    // 接口请求
-    const queryData = () => {
-        if (!patient || !patient.value.sn) {
-            return;
-        }
-
-        // 请求all_data，除了事件以外
-        useConnectReq<AllDataRes>('all_data')
-            .getData({ ...queryOption.value, sn: patient.value.sn })
-            .then(allData => {
-                if (allData) {
-                    pressureData.value = allData.pressure;
-
-                    leakData.value = allData.leak;
-                    // 请求事件图数据
-                    useConnectReq<EventRes>('event_data')
-                        .getData({ ...queryOption.value, sn: patient.value.sn })
-                        .then(eventDatas => {
-                            if (eventDatas) {
-                                eventData.value = eventDatas;
-                            }
-                        })
-                        .catch();
-                }
-            })
-            .catch()
-            .finally(() => {
-                setTimeout(() => {
-                    loading.value = false;
-                }, 500);
-            });
-
-        // useConnectReq<ConnectChartRes>('leak_data')
-        //     .getData({ ...queryOption.value, sn: patient.value.sn })
-        //     .then(data => {
-        //         if (data) {
-        //             leakData.value = data;
-        //         }
-        //     })
-        //     .catch()
-        //     .finally(() => {
-        //         setTimeout(() => {
-        //             loading.value = false;
-        //         }, 500);
-        //     });
-
-        // useConnectReq<ConnectChartRes>('pressure_data')
-        //     .getData({ ...queryOption.value, sn: patient.value.sn })
-        //     .then(data => {
-        //         if (data) {
-        //             pressureData.value = data;
-        //         }
-        //     })
-        //     .catch()
-        //     .finally(() => {
-        //         setTimeout(() => {
-        //             loading.value = false;
-        //         }, 500);
-        //     });
-
-        // 请求事件图数据
-        // useConnectReq<EventRes>('event_data')
-        //     .getData({ ...queryOption.value, sn: patient.value.sn })
-        //     .then(eventDatas => {
-        //         if (eventDatas) {
-        //             eventData.value = eventDatas;
-        //         }
-        //     })
-        //     .catch();
-
-        // useConnectReq<ConnectChartRes>('pressure_data')
-        //     .getData(queryOption.value)
-        //     .then(data => {
-        //         if (data) {
-        //             pressureData.value = data;
-        //         }
-        //     });
-        // useConnectReq<ConnectChartRes>('leak_data')
-        //     .getData(queryOption.value)
-        //     .then(data => {
-        //         if (data) {
-        //             leakData.value = data;
-        //         }
-        //     });
-        // useConnectReq<ConnectChartRes>('flow_data')
-        //     .getData(queryOption.value)
-        //     .then(data => {
-        //         if (data) {
-        //             flowData.value = data;
-        //         }
-        //     });
-        // useConnectReq<ConnectChartRes>('spo_data')
-        //     .getData(queryOption.value)
-        //     .then(data => {
-        //         if (data) {
-        //             spoData.value = data;
-        //         }
-        //     });
-    };
-
-    // 重置请求参数和缩放
-    const resetData = () => {
-        queryOption.value.startValue = '12:00:00';
-        queryOption.value.endValue = '11:59:59';
-        queryOption.value.hapdate = moment().format('YYYY-MM-DD');
-        dataZoom.value = [0, 100];
-        level.value = 1;
-    };
-
-    // 时间改变时获取data
-    watch(
-        [queryOption],
-        () => {
-            queryData();
-        },
-        {
-            deep: true,
-            immediate: true,
-        },
-    );
-
     defineExpose({
         show,
     });
@@ -782,7 +462,7 @@
         }
     }
 
-    .mid-content {
+    :deep(.mid-content) {
         margin-bottom: 20px;
         border: 1px solid#000;
 
@@ -804,7 +484,7 @@
         }
     }
 
-    .chart-module {
+    :deep(.chart-module) {
         border: 1px solid #000;
 
         &:not(:last-child) {
