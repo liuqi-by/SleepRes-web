@@ -197,8 +197,19 @@
         "hour": "hours",
         "Usage": "Usage",
         "Leak": "Leak",
+        "Pressure": "Pressure",
         "T/H": "T/H",
         "avg": "avg",
-        "max": "max"
+        "max": "max",
+        "sr_event": "Snore Events",
+        "ar_event": "Airflow Events",
+        "pm_event": "Parameter Change Events",
+        "ob_event": "Blocking Events",
+        "central_event": "Central Events",
+        "mixed_events": "Mixed Events",
+        "hypopnea_event": "Hypoventilation Events",
+        "ore_str": "Oxygen Reduce Events",
+        "alarm_event": "Alarm Events",
+        "Event": "Events"
     }
 }

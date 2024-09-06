@@ -7,7 +7,15 @@
             @close="close"
             class="form form-dialog"
         >
-            <div class="form-title">{{ options.reportType === 1 ? 'Compliance Report' : 'Therapy Report' }}</div>
+            <div class="form-title">
+                {{
+                    options.reportType === 1
+                        ? $t('patients.ComplianceReport')
+                        : options.reportType === 2
+                          ? $t('patients.TherapyReport')
+                          : $t('patients.DetailedReport')
+                }}
+            </div>
             <div class="top-Info">
                 <div class="report-row">
                     <div class="title">{{ patient?.nickname }}</div>
@@ -64,14 +72,21 @@
                     </div>
                 </div>
                 <div class="report-row-content">
-                    <div class="info-box flex-1">
+                    <div class="info-box">
                         <div class="label">Device Serial #:</div>
+                        <div class="detail">{{ patient?.sn }}</div>
+                    </div>
+                    <div class="info-box flex-1">
+                        <div class="label">Device Pressure Settings:</div>
                         <div class="detail">{{ patient?.sn }}</div>
                     </div>
                 </div>
             </div>
             <div class="mid-content">
-                <div class="compliance-information">
+                <div
+                    class="compliance-information"
+                    v-if="options.reportType !== 3"
+                >
                     <div class="compliance-module">
                         <div class="title">Compliance Summary Information</div>
                         <div class="compliance-row">
@@ -150,6 +165,77 @@
                         >
                             <div class="label">{{ item.label }}</div>
                             <div class="detail">{{ item.value }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    v-else
+                    class="statistics"
+                >
+                    <div class="title text-center">Usage and Clinical Statistics</div>
+                    <div class="m-y-[10px] statistics-container">
+                        <div class="flex m-b-[30px]">
+                            <div class="statistics-item flex-1">
+                                <div class="statistics-title">Usage</div>
+                                <div class="statistics-info">X hr XX min</div>
+                            </div>
+                            <div class="statistics-item flex-1">
+                                <div class="statistics-title">Pressure</div>
+                                <div class="statistics-info">
+                                    <div>
+                                        <span class="statistics-label">AHI:</span>
+                                        <span class="statistics-value">0.9</span>
+                                    </div>
+                                    <div>
+                                        <span class="statistics-label">AI:</span>
+                                        <span class="statistics-value">0.5</span>
+                                    </div>
+                                    <div>
+                                        <span class="statistics-label">HI:</span>
+                                        <span class="statistics-value">0.2</span>
+                                    </div>
+                                    <div>
+                                        <span class="statistics-label">Centrals:</span>
+                                        <span class="statistics-value">0.1</span>
+                                    </div>
+                                    <div>
+                                        <span class="statistics-label">Obstructive:</span>
+                                        <span class="statistics-value">0.5</span>
+                                    </div>
+                                    <div>
+                                        <span class="statistics-label">RERA:</span>
+                                        <span class="statistics-value">1.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="statistics-item flex-1">
+                                <div class="statistics-title">Leak</div>
+                                <div class="statistics-info">
+                                    <div>
+                                        <span class="statistics-label">Median:</span>
+                                        <span class="statistics-value">XX.X LPM</span>
+                                    </div>
+                                    <div>
+                                        <span class="statistics-label">90th %:</span>
+                                        <span class="statistics-value">XX.X LPM</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="statistics-item flex-1">
+                                <div class="statistics-title">Events per hour</div>
+                                <div class="statistics-info">
+                                    <div>
+                                        <span class="statistics-label">Median:</span>
+                                        <span class="statistics-value">XX.X LPM</span>
+                                    </div>
+                                    <div>
+                                        <span class="statistics-label">90th %:</span>
+                                        <span class="statistics-value">XX.X LPM</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -268,33 +354,71 @@
                             </div>
                         </div>
                     </div>
-                    <div class="chart-module">
-                        <div class="title">Events Graph</div>
-                        <div class="chart">
-                            <usage-chart
-                                :dates="barChartData.dates"
-                                :sumtime="barChartData.sumtime"
-                            />
-                        </div>
-                    </div>
                 </div>
                 <div
                     class="bottom-charts"
                     v-if="options.reportType === 3"
-                ></div>
+                >
+                    <div class="chart-module">
+                        <div class="chart m-b-30px">
+                            <connect-chart
+                                :date="queryOption.hapdate"
+                                :data="leakData"
+                                @change-option-time="changeOptionTime"
+                                @change-data-zoom="changeDataZoom"
+                                :dataZoom="dataZoom"
+                                :level="level"
+                                :title="[`{a|${$t('charts.Leak')}}`, `{b|（L/min）}`].join('')"
+                                color="#54B22D"
+                                name="Leak"
+                                :yAxis="[0, 200]"
+                                ref="chart"
+                            />
+                        </div>
+                        <div class="chart m-b-30px">
+                            <connect-chart
+                                :date="queryOption.hapdate"
+                                :data="pressureData"
+                                @change-option-time="changeOptionTime"
+                                @change-data-zoom="changeDataZoom"
+                                :dataZoom="dataZoom"
+                                :level="level"
+                                :title="[`{a|${$t('charts.Pressure')}}`, `{b|（cmH2O）}`].join('')"
+                                color="#54B22D"
+                                name="Pressure"
+                                :yAxis="[0, 40]"
+                                ref="chart"
+                            />
+                        </div>
+                        <div class="chart">
+                            <event-chart
+                                ref="chart"
+                                :data="eventData"
+                                :date="queryOption.hapdate"
+                                :dataZoom="dataZoom"
+                                :level="level"
+                                :yAxis="[0, 10]"
+                                @change-data-zoom="changeDataZoom"
+                                @change-option-time="changeOptionTime"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script setup lang="ts">
+    import moment from 'moment';
     import UsageChart from './charts/usage-chart.vue';
     import leakChart from './charts/leak-chart.vue';
     import AhiChart from './charts/ahi-chart.vue';
+    import ConnectChart from './charts/detail-chart.vue';
+    import EventChart from './charts/event-chart.vue';
     import type { UserInfo } from '~/api/login/types';
     import { getBarChart, getDeviceReport, getParamInfo } from '~/api/report';
-    import type { BarChartRes, DeviceReportRes } from '~/api/report/types';
-
+    import type { AllDataRes, BarChartRes, ConnectChartRes, DeviceReportRes, EventRes } from '~/api/report/types';
     const dialogVisible = ref(false);
 
     const close = () => {
@@ -304,12 +428,14 @@
         barChartData.value = {
             ...initBartChartData,
         };
+        resetData();
     };
 
     interface Options {
         reportType: number;
         customDate: string[];
         selectTime: number;
+        selDate?: string;
     }
     const options = ref<Options>({
         reportType: 1,
@@ -323,7 +449,15 @@
 
         getReportInfo();
         getDeviceSetting();
-        getChartData(options.value.customDate);
+
+        if (options.value.reportType === 3) {
+            queryOption.value.hapdate = options.value.selDate || moment().format('YYYY-MM-DD');
+
+            loading.value = true;
+            queryData();
+        } else {
+            getChartData(options.value.customDate);
+        }
     };
 
     const patient = inject<Ref<UserInfo>>('patient');
@@ -421,6 +555,179 @@
             });
     };
 
+    // 动态图表
+
+    // 请求参数，默认是
+    let queryOption = ref({
+        startValue: '12:00:00',
+        endValue: '11:59:59',
+        hapdate: moment().format('YYYY-MM-DD'),
+    });
+
+    // x start end
+    let dataZoom = ref<number[]>([0, 100]);
+    // 缩放level
+    let level = ref(1);
+
+    // 修改请求参数时间
+    const changeOptionTime = (dates: number[]) => {
+        if (dates.length > 1) {
+            console.log(moment(dates[0]).format('HH:mm:ss'), moment(dates[1]).format('HH:mm:ss'));
+            queryOption.value.startValue = moment(dates[0]).format('HH:mm:ss');
+            queryOption.value.endValue =
+                moment(dates[1]).format('HH:mm:ss') === '12:00:00' ? '11:59:59' : moment(dates[1]).format('HH:mm:ss');
+        } else {
+            queryOption.value.startValue = '12:00:00';
+            queryOption.value.endValue = '11:59:59';
+        }
+    };
+
+    // 同步dataZoom，level
+    const changeDataZoom = (val: number[], lev: number) => {
+        // 异步，以防过度更新性能问题
+
+        dataZoom.value = val;
+        level.value = lev;
+    };
+
+    // 漏气
+    const leakData = ref<ConnectChartRes>([]);
+    // 压力
+    const pressureData = ref<ConnectChartRes>([]);
+    // 事件
+    const eventData = ref<EventRes>({
+        alarm_event: [],
+        ar_event: [],
+        central_event: [],
+        hypopnea_event: [],
+        mixed_events: [],
+        ob_event: [],
+        ore_str: [],
+        pm_event: [],
+        sr_event: [],
+    });
+
+    // 接口请求
+    const queryData = () => {
+        if (!patient || !patient.value.sn) {
+            return;
+        }
+
+        // 请求all_data，除了事件以外
+        useConnectReq<AllDataRes>('all_data')
+            .getData({ ...queryOption.value, sn: patient.value.sn })
+            .then(allData => {
+                if (allData) {
+                    pressureData.value = allData.pressure;
+
+                    leakData.value = allData.leak;
+                    // 请求事件图数据
+                    useConnectReq<EventRes>('event_data')
+                        .getData({ ...queryOption.value, sn: patient.value.sn })
+                        .then(eventDatas => {
+                            if (eventDatas) {
+                                eventData.value = eventDatas;
+                            }
+                        })
+                        .catch();
+                }
+            })
+            .catch()
+            .finally(() => {
+                setTimeout(() => {
+                    loading.value = false;
+                }, 500);
+            });
+
+        // useConnectReq<ConnectChartRes>('leak_data')
+        //     .getData({ ...queryOption.value, sn: patient.value.sn })
+        //     .then(data => {
+        //         if (data) {
+        //             leakData.value = data;
+        //         }
+        //     })
+        //     .catch()
+        //     .finally(() => {
+        //         setTimeout(() => {
+        //             loading.value = false;
+        //         }, 500);
+        //     });
+
+        // useConnectReq<ConnectChartRes>('pressure_data')
+        //     .getData({ ...queryOption.value, sn: patient.value.sn })
+        //     .then(data => {
+        //         if (data) {
+        //             pressureData.value = data;
+        //         }
+        //     })
+        //     .catch()
+        //     .finally(() => {
+        //         setTimeout(() => {
+        //             loading.value = false;
+        //         }, 500);
+        //     });
+
+        // 请求事件图数据
+        // useConnectReq<EventRes>('event_data')
+        //     .getData({ ...queryOption.value, sn: patient.value.sn })
+        //     .then(eventDatas => {
+        //         if (eventDatas) {
+        //             eventData.value = eventDatas;
+        //         }
+        //     })
+        //     .catch();
+
+        // useConnectReq<ConnectChartRes>('pressure_data')
+        //     .getData(queryOption.value)
+        //     .then(data => {
+        //         if (data) {
+        //             pressureData.value = data;
+        //         }
+        //     });
+        // useConnectReq<ConnectChartRes>('leak_data')
+        //     .getData(queryOption.value)
+        //     .then(data => {
+        //         if (data) {
+        //             leakData.value = data;
+        //         }
+        //     });
+        // useConnectReq<ConnectChartRes>('flow_data')
+        //     .getData(queryOption.value)
+        //     .then(data => {
+        //         if (data) {
+        //             flowData.value = data;
+        //         }
+        //     });
+        // useConnectReq<ConnectChartRes>('spo_data')
+        //     .getData(queryOption.value)
+        //     .then(data => {
+        //         if (data) {
+        //             spoData.value = data;
+        //         }
+        //     });
+    };
+
+    // 重置请求参数和缩放
+    const resetData = () => {
+        queryOption.value.startValue = '12:00:00';
+        queryOption.value.endValue = '11:59:59';
+        queryOption.value.hapdate = moment().format('YYYY-MM-DD');
+        dataZoom.value = [0, 100];
+        level.value = 1;
+    };
+
+    // 时间改变时获取data
+    watch(
+        [queryOption],
+        () => {
+            queryData();
+        },
+        {
+            deep: true,
+            immediate: true,
+        },
+    );
+
     defineExpose({
         show,
     });
@@ -476,12 +783,11 @@
     }
 
     .mid-content {
-        padding: 10px 40px;
-        margin-top: 30px;
         margin-bottom: 20px;
         border: 1px solid#000;
 
         .compliance-module {
+            padding: 10px 40px;
             margin-bottom: 20px;
 
             .title {
@@ -531,6 +837,30 @@
                 flex-shrink: 0;
                 margin-right: 10px;
             }
+        }
+    }
+
+    .statistics {
+        .statistics-container {
+            padding: 10px 40px;
+        }
+
+        .title {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            border-bottom: 1px solid #000;
+        }
+
+        .statistics-title {
+            margin-bottom: 15px;
+            font-size: $font-middle;
+            font-weight: bold;
+        }
+
+        .statistics-info {
+            font-size: $font-small;
+            line-height: 1.35;
         }
     }
 </style>

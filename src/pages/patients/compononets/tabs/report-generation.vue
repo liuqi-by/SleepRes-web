@@ -90,27 +90,36 @@
     const reportPreviewRef = ref<InstanceType<typeof ReportPreview>>();
     const showReportPreview = () => {
         let dates: string[] = [];
-        switch (selectTime.value) {
-            case 1:
-                dates = ['30', '30'];
-                break;
-            case 2:
-                dates = ['90', '90'];
-                break;
-            case 3:
-                if (!customDate.value) {
-                    ElMessage.error('Please select custom date range');
-                    return;
-                }
-                dates = [customDate.value[0], customDate.value[1]];
-                break;
-        }
+        if (reportType.value !== 3) {
+            switch (selectTime.value) {
+                case 1:
+                    dates = ['30', '30'];
+                    break;
+                case 2:
+                    dates = ['90', '90'];
+                    break;
+                case 3:
+                    if (!customDate.value) {
+                        ElMessage.error('Please select custom date range');
+                        return;
+                    }
+                    dates = [customDate.value[0], customDate.value[1]];
+                    break;
+            }
 
-        reportPreviewRef.value?.show({
-            reportType: reportType.value,
-            customDate: dates,
-            selectTime: selectTime.value,
-        });
+            reportPreviewRef.value?.show({
+                reportType: reportType.value,
+                customDate: dates,
+                selectTime: selectTime.value,
+            });
+        } else {
+            reportPreviewRef.value?.show({
+                reportType: reportType.value,
+                customDate: [selDate.value, selDate.value],
+                selectTime: selectTime.value,
+                selDate: selDate.value,
+            });
+        }
     };
 
     const close = () => {

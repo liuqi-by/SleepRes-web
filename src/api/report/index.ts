@@ -1,4 +1,12 @@
-import type { StaticInfoReq, UsageInfoRes, DeviceReportRes, BarChartReq, BarChartRes, ParamInfoRes } from './types';
+import type {
+    StaticInfoReq,
+    UsageInfoRes,
+    DeviceReportRes,
+    BarChartReq,
+    BarChartRes,
+    ParamInfoRes,
+    ConnectChartReq,
+} from './types';
 
 /**
  * @description 获取静态信息\图表
@@ -25,8 +33,8 @@ export const getUsageInfo = (data: StaticInfoReq) => {
  */
 export const getDeviceReport = (data: StaticInfoReq) => {
     return useClientRequest<ResPonseType<DeviceReportRes>>('/api/device/report', {
-        method: 'GET',
-        params: data,
+        method: 'POST',
+        body: queryString(data),
     });
 };
 
@@ -47,5 +55,15 @@ export const getParamInfo = (data: StaticInfoReq) => {
     return useClientRequest<ResPonseType<ParamInfoRes>>('/api/report/log', {
         method: 'GET',
         params: data,
+    });
+};
+
+/**
+ * @description 获取联动图表数据
+ */
+export const getConnectChartData = <T>(data: ConnectChartReq, type: string) => {
+    return useClientRequest<ResPonseType<T>>('/api/report/' + type, {
+        method: 'POST',
+        body: queryString(data),
     });
 };

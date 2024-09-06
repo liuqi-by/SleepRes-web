@@ -315,4 +315,8 @@
     });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+    .form-item {
+        word-break: break-all;
+    }
+</style>
