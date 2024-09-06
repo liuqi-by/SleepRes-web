@@ -15,12 +15,7 @@ export const routes: RouteRecordRaw[] = [
             },
         ],
     },
-    {
-        path: '/login',
-        component: () => import('@/pages/login/index.vue'),
-        name: '登录',
-        meta: { title: 'login', hidden: true, layout: 'custom' },
-    },
+
     {
         path: '/',
         // redirect: '/admin',
@@ -79,7 +74,12 @@ export const routes: RouteRecordRaw[] = [
                     : ['DME User', 'Physician User', 'Physician', 'DME'],
         },
     },
-
+    {
+        path: '/login',
+        component: () => import('@/pages/login/index.vue'),
+        name: '登录',
+        meta: { title: 'login', hidden: true, layout: 'custom' },
+    },
     // {
     //     path: '/patientReport',
     //     component: () => import('@/pages/patients/detail.vue'),

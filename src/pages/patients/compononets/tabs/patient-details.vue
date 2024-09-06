@@ -18,7 +18,7 @@
                     <el-input
                         v-model="formData.first_name"
                         class="form-input"
-                        :maxlength="inputLength.name"
+                        :maxlength="inputLength.first_name"
                         :readonly="!isEdit"
                     />
                 </div>
@@ -32,7 +32,7 @@
                     <el-input
                         v-model="formData.last_name"
                         class="form-input"
-                        :maxlength="inputLength.name"
+                        :maxlength="inputLength.last_name"
                         :readonly="!isEdit"
                     />
                 </div>
@@ -61,7 +61,7 @@
                     <el-input
                         v-model="formData.patientid"
                         class="form-input"
-                        :maxlength="inputLength.name"
+                        :maxlength="inputLength.patientID"
                         :readonly="!isEdit"
                     />
                 </div>
@@ -165,6 +165,7 @@
                         v-model="formData.city"
                         class="form-input"
                         :readonly="!isEdit"
+                        :maxlength="inputLength.city"
                     />
                 </div>
             </el-form-item>

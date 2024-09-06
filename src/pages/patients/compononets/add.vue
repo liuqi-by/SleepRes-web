@@ -32,7 +32,7 @@
                                     v-model="formData.first_name"
                                     class="form-input"
                                     :placeholder="$t('login.FirstName')"
-                                    :maxlength="inputLength.name"
+                                    :maxlength="inputLength.first_name"
                                     ref="focusRef"
                                 />
                             </div>
@@ -47,7 +47,7 @@
                                     v-model="formData.last_name"
                                     class="form-input"
                                     :placeholder="$t('login.LastName')"
-                                    :maxlength="inputLength.name"
+                                    :maxlength="inputLength.last_name"
                                 />
                             </div>
                         </el-form-item>
@@ -76,7 +76,7 @@
                                     v-model="formData.patientid"
                                     class="form-input"
                                     :placeholder="$t('patients.PatientID')"
-                                    :maxlength="inputLength.name"
+                                    :maxlength="inputLength.patientID"
                                 />
                             </div>
                         </el-form-item>
@@ -251,6 +251,7 @@
                                     v-model="formData.city"
                                     class="form-input"
                                     :placeholder="$t('office.City')"
+                                    :maxlength="inputLength.city"
                                 />
                             </div>
                         </el-form-item>

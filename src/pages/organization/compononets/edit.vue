@@ -27,7 +27,7 @@
                             v-model="formData.name"
                             class="form-input"
                             :placeholder="$t('office.OfficeName')"
-                            :maxlength="inputLength.name"
+                            :maxlength="inputLength.office_name"
                             ref="focusRef"
                         />
                     </div>
@@ -42,7 +42,7 @@
                             v-model="formData.city"
                             class="form-input"
                             :placeholder="$t('office.City')"
-                            :maxlength="inputLength.name"
+                            :maxlength="inputLength.city"
                         />
                     </div>
                 </el-form-item>

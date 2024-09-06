@@ -92,7 +92,7 @@
                             class="form-input"
                             :placeholder="$t('login.PhysicianNPI')"
                             type="text"
-                            :maxlength="inputLength.account_id"
+                            :maxlength="inputLength.npi"
                             ref="focusRef"
                         />
                     </div>
@@ -154,7 +154,7 @@
                             class="form-input"
                             :placeholder="`${$t('message.AccountName')}`"
                             type="text"
-                            :maxlength="inputLength.accountName"
+                            :maxlength="inputLength.account_name"
                         />
                     </div>
                 </el-form-item>

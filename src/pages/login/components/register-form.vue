@@ -30,7 +30,7 @@
                             class="form-input"
                             :placeholder="tabType === 'registerDme' ? $t('login.dmeName') : $t('login.PracticeName')"
                             type="text"
-                            :maxlength="inputLength.name"
+                            :maxlength="inputLength.dme_name"
                             ref="focusRef"
                         />
                     </div>
@@ -46,7 +46,7 @@
                             v-model="formData.first_name"
                             class="form-input"
                             :placeholder="`${$t('login.FirstName')}`"
-                            :maxlength="inputLength.name"
+                            :maxlength="inputLength.first_name"
                         />
                     </div>
                 </el-form-item>
@@ -60,7 +60,7 @@
                             v-model="formData.last_name"
                             class="form-input"
                             :placeholder="`${$t('login.LastName')}`"
-                            :maxlength="inputLength.name"
+                            :maxlength="inputLength.last_name"
                         />
                     </div>
                 </el-form-item>
@@ -76,7 +76,7 @@
                             class="form-input"
                             :placeholder="$t('login.SleepResAccountNumber')"
                             type="text"
-                            maxlength="20"
+                            :maxlength="inputLength.account_num"
                         />
                     </div>
                 </el-form-item>
@@ -91,7 +91,7 @@
                             class="form-input"
                             :placeholder="$t('login.PhysicianNPI')"
                             type="text"
-                            :maxlength="inputLength.account_id"
+                            :maxlength="inputLength.npi"
                         />
                     </div>
                 </el-form-item>

@@ -29,7 +29,7 @@
                             v-model="formData.first_name"
                             class="form-input"
                             :placeholder="$t('login.FirstName')"
-                            :maxlength="inputLength.name"
+                            :maxlength="inputLength.first_name"
                             ref="focusRef"
                         />
                     </div>
@@ -44,7 +44,7 @@
                             v-model="formData.last_name"
                             class="form-input"
                             :placeholder="$t('login.LastName')"
-                            :maxlength="inputLength.name"
+                            :maxlength="inputLength.last_name"
                         />
                     </div>
                 </el-form-item>
@@ -60,6 +60,7 @@
                             class="form-input"
                             :placeholder="$t('login.Email')"
                             type="text"
+                            :maxlength="inputLength.email"
                         />
                     </div>
                 </el-form-item>
@@ -74,6 +75,7 @@
                             class="form-input"
                             :placeholder="$t('login.PhoneNumber')"
                             type="text"
+                            :maxlength="inputLength.mobile"
                         />
                     </div>
                 </el-form-item>
@@ -141,7 +143,7 @@
                             class="form-input"
                             :placeholder="$t('users.NPI')"
                             type="text"
-                            :maxlength="inputLength.account_id"
+                            :maxlength="inputLength.npi"
                         />
                     </div>
                 </el-form-item>
