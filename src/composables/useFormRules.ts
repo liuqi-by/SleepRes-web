@@ -81,7 +81,7 @@ export function useFormRules(formData?: any) {
             },
             {
                 validator: (_rule: any, value: string, callback: any) => {
-                    if (value && value.length <= 20 && value.length >= 10 && /^(?=\S*[!@#$%^&*? ])\S*$/.test(value)) {
+                    if (value && value.length <= 20 && value.length >= 10 && /^(?=\S*[!@#$%^&*?])\S*$/.test(value)) {
                         callback();
                     } else {
                         return callback(new Error(t('login.passwordRule')));

@@ -2,7 +2,7 @@
     "name": "vhealth-web",
     "private": true,
     "type": "module",
-    "version": "0.0.1",
+    "version": "v0.0.1-alpha.1",
     "scripts": {
         "dev": "nuxt dev --dotenv .env.development --exec",
         "build": "nuxt build --dotenv .env.development --exec",
@@ -29,7 +29,8 @@
         "vue-echarts": "^6.7.3",
         "vue-router": "^4.3.0",
         "vue-simple-uploader": "^1.0.3",
-        "vue-verify-code": "^1.0.5"
+        "vue-verify-code": "^1.0.5",
+        "vue3-print-nb": "^0.1.4"
     },
     "devDependencies": {
         "@element-plus/nuxt": "^1.0.9",

@@ -5,6 +5,7 @@
             ref="chart"
             :autoresize="true"
             :option="option"
+            class="relative"
         />
     </client-only>
 </template>
@@ -66,24 +67,24 @@
             },
 
             series: [
-                {
-                    name: t('charts.avg'),
-                    type: 'pictorialBar',
-                    itemStyle: {
-                        color: '#736111',
-                    },
-                    symbol: 'rect',
-                    symbolSize: ['100%', 2],
-                    symbolPosition: 'top',
-                    data: props.leak_avg.map(item => {
-                        if (!item) {
-                            return '-';
-                        } else {
-                            return item;
-                        }
-                    }),
-                    zlevel: 10,
-                },
+                // {
+                //     name: t('charts.avg'),
+                //     type: 'pictorialBar',
+                //     itemStyle: {
+                //         color: '#736111',
+                //     },
+                //     symbol: 'rect',
+                //     symbolSize: ['100%', 2],
+                //     symbolPosition: 'top',
+                //     data: props.leak_avg.map(item => {
+                //         if (!item) {
+                //             return '-';
+                //         } else {
+                //             return item;
+                //         }
+                //     }),
+                //     zlevel: 10,
+                // },
                 {
                     name: t('charts.max'),
                     type: 'bar',
@@ -111,6 +112,11 @@
                 },
             ],
         };
+    });
+
+    const chart = ref<InstanceType<typeof VChart>>();
+    onMounted(() => {
+        useChartResize(chart);
     });
 </script>
 

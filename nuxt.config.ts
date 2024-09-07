@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     // typescript: {
     //     typeCheck: true,
     // },
-    devtools: { enabled: false },
+    devtools: { enabled: true },
 
     runtimeConfig: {
         public: {

@@ -54,7 +54,7 @@
     }
     const props = defineProps<PropsInterface>();
 
-    const { t } = useI18n();
+    // const { t } = useI18n();
     const chart = ref<InstanceType<typeof VChart>>();
 
     const emit = defineEmits<{
@@ -209,44 +209,44 @@
     };
 
     // 获取计算后tips的值
-    let result: TipsProps = {
-        Pressure: '',
-        Flow: '',
-        Leak: '',
-        Spo: '',
-        PR: '',
-        alarm_event: '',
-        ar_event: '',
-        central_event: '',
-        hypopnea_event: '',
-        mixed_events: '',
-        ob_event: '',
-        ore_str: '',
-        pm_event: '',
-        sr_event: '',
-    };
-    const getSumData = (times: number) => {
-        result = {
-            Pressure: '',
-            Flow: '',
-            Leak: '',
-            Spo: '',
-            PR: '',
-            alarm_event: '',
-            ar_event: '',
-            central_event: '',
-            hypopnea_event: '',
-            mixed_events: '',
-            ob_event: '',
-            ore_str: '',
-            pm_event: '',
-            sr_event: '',
-        };
-        emit('getSumData', times, (res: TipsProps) => {
-            result = res;
-        });
-        return result;
-    };
+    // let result: TipsProps = {
+    //     Pressure: '',
+    //     Flow: '',
+    //     Leak: '',
+    //     Spo: '',
+    //     PR: '',
+    //     alarm_event: '',
+    //     ar_event: '',
+    //     central_event: '',
+    //     hypopnea_event: '',
+    //     mixed_events: '',
+    //     ob_event: '',
+    //     ore_str: '',
+    //     pm_event: '',
+    //     sr_event: '',
+    // };
+    // const getSumData = (times: number) => {
+    //     result = {
+    //         Pressure: '',
+    //         Flow: '',
+    //         Leak: '',
+    //         Spo: '',
+    //         PR: '',
+    //         alarm_event: '',
+    //         ar_event: '',
+    //         central_event: '',
+    //         hypopnea_event: '',
+    //         mixed_events: '',
+    //         ob_event: '',
+    //         ore_str: '',
+    //         pm_event: '',
+    //         sr_event: '',
+    //     };
+    //     emit('getSumData', times, (res: TipsProps) => {
+    //         result = res;
+    //     });
+    //     return result;
+    // };
 
     const option = ref<EChartsOption>({
         ...commonOption,
@@ -359,23 +359,23 @@
                         ...option.value.xAxis,
                     },
                     // 优化性能，只有第一个chart我才去计算所有值
-                    tooltip: {
-                        ...commonOption.tooltip,
-                        formatter: (params: any) => {
-                            // let label = params[0].axisValueLabel;
-                            let res = getSumData(params[0].axisValue);
-                            let html =
-                                `<div class="tooltip-title">${moment(params[0].axisValue).format('YYYY-MM-DD HH:mm:ss.SS')}</div>` +
-                                `<div class="tooltip-content">`;
-                            for (let key in res) {
-                                let item = res[key as keyof TipsProps];
-                                if (key && item) {
-                                    html += `<div class="tooltip-content-item flex justify-between"><span>${t('charts.' + key)}：</span><span>${item}</span></div>`;
-                                }
-                            }
-                            return html;
-                        },
-                    },
+                    // tooltip: {
+                    //     ...commonOption.tooltip,
+                    //     formatter: (params: any) => {
+                    //         // let label = params[0].axisValueLabel;
+                    //         let res = getSumData(params[0].axisValue);
+                    //         let html =
+                    //             `<div class="tooltip-title">${moment(params[0].axisValue).format('YYYY-MM-DD HH:mm:ss.SS')}</div>` +
+                    //             `<div class="tooltip-content">`;
+                    //         for (let key in res) {
+                    //             let item = res[key as keyof TipsProps];
+                    //             if (key && item) {
+                    //                 html += `<div class="tooltip-content-item flex justify-between"><span>${t('charts.' + key)}：</span><span>${item}</span></div>`;
+                    //             }
+                    //         }
+                    //         return html;
+                    //     },
+                    // },
 
                     series: [
                         {

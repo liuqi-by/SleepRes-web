@@ -126,6 +126,11 @@
             ],
         };
     });
+
+    const chart = ref<InstanceType<typeof VChart>>();
+    onMounted(() => {
+        useChartResize(chart);
+    });
 </script>
 
 <style lang="scss" scoped></style>

@@ -8,6 +8,7 @@
                     :dates="barChartData.dates"
                     :sumtime="barChartData.sumtime"
                     isShowTitle
+                    class="chart-left"
                 />
                 <div class="chart-info">
                     <div class="chart-info-item">
@@ -44,6 +45,7 @@
                     :dates="barChartData.dates"
                     :leak_max="barChartData.leak_max"
                     :leak_avg="barChartData.leak_avg"
+                    class="chart-left"
                 />
                 <div class="chart-info">
                     <div class="chart-info-item">
@@ -73,6 +75,7 @@
                     :hi="barChartData.hi"
                     :ahi="barChartData.ahi"
                     :dates="barChartData.dates"
+                    class="chart-left"
                 />
 
                 <div class="chart-info">

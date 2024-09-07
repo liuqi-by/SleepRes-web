@@ -210,6 +210,8 @@
         "hypopnea_event": "Hypoventilation Events",
         "ore_str": "Oxygen Reduce Events",
         "alarm_event": "Alarm Events",
-        "Event": "Events"
+        "Event": "Events",
+        "Export": "Export",
+        "ExportDataReportTips": "The mobile currently does not support exporting reports"
     }
 }
