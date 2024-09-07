@@ -275,11 +275,11 @@
                                         </div>
                                         <div>
                                             <span class="statistics-label">Obstructive:</span>
-                                            <span class="statistics-value">0.5</span>
+                                            <span class="statistics-value"></span>
                                         </div>
                                         <div>
                                             <span class="statistics-label">RERA:</span>
-                                            <span class="statistics-value">1.0</span>
+                                            <span class="statistics-value"></span>
                                         </div>
                                     </div>
                                 </div>
