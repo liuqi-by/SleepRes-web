@@ -192,34 +192,38 @@
                             <div class="flex m-b-[30px]">
                                 <div class="statistics-item flex-1">
                                     <div class="statistics-title">Usage</div>
-                                    <div class="statistics-info">X hr XX min</div>
+                                    <div class="statistics-info">{{ deviceReport?.usetime }}</div>
                                 </div>
                                 <div class="statistics-item flex-1">
                                     <div class="statistics-title">Pressure</div>
                                     <div class="statistics-info">
                                         <div>
-                                            <span class="statistics-label">AHI:</span>
-                                            <span class="statistics-value">0.9</span>
+                                            <span class="statistics-label">Max Pressure:</span>
+                                            <span class="statistics-value">
+                                                {{
+                                                    deviceReport?.pressure_max
+                                                        ? deviceReport.pressure_max + 'cmH2O'
+                                                        : '-'
+                                                }}
+                                            </span>
                                         </div>
                                         <div>
-                                            <span class="statistics-label">AI:</span>
-                                            <span class="statistics-value">0.5</span>
+                                            <span class="statistics-label">95% Pressure:</span>
+                                            <span class="statistics-value">
+                                                {{
+                                                    deviceReport?.pressure_95 ? deviceReport.pressure_95 + 'cmH2O' : '-'
+                                                }}
+                                            </span>
                                         </div>
                                         <div>
-                                            <span class="statistics-label">HI:</span>
-                                            <span class="statistics-value">0.2</span>
-                                        </div>
-                                        <div>
-                                            <span class="statistics-label">Centrals:</span>
-                                            <span class="statistics-value">0.1</span>
-                                        </div>
-                                        <div>
-                                            <span class="statistics-label">Obstructive:</span>
-                                            <span class="statistics-value">0.5</span>
-                                        </div>
-                                        <div>
-                                            <span class="statistics-label">RERA:</span>
-                                            <span class="statistics-value">1.0</span>
+                                            <span class="statistics-label">Avg Pressure:</span>
+                                            <span class="statistics-value">
+                                                {{
+                                                    deviceReport?.pressure_avg
+                                                        ? deviceReport.pressure_avg + 'cmH2O'
+                                                        : '-'
+                                                }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -229,12 +233,16 @@
                                     <div class="statistics-title">Leak</div>
                                     <div class="statistics-info">
                                         <div>
-                                            <span class="statistics-label">Median:</span>
-                                            <span class="statistics-value">XX.X LPM</span>
+                                            <span class="statistics-label">Max Leak:</span>
+                                            <span class="statistics-value">
+                                                {{ deviceReport?.leak_max ? deviceReport.leak_max + 'L/min' : '-' }}
+                                            </span>
                                         </div>
                                         <div>
-                                            <span class="statistics-label">90th %:</span>
-                                            <span class="statistics-value">XX.X LPM</span>
+                                            <span class="statistics-label">Avg Leak:</span>
+                                            <span class="statistics-value">
+                                                {{ deviceReport?.leak_avg ? deviceReport.leak_avg + 'L/min' : '-' }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -242,12 +250,36 @@
                                     <div class="statistics-title">Events per hour</div>
                                     <div class="statistics-info">
                                         <div>
-                                            <span class="statistics-label">Median:</span>
-                                            <span class="statistics-value">XX.X LPM</span>
+                                            <span class="statistics-label">AHI:</span>
+                                            <span class="statistics-value">{{
+                                                deviceReport?.ahi ? deviceReport.ahi : '-'
+                                            }}</span>
                                         </div>
                                         <div>
-                                            <span class="statistics-label">90th %:</span>
-                                            <span class="statistics-value">XX.X LPM</span>
+                                            <span class="statistics-label">AI:</span>
+                                            <span class="statistics-value">{{
+                                                deviceReport?.ai ? deviceReport.ai : '-'
+                                            }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="statistics-label">HI:</span>
+                                            <span class="statistics-value">{{
+                                                deviceReport?.hi ? deviceReport.hi : '-'
+                                            }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="statistics-label">Centrals:</span>
+                                            <span class="statistics-value">{{
+                                                deviceReport?.ca_avg ? deviceReport.ca_avg : '-'
+                                            }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="statistics-label">Obstructive:</span>
+                                            <span class="statistics-value">0.5</span>
+                                        </div>
+                                        <div>
+                                            <span class="statistics-label">RERA:</span>
+                                            <span class="statistics-value">1.0</span>
                                         </div>
                                     </div>
                                 </div>
@@ -266,6 +298,7 @@
                         <!-- Therapy Report -->
                         <therapy-report
                             :bar-chart-data="barChartData"
+                            :deviceReport="deviceReport"
                             v-if="options.reportType === 2"
                         />
                         <!-- Detailed Report -->
