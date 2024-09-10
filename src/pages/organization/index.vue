@@ -97,11 +97,13 @@
                     align="center"
                 >
                     <template #default="{ row }">
-                        <el-switch
+                        <base-switch
                             v-model="row.status"
                             :active-value="0"
                             :inactive-value="1"
-                            @click="frozen(row)"
+                            @change="frozen(row)"
+                            msgOn="office.statusOn"
+                            msgOff="office.statusOff"
                         />
                     </template>
                 </el-table-column>

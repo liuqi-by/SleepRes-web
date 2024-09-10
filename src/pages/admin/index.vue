@@ -64,11 +64,11 @@
                     align="center"
                 >
                     <template #default="{ row }">
-                        <el-switch
+                        <base-switch
                             v-model="row.frozen"
                             :active-value="0"
                             :inactive-value="1"
-                            @click="frozenAccount(row)"
+                            @change="frozenAccount(row)"
                         />
                     </template>
                 </el-table-column>

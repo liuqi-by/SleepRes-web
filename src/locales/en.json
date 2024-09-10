@@ -121,7 +121,9 @@
         "CreateUserAccount": "Create User Account",
         "searchPlaceholder": "Name / Email / Phone number",
         "NPI": "NPI",
-        "Modify": "Modify"
+        "Modify": "Modify",
+        "statusOff": "Are you sure you would like to turn this account status off?",
+        "statusOn": "Are you sure you would like to turn this account status on?"
     },
     "office": {
         "CreateOffice": "Create Office",
@@ -130,7 +132,9 @@
         "Telephone": "Telephone",
         "Modify": "Modify",
         "Edit": "Edit",
-        "searchPlaceholder": "Name / Email / Telephone / State / Address"
+        "searchPlaceholder": "Name / Email / Telephone / State / Address",
+        "statusOff": "Are you sure you would like to turn this organization status off?",
+        "statusOn": "Are you sure you would like to turn this organization status on?"
     },
     "patients": {
         "AddPatient": "Add Patient",
@@ -181,7 +185,8 @@
         "ComplianceReport": "Compliance Report",
         "Best30Days": "Best 30 Days",
         "First90Days": "First 90 Days",
-        "CustomDateRange": "Custom Date Range"
+        "CustomDateRange": "Custom Date Range",
+        "Monitoring": "Monitoring"
     },
     "upload": {
         "Select": "Select",

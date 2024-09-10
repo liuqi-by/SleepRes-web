@@ -10,7 +10,7 @@
             color="var(--el-color-danger)"
             v-else-if="compliant === 2"
         />
-        <span v-else-if="compliant === 1">Monitoring</span>
+        <span v-else-if="compliant === 1">{{ $t('patients.Monitoring') }}</span>
     </div>
 </template>
 
