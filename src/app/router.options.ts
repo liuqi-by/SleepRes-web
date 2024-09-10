@@ -34,7 +34,19 @@ export const routes: RouteRecordRaw[] = [
             roles: process.env.NODE_ENV === 'development' ? ['SleepRes'] : ['SleepRes'],
         },
     },
-
+    {
+        path: '/patients',
+        component: () => import('@/pages/patients/index.vue'),
+        name: '患者',
+        meta: {
+            title: 'patients',
+            keepalive: false,
+            roles:
+                process.env.NODE_ENV === 'development'
+                    ? ['DME', 'Physician', 'SleepRes', 'DME User', 'Physician User']
+                    : ['DME User', 'Physician User', 'Physician', 'DME'],
+        },
+    },
     {
         path: '/users',
         component: () => import('@/pages/users/index.vue'),
@@ -61,19 +73,7 @@ export const routes: RouteRecordRaw[] = [
                     : ['DME User', 'Physician User', 'Physician', 'DME'],
         },
     },
-    {
-        path: '/patients',
-        component: () => import('@/pages/patients/index.vue'),
-        name: '患者',
-        meta: {
-            title: 'patients',
-            keepalive: false,
-            roles:
-                process.env.NODE_ENV === 'development'
-                    ? ['DME', 'Physician', 'SleepRes', 'DME User', 'Physician User']
-                    : ['DME User', 'Physician User', 'Physician', 'DME'],
-        },
-    },
+
     {
         path: '/login',
         component: () => import('@/pages/login/index.vue'),
