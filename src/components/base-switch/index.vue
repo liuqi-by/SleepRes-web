@@ -1,12 +1,10 @@
 <!-- 二次确认的switch -->
 <template>
-    <div>
-        <el-switch
-            v-bind="$attrs"
-            v-model="val"
-            :before-change="beforStatusChange"
-        />
-    </div>
+    <el-switch
+        v-bind="$attrs"
+        v-model="val"
+        :before-change="beforStatusChange"
+    />
 </template>
 
 <script setup lang="ts">

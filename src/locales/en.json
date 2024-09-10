@@ -112,7 +112,7 @@
         "DeleteSuccess": "Delete successfully"
     },
     "users": {
-        "FullName": "Full Name",
+        "FullName": "Last, First Name",
         "OfficeLocation": "Office location",
         "Role": "Role",
         "EditUser": "Edit User",

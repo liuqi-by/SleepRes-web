@@ -92,3 +92,12 @@ export function getAgeByBirth(brith: string) {
 export const disabledDateFun = (time: Record<string, any>): boolean => {
     return time.getTime() > new Date().getTime();
 };
+
+/**
+ * 日期显示格式
+ */
+
+export const dateFormatReg = 'MM/DD/YYYY';
+export const dateFormat = (date: string) => {
+    return date ? moment(date).format(dateFormatReg) : '';
+};

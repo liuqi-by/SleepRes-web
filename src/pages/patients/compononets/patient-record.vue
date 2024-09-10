@@ -55,7 +55,7 @@
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.patient.birthdate"
+                            :modelValue="dateFormat(formData.patient.birthdate)"
                             class="form-input"
                             readonly
                         />
@@ -68,7 +68,7 @@
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.patient.setup_date"
+                            :modelValue="dateFormat(formData.patient.setup_date)"
                             class="form-input"
                             readonly
                         />
@@ -120,7 +120,6 @@
                 <Prescription v-if="activeIndex === 2" />
                 <PatientDetails
                     v-if="activeIndex === 3"
-                    :patient="formData"
                     @update="updatePatient"
                 />
                 <Notes

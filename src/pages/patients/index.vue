@@ -66,7 +66,11 @@
                     :label="$t('patients.Birthdate')"
                     min-width="120"
                     align="center"
-                />
+                >
+                    <template #default="{ row }">
+                        <span>{{ row.patient.birthdate && dateFormat(row.patient.birthdate) }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="sn"
                     :label="$t('patients.SerialNumber')"
