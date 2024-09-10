@@ -57,12 +57,11 @@
                             :label="$t('patients.DateOfBirth')"
                         >
                             <div class="form-item">
-                                <el-date-picker
+                                <date-picker
                                     v-model="formData.birthdate"
                                     type="date"
                                     :placeholder="$t('patients.DateOfBirth')"
                                     :disabled-date="disabledDateFun"
-                                    value-format="YYYY-MM-DD"
                                 />
                             </div>
                         </el-form-item>
@@ -119,11 +118,10 @@
                             :label="$t('patients.SetupDate')"
                         >
                             <div class="form-item">
-                                <el-date-picker
+                                <date-picker
                                     v-model="formData.setup_date"
                                     type="date"
                                     :placeholder="$t('patients.SetupDate')"
-                                    value-format="YYYY-MM-DD"
                                 />
                             </div>
                         </el-form-item>

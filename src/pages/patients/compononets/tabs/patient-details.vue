@@ -43,11 +43,10 @@
                 :label="$t('patients.DateOfBirth')"
             >
                 <div class="form-item">
-                    <el-date-picker
+                    <date-picker
                         v-model="formData.birthdate"
                         type="date"
                         :disabled-date="disabledDateFun"
-                        value-format="YYYY-MM-DD"
                         :readonly="!isEdit"
                     />
                 </div>
@@ -93,10 +92,9 @@
                 :label="$t('patients.SetupDate')"
             >
                 <div class="form-item">
-                    <el-date-picker
+                    <date-picker
                         v-model="formData.setup_date"
                         type="date"
-                        value-format="YYYY-MM-DD"
                         :readonly="!isEdit"
                     />
                 </div>
@@ -246,13 +244,6 @@
     import type { UserInfo } from '~/api/login/types';
 
     const isEdit = ref(false);
-
-    // const props = defineProps({
-    //     patient: {
-    //         type: Object,
-    //         default: () => ({}),
-    //     },
-    // });
 
     const formData = ref({
         first_name: '',

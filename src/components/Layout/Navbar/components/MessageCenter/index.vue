@@ -56,7 +56,7 @@
                         align="center"
                     >
                         <template #default="{ row }">
-                            {{ row.createtime ? moment(row.createtime * 1000).format('YYYY-MM-DD') : '' }}
+                            {{ row.createtime ? moment(row.createtime * 1000).format(dateFormatReg) : '' }}
                         </template>
                     </el-table-column>
                     <el-table-column

@@ -23,7 +23,7 @@
 
     const value = defineModel({
         type: Object,
-        default: {},
+        default: '',
     });
 </script>
 

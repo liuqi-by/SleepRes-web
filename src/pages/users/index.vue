@@ -75,16 +75,16 @@
                 />
                 <el-table-column
                     prop="frozen"
-                    :label="$t('message.Status')"
+                    :label="$t('users.AccountStatus')"
                     min-width="120"
                     align="center"
                 >
                     <template #default="{ row }">
-                        <el-switch
+                        <base-switch
                             v-model="row.frozen"
                             :active-value="0"
                             :inactive-value="1"
-                            @click="frozenAccount(row)"
+                            @change="frozenAccount(row)"
                         />
                     </template>
                 </el-table-column>

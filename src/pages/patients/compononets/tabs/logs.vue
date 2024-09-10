@@ -32,7 +32,7 @@
                 align="center"
             >
                 <template #default="{ row }">
-                    {{ row.updatetime && moment(row.updatetime * 1000).format('YYYY-MM-DD HH:mm:ss') }}
+                    {{ row.updatetime && moment(row.updatetime * 1000).format(dateFormatReg + ' HH:mm:ss') }}
                 </template>
             </el-table-column>
             <el-table-column

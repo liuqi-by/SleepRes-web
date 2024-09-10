@@ -66,7 +66,11 @@
                     :label="$t('patients.Birthdate')"
                     min-width="120"
                     align="center"
-                />
+                >
+                    <template #default="{ row }">
+                        <span>{{ row.patient.birthdate && dateFormat(row.patient.birthdate) }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="sn"
                     :label="$t('patients.SerialNumber')"
@@ -108,16 +112,18 @@
                     align="center"
                 >
                     <template #default="{ row }">
-                        <Select
+                        <!-- <Select
                             size="6"
                             color="var(--el-color-success)"
-                            v-if="row.patient.compliant === 1"
+                            v-if="row.patient.compliant === 0"
                         />
                         <CloseBold
                             size="6"
                             color="var(--el-color-danger)"
-                            v-else
+                            v-else-if="row.patient.compliant === 2"
                         />
+                        <span v-else-if="row.patient.compliant === 1">Monitoring</span> -->
+                        <compliant-status :compliant="Number(row.patient.compliant)" />
                     </template>
                 </el-table-column>
             </table-module>
@@ -141,7 +147,7 @@
 </template>
 
 <script setup lang="ts">
-    import { Select, CloseBold } from '@element-plus/icons-vue';
+    // import { Select, CloseBold } from '@element-plus/icons-vue';
     // import AddUserDialog from './compononets/add.vue';
     // import PatientRecord from './compononets/patient-record.vue';
     import { getPatient } from '~/api/patient';

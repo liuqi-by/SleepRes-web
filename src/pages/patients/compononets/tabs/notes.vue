@@ -17,7 +17,7 @@
                     >
                         <p>
                             <b class="m-r-10px">{{ item.nickname }}</b>
-                            {{ item.add_time && moment(item.add_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}
+                            {{ item.add_time && moment(item.add_time * 1000).format(dateFormatReg + ' HH:mm:ss') }}
                         </p>
                         <p class="m-t-5px">{{ item.note }}</p>
                     </li>
