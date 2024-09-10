@@ -85,13 +85,14 @@
                                 <Select
                                     size="6"
                                     color="var(--el-color-success)"
-                                    v-if="formData.patient.compliant === 1"
+                                    v-if="formData.patient.compliant === 0"
                                 />
                                 <CloseBold
                                     size="6"
                                     color="var(--el-color-danger)"
-                                    v-else
+                                    v-else-if="formData.patient.compliant === 2"
                                 />
+                                <span v-else-if="formData.patient.compliant === 1">Monitoring</span>
                             </div>
                         </div>
                     </div>

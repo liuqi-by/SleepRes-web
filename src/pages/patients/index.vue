@@ -111,13 +111,14 @@
                         <Select
                             size="6"
                             color="var(--el-color-success)"
-                            v-if="row.patient.compliant === 1"
+                            v-if="row.patient.compliant === 0"
                         />
                         <CloseBold
                             size="6"
                             color="var(--el-color-danger)"
-                            v-else
+                            v-else-if="row.patient.compliant === 2"
                         />
+                        <span v-else-if="row.patient.compliant === 1">Monitoring</span>
                     </template>
                 </el-table-column>
             </table-module>
