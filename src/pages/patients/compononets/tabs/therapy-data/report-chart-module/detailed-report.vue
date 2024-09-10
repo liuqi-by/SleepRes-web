@@ -245,7 +245,7 @@
         if (date) {
             queryOption.value.hapdate = date;
         }
-        queryData();
+        // queryData();
     };
 
     defineExpose({

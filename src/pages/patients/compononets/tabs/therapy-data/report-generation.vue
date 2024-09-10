@@ -41,16 +41,15 @@
                             <el-radio :value="2">{{ $t('patients.First90Days') }}</el-radio>
                             <el-radio :value="3">{{ $t('patients.CustomDateRange') }}</el-radio>
                         </el-radio-group>
-                        <el-date-picker
+                        <date-picker
                             v-model="selDate"
-                            value-format="YYYY-MM-DD"
                             :disabled-date="disabledDateFun"
                             :default-value="new Date()"
                             :clearable="false"
                             v-else
                         />
                     </div>
-                    <el-date-picker
+                    <date-picker
                         v-model="customDate"
                         type="daterange"
                         unlink-panels
@@ -59,7 +58,6 @@
                         end-placeholder="End Date"
                         v-if="selectTime === 3 && reportType !== 3"
                         :disabled-date="disabledDateFun"
-                        value-format="YYYY-MM-DD"
                     />
                 </div>
             </div>

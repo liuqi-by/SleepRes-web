@@ -71,7 +71,7 @@
             flex: 1;
             align-items: center;
             min-width: 400px;
-            max-width: 500px;
+            max-width: 600px;
             margin-right: 30px;
 
             .search-module-item-label {

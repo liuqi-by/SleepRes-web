@@ -55,7 +55,7 @@
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.patient.birthdate"
+                            :modelValue="dateFormat(formData.patient.birthdate)"
                             class="form-input"
                             readonly
                         />
@@ -68,7 +68,7 @@
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.patient.setup_date"
+                            :modelValue="dateFormat(formData.patient.setup_date)"
                             class="form-input"
                             readonly
                         />
@@ -82,16 +82,18 @@
                     <div class="form-item">
                         <div class="el-input">
                             <div class="el-input__wrapper w-192px h-40px">
-                                <Select
+                                <!-- <Select
                                     size="6"
                                     color="var(--el-color-success)"
-                                    v-if="formData.patient.compliant === 1"
+                                    v-if="formData.patient.compliant === 0"
                                 />
                                 <CloseBold
                                     size="6"
                                     color="var(--el-color-danger)"
-                                    v-else
+                                    v-else-if="formData.patient.compliant === 2"
                                 />
+                                <span v-else-if="formData.patient.compliant === 1">Monitoring</span> -->
+                                <compliant-status :compliant="formData.patient.compliant" />
                             </div>
                         </div>
                     </div>
@@ -118,7 +120,6 @@
                 <Prescription v-if="activeIndex === 2" />
                 <PatientDetails
                     v-if="activeIndex === 3"
-                    :patient="formData"
                     @update="updatePatient"
                 />
                 <Notes
@@ -132,7 +133,7 @@
 </template>
 
 <script setup lang="ts">
-    import { Select, CloseBold } from '@element-plus/icons-vue';
+    // import { Select, CloseBold } from '@element-plus/icons-vue';
     import Logs from './tabs/logs.vue';
     import Notes from './tabs/notes.vue';
     import Prescription from './tabs/prescription.vue';

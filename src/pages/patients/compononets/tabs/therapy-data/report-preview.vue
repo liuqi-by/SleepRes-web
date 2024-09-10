@@ -40,7 +40,11 @@
                         <div class="info-box">
                             <div class="label">Date range of report:</div>
                             <div class="detail text-nowrap!">
-                                {{ barChartData.dates[0] }} - {{ barChartData.dates[barChartData.dates.length - 1] }}
+                                {{
+                                    options.reportType !== 3
+                                        ? `${barChartData.dates[0]} - ${barChartData.dates[barChartData.dates.length - 1]}`
+                                        : options.selDate
+                                }}
                             </div>
                         </div>
                     </div>
@@ -104,9 +108,9 @@
                     >
                         <div class="compliance-module">
                             <div class="title">Compliance Summary Information</div>
-                            <div class="compliance-row">
+                            <!-- <div class="compliance-row">
                                 <div class="label">Compliance Achieved</div>
-                            </div>
+                            </div> -->
                             <div class="compliance-row">
                                 <div class="label">Days with usage</div>
                                 <div class="detail">{{ deviceReport?.use_days }}</div>
@@ -269,15 +273,17 @@
                                         </div>
                                         <div>
                                             <span class="statistics-label">Centrals:</span>
-                                            <span class="statistics-value">0.1</span>
+                                            <span class="statistics-value">{{
+                                                deviceReport?.ca_avg ? deviceReport.ca_avg : '-'
+                                            }}</span>
                                         </div>
                                         <div>
                                             <span class="statistics-label">Obstructive:</span>
-                                            <span class="statistics-value">0.5</span>
+                                            <span class="statistics-value"></span>
                                         </div>
                                         <div>
                                             <span class="statistics-label">RERA:</span>
-                                            <span class="statistics-value">1.0</span>
+                                            <span class="statistics-value"></span>
                                         </div>
                                     </div>
                                 </div>

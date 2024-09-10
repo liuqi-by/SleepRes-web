@@ -92,16 +92,18 @@
                 </el-table-column>
                 <el-table-column
                     prop="status"
-                    :label="$t('message.Status')"
+                    :label="$t('users.AccountStatus')"
                     min-width="120"
                     align="center"
                 >
                     <template #default="{ row }">
-                        <el-switch
+                        <base-switch
                             v-model="row.status"
                             :active-value="0"
                             :inactive-value="1"
-                            @click="frozen(row)"
+                            @change="frozen(row)"
+                            msgOn="office.statusOn"
+                            msgOff="office.statusOff"
                         />
                     </template>
                 </el-table-column>
