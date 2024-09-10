@@ -82,7 +82,7 @@
                     <div class="form-item">
                         <div class="el-input">
                             <div class="el-input__wrapper w-192px h-40px">
-                                <Select
+                                <!-- <Select
                                     size="6"
                                     color="var(--el-color-success)"
                                     v-if="formData.patient.compliant === 0"
@@ -92,7 +92,8 @@
                                     color="var(--el-color-danger)"
                                     v-else-if="formData.patient.compliant === 2"
                                 />
-                                <span v-else-if="formData.patient.compliant === 1">Monitoring</span>
+                                <span v-else-if="formData.patient.compliant === 1">Monitoring</span> -->
+                                <compliant-status :compliant="formData.patient.compliant" />
                             </div>
                         </div>
                     </div>
@@ -133,7 +134,7 @@
 </template>
 
 <script setup lang="ts">
-    import { Select, CloseBold } from '@element-plus/icons-vue';
+    // import { Select, CloseBold } from '@element-plus/icons-vue';
     import Logs from './tabs/logs.vue';
     import Notes from './tabs/notes.vue';
     import Prescription from './tabs/prescription.vue';

@@ -33,6 +33,16 @@ export interface CheckMessageReq {
      * 用户状态,1=审核通过 2=审核不通过删除
      */
     status: number;
+
+    first_name?: string;
+    last_name?: string;
+    dmename?: string;
+    zip_code?: string;
+    mobile?: string;
+    email?: string;
+    account_id?: string;
+    state?: string;
+    address?: string;
 }
 
 // 获取用户列表

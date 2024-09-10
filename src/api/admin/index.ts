@@ -16,8 +16,8 @@ export const getMessage = (data: MessageReq & PageQuery) => {
  */
 export const checkMessage = (data: CheckMessageReq) => {
     return useClientRequest<ResPonseType<void>>('/api/admin/check', {
-        method: 'GET',
-        query: data,
+        method: 'POST',
+        body: queryString(data),
     });
 };
 

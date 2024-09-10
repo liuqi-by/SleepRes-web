@@ -27,7 +27,14 @@
                     :label="tabType === 'DME' ? $t('login.dmeName') : $t('login.PracticeName')"
                 >
                     <div class="form-item">
-                        {{ formData.dmename }}
+                        <el-input
+                            v-model="formData.dmename"
+                            class="form-input"
+                            :placeholder="tabType === 'DME' ? $t('login.dmeName') : $t('login.PracticeName')"
+                            type="text"
+                            :maxlength="inputLength.dme_name"
+                            ref="focusRef"
+                        />
                     </div>
                 </el-form-item>
 
@@ -37,7 +44,12 @@
                     :label="$t('login.FirstName')"
                 >
                     <div class="form-item">
-                        {{ formData.first_name }}
+                        <el-input
+                            v-model="formData.first_name"
+                            class="form-input"
+                            :placeholder="`${$t('login.FirstName')}`"
+                            :maxlength="inputLength.first_name"
+                        />
                     </div>
                 </el-form-item>
                 <!-- LastName -->
@@ -46,7 +58,12 @@
                     :label="$t('login.LastName')"
                 >
                     <div class="form-item">
-                        {{ formData.last_name }}
+                        <el-input
+                            v-model="formData.last_name"
+                            class="form-input"
+                            :placeholder="`${$t('login.LastName')}`"
+                            :maxlength="inputLength.last_name"
+                        />
                     </div>
                 </el-form-item>
                 <!-- SleepResAccountNumber -->
@@ -103,7 +120,13 @@
                     :label="$t('login.Email')"
                 >
                     <div class="form-item">
-                        {{ formData.email }}
+                        <el-input
+                            v-model="formData.email"
+                            class="form-input"
+                            :placeholder="`${$t('login.Email')}`"
+                            type="text"
+                            :maxlength="inputLength.email"
+                        />
                     </div>
                 </el-form-item>
                 <!-- PhoneNumber -->
@@ -112,7 +135,14 @@
                     :label="$t('login.PhoneNumber')"
                 >
                     <div class="form-item">
-                        {{ formData.mobile }}
+                        <el-input
+                            v-model="formData.mobile"
+                            class="form-input"
+                            :placeholder="`${$t('login.PhoneNumber')}`"
+                            type="text"
+                            :maxlength="inputLength.mobile"
+                            @input="filterMobile('mobile')"
+                        />
                     </div>
                 </el-form-item>
                 <!-- Address -->
@@ -121,7 +151,13 @@
                     :label="$t('login.Address')"
                 >
                     <div class="form-item">
-                        {{ formData.address }}
+                        <el-input
+                            v-model="formData.address"
+                            class="form-input"
+                            :placeholder="`${$t('login.Address')}`"
+                            type="text"
+                            :maxlength="inputLength.address"
+                        />
                     </div>
                 </el-form-item>
                 <!-- State -->
@@ -130,7 +166,11 @@
                     :label="$t('login.State')"
                 >
                     <div class="form-item">
-                        {{ formData.state }}
+                        <select-state
+                            v-model="formData.state"
+                            class="form-input"
+                            :placeholder="`${$t('login.State')}`"
+                        />
                     </div>
                 </el-form-item>
                 <!-- ZipCode -->
@@ -139,7 +179,14 @@
                     :label="$t('login.ZipCode')"
                 >
                     <div class="form-item">
-                        {{ formData.zip_code }}
+                        <el-input
+                            v-model="formData.zip_code"
+                            class="form-input"
+                            :placeholder="`${$t('login.ZipCode')}`"
+                            type="text"
+                            :maxlength="inputLength.zipCode"
+                            @keyup.enter="submit"
+                        />
                     </div>
                 </el-form-item>
 
@@ -205,14 +252,20 @@
     const { t } = useI18n(); // 国际化
 
     const formData = ref<Partial<UserInfo>>({});
-    const { accountName, accountNumber } = useFormRules();
+    const { accountName, accountNumber, firstName, lastName, email, dmeName, practiceName } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
             username: accountName,
             account_num: accountNumber,
+            dmename: tabType.value === 'DME' ? dmeName : practiceName,
+            first_name: firstName,
+            last_name: lastName,
+            email,
         };
     });
+
+    const { filterMobile } = useFilterInput(formData);
 
     watch(
         () => tabType,
@@ -229,7 +282,7 @@
     const showApproval = (item: MessageRes) => {
         formData.value = {
             ...item.userinfo,
-            account_num: '',
+
             username: '',
         };
 
@@ -262,6 +315,15 @@
                 account_num: formData.value?.account_num,
                 account_name: formData.value?.username,
                 status: 1,
+                first_name: formData.value?.first_name,
+                last_name: formData.value?.last_name,
+                dmename: formData.value?.dmename,
+                zip_code: formData.value?.zip_code,
+                mobile: formData.value?.mobile,
+                email: formData.value?.email,
+                account_id: formData.value?.account_id,
+                state: formData.value?.state,
+                address: formData.value?.address,
             })
                 .then(res => {
                     if (res.code === 1) {
@@ -318,5 +380,9 @@
 <style lang="scss" scoped>
     .form-item {
         word-break: break-all;
+    }
+
+    .el-form-item {
+        margin-bottom: 20px !important;
     }
 </style>

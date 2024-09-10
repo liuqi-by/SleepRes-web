@@ -1,4 +1,3 @@
-import { useStorage } from '@vueuse/core';
 import { usePermissionStore } from './permission';
 import { useTagsViewStore } from './tagsView';
 import { getMessage } from '~/api/admin';
@@ -96,9 +95,12 @@ export const useUserStore = defineStore(
                                     roles.value = [];
                                     break;
                             }
-                            checkInactivity();
+                            if (import.meta.client) {
+                                checkInactivity();
 
-                            startInactivityTimer();
+                                startInactivityTimer();
+                            }
+
                             // roles.value = userInfo.value?.group_id === 1 ? ['SleepRes'] : [];
                             permissionStore.getPermissionRoutes();
                             resolve(userInfo.value as UserInfo);
@@ -177,21 +179,23 @@ export const useUserStore = defineStore(
             messageCount.value = count;
         };
 
-        const lastActiveTime = useStorage('lastActiveTime', Date.now());
+        const lastActiveTime = ref(Date.now());
         const logTimer = ref<any>(null);
 
         const startInactivityTimer = () => {
-            // 初始化最后的活动时间为当前时间
-            lastActiveTime.value = Date.now();
-            // 监听键盘和鼠标事件来更新最后活动时间
-            window.addEventListener('mousemove', resetTimer);
-            window.addEventListener('keydown', resetTimer);
-            window.addEventListener('click', resetTimer);
-            if (!logTimer.value) {
-                clearInterval(logTimer.value);
-            }
-            // 创建定时器检查是否30分钟过去
-            logTimer.value = setInterval(checkInactivity, 60000); // 每分钟检查一次
+            nextTick(() => {
+                // 初始化最后的活动时间为当前时间
+                lastActiveTime.value = Date.now();
+                // 监听键盘和鼠标事件来更新最后活动时间
+                window.addEventListener('mousemove', resetTimer);
+                window.addEventListener('keydown', resetTimer);
+                window.addEventListener('click', resetTimer);
+                if (!logTimer.value) {
+                    clearInterval(logTimer.value);
+                }
+                // 创建定时器检查是否30分钟过去
+                logTimer.value = setInterval(checkInactivity, 60000); // 每分钟检查一次
+            });
         };
 
         const resetTimer = () => {
@@ -202,7 +206,7 @@ export const useUserStore = defineStore(
             // 如果超过30分钟没有操作，执行注销逻辑
             if (Date.now() - lastActiveTime.value > 15 * 60 * 1000) {
                 // 执行注销操作，例如调用API或者进行页面跳转
-                useUserStore().logout();
+                logout();
                 // this.$auth.logout(); // 假设有一个logout方法用于注销
             }
         };
@@ -213,6 +217,7 @@ export const useUserStore = defineStore(
             userInfo,
             messageCount,
             rolesOption, // 角色选项
+            lastActiveTime,
             login,
             logout,
             getUserInfo,

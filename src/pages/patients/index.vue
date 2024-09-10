@@ -108,7 +108,7 @@
                     align="center"
                 >
                     <template #default="{ row }">
-                        <Select
+                        <!-- <Select
                             size="6"
                             color="var(--el-color-success)"
                             v-if="row.patient.compliant === 0"
@@ -118,7 +118,8 @@
                             color="var(--el-color-danger)"
                             v-else-if="row.patient.compliant === 2"
                         />
-                        <span v-else-if="row.patient.compliant === 1">Monitoring</span>
+                        <span v-else-if="row.patient.compliant === 1">Monitoring</span> -->
+                        <compliant-status :compliant="row.patient.compliant" />
                     </template>
                 </el-table-column>
             </table-module>
@@ -142,7 +143,7 @@
 </template>
 
 <script setup lang="ts">
-    import { Select, CloseBold } from '@element-plus/icons-vue';
+    // import { Select, CloseBold } from '@element-plus/icons-vue';
     // import AddUserDialog from './compononets/add.vue';
     // import PatientRecord from './compononets/patient-record.vue';
     import { getPatient } from '~/api/patient';
