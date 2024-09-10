@@ -75,7 +75,7 @@
                 />
                 <el-table-column
                     prop="frozen"
-                    :label="$t('message.Status')"
+                    :label="$t('users.AccountStatus')"
                     min-width="120"
                     align="center"
                 >

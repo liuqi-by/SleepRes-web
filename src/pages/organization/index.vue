@@ -92,7 +92,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="status"
-                    :label="$t('message.Status')"
+                    :label="$t('users.AccountStatus')"
                     min-width="120"
                     align="center"
                 >

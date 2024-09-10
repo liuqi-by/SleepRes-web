@@ -116,14 +116,15 @@
         "OfficeLocation": "Office location",
         "Role": "Role",
         "EditUser": "Edit User",
-        "EditUserInfo": "Edit User Information",
+        "EditUserInfo": "User Information",
         "CreateUser": "Create User",
         "CreateUserAccount": "Create User Account",
         "searchPlaceholder": "Name / Email / Phone number",
         "NPI": "NPI",
         "Modify": "Modify",
         "statusOff": "Are you sure you would like to turn this account status off?",
-        "statusOn": "Are you sure you would like to turn this account status on?"
+        "statusOn": "Are you sure you would like to turn this account status on?",
+        "AccountStatus": "Account Status"
     },
     "office": {
         "CreateOffice": "Create Office",
@@ -139,7 +140,7 @@
     "patients": {
         "AddPatient": "Add Patient",
         "PatientID": "Patient ID",
-        "Birthdate": "Birthdate",
+        "Birthdate": "Date of Birth",
         "DateOfBirth": "Date of Birth",
         "SerialNumber": "Serial Number",
         "Office": "Office",
@@ -163,7 +164,7 @@
         "Tubing": "Tubing",
         "Demographics": "Demographics",
         "ContactDetails": "Contact Details",
-        "searchPlaceholder": "Name / Email ",
+        "searchPlaceholder": "First name / Last name / Patient ID / Date of Birth / Serial number",
         "unknown": "Unknown",
         "Male": "Male",
         "Female": "Female",
