@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-    import type { BaseSelectSearch } from '#build/components';
     import { getOrganization } from '~/api/organization';
 
     const value = defineModel({

@@ -381,6 +381,7 @@
      * submit
      */
     const submit = () => {
+        console.log(formData.value.physician_id);
         formRef.value?.validate((valid: boolean) => {
             if (!valid) {
                 return;
@@ -390,7 +391,7 @@
             // 新增
             addPatient({
                 ...formData.value,
-                physician_id: formData.value?.physician_id ? (formData.value?.physician_id as any).value : '',
+                physician_id: formData.value?.physician_id ? (formData.value?.physician_id as any).id : '',
             })
                 .then(res => {
                     if (res.code === 1) {

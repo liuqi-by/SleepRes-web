@@ -75,6 +75,15 @@ body {
         .el-table.is-scrolling-right th.el-table-fixed-column--right {
             background-color: #f1f2f2;
         }
+
+        // 表头排序默认点击表头进行排序，如果禁止点击表头进行排序，只有点击排序图标的时候再进行排序
+        th {
+            pointer-events: none;
+
+            i {
+                pointer-events: auto;
+            }
+        }
     }
 
     // 提示框

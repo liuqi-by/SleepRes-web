@@ -1,6 +1,9 @@
 <!-- 患者记录 -->
 <template>
-    <div class="patient-record">
+    <div
+        class="patient-record"
+        :key="formData.id"
+    >
         <el-dialog
             v-model="dialogVisible"
             title=""

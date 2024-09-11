@@ -21,6 +21,7 @@ export interface AddPatientReq {
     setup_date: string;
     therapist_id: string;
     physician_id: string;
+    physician_name: string;
     sn: string;
     mode_name: string;
     pressure: string;
