@@ -133,6 +133,19 @@ export function useFormRules(formData?: any) {
                 },
             },
         ],
+        // 邮箱非必填
+        emailNoRequired: [
+            {
+                trigger: 'blur',
+                validator: (_rule: any, value: string, callback: any) => {
+                    const reg = REGULAR.email;
+                    if (value && !reg.test(value)) {
+                        return callback(new Error(t('form.PleaseEnterCurrent') + t('login.Email')));
+                    }
+                    callback();
+                },
+            },
+        ],
         // accountName
         accountName: [
             {

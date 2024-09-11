@@ -359,13 +359,13 @@
         physician_id: '',
     });
 
-    const { firstName, lastName, email, role, office, setupDate, birthdate, sn } = useFormRules();
+    const { firstName, lastName, emailNoRequired, role, office, setupDate, birthdate, sn } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
             first_name: firstName,
             last_name: lastName,
-            email,
+            email: emailNoRequired,
             group_id: role,
             institution_id: office,
             setup_date: setupDate,
