@@ -93,7 +93,7 @@
                                     v-else-if="formData.patient.compliant === 2"
                                 />
                                 <span v-else-if="formData.patient.compliant === 1">Monitoring</span> -->
-                                <compliant-status :compliant="formData.patient.compliant" />
+                                <compliant-status :compliant="Number(formData.patient.compliant)" />
                             </div>
                         </div>
                     </div>

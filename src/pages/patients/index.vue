@@ -123,7 +123,7 @@
                             v-else-if="row.patient.compliant === 2"
                         />
                         <span v-else-if="row.patient.compliant === 1">Monitoring</span> -->
-                        <compliant-status :compliant="row.patient.compliant" />
+                        <compliant-status :compliant="Number(row.patient.compliant)" />
                     </template>
                 </el-table-column>
             </table-module>
