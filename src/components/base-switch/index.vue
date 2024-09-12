@@ -21,8 +21,8 @@
         },
     });
 
-    const val = defineModel<boolean>({
-        default: false,
+    const val = defineModel<number>({
+        default: 0,
     });
 
     const beforStatusChange = () => {

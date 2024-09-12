@@ -1,5 +1,8 @@
 <template>
-    <div class="page-container min-w-[600px]">
+    <div
+        class="page-container min-w-[600px]"
+        @click="handleClickOutside"
+    >
         <!-- 搜索模块 -->
         <search-module
             @search="search"
@@ -19,7 +22,7 @@
         <div class="table-module">
             <table-module
                 border
-                :data="tableList"
+                :data="showTableListPaient"
                 v-loading="loading"
                 height="calc(100vh - 340px)"
                 v-model:current-page="pageOption.currentPage"
@@ -34,44 +37,79 @@
                     :label="$t('office.OfficeName')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
 
                 <el-table-column
                     prop="city"
                     :label="$t('office.City')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="state"
                     :label="$t('login.State')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="zip_code"
                     :label="$t('login.ZipCode')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="address"
                     :label="$t('login.Address')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="mobile"
                     :label="$t('office.Telephone')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="email"
                     :label="$t('login.Email')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     :label="$t('office.Modify')"
                     min-width="120"
@@ -106,6 +144,13 @@
                             msgOff="office.statusOff"
                         />
                     </template>
+                    <template #header="{ column }">
+                        <table-filter-header
+                            :column="column"
+                            type="select"
+                            :custom-options="statusOptions"
+                        />
+                    </template>
                 </el-table-column>
             </table-module>
         </div>
@@ -114,6 +159,22 @@
             ref="editOffice"
             @refresh="getData"
         />
+
+        <!-- 筛选弹窗 -->
+        <client-only>
+            <table-filter-popover
+                :visible="visible"
+                :virtual-ref="showKeyRef[showKey]"
+                :key="showKeyRef[showKey]"
+                :filterType="filterType"
+                v-model:filterInput="filterInput"
+                v-model:selectFilter="selectFilter"
+                @search-filter="searchFilter"
+                @cancel-filter="cancelFilter"
+                :filterList="filterList"
+                :filterCustomOptions="filterCustomOptions"
+            />
+        </client-only>
     </div>
 </template>
 
@@ -171,6 +232,27 @@
             });
         });
     };
+
+    // 表格筛选
+    const {
+        showKey,
+        showKeyRef,
+        visible,
+        filterInput,
+        selectFilter,
+        filterType,
+        filterCustomOptions,
+        filterList,
+        showTableListPaient,
+        handleClickOutside,
+        cancelFilter,
+        searchFilter,
+    } = useFilterTableHeader(tableList);
+
+    const statusOptions = [
+        { label: 'Off', value: 1 },
+        { label: 'On', value: 0 },
+    ];
 </script>
 
 <style lang="scss" scoped></style>

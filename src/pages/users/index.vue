@@ -1,5 +1,8 @@
 <template>
-    <div class="page-container min-w-[600px]">
+    <div
+        class="page-container min-w-[600px]"
+        @click="handleClickOutside"
+    >
         <!-- 搜索模块 -->
         <search-module
             @search="search"
@@ -19,7 +22,7 @@
         <div class="table-module">
             <table-module
                 border
-                :data="tableList"
+                :data="showTableListPaient"
                 v-loading="loading"
                 height="calc(100vh - 340px)"
                 v-model:current-page="pageOption.currentPage"
@@ -41,43 +44,77 @@
                     :label="$t('users.FullName')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="email"
                     :label="$t('login.Email')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="mobile"
                     :label="$t('login.PhoneNumber')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="institution_name"
                     :label="$t('users.OfficeLocation')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="group_name"
                     :label="$t('users.Role')"
                     min-width="120"
                     align="center"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header
+                            :column="column"
+                            type="select"
+                        />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="account_id"
                     :label="$t('users.NPI')"
                     min-width="120"
                     align="center"
                     v-if="userSotre.userInfo?.group_id === 4"
-                />
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="frozen"
                     :label="$t('users.AccountStatus')"
                     min-width="120"
                     align="center"
+                    sortable
                 >
                     <template #default="{ row }">
                         <base-switch
@@ -85,6 +122,14 @@
                             :active-value="0"
                             :inactive-value="1"
                             @change="frozenAccount(row)"
+                        />
+                    </template>
+
+                    <template #header="{ column }">
+                        <table-filter-header
+                            :column="column"
+                            type="select"
+                            :custom-options="statusOptions"
                         />
                     </template>
                 </el-table-column>
@@ -125,6 +170,21 @@
             ref="editUserDialog"
             @refresh="getData"
         />
+        <!-- 筛选弹窗 -->
+        <client-only>
+            <table-filter-popover
+                :visible="visible"
+                :virtual-ref="showKeyRef[showKey]"
+                :key="showKeyRef[showKey]"
+                :filterType="filterType"
+                v-model:filterInput="filterInput"
+                v-model:selectFilter="selectFilter"
+                @search-filter="searchFilter"
+                @cancel-filter="cancelFilter"
+                :filterList="filterList"
+                :filterCustomOptions="filterCustomOptions"
+            />
+        </client-only>
     </div>
 </template>
 
@@ -173,6 +233,27 @@
     const editUser = (row: UserInfo) => {
         editUserDialog.value?.showDialog(row);
     };
+
+    // 表格筛选
+    const {
+        showKey,
+        showKeyRef,
+        visible,
+        filterInput,
+        selectFilter,
+        filterType,
+        filterCustomOptions,
+        filterList,
+        showTableListPaient,
+        handleClickOutside,
+        cancelFilter,
+        searchFilter,
+    } = useFilterTableHeader(tableList);
+
+    const statusOptions = [
+        { label: 'Off', value: 1 },
+        { label: 'On', value: 0 },
+    ];
 </script>
 
 <style lang="scss" scoped></style>

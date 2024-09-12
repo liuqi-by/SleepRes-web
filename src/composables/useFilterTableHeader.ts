@@ -7,7 +7,7 @@ export default function useFilterTableHeader(tableData: any) {
     const showKeyRef = ref<any>({}); // 当前展示哪个筛选窗
 
     const searchData = ref<any>({}); // 查询参数
-    const filterInput = ref<string>(''); // 筛选框输入值
+    const filterInput = ref<any>(); // 筛选框输入值
     const selectFilter = ref<any[]>([]); // 筛选框选中值
 
     // 全局重置
@@ -112,6 +112,7 @@ export default function useFilterTableHeader(tableData: any) {
     // 筛选
     const searchFilter = () => {
         visible.value = false;
+        console.log(selectFilter.value);
         if (filterType.value === 'select') {
             searchData.value[showKey.value] = selectFilter.value || '';
         } else {
