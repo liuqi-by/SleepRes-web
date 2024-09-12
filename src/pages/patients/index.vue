@@ -27,7 +27,7 @@
         <div class="table-module">
             <table-module
                 border
-                :data="tableListPaient"
+                :data="showTableListPaient"
                 v-loading="loading"
                 height="calc(100vh - 340px)"
                 v-model:current-page="pageOption.currentPage"
@@ -58,7 +58,7 @@
                         </span>
                     </template>
                     <template #header="{ column }">
-                        <div class="table-header">
+                        <!-- <div class="table-header">
                             <span>{{ column.label }}</span>
                             <el-icon
                                 :ref="
@@ -68,11 +68,21 @@
                                 "
                                 @click.stop="toggleNameFilter(column.property)"
                                 class="filter-icon"
-                                :class="searchDate[column.property] ? 'active' : ''"
+                                :class="{
+                                    active: Array.isArray(searchDate[column.property])
+                                        ? searchDate[column.property].length > 0
+                                        : searchDate[column.property],
+                                }"
                             >
                                 <base-svg-icon icon="filter" />
                             </el-icon>
-                        </div>
+                        </div> -->
+                        <table-filter-header
+                            :column="column"
+                            @toggle-name-filter="toggleNameFilter"
+                            :showKeyRef="showKeyRef"
+                            :searchDate="searchDate"
+                        />
                     </template>
                 </el-table-column>
 
@@ -84,7 +94,7 @@
                     sortable
                 >
                     <template #header="{ column }">
-                        <div class="table-header">
+                        <!-- <div class="table-header">
                             <span>{{ column.label }}</span>
                             <el-icon
                                 :ref="
@@ -94,11 +104,22 @@
                                 "
                                 @click.stop="toggleNameFilter(column.property)"
                                 class="filter-icon"
-                                :class="searchDate[column.property] ? 'active' : ''"
+                                :class="{
+                                    active: Array.isArray(searchDate[column.property])
+                                        ? searchDate[column.property].length > 0
+                                        : searchDate[column.property],
+                                }"
                             >
                                 <base-svg-icon icon="filter" />
                             </el-icon>
-                        </div>
+                        </div> -->
+                        <table-filter-header
+                            :column="column"
+                            @toggle-name-filter="toggleNameFilter"
+                            :showKeyRef="showKeyRef"
+                            :searchDate="searchDate"
+                            type="input"
+                        />
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -111,6 +132,34 @@
                     <template #default="{ row }">
                         <span>{{ row.patient.birthdate && dateFormat(row.patient.birthdate) }}</span>
                     </template>
+                    <template #header="{ column }">
+                        <!-- <div class="table-header">
+                            <span>{{ column.label }}</span>
+                            <el-icon
+                                :ref="
+                                    el => {
+                                        showKeyRef[column.property] = el;
+                                    }
+                                "
+                                @click.stop="toggleNameFilter(column.property, 'date')"
+                                class="filter-icon"
+                                :class="{
+                                    active: Array.isArray(searchDate[column.property])
+                                        ? searchDate[column.property].length > 0
+                                        : searchDate[column.property],
+                                }"
+                            >
+                                <base-svg-icon icon="filter" />
+                            </el-icon>
+                        </div> -->
+                        <table-filter-header
+                            :column="column"
+                            @toggle-name-filter="toggleNameFilter"
+                            :showKeyRef="showKeyRef"
+                            :searchDate="searchDate"
+                            type="date"
+                        />
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="sn"
@@ -120,7 +169,7 @@
                     sortable
                 >
                     <template #header="{ column }">
-                        <div class="table-header">
+                        <!-- <div class="table-header">
                             <span>{{ column.label }}</span>
                             <el-icon
                                 :ref="
@@ -130,11 +179,22 @@
                                 "
                                 @click.stop="toggleNameFilter(column.property)"
                                 class="filter-icon"
-                                :class="searchDate[column.property] ? 'active' : ''"
+                                :class="{
+                                    active: Array.isArray(searchDate[column.property])
+                                        ? searchDate[column.property].length > 0
+                                        : searchDate[column.property],
+                                }"
                             >
                                 <base-svg-icon icon="filter" />
                             </el-icon>
-                        </div>
+                        </div> -->
+                        <table-filter-header
+                            :column="column"
+                            @toggle-name-filter="toggleNameFilter"
+                            :showKeyRef="showKeyRef"
+                            :searchDate="searchDate"
+                            type="input"
+                        />
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -145,7 +205,7 @@
                     sortable
                 >
                     <template #header="{ column }">
-                        <div class="table-header">
+                        <!-- <div class="table-header">
                             <span>{{ column.label }}</span>
                             <el-icon
                                 :ref="
@@ -155,20 +215,60 @@
                                 "
                                 @click.stop="toggleNameFilter(column.property)"
                                 class="filter-icon"
-                                :class="searchDate[column.property] ? 'active' : ''"
+                                :class="{
+                                    active: Array.isArray(searchDate[column.property])
+                                        ? searchDate[column.property].length > 0
+                                        : searchDate[column.property],
+                                }"
                             >
                                 <base-svg-icon icon="filter" />
                             </el-icon>
-                        </div>
+                        </div> -->
+                        <table-filter-header
+                            :column="column"
+                            @toggle-name-filter="toggleNameFilter"
+                            :showKeyRef="showKeyRef"
+                            :searchDate="searchDate"
+                            type="input"
+                        />
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="patient.setup_date"
                     :label="$t('patients.TherapyStartDate')"
-                    min-width="120"
+                    min-width="125"
                     align="center"
                     sortable
-                />
+                >
+                    <template #header="{ column }">
+                        <!-- <div class="table-header">
+                            <span>{{ column.label }}</span>
+                            <el-icon
+                                :ref="
+                                    el => {
+                                        showKeyRef[column.property] = el;
+                                    }
+                                "
+                                @click.stop="toggleNameFilter(column.property, 'select')"
+                                class="filter-icon"
+                                :class="{
+                                    active: Array.isArray(searchDate[column.property])
+                                        ? searchDate[column.property].length > 0
+                                        : searchDate[column.property],
+                                }"
+                            >
+                                <base-svg-icon icon="filter" />
+                            </el-icon>
+                        </div> -->
+                        <table-filter-header
+                            :column="column"
+                            @toggle-name-filter="toggleNameFilter"
+                            :showKeyRef="showKeyRef"
+                            :searchDate="searchDate"
+                            type="select"
+                        />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="patient.percent_usage"
                     :label="$t('patients.PercentUsage')"
@@ -180,7 +280,7 @@
                         <span>{{ row.patient.percent_usage || 0 }}%</span>
                     </template>
                     <template #header="{ column }">
-                        <div class="table-header">
+                        <!-- <div class="table-header">
                             <span>{{ column.label }}</span>
                             <el-icon
                                 :ref="
@@ -190,11 +290,22 @@
                                 "
                                 @click.stop="toggleNameFilter(column.property)"
                                 class="filter-icon"
-                                :class="searchDate[column.property] ? 'active' : ''"
+                                :class="{
+                                    active: Array.isArray(searchDate[column.property])
+                                        ? searchDate[column.property].length > 0
+                                        : searchDate[column.property],
+                                }"
                             >
                                 <base-svg-icon icon="filter" />
                             </el-icon>
-                        </div>
+                        </div> -->
+                        <table-filter-header
+                            :column="column"
+                            @toggle-name-filter="toggleNameFilter"
+                            :showKeyRef="showKeyRef"
+                            :searchDate="searchDate"
+                            type="input"
+                        />
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -205,7 +316,7 @@
                     sortable
                 >
                     <template #header="{ column }">
-                        <div class="table-header">
+                        <!-- <div class="table-header">
                             <span>{{ column.label }}</span>
                             <el-icon
                                 :ref="
@@ -213,13 +324,24 @@
                                         showKeyRef[column.property] = el;
                                     }
                                 "
-                                @click.stop="toggleNameFilter(column.property)"
+                                @click.stop="toggleNameFilter(column.property, 'select')"
                                 class="filter-icon"
-                                :class="searchDate[column.property] ? 'active' : ''"
+                                :class="{
+                                    active: Array.isArray(searchDate[column.property])
+                                        ? searchDate[column.property].length > 0
+                                        : searchDate[column.property],
+                                }"
                             >
                                 <base-svg-icon icon="filter" />
                             </el-icon>
-                        </div>
+                        </div> -->
+                        <table-filter-header
+                            :column="column"
+                            @toggle-name-filter="toggleNameFilter"
+                            :showKeyRef="showKeyRef"
+                            :searchDate="searchDate"
+                            type="select"
+                        />
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -244,7 +366,7 @@
                         <compliant-status :compliant="Number(row.patient.compliant)" />
                     </template>
                     <template #header="{ column }">
-                        <div class="table-header">
+                        <!-- <div class="table-header">
                             <span>{{ column.label }}</span>
                             <el-icon
                                 :ref="
@@ -252,13 +374,25 @@
                                         showKeyRef[column.property] = el;
                                     }
                                 "
-                                @click.stop="toggleNameFilter(column.property)"
+                                @click.stop="toggleNameFilter(column.property, 'select', compliantOptions)"
                                 class="filter-icon"
-                                :class="searchDate[column.property] ? 'active' : ''"
+                                :class="{
+                                    active: Array.isArray(searchDate[column.property])
+                                        ? searchDate[column.property].length > 0
+                                        : searchDate[column.property],
+                                }"
                             >
                                 <base-svg-icon icon="filter" />
                             </el-icon>
-                        </div>
+                        </div> -->
+                        <table-filter-header
+                            :column="column"
+                            @toggle-name-filter="toggleNameFilter"
+                            :showKeyRef="showKeyRef"
+                            :searchDate="searchDate"
+                            type="select"
+                            :customOptions="compliantOptions"
+                        />
                     </template>
                 </el-table-column>
             </table-module>
@@ -280,7 +414,7 @@
             <!-- 上传SD -->
             <lazy-upload-files ref="uploadFilesRef" />
 
-            <el-popover
+            <!-- <el-popover
                 :visible="visible"
                 :virtual-ref="showKeyRef[showKey]"
                 placement="bottom"
@@ -290,12 +424,53 @@
                 :key="showKeyRef[showKey]"
             >
                 <div class="filter-popover">
-                    <el-input
-                        v-model="filterInput"
-                        placeholder="输入框"
-                        clearable
-                        style="width: 150px; margin-top: 10px"
-                    />
+                    <div v-if="filterType === 'input'">
+                        <el-input
+                            v-model="filterInput"
+                            placeholder="输入框"
+                            clearable
+                            style="width: 150px; margin-top: 10px"
+                            @keydown.enter="searchFilter"
+                        />
+                    </div>
+                    <div v-else-if="filterType === 'select'">
+                        <el-checkbox-group
+                            v-model="selectFilter"
+                            class="select-checkbox"
+                            v-if="filterCustomOptions.length === 0"
+                        >
+                            <el-checkbox
+                                v-for="item in filterList"
+                                :key="item"
+                                :label="item"
+                                :value="item"
+                            >
+                                {{ item }}
+                            </el-checkbox>
+                        </el-checkbox-group>
+                        <el-checkbox-group
+                            v-model="selectFilter"
+                            class="select-checkbox"
+                            v-else
+                        >
+                            <el-checkbox
+                                v-for="item in filterCustomOptions"
+                                :key="item"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                                {{ item.label }}
+                            </el-checkbox>
+                        </el-checkbox-group>
+                    </div>
+                    <div v-else-if="filterType === 'date'">
+                        <date-picker
+                            v-model="filterInput"
+                            type="date"
+                            clearable
+                            @change="searchFilter"
+                        />
+                    </div>
                     <div
                         class="mt"
                         style="text-align: right"
@@ -314,19 +489,31 @@
                         >
                     </div>
                 </div>
-            </el-popover>
+            </el-popover> -->
+            <table-filter-popover
+                :visible="visible"
+                :virtual-ref="showKeyRef[showKey]"
+                :key="showKeyRef[showKey]"
+                :filterType="filterType"
+                v-model:filterInput="filterInput"
+                v-model:selectFilter="selectFilter"
+                @search-filter="searchFilter"
+                @cancel-filter="cancelFilter"
+                :filterList="filterList"
+                :customOptions="filterCustomOptions"
+            />
         </client-only>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { Filter } from '@element-plus/icons-vue';
     // import AddUserDialog from './compononets/add.vue';
     // import PatientRecord from './compononets/patient-record.vue';
 
     import { getPatient } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
     import type { UploadFiles } from '#build/components';
+    import type { FilterType } from '~/components/table-filter/header.vue';
 
     const PatientRecord = defineAsyncComponent(() => import('./compononets/patient-record.vue'));
     const AddUserDialog = defineAsyncComponent(() => import('./compononets/add.vue'));
@@ -335,30 +522,12 @@
         usePageTable(getPatient);
 
     const tableListPaient = computed(() => {
-        return tableList.value
-            ?.map(item => {
-                return {
-                    ...item,
-                    patient: JSON.parse(item.patient),
-                };
-            })
-            .filter(item => {
-                let flag = true;
-                console.log(searchDate);
-                for (const key in searchDate.value) {
-                    let itemValue = '';
-                    if (key && key.includes('patient.')) {
-                        itemValue = item.patient[key.split('.')[1]] || '';
-                    } else {
-                        itemValue = item[key] || '';
-                    }
-
-                    if (searchDate.value[key] && !itemValue.includes(searchDate.value[key])) {
-                        flag = false;
-                    }
-                }
-                return flag;
-            });
+        return tableList.value?.map(item => {
+            return {
+                ...item,
+                patient: JSON.parse(item.patient),
+            };
+        });
     });
 
     // 创建
@@ -386,22 +555,104 @@
 
     const searchDate = ref<any>({}); // 查询参数
     const filterInput = ref<any>(); // 筛选框输入值
+    const selectFilter = ref<any>([]); // 筛选框选中值
     // 全局重置
     const resetFilters = () => {
         searchDate.value = {};
     };
 
     const popoverRef = ref();
+
+    const filterType = ref<FilterType>('input');
+    const filterCustomOptions = ref<any[]>([]);
+
+    const compliantOptions = [
+        { label: 'Compliance', value: 0 },
+        { label: 'Monitoring', value: 1 },
+        { label: 'Non-compliance', value: 2 },
+    ];
+
+    const showTableListPaient = computed(() => {
+        return tableListPaient.value?.filter(item => {
+            let flag = true;
+            console.log(searchDate);
+
+            for (const key in searchDate.value) {
+                let itemValue = '';
+                if (key && key.includes('patient.')) {
+                    itemValue = item.patient[key.split('.')[1]];
+                } else {
+                    itemValue = item[key];
+                }
+
+                if (itemValue) {
+                    itemValue = itemValue.toLocaleLowerCase();
+                } else if (!itemValue && itemValue !== 0) {
+                    itemValue = '';
+                }
+
+                // 如果key是数组
+                if (Array.isArray(searchDate.value[key])) {
+                    if (searchDate.value[key].length > 0 && !searchDate.value[key].includes(itemValue)) {
+                        flag = false;
+                    }
+                } else if (
+                    searchDate.value[key] &&
+                    !String(itemValue).includes(searchDate.value[key].toLocaleLowerCase())
+                ) {
+                    flag = false;
+                }
+            }
+            return flag;
+        });
+    });
+
+    const filterList = computed(() => {
+        if (filterType.value === 'select') {
+            return Array.from(
+                new Set(
+                    tableListPaient.value?.map(item => {
+                        let itemValue = '';
+                        let key = showKey.value;
+
+                        if (key && key.includes('patient.')) {
+                            itemValue = item.patient[key.split('.')[1]] || '';
+                        } else {
+                            itemValue = item[key] || '';
+                        }
+                        return itemValue;
+                    }),
+                ),
+            );
+        } else {
+            return [];
+        }
+    });
+
     // 触发筛选
-    const toggleNameFilter = (key: string) => {
+    const toggleNameFilter = ({
+        key,
+        type = 'input',
+        options,
+    }: {
+        key: string;
+        type: FilterType;
+        options?: Array<any>;
+    }) => {
         if (showKey.value !== key) {
             visible.value = false;
         }
 
         showKey.value = key;
         filterInput.value = searchDate.value[key] || '';
+        selectFilter.value = searchDate.value[key] || [];
+        filterType.value = type;
+
+        filterCustomOptions.value = options || [];
+
         setTimeout(() => {
             visible.value = !visible.value;
+            console.log(showKey.value);
         }, 0);
     };
 
@@ -418,37 +669,25 @@
     // 筛选
     const searchFilter = () => {
         visible.value = false;
-        searchDate.value[showKey.value] = filterInput.value;
+        if (filterType.value === 'select') {
+            searchDate.value[showKey.value] = selectFilter.value || '';
+        } else {
+            searchDate.value[showKey.value] = filterInput.value || '';
+        }
     };
 
     provide('update', getData);
 </script>
-
 <style lang="scss" scoped>
-    .filter-icon {
-        position: relative;
-        top: 2px;
-        margin-right: 2px;
+    .select-checkbox {
+        display: flex;
+        flex-flow: column;
+        max-width: 200px;
+        max-height: 200px;
+        overflow-y: auto;
 
-        /* transform: translateY(-50%); */
-        margin-left: 10px;
-        font-weight: bold;
-
-        /* top: 50%;
-        right: 15px; */
-        cursor: pointer;
-
-        &:hover,
-        &.active {
-            color: var(--el-color-primary);
+        .el-checkbox {
+            margin: 5px 0;
         }
-
-        svg {
-            stroke-width: 10px;
-        }
-    }
-
-    .table-header {
-        display: inline;
     }
 </style>
