@@ -110,4 +110,16 @@
     };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+    .select-checkbox {
+        display: flex;
+        flex-flow: column;
+        max-width: 200px;
+        max-height: 200px;
+        overflow-y: auto;
+
+        .el-checkbox {
+            margin: 5px 0;
+        }
+    }
+</style>

@@ -240,6 +240,9 @@
                     align="center"
                     sortable
                 >
+                    <template #default="{ row }">
+                        <span>{{ row.patient.setup_date && dateFormat(row.patient.setup_date) }}</span>
+                    </template>
                     <template #header="{ column }">
                         <!-- <div class="table-header">
                             <span>{{ column.label }}</span>
@@ -265,7 +268,7 @@
                             @toggle-name-filter="toggleNameFilter"
                             :showKeyRef="showKeyRef"
                             :searchDate="searchDate"
-                            type="select"
+                            type="date"
                         />
                     </template>
                 </el-table-column>
@@ -340,7 +343,7 @@
                             @toggle-name-filter="toggleNameFilter"
                             :showKeyRef="showKeyRef"
                             :searchDate="searchDate"
-                            type="select"
+                            type="date"
                         />
                     </template>
                 </el-table-column>
@@ -500,7 +503,7 @@
                 @search-filter="searchFilter"
                 @cancel-filter="cancelFilter"
                 :filterList="filterList"
-                :customOptions="filterCustomOptions"
+                :filterCustomOptions="filterCustomOptions"
             />
         </client-only>
     </div>
@@ -513,7 +516,7 @@
     import { getPatient } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
     import type { UploadFiles } from '#build/components';
-    import type { FilterType } from '~/components/table-filter/header.vue';
+    // import type { FilterType } from '~/components/table-filter/header.vue';
 
     const PatientRecord = defineAsyncComponent(() => import('./compononets/patient-record.vue'));
     const AddUserDialog = defineAsyncComponent(() => import('./compononets/add.vue'));
@@ -529,6 +532,23 @@
             };
         });
     });
+
+    const {
+        showKey,
+        showKeyRef,
+        searchDate,
+        visible,
+        filterInput,
+        selectFilter,
+        filterType,
+        filterCustomOptions,
+        filterList,
+        showTableListPaient,
+        toggleNameFilter,
+        handleClickOutside,
+        cancelFilter,
+        searchFilter,
+    } = useFilterTableHeader(tableListPaient);
 
     // 创建
     const addUserDialogRef = ref<InstanceType<typeof AddUserDialog>>();
@@ -548,146 +568,11 @@
         uploadFilesRef.value?.showDialog(userId);
     };
 
-    const showKey = ref(); // 当前展示哪个筛选窗
-    const visible = ref(false); // 手动控制筛选窗显隐
-
-    const showKeyRef = ref<any>({}); // 当前展示哪个筛选窗
-
-    const searchDate = ref<any>({}); // 查询参数
-    const filterInput = ref<any>(); // 筛选框输入值
-    const selectFilter = ref<any>([]); // 筛选框选中值
-    // 全局重置
-    const resetFilters = () => {
-        searchDate.value = {};
-    };
-
-    const popoverRef = ref();
-
-    const filterType = ref<FilterType>('input');
-    const filterCustomOptions = ref<any[]>([]);
-
     const compliantOptions = [
         { label: 'Compliance', value: 0 },
         { label: 'Monitoring', value: 1 },
         { label: 'Non-compliance', value: 2 },
     ];
 
-    const showTableListPaient = computed(() => {
-        return tableListPaient.value?.filter(item => {
-            let flag = true;
-            console.log(searchDate);
-
-            for (const key in searchDate.value) {
-                let itemValue = '';
-                if (key && key.includes('patient.')) {
-                    itemValue = item.patient[key.split('.')[1]];
-                } else {
-                    itemValue = item[key];
-                }
-
-                if (itemValue) {
-                    itemValue = itemValue.toLocaleLowerCase();
-                } else if (!itemValue && itemValue !== 0) {
-                    itemValue = '';
-                }
-
-                // 如果key是数组
-                if (Array.isArray(searchDate.value[key])) {
-                    if (searchDate.value[key].length > 0 && !searchDate.value[key].includes(itemValue)) {
-                        flag = false;
-                    }
-                } else if (
-                    searchDate.value[key] &&
-                    !String(itemValue).includes(searchDate.value[key].toLocaleLowerCase())
-                ) {
-                    flag = false;
-                }
-            }
-            return flag;
-        });
-    });
-
-    const filterList = computed(() => {
-        if (filterType.value === 'select') {
-            return Array.from(
-                new Set(
-                    tableListPaient.value?.map(item => {
-                        let itemValue = '';
-                        let key = showKey.value;
-
-                        if (key && key.includes('patient.')) {
-                            itemValue = item.patient[key.split('.')[1]] || '';
-                        } else {
-                            itemValue = item[key] || '';
-                        }
-                        return itemValue;
-                    }),
-                ),
-            );
-        } else {
-            return [];
-        }
-    });
-
-    // 触发筛选
-    const toggleNameFilter = ({
-        key,
-        type = 'input',
-        options,
-    }: {
-        key: string;
-        type: FilterType;
-        options?: Array<any>;
-    }) => {
-        if (showKey.value !== key) {
-            visible.value = false;
-        }
-
-        showKey.value = key;
-        filterInput.value = searchDate.value[key] || '';
-        selectFilter.value = searchDate.value[key] || [];
-        filterType.value = type;
-
-        filterCustomOptions.value = options || [];
-
-        setTimeout(() => {
-            visible.value = !visible.value;
-            console.log(showKey.value);
-        }, 0);
-    };
-
-    // 点击其他元素
-    const handleClickOutside = () => {
-        visible.value = false;
-    };
-
-    // 重置
-    const cancelFilter = () => {
-        searchDate.value[showKey.value] = '';
-        visible.value = false;
-    };
-    // 筛选
-    const searchFilter = () => {
-        visible.value = false;
-        if (filterType.value === 'select') {
-            searchDate.value[showKey.value] = selectFilter.value || '';
-        } else {
-            searchDate.value[showKey.value] = filterInput.value || '';
-        }
-    };
-
     provide('update', getData);
 </script>
-<style lang="scss" scoped>
-    .select-checkbox {
-        display: flex;
-        flex-flow: column;
-        max-width: 200px;
-        max-height: 200px;
-        overflow-y: auto;
-
-        .el-checkbox {
-            margin: 5px 0;
-        }
-    }
-</style>
