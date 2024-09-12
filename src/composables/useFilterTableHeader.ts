@@ -6,13 +6,13 @@ export default function useFilterTableHeader(tableData: any) {
 
     const showKeyRef = ref<any>({}); // 当前展示哪个筛选窗
 
-    const searchDate = ref<any>({}); // 查询参数
+    const searchData = ref<any>({}); // 查询参数
     const filterInput = ref<string>(''); // 筛选框输入值
     const selectFilter = ref<any[]>([]); // 筛选框选中值
 
     // 全局重置
     const resetFilters = () => {
-        searchDate.value = {};
+        searchData.value = {};
     };
 
     const filterType = ref<FilterType>('input');
@@ -21,9 +21,8 @@ export default function useFilterTableHeader(tableData: any) {
     const showTableListPaient = computed(() => {
         return tableData.value?.filter((item: any) => {
             let flag = true;
-            console.log(searchDate);
 
-            for (const key in searchDate.value) {
+            for (const key in searchData.value) {
                 let itemValue: string | number = '';
                 if (key && key.includes('patient.')) {
                     itemValue = item.patient[key.split('.')[1]];
@@ -36,16 +35,14 @@ export default function useFilterTableHeader(tableData: any) {
                 } else if (!itemValue && itemValue !== 0) {
                     itemValue = '';
                 }
+                const searchValue = searchData.value[key];
 
                 // 如果key是数组
-                if (Array.isArray(searchDate.value[key])) {
-                    if (searchDate.value[key].length > 0 && !searchDate.value[key].includes(itemValue)) {
+                if (Array.isArray(searchValue)) {
+                    if (searchValue.length > 0 && !searchValue.includes(itemValue)) {
                         flag = false;
                     }
-                } else if (
-                    searchDate.value[key] &&
-                    !String(itemValue).includes(searchDate.value[key].toLocaleLowerCase())
-                ) {
+                } else if (searchValue && !String(itemValue).includes(searchValue.toLocaleLowerCase())) {
                     flag = false;
                 }
             }
@@ -90,8 +87,8 @@ export default function useFilterTableHeader(tableData: any) {
         }
 
         showKey.value = key;
-        filterInput.value = searchDate.value[key] || '';
-        selectFilter.value = searchDate.value[key] || [];
+        filterInput.value = searchData.value[key] || '';
+        selectFilter.value = searchData.value[key] || [];
         filterType.value = type;
 
         filterCustomOptions.value = options || [];
@@ -109,23 +106,27 @@ export default function useFilterTableHeader(tableData: any) {
 
     // 重置
     const cancelFilter = () => {
-        searchDate.value[showKey.value] = '';
+        searchData.value[showKey.value] = '';
         visible.value = false;
     };
     // 筛选
     const searchFilter = () => {
         visible.value = false;
         if (filterType.value === 'select') {
-            searchDate.value[showKey.value] = selectFilter.value || '';
+            searchData.value[showKey.value] = selectFilter.value || '';
         } else {
-            searchDate.value[showKey.value] = filterInput.value || '';
+            searchData.value[showKey.value] = filterInput.value || '';
         }
     };
+
+    provide('showKeyRef', showKeyRef);
+    provide('searchData', searchData);
+    provide('toggleNameFilter', toggleNameFilter);
 
     return {
         showKey,
         showKeyRef,
-        searchDate,
+        searchData,
         visible,
         filterInput,
         selectFilter,

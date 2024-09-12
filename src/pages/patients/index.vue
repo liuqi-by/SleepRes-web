@@ -45,11 +45,6 @@
                     sortable
                 >
                     <template #default="{ row }">
-                        <!-- <nuxt-link
-                            class="link"
-                            :to="`/patientReport?id=` + row.id"
-                            >{{ row.nickname }}
-                        </nuxt-link> -->
                         <span
                             class="link"
                             @click="showPatientReport(row)"
@@ -58,31 +53,7 @@
                         </span>
                     </template>
                     <template #header="{ column }">
-                        <!-- <div class="table-header">
-                            <span>{{ column.label }}</span>
-                            <el-icon
-                                :ref="
-                                    el => {
-                                        showKeyRef[column.property] = el;
-                                    }
-                                "
-                                @click.stop="toggleNameFilter(column.property)"
-                                class="filter-icon"
-                                :class="{
-                                    active: Array.isArray(searchDate[column.property])
-                                        ? searchDate[column.property].length > 0
-                                        : searchDate[column.property],
-                                }"
-                            >
-                                <base-svg-icon icon="filter" />
-                            </el-icon>
-                        </div> -->
-                        <table-filter-header
-                            :column="column"
-                            @toggle-name-filter="toggleNameFilter"
-                            :showKeyRef="showKeyRef"
-                            :searchDate="searchDate"
-                        />
+                        <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
 
@@ -94,32 +65,7 @@
                     sortable
                 >
                     <template #header="{ column }">
-                        <!-- <div class="table-header">
-                            <span>{{ column.label }}</span>
-                            <el-icon
-                                :ref="
-                                    el => {
-                                        showKeyRef[column.property] = el;
-                                    }
-                                "
-                                @click.stop="toggleNameFilter(column.property)"
-                                class="filter-icon"
-                                :class="{
-                                    active: Array.isArray(searchDate[column.property])
-                                        ? searchDate[column.property].length > 0
-                                        : searchDate[column.property],
-                                }"
-                            >
-                                <base-svg-icon icon="filter" />
-                            </el-icon>
-                        </div> -->
-                        <table-filter-header
-                            :column="column"
-                            @toggle-name-filter="toggleNameFilter"
-                            :showKeyRef="showKeyRef"
-                            :searchDate="searchDate"
-                            type="input"
-                        />
+                        <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -133,30 +79,8 @@
                         <span>{{ row.patient.birthdate && dateFormat(row.patient.birthdate) }}</span>
                     </template>
                     <template #header="{ column }">
-                        <!-- <div class="table-header">
-                            <span>{{ column.label }}</span>
-                            <el-icon
-                                :ref="
-                                    el => {
-                                        showKeyRef[column.property] = el;
-                                    }
-                                "
-                                @click.stop="toggleNameFilter(column.property, 'date')"
-                                class="filter-icon"
-                                :class="{
-                                    active: Array.isArray(searchDate[column.property])
-                                        ? searchDate[column.property].length > 0
-                                        : searchDate[column.property],
-                                }"
-                            >
-                                <base-svg-icon icon="filter" />
-                            </el-icon>
-                        </div> -->
                         <table-filter-header
                             :column="column"
-                            @toggle-name-filter="toggleNameFilter"
-                            :showKeyRef="showKeyRef"
-                            :searchDate="searchDate"
                             type="date"
                         />
                     </template>
@@ -169,32 +93,7 @@
                     sortable
                 >
                     <template #header="{ column }">
-                        <!-- <div class="table-header">
-                            <span>{{ column.label }}</span>
-                            <el-icon
-                                :ref="
-                                    el => {
-                                        showKeyRef[column.property] = el;
-                                    }
-                                "
-                                @click.stop="toggleNameFilter(column.property)"
-                                class="filter-icon"
-                                :class="{
-                                    active: Array.isArray(searchDate[column.property])
-                                        ? searchDate[column.property].length > 0
-                                        : searchDate[column.property],
-                                }"
-                            >
-                                <base-svg-icon icon="filter" />
-                            </el-icon>
-                        </div> -->
-                        <table-filter-header
-                            :column="column"
-                            @toggle-name-filter="toggleNameFilter"
-                            :showKeyRef="showKeyRef"
-                            :searchDate="searchDate"
-                            type="input"
-                        />
+                        <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -205,32 +104,7 @@
                     sortable
                 >
                     <template #header="{ column }">
-                        <!-- <div class="table-header">
-                            <span>{{ column.label }}</span>
-                            <el-icon
-                                :ref="
-                                    el => {
-                                        showKeyRef[column.property] = el;
-                                    }
-                                "
-                                @click.stop="toggleNameFilter(column.property)"
-                                class="filter-icon"
-                                :class="{
-                                    active: Array.isArray(searchDate[column.property])
-                                        ? searchDate[column.property].length > 0
-                                        : searchDate[column.property],
-                                }"
-                            >
-                                <base-svg-icon icon="filter" />
-                            </el-icon>
-                        </div> -->
-                        <table-filter-header
-                            :column="column"
-                            @toggle-name-filter="toggleNameFilter"
-                            :showKeyRef="showKeyRef"
-                            :searchDate="searchDate"
-                            type="input"
-                        />
+                        <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -244,30 +118,8 @@
                         <span>{{ row.patient.setup_date && dateFormat(row.patient.setup_date) }}</span>
                     </template>
                     <template #header="{ column }">
-                        <!-- <div class="table-header">
-                            <span>{{ column.label }}</span>
-                            <el-icon
-                                :ref="
-                                    el => {
-                                        showKeyRef[column.property] = el;
-                                    }
-                                "
-                                @click.stop="toggleNameFilter(column.property, 'select')"
-                                class="filter-icon"
-                                :class="{
-                                    active: Array.isArray(searchDate[column.property])
-                                        ? searchDate[column.property].length > 0
-                                        : searchDate[column.property],
-                                }"
-                            >
-                                <base-svg-icon icon="filter" />
-                            </el-icon>
-                        </div> -->
                         <table-filter-header
                             :column="column"
-                            @toggle-name-filter="toggleNameFilter"
-                            :showKeyRef="showKeyRef"
-                            :searchDate="searchDate"
                             type="date"
                         />
                     </template>
@@ -283,32 +135,7 @@
                         <span>{{ row.patient.percent_usage || 0 }}%</span>
                     </template>
                     <template #header="{ column }">
-                        <!-- <div class="table-header">
-                            <span>{{ column.label }}</span>
-                            <el-icon
-                                :ref="
-                                    el => {
-                                        showKeyRef[column.property] = el;
-                                    }
-                                "
-                                @click.stop="toggleNameFilter(column.property)"
-                                class="filter-icon"
-                                :class="{
-                                    active: Array.isArray(searchDate[column.property])
-                                        ? searchDate[column.property].length > 0
-                                        : searchDate[column.property],
-                                }"
-                            >
-                                <base-svg-icon icon="filter" />
-                            </el-icon>
-                        </div> -->
-                        <table-filter-header
-                            :column="column"
-                            @toggle-name-filter="toggleNameFilter"
-                            :showKeyRef="showKeyRef"
-                            :searchDate="searchDate"
-                            type="input"
-                        />
+                        <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -319,30 +146,8 @@
                     sortable
                 >
                     <template #header="{ column }">
-                        <!-- <div class="table-header">
-                            <span>{{ column.label }}</span>
-                            <el-icon
-                                :ref="
-                                    el => {
-                                        showKeyRef[column.property] = el;
-                                    }
-                                "
-                                @click.stop="toggleNameFilter(column.property, 'select')"
-                                class="filter-icon"
-                                :class="{
-                                    active: Array.isArray(searchDate[column.property])
-                                        ? searchDate[column.property].length > 0
-                                        : searchDate[column.property],
-                                }"
-                            >
-                                <base-svg-icon icon="filter" />
-                            </el-icon>
-                        </div> -->
                         <table-filter-header
                             :column="column"
-                            @toggle-name-filter="toggleNameFilter"
-                            :showKeyRef="showKeyRef"
-                            :searchDate="searchDate"
                             type="date"
                         />
                     </template>
@@ -355,44 +160,11 @@
                     sortable
                 >
                     <template #default="{ row }">
-                        <!-- <Select
-                            size="6"
-                            color="var(--el-color-success)"
-                            v-if="row.patient.compliant === 0"
-                        />
-                        <CloseBold
-                            size="6"
-                            color="var(--el-color-danger)"
-                            v-else-if="row.patient.compliant === 2"
-                        />
-                        <span v-else-if="row.patient.compliant === 1">Monitoring</span> -->
                         <compliant-status :compliant="Number(row.patient.compliant)" />
                     </template>
                     <template #header="{ column }">
-                        <!-- <div class="table-header">
-                            <span>{{ column.label }}</span>
-                            <el-icon
-                                :ref="
-                                    el => {
-                                        showKeyRef[column.property] = el;
-                                    }
-                                "
-                                @click.stop="toggleNameFilter(column.property, 'select', compliantOptions)"
-                                class="filter-icon"
-                                :class="{
-                                    active: Array.isArray(searchDate[column.property])
-                                        ? searchDate[column.property].length > 0
-                                        : searchDate[column.property],
-                                }"
-                            >
-                                <base-svg-icon icon="filter" />
-                            </el-icon>
-                        </div> -->
                         <table-filter-header
                             :column="column"
-                            @toggle-name-filter="toggleNameFilter"
-                            :showKeyRef="showKeyRef"
-                            :searchDate="searchDate"
                             type="select"
                             :customOptions="compliantOptions"
                         />
@@ -417,82 +189,7 @@
             <!-- 上传SD -->
             <lazy-upload-files ref="uploadFilesRef" />
 
-            <!-- <el-popover
-                :visible="visible"
-                :virtual-ref="showKeyRef[showKey]"
-                placement="bottom"
-                :width="'fit-content'"
-                trigger="click"
-                ref="popoverRef"
-                :key="showKeyRef[showKey]"
-            >
-                <div class="filter-popover">
-                    <div v-if="filterType === 'input'">
-                        <el-input
-                            v-model="filterInput"
-                            placeholder="输入框"
-                            clearable
-                            style="width: 150px; margin-top: 10px"
-                            @keydown.enter="searchFilter"
-                        />
-                    </div>
-                    <div v-else-if="filterType === 'select'">
-                        <el-checkbox-group
-                            v-model="selectFilter"
-                            class="select-checkbox"
-                            v-if="filterCustomOptions.length === 0"
-                        >
-                            <el-checkbox
-                                v-for="item in filterList"
-                                :key="item"
-                                :label="item"
-                                :value="item"
-                            >
-                                {{ item }}
-                            </el-checkbox>
-                        </el-checkbox-group>
-                        <el-checkbox-group
-                            v-model="selectFilter"
-                            class="select-checkbox"
-                            v-else
-                        >
-                            <el-checkbox
-                                v-for="item in filterCustomOptions"
-                                :key="item"
-                                :label="item.label"
-                                :value="item.value"
-                            >
-                                {{ item.label }}
-                            </el-checkbox>
-                        </el-checkbox-group>
-                    </div>
-                    <div v-else-if="filterType === 'date'">
-                        <date-picker
-                            v-model="filterInput"
-                            type="date"
-                            clearable
-                            @change="searchFilter"
-                        />
-                    </div>
-                    <div
-                        class="mt"
-                        style="text-align: right"
-                    >
-                        <el-button
-                            type="info"
-                            link
-                            @click="cancelFilter"
-                            >重置</el-button
-                        >
-                        <el-button
-                            type="primary"
-                            link
-                            @click="searchFilter"
-                            >筛选</el-button
-                        >
-                    </div>
-                </div>
-            </el-popover> -->
+            <!-- 筛选弹窗 -->
             <table-filter-popover
                 :visible="visible"
                 :virtual-ref="showKeyRef[showKey]"
@@ -533,10 +230,10 @@
         });
     });
 
+    // 表格筛选
     const {
         showKey,
         showKeyRef,
-        searchDate,
         visible,
         filterInput,
         selectFilter,
@@ -544,7 +241,6 @@
         filterCustomOptions,
         filterList,
         showTableListPaient,
-        toggleNameFilter,
         handleClickOutside,
         cancelFilter,
         searchFilter,

@@ -11,9 +11,9 @@
             @click.stop="toggleNameFilter(column.property)"
             class="filter-icon"
             :class="{
-                active: Array.isArray(searchDate[column.property])
-                    ? searchDate[column.property].length > 0
-                    : searchDate[column.property],
+                active: Array.isArray(searchData[column.property])
+                    ? searchData[column.property].length > 0
+                    : searchData[column.property],
             }"
         >
             <base-svg-icon icon="filter" />
@@ -27,8 +27,8 @@
     const props = withDefaults(
         defineProps<{
             column: any;
-            searchDate: any;
-            showKeyRef: any;
+            // searchDate: any;
+            // showKeyRef: any;
             type?: FilterType;
             customOptions?: any[];
         }>(),
@@ -38,15 +38,20 @@
         },
     );
 
-    const emit = defineEmits(['toggleNameFilter']);
+    // const emit = defineEmits(['toggleNameFilter']);
 
     const toggleNameFilter = (key: string) => {
         if (props.type === 'select' && props.customOptions && props.customOptions?.length > 0) {
-            emit('toggleNameFilter', { key, type: props.type, options: props.customOptions });
+            // emit('toggleNameFilter', { key, type: props.type, options: props.customOptions });
+            toggleNameFilterInject({ key, type: props.type, options: props.customOptions });
         } else {
-            emit('toggleNameFilter', { key, type: props.type });
+            toggleNameFilterInject({ key, type: props.type });
         }
     };
+
+    const searchData = inject<any>('searchData');
+    const showKeyRef = inject<any>('showKeyRef');
+    const toggleNameFilterInject = inject<any>('toggleNameFilter');
 </script>
 
 <style lang="scss" scoped>

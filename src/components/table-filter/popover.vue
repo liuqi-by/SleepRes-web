@@ -7,15 +7,17 @@
         v-bind="$attrs"
     >
         <div class="filter-popover">
+            <!-- 输入筛选 -->
             <div v-if="filterType === 'input'">
                 <el-input
                     v-model="filterInput"
                     placeholder="输入框"
                     clearable
-                    style="width: 150px; margin-top: 10px"
+                    style="width: 200px; margin-top: 10px"
                     @keydown.enter="searchFilter"
                 />
             </div>
+            <!-- 多选框筛选 -->
             <div v-else-if="filterType === 'select'">
                 <el-checkbox-group
                     v-model="selectFilter"
@@ -46,12 +48,14 @@
                     </el-checkbox>
                 </el-checkbox-group>
             </div>
+            <!-- 日期选择 -->
             <div v-else-if="filterType === 'date'">
                 <date-picker
                     v-model="filterInput"
                     type="date"
                     clearable
                     @change="searchFilter"
+                    :placeholder="$t('form.PleaseSelect')"
                 />
             </div>
             <div
@@ -62,14 +66,16 @@
                     type="info"
                     link
                     @click="cancelFilter"
-                    >重置</el-button
                 >
+                    {{ $t('form.Reset') }}
+                </el-button>
                 <el-button
                     type="primary"
                     link
                     @click="searchFilter"
-                    >筛选</el-button
                 >
+                    {{ $t('form.Confirm') }}
+                </el-button>
             </div>
         </div>
     </el-popover>
@@ -114,7 +120,7 @@
     .select-checkbox {
         display: flex;
         flex-flow: column;
-        max-width: 200px;
+        width: 200px;
         max-height: 200px;
         overflow-y: auto;
 
