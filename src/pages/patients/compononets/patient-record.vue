@@ -22,7 +22,7 @@
                 class="form"
                 label-position="left"
                 inline
-                label-width="105px"
+                label-width="120px"
             >
                 <!-- PatientID -->
                 <el-form-item
@@ -32,6 +32,19 @@
                     <div class="form-item">
                         <el-input
                             v-model="formData.patient.patientid"
+                            class="form-input"
+                            readonly
+                        />
+                    </div>
+                </el-form-item>
+                <el-form-item
+                    prop="sn"
+                    :label="$t('patients.SerialNumber')"
+                    label-width="130px"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.sn"
                             class="form-input"
                             readonly
                         />
@@ -68,6 +81,7 @@
                 <el-form-item
                     prop="setup_date"
                     :label="$t('patients.SetupDate')"
+                    label-width="130px"
                 >
                     <div class="form-item">
                         <el-input

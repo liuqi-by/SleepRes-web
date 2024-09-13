@@ -8,6 +8,7 @@
             :rules="formRules"
             class="form"
             inline
+            label-width="130px"
         >
             <!-- first_name -->
             <el-form-item
@@ -139,7 +140,7 @@
                     />
                 </div>
             </el-form-item>
-            <br /><br />
+            <!-- <br /><br />
             <el-form-item
                 prop="sn"
                 :label="$t('patients.DeviceSerialNumber')"
@@ -152,7 +153,7 @@
                         :readonly="!isEdit"
                     />
                 </div>
-            </el-form-item>
+            </el-form-item> -->
             <br /><br />
             <el-form-item
                 prop="city"
