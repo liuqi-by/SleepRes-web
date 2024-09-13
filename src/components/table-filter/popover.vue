@@ -11,7 +11,7 @@
             <div v-if="filterType === 'input'">
                 <el-input
                     v-model="filterInput"
-                    placeholder="输入框"
+                    :placeholder="$t('form.PleaseEnter')"
                     clearable
                     style="width: 200px; margin-top: 10px"
                     @keydown.enter="searchFilter"

@@ -35,10 +35,17 @@ export default function useFilterTableHeader(tableData: any) {
                 } else if (!itemValue && itemValue !== 0) {
                     itemValue = '';
                 }
-                const searchValue = searchData.value[key];
+                let searchValue = searchData.value[key];
 
                 // 如果key是数组
                 if (Array.isArray(searchValue)) {
+                    searchValue = searchValue.map(item => {
+                        if (typeof item === 'string') {
+                            return item.toLocaleLowerCase();
+                        } else {
+                            return item;
+                        }
+                    });
                     if (searchValue.length > 0 && !searchValue.includes(itemValue)) {
                         flag = false;
                     }
