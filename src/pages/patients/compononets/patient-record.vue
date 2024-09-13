@@ -132,7 +132,10 @@
                 </div>
             </div>
             <!-- Tab Content -->
-            <div class="tab-content">
+            <div
+                class="tab-content"
+                v-if="dialogVisible"
+            >
                 <TherapyData v-if="activeIndex === 1" />
                 <Prescription v-if="activeIndex === 2" />
                 <PatientDetails
