@@ -33,9 +33,12 @@ export const usePageTable = <T>(
             val: searchOption.value,
         })
             .then(res => {
-                if (res.code === 1) {
+                if (res.data) {
                     tableList.value = res.data;
                     pageOption.value.total = res.data_other.num;
+                } else {
+                    tableList.value = undefined;
+                    pageOption.value.total = 0;
                 }
             })
             .finally(() => {

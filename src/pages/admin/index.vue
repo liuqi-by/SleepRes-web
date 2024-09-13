@@ -70,6 +70,17 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    prop="mobile"
+                    :label="$t('login.PhoneNumber')"
+                    min-width="125"
+                    align="center"
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
+                <el-table-column
                     prop="group_name"
                     :label="$t('admin.AccountType')"
                     min-width="120"
@@ -87,7 +98,7 @@
                 <el-table-column
                     prop="frozen"
                     :label="$t('admin.AccountStatus')"
-                    min-width="120"
+                    min-width="125"
                     align="center"
                     sortable
                 >
@@ -110,7 +121,7 @@
                 <el-table-column
                     prop="address"
                     :label="$t('login.Address')"
-                    min-width="120"
+                    min-width="110"
                     align="center"
                     sortable
                 >
@@ -121,7 +132,7 @@
                 <el-table-column
                     prop="state"
                     :label="$t('admin.State')"
-                    min-width="120"
+                    min-width="90"
                     align="center"
                     sortable
                 >
@@ -132,7 +143,7 @@
                 <el-table-column
                     prop="zip_code"
                     :label="$t('login.ZipCode')"
-                    min-width="120"
+                    min-width="100"
                     align="center"
                     sortable
                 >
@@ -142,7 +153,7 @@
                 </el-table-column>
                 <el-table-column
                     :label="$t('admin.Operate')"
-                    min-width="120"
+                    min-width="100"
                     align="center"
                     fixed="right"
                 >
