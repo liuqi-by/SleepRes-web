@@ -49,7 +49,7 @@
                             class="link"
                             @click="showPatientReport(row)"
                         >
-                            {{ row.nickname }}
+                            {{ nameFormat(row.nickname) }}
                         </span>
                     </template>
                     <template #header="{ column }">

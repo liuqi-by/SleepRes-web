@@ -46,6 +46,11 @@
                     align="center"
                     sortable
                 >
+                    <template #default="{ row }">
+                        <span>
+                            {{ nameFormat(row.nickname) }}
+                        </span>
+                    </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
