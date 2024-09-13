@@ -76,6 +76,7 @@
                                     class="form-input"
                                     :placeholder="$t('patients.PatientID')"
                                     :maxlength="inputLength.patientID"
+                                    @input="filterChart('patientid')"
                                 />
                             </div>
                         </el-form-item>
@@ -166,6 +167,7 @@
                                     class="form-input"
                                     :placeholder="$t('patients.DeviceSerialNumber')"
                                     :maxlength="inputLength.sn"
+                                    @input="filterNumberAndChart('sn')"
                                 />
                             </div>
                         </el-form-item>
@@ -271,6 +273,7 @@
                                     class="form-input"
                                     :placeholder="$t('login.ZipCode')"
                                     :maxlength="inputLength.zipCode"
+                                    @input="filterNumberAndChart('zip_code')"
                                 />
                             </div>
                         </el-form-item>
@@ -284,6 +287,7 @@
                                     class="form-input"
                                     :placeholder="$t('login.Email')"
                                     :maxlength="inputLength.email"
+                                    @input="filterChart('email')"
                                 />
                             </div>
                         </el-form-item>
@@ -297,6 +301,7 @@
                                     class="form-input"
                                     :placeholder="$t('login.PhoneNumber')"
                                     :maxlength="inputLength.mobile"
+                                    @input="filterMobile('mobile')"
                                 />
                             </div>
                         </el-form-item>
@@ -358,7 +363,7 @@
         therapist_id: userStore.userInfo?.id || '',
         physician_id: '',
     });
-
+    const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
     const { firstName, lastName, emailNoRequired, role, office, setupDate, birthdate, sn } = useFormRules();
     // 表单规则
     const formRules = computed(() => {

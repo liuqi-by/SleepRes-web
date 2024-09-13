@@ -61,6 +61,7 @@
                             :placeholder="$t('login.Email')"
                             type="text"
                             :maxlength="inputLength.email"
+                            @input="filterChart('email')"
                         />
                     </div>
                 </el-form-item>
@@ -76,6 +77,7 @@
                             :placeholder="$t('login.PhoneNumber')"
                             type="text"
                             :maxlength="inputLength.mobile"
+                            @input="filterMobile('mobile')"
                         />
                     </div>
                 </el-form-item>
@@ -144,6 +146,7 @@
                             :placeholder="$t('users.NPI')"
                             type="text"
                             :maxlength="inputLength.npi"
+                            @input="filterNumberAndChart('account_id')"
                         />
                     </div>
                 </el-form-item>
@@ -205,6 +208,7 @@
     const formData = ref<any>({
         ...formDataInit,
     });
+    const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
     const { firstName, lastName, email, role, office } = useFormRules();
     // 表单规则
     const formRules = computed(() => {

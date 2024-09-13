@@ -10,9 +10,10 @@ export default function useFilterInput(formData: Ref<any>) {
     };
 
     const filterMobile = (key: string) => {
-        // 只显示数字
+        // 只显示数字和-
         formData.value[key] = formData.value[key].replace(/[^0-9-]/gi, '');
     };
+
     return {
         filterChart,
         filterNumberAndChart,

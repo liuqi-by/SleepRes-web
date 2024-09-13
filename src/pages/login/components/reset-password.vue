@@ -35,6 +35,7 @@
                             :maxlength="inputLength.email"
                             ref="focusRef"
                             @keydown.enter="submit"
+                            @input="filterChart('email')"
                         />
                     </div>
                 </el-form-item>
@@ -70,6 +71,7 @@
     });
 
     const { email } = useFormRules();
+    const { filterChart } = useFilterInput(formData);
     // 表单规则
     const formRules = computed(() => {
         return {

@@ -71,6 +71,7 @@
                             :placeholder="`${$t('login.ZipCode')}`"
                             type="text"
                             :maxlength="inputLength.zipCode"
+                            @input="filterNumberAndChart('zip_code')"
                         />
                     </div>
                 </el-form-item>
@@ -101,6 +102,7 @@
                             :placeholder="`${$t('office.Telephone')}`"
                             type="text"
                             :maxlength="inputLength.mobile"
+                            @input="filterMobile('mobile')"
                         />
                     </div>
                 </el-form-item>
@@ -117,6 +119,7 @@
                             :placeholder="$t('login.Email')"
                             type="text"
                             :maxlength="inputLength.email"
+                            @input="filterChart('email')"
                         />
                     </div>
                 </el-form-item>
@@ -175,6 +178,7 @@
         status: '',
     });
     const { officeName, email } = useFormRules();
+    const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
     // 表单规则
     const formRules = computed(() => {
         return {

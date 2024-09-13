@@ -8,7 +8,7 @@
             :rules="formRules"
             class="form"
             inline
-            label-width="130px"
+            label-width="140px"
         >
             <!-- first_name -->
             <el-form-item
@@ -63,6 +63,7 @@
                         class="form-input"
                         :maxlength="inputLength.patientID"
                         :readonly="!isEdit"
+                        @input="filterChart('patientid')"
                     />
                 </div>
             </el-form-item>
@@ -202,6 +203,7 @@
                         class="form-input"
                         :maxlength="inputLength.email"
                         :readonly="!isEdit"
+                        @input="filterChart('email')"
                     />
                 </div>
             </el-form-item>
@@ -215,6 +217,7 @@
                         class="form-input"
                         :maxlength="inputLength.mobile"
                         :readonly="!isEdit"
+                        @input="filterMobile('mobile')"
                     />
                 </div>
             </el-form-item>
@@ -266,7 +269,7 @@
         mobile: '',
         user_id: '',
     });
-
+    const { filterMobile, filterChart } = useFilterInput(formData);
     const patient = inject<Ref<UserInfo>>('patient');
 
     watch(

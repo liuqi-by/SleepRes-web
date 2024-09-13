@@ -77,6 +77,7 @@
                             :placeholder="$t('login.SleepResAccountNumber')"
                             type="text"
                             :maxlength="inputLength.account_num"
+                            @input="filterNumberAndChart('account_num')"
                         />
                     </div>
                 </el-form-item>
@@ -92,6 +93,7 @@
                             :placeholder="$t('login.PhysicianNPI')"
                             type="text"
                             :maxlength="inputLength.npi"
+                            @input="filterNumberAndChart('account_id')"
                         />
                     </div>
                 </el-form-item>
@@ -107,6 +109,7 @@
                             :placeholder="`${$t('login.Email')}`"
                             type="text"
                             :maxlength="inputLength.email"
+                            @input="filterChart('email')"
                         />
                     </div>
                 </el-form-item>
@@ -167,6 +170,7 @@
                             type="text"
                             :maxlength="inputLength.zipCode"
                             @keyup.enter="submit"
+                            @input="filterNumberAndChart('zip_code')"
                         />
                     </div>
                 </el-form-item>
@@ -223,7 +227,7 @@
         last_name: '',
         group_id: 2,
     });
-    const { filterMobile } = useFilterInput(formData);
+    const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
     const { dmeName, practiceName, firstName, lastName, email } = useFormRules();
     // 表单规则
     const formRules = computed(() => {

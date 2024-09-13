@@ -95,6 +95,7 @@
                             type="text"
                             :maxlength="inputLength.account_num"
                             ref="focusRef"
+                            @input="filterNumberAndChart('account_num')"
                         />
                     </div>
                 </el-form-item>
@@ -111,6 +112,7 @@
                             type="text"
                             :maxlength="inputLength.npi"
                             ref="focusRef"
+                            @input="filterNumberAndChart('account_id')"
                         />
                     </div>
                 </el-form-item>
@@ -126,6 +128,7 @@
                             :placeholder="`${$t('login.Email')}`"
                             type="text"
                             :maxlength="inputLength.email"
+                            @input="filterChart('email')"
                         />
                     </div>
                 </el-form-item>
@@ -186,6 +189,7 @@
                             type="text"
                             :maxlength="inputLength.zipCode"
                             @keyup.enter="submit"
+                            @input="filterNumberAndChart('zip_code')"
                         />
                     </div>
                 </el-form-item>
@@ -218,6 +222,7 @@
                             :placeholder="`${$t('message.AccountNumber')}`"
                             type="text"
                             :maxlength="inputLength.account_num"
+                            @input="filterNumberAndChart('username')"
                         />
                     </div>
                 </el-form-item>
@@ -230,7 +235,7 @@
                         class="m-r-[10px]"
                         :loading="loading"
                     >
-                        {{ $t('form.Submit') }}
+                        {{ $t('form.Create') }}
                     </base-button>
                     <base-button @click="reject">{{ $t('form.Reject') }}</base-button>
                 </div>
@@ -265,7 +270,7 @@
         };
     });
 
-    const { filterMobile } = useFilterInput(formData);
+    const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
 
     watch(
         () => tabType,
