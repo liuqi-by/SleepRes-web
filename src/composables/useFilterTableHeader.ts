@@ -21,7 +21,6 @@ export default function useFilterTableHeader(tableData: any) {
     const showTableListPaient = computed(() => {
         return tableData.value?.filter((item: any) => {
             let flag = true;
-
             for (const key in searchData.value) {
                 let itemValue: string | number = '';
                 if (key && key.includes('patient.')) {
@@ -94,6 +93,7 @@ export default function useFilterTableHeader(tableData: any) {
         }
 
         showKey.value = key;
+
         filterInput.value = searchData.value[key] || '';
         selectFilter.value = searchData.value[key] || [];
         filterType.value = type;
@@ -120,11 +120,24 @@ export default function useFilterTableHeader(tableData: any) {
     const searchFilter = () => {
         visible.value = false;
         console.log(selectFilter.value);
-        if (filterType.value === 'select') {
-            searchData.value[showKey.value] = selectFilter.value || '';
-        } else {
-            searchData.value[showKey.value] = filterInput.value || '';
+        switch (filterType.value) {
+            case 'select':
+                searchData.value[showKey.value] = selectFilter.value;
+                break;
+
+            case 'date':
+                searchData.value[showKey.value] = dateFormat(filterInput.value);
+                break;
+            default:
+                searchData.value[showKey.value] = filterInput.value;
+                break;
         }
+
+        // if (filterType.value === 'select') {
+        //     searchData.value[showKey.value] = selectFilter.value || '';
+        // } else {
+        //     searchData.value[showKey.value] = filterInput.value || '';
+        // }
     };
 
     provide('showKeyRef', showKeyRef);

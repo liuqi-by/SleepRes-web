@@ -145,6 +145,9 @@
                     align="center"
                     sortable
                 >
+                    <template #default="{ row }">
+                        <span>{{ row.patient.use_end_time && dateFormat(row.patient.use_end_time) }}</span>
+                    </template>
                     <template #header="{ column }">
                         <table-filter-header
                             :column="column"
