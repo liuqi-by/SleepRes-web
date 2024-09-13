@@ -62,7 +62,7 @@ export interface AddNoteReq {
 }
 
 export interface GetLogsReq {
-    user_id: string;
+    sn: string;
 }
 
 export interface Log {

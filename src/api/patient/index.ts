@@ -55,7 +55,7 @@ export const addNote = (data: AddNoteReq) => {
  * @description 获取患者log信息
  */
 export const getLogs = (data: GetLogsReq & PageQuery) => {
-    return useClientRequest<ResPonseType<Log[]>>('/api/patient/log_list', {
+    return useClientRequest<ResPonseType<Log[]>>('/api/device/remote_log_list', {
         method: 'GET',
         query: data,
     });

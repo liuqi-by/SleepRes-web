@@ -20,7 +20,7 @@
                 align="center"
             />
             <el-table-column
-                prop="update_content"
+                prop="title"
                 :label="$t('patients.revision')"
                 min-width="200"
                 align="center"
@@ -62,14 +62,15 @@
     const loading = ref(false);
     const tableList = ref<Log[]>([]);
     const getData = () => {
-        loading.value = true;
-        if (!patient?.value.id) {
+        if (!patient?.value.sn) {
             return;
         }
+        loading.value = true;
+
         getLogs({
             page: pageOption.value.currentPage - 1,
             pagesize: pageOption.value.pageSize,
-            user_id: patient.value.id,
+            sn: patient.value.sn,
         })
             .then(res => {
                 if (res.code === 1) {
@@ -99,7 +100,7 @@
         }
 
         :deep(.module-table) {
-            height: calc(100%);
+            height: 500px;
         }
     }
 </style>
