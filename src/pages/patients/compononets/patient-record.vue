@@ -137,7 +137,7 @@
                 v-if="dialogVisible"
             >
                 <TherapyData v-if="activeIndex === 1" />
-                <Prescription v-if="activeIndex === 2" />
+                <Prescription v-show="activeIndex === 2" />
                 <PatientDetails
                     v-if="activeIndex === 3"
                     @update="updatePatient"
@@ -156,10 +156,12 @@
     // import { Select, CloseBold } from '@element-plus/icons-vue';
     import Logs from './tabs/logs.vue';
     import Notes from './tabs/notes.vue';
-    import Prescription from './tabs/prescription.vue';
+    // import Prescription from './tabs/prescription.vue';
     import PatientDetails from './tabs/patient-details.vue';
     import TherapyData from './tabs/therapy-data/index.vue';
     import type { UserInfo } from '~/api/login/types';
+
+    const Prescription = defineAsyncComponent(() => import('./tabs/prescription.vue'));
 
     const dialogVisible = ref(false);
 
