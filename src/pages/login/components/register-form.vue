@@ -226,6 +226,12 @@
         first_name: '',
         last_name: '',
         group_id: 2,
+        account_num: '',
+        account_id: '',
+        mobile: '',
+        address: '',
+        state: '',
+        zip_code: '',
     });
     const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
     const { dmeName, practiceName, firstName, lastName, email } = useFormRules();

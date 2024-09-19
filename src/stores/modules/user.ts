@@ -134,7 +134,7 @@ export const useUserStore = defineStore(
                 }, 500);
 
                 try {
-                    userInfo.value = userInfoInit;
+                    userInfo.value = null;
                     roles.value = [];
                     // useMessageStore().stopInterval();
                     usePermissionStore().setPermissionRoutes([]);
@@ -183,19 +183,17 @@ export const useUserStore = defineStore(
         const logTimer = ref<any>(null);
 
         const startInactivityTimer = () => {
-            nextTick(() => {
-                // 初始化最后的活动时间为当前时间
-                lastActiveTime.value = Date.now();
-                // 监听键盘和鼠标事件来更新最后活动时间
-                window.addEventListener('mousemove', resetTimer);
-                window.addEventListener('keydown', resetTimer);
-                window.addEventListener('click', resetTimer);
-                if (!logTimer.value) {
-                    clearInterval(logTimer.value);
-                }
-                // 创建定时器检查是否30分钟过去
-                logTimer.value = setInterval(checkInactivity, 60000); // 每分钟检查一次
-            });
+            // 初始化最后的活动时间为当前时间
+            lastActiveTime.value = Date.now();
+            // 监听键盘和鼠标事件来更新最后活动时间
+            window.addEventListener('mousemove', resetTimer);
+            window.addEventListener('keydown', resetTimer);
+            window.addEventListener('click', resetTimer);
+            if (!logTimer.value) {
+                clearInterval(logTimer.value);
+            }
+            // 创建定时器检查是否30分钟过去
+            logTimer.value = setInterval(checkInactivity, 60000); // 每分钟检查一次
         };
 
         const resetTimer = () => {

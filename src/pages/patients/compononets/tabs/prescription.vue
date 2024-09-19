@@ -135,6 +135,9 @@
     // 模式设置的值
     const modeSettingValue = ref<any>({});
 
+    // 模式设置保存的值
+    const modeSettingSaveValue = ref<any>({});
+
     // 设备机型
     const deviceType = ref();
 
@@ -182,34 +185,15 @@
 
     // 根据最大最小值得到压力选项列表
     const getPressOptions = (min: number, max: number) => {
-        let options = [];
-        for (let i = min; i <= max; i += 0.5) {
-            options.push({
-                label: i + ' cmH2O',
-                value: String(i * 10),
-            });
-        }
-        return options;
+        return getRangeOptions(min, max, 'cmH2O', 0.5, 10);
     };
 
-    const getRangeOptions = (min: number, max: number, unit: string, step: number = 1) => {
+    const getRangeOptions = (min: number, max: number, unit: string, step: number = 1, override: number = 1) => {
         let options = [];
-        for (let i = min; i <= max; i += step) {
+        for (let i = min; i <= max; i = add(i, step)) {
             options.push({
                 label: i + ' ' + unit,
-                value: String(i),
-            });
-        }
-        return options;
-    };
-
-    // 根据最大最小值得到吸气时间选项列表
-    const getInspTime = (min: number, max: number) => {
-        let options = [];
-        for (let i = min; i <= max; i = add(i, 0.1)) {
-            options.push({
-                label: i + ' s',
-                value: String(i * 10),
+                value: String(i * override),
             });
         }
         return options;
@@ -240,109 +224,163 @@
     };
 
     const getMaxPre = (index: keyof typeof maxPreList) => {
-        console.log(maxPreList[index][deviceType.value]);
         return maxPreList[index][deviceType.value] <= $device_pre_arr[deviceType.value]
             ? maxPreList[index][deviceType.value]
             : $device_pre_arr[deviceType.value];
     };
 
+    const getOptionsValue = (key: string) => {
+        return modeSettingValue.value[key]['v' + mode.value] / 10;
+    };
+
+    // 计算初始压力
+    const computedStartPress = () => {
+        switch (mode.value) {
+            case 0:
+                return getPressOptions(4, getOptionsValue('84') || 20);
+            case 1:
+            case 2:
+                return getPressOptions(4, getOptionsValue('82') || 20);
+            case 3:
+            case 4:
+            case 5:
+            case 7:
+                return getPressOptions(4, getOptionsValue('76') || 20);
+            case 6:
+                return getPressOptions(4, getOptionsValue('78') || 20);
+            default:
+                return getPressOptions(4, 20);
+        }
+    };
+
+    // 计算吸气压力
+    const computedInspPress = () => {
+        switch (mode.value) {
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                return getPressOptions(
+                    Math.max(getOptionsValue('76') + 2, 4),
+                    Math.min(getOptionsValue('76') + 8, getOptionsValue('79')),
+                );
+            case 8:
+            case 9:
+                return getPressOptions(getOptionsValue('80') || 4, getOptionsValue('79'));
+            default:
+                return getPressOptions(4, Math.max(getOptionsValue('76') + 8, getOptionsValue('79')));
+        }
+    };
+
     // 模式设置值的选项
-    const modeSettingOptions = ref<any>({
-        '60': [
-            ...new Array(61).fill(0).map((_, index) => {
-                if (index > 0) {
-                    return {
-                        label: index + 'min',
-                        value: String(index),
-                    };
-                } else {
-                    return {
-                        label: 'OFF',
-                        value: '0',
-                    };
-                }
-            }),
-        ],
-        '61': onAndOff,
-        '62': onAndOff,
-        '70': getRangeOptions(0, 3, 'Level'),
-        '86': onAndOff,
-        '75': getPressOptions(4, 20),
-        '84': getPressOptions(4, 20),
-        '89': APsensOptions,
-        '82': getPressOptions(4, 20),
-        '83': getPressOptions(4, 20),
-        // 呼气灵敏度 ESens
-        '63': ESensOptions,
-        // 吸气灵敏度 ISens
-        '64': ESensOptions,
-        // 最大吸气时间 MaxInspTime
-        '66': getInspTime(0.5, 4),
-        // 最小吸气时间 MinInspTime
-        '67': getInspTime(0.5, 4),
-        // 升压时间 ISlop
-        '68': [
-            ...new Array(7)
-                .fill(0)
-                .map((_, index) => {
-                    if (index === 0) {
+    const modeSettingOptions = computed<any>(() => {
+        console.log(subtract(getOptionsValue('77'), getOptionsValue('76')));
+        return {
+            '60': [
+                ...new Array(61).fill(0).map((_, index) => {
+                    if (index > 0) {
                         return {
-                            label: 'Auto',
-                            value: '0',
+                            label: index + 'min',
+                            value: String(index),
                         };
                     } else {
                         return {
-                            label: index + ' Level',
-                            value: String(index),
+                            label: 'OFF',
+                            value: '0',
                         };
                     }
-                })
-                .filter((_, index) => index !== 0),
-        ],
-        // 呼气压力 EPAP
-        '76': getPressOptions(4, getMaxPre('76')),
-        // 吸气压力 IPAP
-        '77': getPressOptions(4, getMaxPre('77')),
-        // 吸气时间 InspTime
-        '65': getInspTime(0.5, 4),
-        // 呼吸频率 RR
-        '69': getRangeOptions(3, 40, 'BPM'),
-        // 最低呼气压力 MinEPAP
-        '78': getPressOptions(4, 27),
-        // 最高吸气压力 Max IPAP
-        '79': getPressOptions(4, 30),
-        // 最大PS MaxPS
-        '81': getPressOptions(3, 8),
-        // 分夜 Split Night
-        '88': [
-            {
-                label: 'OFF',
-                value: '0',
-            },
-            {
-                label: '120min',
-                value: '120',
-            },
-            {
-                label: '180min',
-                value: '180',
-            },
-            {
-                label: '240min',
-                value: '240',
-            },
-        ],
-        // 最低吸气压力 Min IPAP
-        '80': getPressOptions(4, 30),
-        // 目标潮气量 VT
-        '85': getRangeOptions(200, 2000, 'ml', 50),
+                }),
+            ],
+            '61': onAndOff,
+            '62': onAndOff,
+            '70': getRangeOptions(0, 3, 'Level'),
+            '86': onAndOff,
+            // 初始压力 小于等于最小压力
+            '75': computedStartPress(),
+            // 压力值 大于等于初始压力
+            '84': getPressOptions(Math.max(getOptionsValue('75'), 4), 20),
+            '89': APsensOptions,
+            // 最小压力
+            '82': getPressOptions(4, Math.min(getOptionsValue('83'), 20)),
+            // 最大压力 最大压力大于等于最小压力
+            '83': getPressOptions(Math.max(getOptionsValue('82'), 4), 20),
+            // 呼气灵敏度 ESens
+            '63': ESensOptions,
+            // 吸气灵敏度 ISens
+            '64': ESensOptions,
+            // 最大吸气时间 MaxInspTime
+            '66': getRangeOptions(Math.max(getOptionsValue('67'), 0.5), 4, 's', 0.1, 10),
+            // 最小吸气时间 MinInspTime
+            '67': getRangeOptions(0.5, Math.min(getOptionsValue('66'), 4), 's', 0.1, 10),
+            // 升压时间 ISlop
+            '68': [
+                ...new Array(7)
+                    .fill(0)
+                    .map((_, index) => {
+                        if (index === 0) {
+                            return {
+                                label: 'Auto',
+                                value: '0',
+                            };
+                        } else {
+                            return {
+                                label: index + ' Level',
+                                value: String(index),
+                            };
+                        }
+                    })
+                    .filter((_, index) => index !== 0),
+            ],
+            // 呼气压力 EPAP
+            '76': getPressOptions(Math.max(getOptionsValue('77') - 8, 4), Math.min(getOptionsValue('77') - 2)),
+            // 吸气压力 IPAP
+            '77': computedInspPress(),
+            // 吸气时间 InspTime
+            '65': getRangeOptions(0.5, (60 / getOptionsValue('69') / 10) * 0.8, 's', 0.1, 10),
+            // 呼吸频率 RR
+            '69': getRangeOptions(
+                3,
+                60 / (getOptionsValue('65') / 0.8) > 40 ? 40 : 60 / getOptionsValue('65') / 0.8,
+                'BPM',
+            ),
+            // 最低呼气压力 MinEPAP
+            '78': getPressOptions(4, getOptionsValue('76')),
+            // 最高吸气压力 Max IPAP
+            '79': getPressOptions(getOptionsValue('77'), 30),
+            // 最大PS MaxPS
+            '81': getPressOptions(Math.max(subtract(getOptionsValue('77'), getOptionsValue('76')), 3), 8),
+            // 分夜 Split Night
+            '88': [
+                {
+                    label: 'OFF',
+                    value: '0',
+                },
+                {
+                    label: '120min',
+                    value: '120',
+                },
+                {
+                    label: '180min',
+                    value: '180',
+                },
+                {
+                    label: '240min',
+                    value: '240',
+                },
+            ],
+            // 最低吸气压力 Min IPAP
+            '80': getPressOptions(4, 30),
+            // 目标潮气量 VT
+            '85': getRangeOptions(200, 2000, 'ml', 50),
+        };
     });
 
     watch(
-        () => deviceType.value,
+        () => mode.value,
         () => {
-            modeSettingOptions.value['76'] = getPressOptions(4, getMaxPre('76'));
-            modeSettingOptions.value['77'] = getPressOptions(4, getMaxPre('77'));
+            console.log(subtract(getOptionsValue('77'), getOptionsValue('76')));
+            modeSettingValue.value = JSON.parse(JSON.stringify(modeSettingSaveValue.value));
         },
     );
 
@@ -369,6 +407,7 @@
                 mode.value = res.data.model_type_default;
                 modeSettingList.value = res.data.par_show;
                 modeSettingValue.value = res.data.par_show_val;
+                modeSettingSaveValue.value = JSON.parse(JSON.stringify(res.data.par_show_val));
                 deviceType.value = res.data.device_type_id;
             }
         });

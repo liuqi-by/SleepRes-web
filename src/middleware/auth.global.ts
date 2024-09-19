@@ -52,6 +52,7 @@ export default defineNuxtRouteMiddleware(async to => {
             }
         } catch (error) {
             console.log('error', error);
+            userStore.logout();
             return navigateTo('/login?redirect=' + to.path);
         }
     }
