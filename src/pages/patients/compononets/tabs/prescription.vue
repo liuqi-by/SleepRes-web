@@ -1,6 +1,5 @@
 <template>
     <div class="prescription">
-        under development
         <edit-btn v-model="isEdit" />
 
         <el-form
@@ -12,8 +11,28 @@
             :disabled="!isEdit"
         >
             <el-form-item
+                prop="sn"
+                :label="$t('patients.DeviceSerialNumber')"
+                label-width="200px"
+            >
+                <div class="form-item w-[300px]!">
+                    <el-input
+                        v-model="formData.sn"
+                        class="form-input"
+                        :maxlength="inputLength.sn"
+                        :readonly="!isEdit"
+                    />
+                </div>
+                <base-button
+                    class="h-[40px]! m-l-20px"
+                    @click="changeDevice"
+                    type="primary"
+                    >Bind Device</base-button
+                >
+            </el-form-item>
+            <el-form-item
                 prop="mode"
-                label="通气模式"
+                label="Mode"
             >
                 <div class="form-item">
                     <el-select v-model="mode">
@@ -29,7 +48,6 @@
 
             <div class="column-box">
                 <el-form-item
-                    prop="sn"
                     :label="$t(`deviceSettings.par${item}`)"
                     v-for="(item, index) in modeSettingList[mode]"
                     :key="index"
@@ -76,9 +94,6 @@
             >
                 {{ $t('form.Cancel') }}
             </base-button>
-            <base-button>
-                {{ $t('patients.SendRx') }}
-            </base-button>
         </div>
     </div>
 </template>
@@ -87,28 +102,53 @@
     import type { FormInstance, InputInstance } from 'element-plus';
     import editBtn from './components/edit-btn.vue';
     import type { UserInfo } from '~/api/login/types';
-    import { getDeviceModel } from '~/api/device';
+    import { getDeviceModel, updateDeviceModel } from '~/api/device';
     import type { Parshow } from '~/api/device/types';
+    import { editPatient } from '~/api/patient';
 
     const isEdit = ref(false);
 
     const formData = ref({
         mode: 0,
+        sn: '',
     });
 
+    const { sn } = useFormRules();
     const formRules = computed(() => {
-        return {};
+        return {
+            sn,
+        };
     });
 
     const loading = ref(false);
     const formRef = ref<FormInstance>(); // 表单ref
     // 保存
     const save = () => {
-        formRef.value?.validate(valid => {
-            if (valid) {
-                loading.value = true;
-            }
-        });
+        if (!patient?.value.sn) {
+            return;
+        }
+        loading.value = true;
+        console.log(modeSettingValue.value);
+
+        let data: any = {};
+        for (const key in modeSettingValue.value) {
+            data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
+        }
+        data['90'] = String(mode.value);
+
+        updateDeviceModel({
+            data: JSON.stringify(data),
+            sn: patient.value.sn,
+        })
+            .then(res => {
+                ElMessage.success(res.msg);
+                modeSettingSaveValue.value = {
+                    ...modeSettingValue.value,
+                };
+            })
+            .finally(() => {
+                loading.value = false;
+            });
     };
 
     const snInput = ref<InputInstance>();
@@ -131,6 +171,19 @@
     const modeSettingList = ref<Parshow>({});
     // 患者
     const patient = inject<Ref<UserInfo>>('patient');
+
+    watch(
+        () => patient?.value,
+        val => {
+            if (val) {
+                formData.value.sn = val.sn;
+            }
+        },
+        {
+            immediate: true,
+            deep: true,
+        },
+    );
 
     // 模式设置的值
     const modeSettingValue = ref<any>({});
@@ -214,8 +267,8 @@
     const maxPreList = {
         '84': [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20], // 压力
         '75': [20, 20, 20, 23, 23, 23, 23, 23, 23, 25, 25, 25, 25, 28], // 初始压力
-        '83': [20, 20, 20, 20, 20, 20, 20, 20, 25, 25, 25, 30, 30, 30], // 最大压力
-        '82': [20, 20, 20, 20, 20, 20, 20, 20, 25, 25, 25, 30, 30, 30], // 最小压力
+        '83': [20, 20, 20, 20, 20, 20, 20, 20, 25, 25, 25, 30, 30, 30], // 最小压力
+        '82': [20, 20, 20, 20, 20, 20, 20, 20, 25, 25, 25, 30, 30, 30], // 最大压力
         '79': [25, 25, 25, 25, 25, 30, 25, 25, 25, 25, 25, 30, 30, 30], // 最大吸气压力
         '80': [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 30, 30], // 最小吸气压力
         '77': [25, 25, 25, 25, 25, 30, 25, 25, 30, 30, 30, 30, 30, 30], // 吸气压力
@@ -223,6 +276,7 @@
         '78': [23, 23, 23, 23, 23, 28, 28, 28, 28, 28, 28, 28, 28, 28], // 最小呼气压力
     };
 
+    // 获取压力最大值
     const getMaxPre = (index: keyof typeof maxPreList) => {
         return maxPreList[index][deviceType.value] <= $device_pre_arr[deviceType.value]
             ? maxPreList[index][deviceType.value]
@@ -237,19 +291,19 @@
     const computedStartPress = () => {
         switch (mode.value) {
             case 0:
-                return getPressOptions(4, getOptionsValue('84') || 20);
+                return getPressOptions(4, getOptionsValue('84') || getMaxPre('75'));
             case 1:
             case 2:
-                return getPressOptions(4, getOptionsValue('82') || 20);
+                return getPressOptions(4, getOptionsValue('82') || getMaxPre('75'));
             case 3:
             case 4:
             case 5:
             case 7:
-                return getPressOptions(4, getOptionsValue('76') || 20);
+                return getPressOptions(4, getOptionsValue('76') || getMaxPre('75'));
             case 6:
-                return getPressOptions(4, getOptionsValue('78') || 20);
+                return getPressOptions(4, getOptionsValue('78') || getMaxPre('75'));
             default:
-                return getPressOptions(4, 20);
+                return getPressOptions(4, getMaxPre('75'));
         }
     };
 
@@ -259,17 +313,71 @@
             case 3:
             case 4:
             case 5:
-            case 6:
             case 7:
+                return getPressOptions(Math.max(getOptionsValue('76') + 2, 4), getMaxPre('77'));
+
+            case 6:
                 return getPressOptions(
                     Math.max(getOptionsValue('76') + 2, 4),
-                    Math.min(getOptionsValue('76') + 8, getOptionsValue('79')),
+                    Math.min(getOptionsValue('76') + 8, getOptionsValue('79'), getMaxPre('77')),
                 );
             case 8:
             case 9:
-                return getPressOptions(getOptionsValue('80') || 4, getOptionsValue('79'));
+                return getPressOptions(getOptionsValue('80') || 4, Math.min(getOptionsValue('79'), getMaxPre('77')));
             default:
-                return getPressOptions(4, Math.max(getOptionsValue('76') + 8, getOptionsValue('79')));
+                return getPressOptions(4, Math.max(getOptionsValue('76') + 8, getOptionsValue('79'), getMaxPre('77')));
+        }
+    };
+
+    // 计算呼气压力
+    const computedEpapPress = () => {
+        switch (mode.value) {
+            case 6:
+                return getPressOptions(getOptionsValue('77') - 8, Math.min(getOptionsValue('77') - 2, getMaxPre('76')));
+            case 8:
+                return getPressOptions(
+                    4,
+                    Math.min(getOptionsValue('77') - 2, getOptionsValue('80') - 2, getMaxPre('76')),
+                );
+            default:
+                return getPressOptions(getOptionsValue('75'), Math.min(getOptionsValue('77') - 2, getMaxPre('76')));
+        }
+    };
+
+    // 计算最大吸气时长
+    const computedMaxInspTime = () => {
+        switch (mode.value) {
+            case 8:
+                return getRangeOptions(Math.max(getOptionsValue('65'), getOptionsValue('67'), 0.5), 4, 's', 0.1, 10);
+            default:
+                return getRangeOptions(Math.max(getOptionsValue('67'), 0.5), 4, 's', 0.1, 10);
+        }
+    };
+
+    // 计算最小吸气时长
+    const computedMinInspTime = () => {
+        switch (mode.value) {
+            case 8:
+                return getRangeOptions(0.5, Math.min(getOptionsValue('66'), getOptionsValue('65'), 4), 's', 0.1, 10);
+            default:
+                return getRangeOptions(0.5, Math.min(getOptionsValue('66'), 4), 's', 0.1, 10);
+        }
+    };
+
+    // 计算吸气时长
+    const computedInspTime = () => {
+        switch (mode.value) {
+            case 7:
+            case 9:
+                return getRangeOptions(0.5, Math.min((60 / getOptionsValue('69') / 10) * 0.8, 4), 's', 0.1, 10);
+            default:
+                return getRangeOptions(
+                    Math.max(0.5, getOptionsValue('67')),
+                    Math.min((60 / getOptionsValue('69') / 10) * 0.8, getOptionsValue('66')),
+                    's',
+                    0.1,
+                    10,
+                );
         }
     };
 
@@ -299,20 +407,20 @@
             // 初始压力 小于等于最小压力
             '75': computedStartPress(),
             // 压力值 大于等于初始压力
-            '84': getPressOptions(Math.max(getOptionsValue('75'), 4), 20),
+            '84': getPressOptions(Math.max(getOptionsValue('75'), 4), getMaxPre('84')),
             '89': APsensOptions,
             // 最小压力
-            '82': getPressOptions(4, Math.min(getOptionsValue('83'), 20)),
+            '82': getPressOptions(4, Math.min(getOptionsValue('83'), getMaxPre('82'))),
             // 最大压力 最大压力大于等于最小压力
-            '83': getPressOptions(Math.max(getOptionsValue('82'), 4), 20),
+            '83': getPressOptions(Math.max(getOptionsValue('82'), 4), getMaxPre('83')),
             // 呼气灵敏度 ESens
             '63': ESensOptions,
             // 吸气灵敏度 ISens
             '64': ESensOptions,
             // 最大吸气时间 MaxInspTime
-            '66': getRangeOptions(Math.max(getOptionsValue('67'), 0.5), 4, 's', 0.1, 10),
+            '66': computedMaxInspTime(),
             // 最小吸气时间 MinInspTime
-            '67': getRangeOptions(0.5, Math.min(getOptionsValue('66'), 4), 's', 0.1, 10),
+            '67': computedMinInspTime(),
             // 升压时间 ISlop
             '68': [
                 ...new Array(7)
@@ -333,21 +441,17 @@
                     .filter((_, index) => index !== 0),
             ],
             // 呼气压力 EPAP
-            '76': getPressOptions(Math.max(getOptionsValue('77') - 8, 4), Math.min(getOptionsValue('77') - 2)),
+            '76': computedEpapPress(),
             // 吸气压力 IPAP
             '77': computedInspPress(),
             // 吸气时间 InspTime
-            '65': getRangeOptions(0.5, (60 / getOptionsValue('69') / 10) * 0.8, 's', 0.1, 10),
+            '65': computedInspTime(),
             // 呼吸频率 RR
-            '69': getRangeOptions(
-                3,
-                60 / (getOptionsValue('65') / 0.8) > 40 ? 40 : 60 / getOptionsValue('65') / 0.8,
-                'BPM',
-            ),
+            '69': getRangeOptions(3, Math.min(60 / (getOptionsValue('65') / 0.8), 40), 'BPM'),
             // 最低呼气压力 MinEPAP
-            '78': getPressOptions(4, getOptionsValue('76')),
+            '78': getPressOptions(4, Math.min(getOptionsValue('76'), getMaxPre('78'))),
             // 最高吸气压力 Max IPAP
-            '79': getPressOptions(getOptionsValue('77'), 30),
+            '79': getPressOptions(getOptionsValue('77'), getMaxPre('79')),
             // 最大PS MaxPS
             '81': getPressOptions(Math.max(subtract(getOptionsValue('77'), getOptionsValue('76')), 3), 8),
             // 分夜 Split Night
@@ -370,7 +474,7 @@
                 },
             ],
             // 最低吸气压力 Min IPAP
-            '80': getPressOptions(4, 30),
+            '80': getPressOptions(getOptionsValue('76') + 2, Math.min(getOptionsValue('77'), getMaxPre('80'))),
             // 目标潮气量 VT
             '85': getRangeOptions(200, 2000, 'ml', 50),
         };
@@ -379,8 +483,10 @@
     watch(
         () => mode.value,
         () => {
-            console.log(subtract(getOptionsValue('77'), getOptionsValue('76')));
-            modeSettingValue.value = JSON.parse(JSON.stringify(modeSettingSaveValue.value));
+            // 重置 modeSettingValue
+            modeSettingValue.value = {
+                ...modeSettingSaveValue.value,
+            };
         },
     );
 
@@ -422,6 +528,34 @@
             immediate: true,
         },
     );
+
+    const emit = defineEmits(['update']);
+    const update = inject<Function>('update');
+    // 修改设备
+    const changeDevice = () => {
+        formRef.value?.validate(valid => {
+            if (valid) {
+                editPatient({
+                    sn: formData.value.sn,
+                    user_id: patient?.value.id,
+                    first_name: patient?.value.first_name,
+                    last_name: patient?.value.last_name,
+                    birthdate: patient?.value.patient.birthdate,
+                    setup_date: patient?.value.patient.setup_date,
+                })
+                    .then(res => {
+                        loading.value = false;
+                        if (res.code === 1) {
+                            ElMessage.success('Change success');
+                            isEdit.value = false;
+                            emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
+                            update && update();
+                        }
+                    })
+                    .finally(() => {});
+            }
+        });
+    };
 </script>
 
 <style lang="scss" scoped>

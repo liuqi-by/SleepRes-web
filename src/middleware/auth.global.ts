@@ -42,11 +42,12 @@ export default defineNuxtRouteMiddleware(async to => {
             if (menuRoute.findIndex(route => route.meta?.title === to.meta.title) === -1) {
                 if (to.path === '/') {
                     return navigateTo(menuRoute[0].path);
-                } else {
-                    return showError({
-                        statusCode: 401,
-                    });
                 }
+                // else {
+                //     return showError({
+                //         statusCode: 401,
+                //     });
+                // }
 
                 // return navigateTo(menuRoute[0].path);
             }

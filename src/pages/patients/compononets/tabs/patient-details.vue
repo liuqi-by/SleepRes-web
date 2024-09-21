@@ -261,7 +261,7 @@
         therapist_name: '',
         physician_id: '',
         physician_name: '',
-        sn: '',
+        // sn: '',
         city: '',
         state: '',
         address: '',
@@ -288,7 +288,7 @@
                     therapist_name: val.patient.therapist_name || '',
                     physician_id: val.patient.physician_id || '',
                     physician_name: val.patient.physician_name || '',
-                    sn: val.sn || '',
+                    // sn: val.sn || '',
                     city: val.patient.city || '',
                     state: val.state || '',
                     address: val.address || '',
@@ -304,13 +304,13 @@
         },
     );
 
-    const { firstName, lastName, emailNoRequired, sn } = useFormRules();
+    const { firstName, lastName, emailNoRequired } = useFormRules();
     const formRules = computed(() => {
         return {
             first_name: firstName,
             last_name: lastName,
             email: emailNoRequired,
-            sn,
+            // sn,
         };
     });
 
@@ -355,7 +355,7 @@
             therapist_name: val.patient.therapist_name || '',
             physician_id: val.patient.physician_id || '',
             physician_name: val.patient.physician_name || '',
-            sn: val.sn || '',
+            // sn: val.sn || '',
             city: val.patient.city || '',
             state: val.state || '',
             address: val.address || '',

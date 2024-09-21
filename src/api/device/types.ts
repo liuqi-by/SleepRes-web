@@ -19,3 +19,8 @@ export interface Parshowval {
         [key: string]: string;
     };
 }
+
+export interface UpdateDeviceModelReq {
+    sn: string;
+    data: string;
+}
