@@ -127,7 +127,7 @@ export function useFormRules(formData?: any) {
                 validator: (_rule: any, value: string, callback: any) => {
                     const reg = REGULAR.email;
                     if (!reg.test(value)) {
-                        return callback(new Error(t('form.PleaseEnterCurrent') + t('login.Email')));
+                        return callback(new Error('Please enter the correct Email.'));
                     }
                     callback();
                 },

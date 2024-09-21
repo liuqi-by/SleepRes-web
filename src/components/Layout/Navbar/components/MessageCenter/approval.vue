@@ -316,19 +316,19 @@
             }
 
             checkMessage({
-                user_id: formData.value?.id,
-                account_num: formData.value?.account_num,
-                account_name: formData.value?.username,
+                user_id: formData.value?.id || '',
+                account_num: formData.value?.account_num || '',
+                account_name: formData.value?.username || '',
                 status: 1,
-                first_name: formData.value?.first_name,
-                last_name: formData.value?.last_name,
-                dmename: formData.value?.dmename,
-                zip_code: formData.value?.zip_code,
-                mobile: formData.value?.mobile,
-                email: formData.value?.email,
-                account_id: formData.value?.account_id,
-                state: formData.value?.state,
-                address: formData.value?.address,
+                first_name: formData.value?.first_name || '',
+                last_name: formData.value?.last_name || '',
+                dmename: formData.value?.dmename || '',
+                zip_code: formData.value?.zip_code || '',
+                mobile: formData.value?.mobile || '',
+                email: formData.value?.email || '',
+                account_id: formData.value?.account_id || '',
+                state: formData.value?.state || '',
+                address: formData.value?.address || '',
             })
                 .then(res => {
                     if (res.code === 1) {
