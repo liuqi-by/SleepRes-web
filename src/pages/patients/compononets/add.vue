@@ -393,6 +393,14 @@
             }
             loading.value = true;
 
+            // 去除formData null和undefined
+            Object.keys(formData.value).forEach(key => {
+                let value = formData.value[key as keyof AddPatientReq];
+                if (value === null || value === undefined) {
+                    formData.value[key as keyof AddPatientReq] = '' as any;
+                }
+            });
+
             // 新增
             addPatient({
                 ...formData.value,
