@@ -175,9 +175,7 @@
                             return navigateTo(menuRoute[0].path);
                         }
                     } else {
-                        return showError({
-                            statusCode: 401,
-                        });
+                        return navigateTo('/');
                     }
 
                     router.push({ path: redirect, query: otherQueryParams });

@@ -6,7 +6,7 @@
             ref="formRef"
             :model="formData"
             :rules="formRules"
-            class="form"
+            class="form min-h-[320px]"
             label-width="120px"
             :disabled="!isEdit"
         >
@@ -122,34 +122,74 @@
 
     const loading = ref(false);
     const formRef = ref<FormInstance>(); // 表单ref
+    const { t } = useI18n();
+
+    let timer_update: NodeJS.Timeout | null = null;
     // 保存
     const save = () => {
         if (!patient?.value.sn) {
             return;
         }
-        loading.value = true;
-        console.log(modeSettingValue.value);
+        ElMessageBox.confirm(' ', '确定向设备推送设置参数?', {
+            confirmButtonText: t('form.Confirm'),
+            cancelButtonText: t('form.Cancel'),
+            type: 'warning',
+        }).then(() => {
+            loading.value = true;
 
-        let data: any = {};
-        for (const key in modeSettingValue.value) {
-            data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
-        }
-        data['90'] = String(mode.value);
-
-        updateDeviceModel({
-            data: JSON.stringify(data),
-            sn: patient.value.sn,
-        })
-            .then(res => {
-                ElMessage.success(res.msg);
-                modeSettingSaveValue.value = {
-                    ...modeSettingValue.value,
-                };
-            })
-            .finally(() => {
-                loading.value = false;
+            let loadingInstance = ElLoading.service({
+                lock: true,
+                text: '正在进行调参，请勿关闭页面',
+                target: '.prescription',
             });
+
+            let data: any = {};
+
+            for (const key of modeSettingList.value[mode.value]) {
+                data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
+            }
+
+            data['90'] = String(mode.value);
+
+            if (timer_update) {
+                clearInterval(timer_update);
+            }
+
+            timer_update = setInterval(() => {
+                updateDeviceModel({
+                    data: JSON.stringify(data),
+                    sn: patient.value.sn,
+                })
+                    .then(res => {
+                        console.log(res);
+                        // ElMessage.success(res.msg);
+                        // modeSettingSaveValue.value = {
+                        //     ...modeSettingValue.value,
+                        // };
+                        if (res.message === 'success') {
+                            loadingInstance.setText('参数调整成功');
+                            setTimeout(() => {
+                                loadingInstance.close();
+                                timer_update && clearInterval(timer_update);
+                                modeSettingSaveValue.value = {
+                                    ...modeSettingValue.value,
+                                };
+                            }, 1000);
+                        }
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    });
+            }, 1000);
+        });
     };
+
+    // 清除定时器
+    onUnmounted(() => {
+        if (timer_update) {
+            clearInterval(timer_update);
+        }
+    });
 
     const snInput = ref<InputInstance>();
     watch(isEdit, val => {
@@ -497,7 +537,7 @@
         }
 
         getDeviceModel({
-            sn: 'NBCD0000001',
+            sn: patient.value?.sn,
         }).then(res => {
             if (res.code === 1) {
                 modeOptions.value = res.data.model_name
@@ -522,10 +562,12 @@
     watch(
         () => patient?.value.sn,
         () => {
+            console.log('patient?.value.sn');
             getDeviceModelInfo();
         },
         {
             immediate: true,
+            deep: true,
         },
     );
 
@@ -536,12 +578,24 @@
         formRef.value?.validate(valid => {
             if (valid) {
                 editPatient({
-                    sn: formData.value.sn,
-                    user_id: patient?.value.id,
-                    first_name: patient?.value.first_name,
-                    last_name: patient?.value.last_name,
-                    birthdate: patient?.value.patient.birthdate,
-                    setup_date: patient?.value.patient.setup_date,
+                    first_name: patient?.value.first_name || '',
+                    last_name: patient?.value.last_name || '',
+                    birthdate: patient?.value.patient.birthdate || '',
+                    patientid: patient?.value.patient.patientid || '',
+                    institution_id: patient?.value.institution_id || '',
+                    institution_name: patient?.value.institution_name || '',
+                    setup_date: patient?.value.patient.setup_date || '',
+                    therapist_id: patient?.value.patient.therapist_id || '',
+                    therapist_name: patient?.value.patient.therapist_name || '',
+                    physician_id: patient?.value.patient.physician_id || '',
+                    physician_name: patient?.value.patient.physician_name || '',
+                    sn: formData.value.sn || '',
+                    city: patient?.value.patient.city || '',
+                    state: patient?.value.state || '',
+                    address: patient?.value.address || '',
+                    email: patient?.value.email || '',
+                    mobile: patient?.value.mobile || '',
+                    user_id: patient?.value.id || '',
                 })
                     .then(res => {
                         loading.value = false;

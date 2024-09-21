@@ -42,6 +42,8 @@ export default defineNuxtRouteMiddleware(async to => {
             if (menuRoute.findIndex(route => route.meta?.title === to.meta.title) === -1) {
                 if (to.path === '/') {
                     return navigateTo(menuRoute[0].path);
+                } else {
+                    return navigateTo('/');
                 }
                 // else {
                 //     return showError({

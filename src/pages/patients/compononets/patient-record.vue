@@ -137,7 +137,10 @@
                 v-if="dialogVisible"
             >
                 <TherapyData v-if="activeIndex === 1" />
-                <Prescription v-if="activeIndex === 2" />
+                <Prescription
+                    v-if="activeIndex === 2"
+                    @update="updatePatient"
+                />
                 <PatientDetails
                     v-if="activeIndex === 3"
                     @update="updatePatient"
