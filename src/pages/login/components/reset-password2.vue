@@ -4,16 +4,12 @@
         <el-dialog
             v-model="dialogVisible"
             title=""
-            width="700"
+            width="500"
             @close="close"
             class="form form-dialog"
         >
             <div class="form-title">
-                {{ 'Forgot Password?' }}
-            </div>
-            <div class="form-subtitle">
-                Please enter your username to reset your password or contact your company's SleepRes administrtor for
-                assistance
+                {{ $t('login.resetPwd') }}
             </div>
             <el-form
                 ref="formRef"
@@ -28,7 +24,7 @@
                 <el-form-item
                     prop="email"
                     :label="$t('login.Email')"
-                    class="no-required w-[450px]"
+                    class="no-required"
                 >
                     <div class="form-item">
                         <el-input
@@ -47,17 +43,14 @@
             <template #footer>
                 <div class="dialog-footer">
                     <base-button
-                        @click="dialogVisible = false"
-                        class="m-r-[10px]"
-                        >{{ $t('form.Cancel') }}</base-button
-                    >
-                    <base-button
                         type="primary"
                         @click="submit"
+                        class="m-r-[10px]"
                         :loading="loading"
                     >
-                        {{ $t('form.Submit') }}
+                        {{ $t('form.Confirm') }}
                     </base-button>
+                    <base-button @click="dialogVisible = false">{{ $t('form.Cancel') }}</base-button>
                 </div>
             </template>
         </el-dialog>
@@ -108,7 +101,7 @@
                     resetPasswordByEmail(formData.value)
                         .then(res => {
                             if (res.code === 1) {
-                                ElMessage.success('Please check your email and reset your password');
+                                ElMessage.success(t('login.resetPwdSuccess'));
                                 dialogVisible.value = false;
                                 formData.value.email = '';
                             }
@@ -153,20 +146,5 @@
 <style lang="scss" scoped>
     :deep(.el-dialog) {
         margin-top: 15vh !important;
-    }
-
-    .form-title {
-        margin-bottom: 20px;
-    }
-
-    .form-subtitle {
-        margin-bottom: 30px;
-        font-size: $font-middle;
-        text-align: center;
-    }
-
-    .login-form {
-        display: flex;
-        justify-content: center;
     }
 </style>

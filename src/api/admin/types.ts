@@ -64,3 +64,9 @@ export interface FrozenUserReq {
      */
     frozen: number;
 }
+
+// 根据token重置密码
+export interface ResetPasswordByTokenReq {
+    pwd_token: string;
+    newpassword: string;
+}

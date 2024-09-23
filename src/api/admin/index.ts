@@ -1,5 +1,12 @@
 import type { UserInfo } from '../login/types';
-import type { CheckMessageReq, FrozenUserReq, MessageReq, MessageRes, UserListReq } from './types';
+import type {
+    CheckMessageReq,
+    FrozenUserReq,
+    MessageReq,
+    MessageRes,
+    ResetPasswordByTokenReq,
+    UserListReq,
+} from './types';
 
 /**
  * @description 获取消息
@@ -38,5 +45,15 @@ export const frozenUser = (data: FrozenUserReq) => {
     return useClientRequest<ResPonseType<void>>('/api/admin/frozen', {
         method: 'GET',
         query: data,
+    });
+};
+
+/**
+ * @description 根据token重置密码
+ */
+export const resetPasswordByToken = (data: ResetPasswordByTokenReq) => {
+    return useClientRequest<ResPonseType<void>>('/api/admin/editpwdbytoken', {
+        method: 'POST',
+        body: queryString(data),
     });
 };

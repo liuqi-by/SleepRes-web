@@ -2,13 +2,17 @@ import { usePermissionStore } from '~/stores/modules/permission';
 import { useUserStore } from '~/stores/modules/user';
 export default defineNuxtRouteMiddleware(async to => {
     // 路由白名单
-    const whiteList = ['/login'];
+    const whiteList = ['/login', '/resetpwd'];
     // 获取用户信息
     const userStore = useUserStore();
 
     const isLogin = userStore.loginStatus?.token;
     const permissionStore = usePermissionStore();
-    console.log('isLogin', isLogin);
+
+    if (whiteList.includes(to.path)) {
+        return;
+    }
+
     // 如果登录
     if (!isLogin) {
         console.log('没有登录');
@@ -17,11 +21,6 @@ export default defineNuxtRouteMiddleware(async to => {
             return navigateTo('/login?redirect=' + to.path);
         }
     } else {
-        console.log(to.path);
-        if (whiteList.includes(to.path)) {
-            return;
-        }
-
         try {
             // 如果登录，获取用户信息
             if (userStore.userInfo === null) {

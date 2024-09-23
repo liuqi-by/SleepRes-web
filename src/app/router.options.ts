@@ -80,6 +80,12 @@ export const routes: RouteRecordRaw[] = [
         name: '登录',
         meta: { title: 'login', hidden: true, layout: 'custom' },
     },
+    {
+        path: '/resetpwd',
+        component: () => import('@/pages/login/resetpwd.vue'),
+        name: '重置密码',
+        meta: { title: 'resetpwd', hidden: true, layout: 'custom' },
+    },
     // {
     //     path: '/patientReport',
     //     component: () => import('@/pages/patients/detail.vue'),

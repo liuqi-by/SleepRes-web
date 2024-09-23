@@ -130,6 +130,7 @@
         if (!patient?.value.sn) {
             return;
         }
+        let timerOut = 5;
         ElMessageBox.confirm(' ', '确定向设备推送设置参数?', {
             confirmButtonText: t('form.Confirm'),
             cancelButtonText: t('form.Cancel'),
@@ -156,6 +157,14 @@
             }
 
             timer_update = setInterval(() => {
+                timerOut--;
+
+                if (timerOut <= 0) {
+                    loadingInstance.close();
+                    timer_update && clearInterval(timer_update);
+                    ElMessage.error('调参超时，请重试');
+                }
+
                 updateDeviceModel({
                     data: JSON.stringify(data),
                     sn: patient.value.sn,
@@ -166,7 +175,7 @@
                         // modeSettingSaveValue.value = {
                         //     ...modeSettingValue.value,
                         // };
-                        if (res.message === 'success') {
+                        if (res.msg === 'Successfully') {
                             loadingInstance.setText('参数调整成功');
                             setTimeout(() => {
                                 loadingInstance.close();
@@ -175,6 +184,16 @@
                                     ...modeSettingValue.value,
                                 };
                             }, 1000);
+                        }
+                        if (res.msg === 'No Online') {
+                            loadingInstance.setText('设备不在线，请检查设备');
+                            setTimeout(() => {
+                                loadingInstance.close();
+                                timer_update && clearInterval(timer_update);
+                                modeSettingSaveValue.value = {
+                                    ...modeSettingValue.value,
+                                };
+                            });
                         }
                     })
                     .finally(() => {
