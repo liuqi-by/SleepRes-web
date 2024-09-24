@@ -20,14 +20,14 @@
                 :model="formData"
                 :rules="formRules"
                 class="login-form"
-                label-width="80px"
+                label-width="100px"
                 label-position="left"
                 @submit.prevent
             >
                 <!-- Email -->
                 <el-form-item
                     prop="email"
-                    :label="$t('login.Email')"
+                    :label="$t('login.username')"
                     class="no-required w-[450px]"
                 >
                     <div class="form-item">
