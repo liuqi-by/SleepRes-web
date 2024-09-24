@@ -15,7 +15,7 @@
                 <el-input
                     v-model="searchVal"
                     :placeholder="searchPlaceholder"
-                    @input="getList"
+                    @input="searchList"
                     :style="{ width: searchWidth }"
                 />
             </div>
@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
     import type { ElSelect } from 'element-plus';
-
+    import { useThrottleFn } from '@vueuse/core';
     const props = defineProps({
         getListApi: {
             type: Function,
@@ -113,6 +113,11 @@
                 }
             });
     };
+
+    const searchList = useThrottleFn(() => {
+        pageOption.value.currentPage = 1;
+        getList();
+    }, 300);
 
     const handleSizeChange = () => {
         getList();

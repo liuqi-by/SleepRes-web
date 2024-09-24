@@ -24,7 +24,7 @@
                     width="24"
                     height="24"
                 />
-                <p>release logs</p>
+                <p>Release Logs</p>
             </div>
         </div>
         <!-- 更新日志 -->
