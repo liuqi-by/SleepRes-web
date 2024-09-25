@@ -444,6 +444,7 @@
             formData.value.institution_id = '';
             formData.value.institution_name = '';
         }
+        formRef.value?.validateField('institution_id');
     };
 
     defineExpose({

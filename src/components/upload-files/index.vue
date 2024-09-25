@@ -26,18 +26,24 @@
 
                 <!-- 定义上传按钮，使用Element UI的按钮组件 -->
                 <div class="top-header">
-                    <el-dropdown type="primary">
-                        <el-button type="primary">
-                            {{ $t('upload.Select') }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
-                        </el-button>
+                    <!-- <el-dropdown type="primary"> -->
 
-                        <template #dropdown>
+                    <el-button type="primary">
+                        <uploader-btn
+                            class="btn"
+                            :directory="true"
+                        >
+                            {{ $t('upload.Select') }}
+                        </uploader-btn>
+                    </el-button>
+
+                    <!-- <template #dropdown>
                             <el-dropdown-menu>
-                                <!-- <el-dropdown-item>
+                                <el-dropdown-item>
                                     <uploader-btn class="btn">
                                         <span> {{ $t('upload.UploadFiles') }}</span>
                                     </uploader-btn>
-                                </el-dropdown-item> -->
+                                </el-dropdown-item> 
                                 <el-dropdown-item>
                                     <uploader-btn
                                         class="btn"
@@ -46,9 +52,9 @@
                                         <span>{{ $t('upload.UploadFolder') }}</span>
                                     </uploader-btn>
                                 </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
+                            </el-dropdown-menu> 
+                        </template> 
+                    </el-dropdown>-->
                     <base-button @click="clearFiles">{{ $t('upload.ClearFiles') }}</base-button>
                 </div>
                 <!-- 定义文件列表 -->
@@ -136,7 +142,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ArrowDown, Select, CloseBold } from '@element-plus/icons-vue';
+    import { Select, CloseBold } from '@element-plus/icons-vue';
     import { useUserStore } from '~/stores/modules/user';
 
     const dialogVisible = ref(false);
@@ -162,6 +168,7 @@
                 name: file.filename,
                 user_id: userId || 0,
                 token: useUserStore().loginStatus?.token,
+                userid: useUserStore().loginStatus?.id,
             };
         },
     };

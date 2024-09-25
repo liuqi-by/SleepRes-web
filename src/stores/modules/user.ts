@@ -4,6 +4,7 @@ import { getMessage } from '~/api/admin';
 
 import { loginAccount, getUserDetailInfo, loginOut } from '~/api/login';
 import type { LoginReq, UserInfo } from '~/api/login/types';
+import { getRoles, RoleType } from '~/enums/RolesEnum';
 
 export const useUserStore = defineStore(
     'user',
@@ -19,28 +20,47 @@ export const useUserStore = defineStore(
         // 角色权限
         const roles = ref<string[]>([]);
 
-        // 登录时间
-
+        // 角色下拉选择框的选项
         const rolesOption = [
             {
-                value: 2,
-                label: 'DME',
-                roles: ['SleepRes'],
-            },
-            {
                 value: 3,
-                label: 'DME User',
-                roles: ['DME'],
+                label: RoleType.DMEAdmin,
+                roles: [RoleType.DMEAdmin],
             },
             {
-                value: 4,
-                label: 'Physician',
-                roles: ['SleepRes'],
+                value: 7,
+                label: RoleType.DMETherapist,
+                roles: [RoleType.DMEAdmin],
+            },
+            {
+                value: 8,
+                label: RoleType.DMEAdminTherapist,
+                roles: [RoleType.DMEAdmin],
             },
             {
                 value: 5,
-                label: 'Physician User',
-                roles: ['Physician'],
+                label: RoleType.PhysicianAdmin,
+                roles: [RoleType.PhysicianAdmin],
+            },
+            {
+                value: 13,
+                label: RoleType.Physician,
+                roles: [RoleType.PhysicianAdmin],
+            },
+            {
+                value: 14,
+                label: RoleType.Clinician,
+                roles: [RoleType.PhysicianAdmin],
+            },
+            {
+                value: 15,
+                label: RoleType.PhysicianAdminPhysician,
+                roles: [RoleType.PhysicianAdmin],
+            },
+            {
+                value: 16,
+                label: RoleType.PhysicianAdminClinician,
+                roles: [RoleType.PhysicianAdmin],
             },
         ];
 
@@ -75,26 +95,12 @@ export const useUserStore = defineStore(
                     .then((res: any) => {
                         if (res) {
                             userInfo.value = isServer ? res.data.value.data : res.data;
-                            switch (userInfo.value?.group_id) {
-                                case 1:
-                                    roles.value = ['SleepRes'];
-                                    break;
-                                case 2:
-                                    roles.value = ['DME'];
-                                    break;
-                                case 3:
-                                    roles.value = ['DME User'];
-                                    break;
-                                case 4:
-                                    roles.value = ['Physician'];
-                                    break;
-                                case 5:
-                                    roles.value = ['Physician User'];
-                                    break;
-                                default:
-                                    roles.value = [];
-                                    break;
+                            if (userInfo.value?.group_id) {
+                                roles.value = getRoles(Number(userInfo.value.group_id));
+                            } else {
+                                roles.value = [];
                             }
+                            console.log('roles', roles.value);
                             if (import.meta.client) {
                                 checkInactivity();
 

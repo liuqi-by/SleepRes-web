@@ -201,8 +201,6 @@
         institution_name: userStore.userInfo?.institution_name || '',
         username: '',
         account_id: '',
-        zip_code: '',
-        state: '',
     };
 
     const formData = ref<any>({

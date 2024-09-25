@@ -165,7 +165,7 @@ export function useFormRules(formData?: any) {
         role: [
             {
                 required: true,
-                trigger: 'blur',
+                trigger: 'change',
                 message: t('form.PleaseSelect') + t('users.Role'),
             },
         ],
@@ -173,7 +173,7 @@ export function useFormRules(formData?: any) {
         office: [
             {
                 required: true,
-                trigger: 'blur',
+                trigger: 'change',
                 message: t('form.PleaseSelect') + t('users.OfficeLocation'),
             },
         ],
@@ -181,7 +181,7 @@ export function useFormRules(formData?: any) {
         setupDate: [
             {
                 required: true,
-                trigger: 'blur',
+                trigger: 'change',
                 message: t('form.PleasePick') + t('patients.SetupDate'),
             },
         ],
@@ -197,7 +197,7 @@ export function useFormRules(formData?: any) {
         birthdate: [
             {
                 required: true,
-                trigger: 'blur',
+                trigger: 'change',
                 message: t('form.PleasePick') + t('patients.Birthdate'),
             },
         ],

@@ -127,6 +127,7 @@
                     :key="tab.index"
                     :class="{ active: tab.index === activeIndex }"
                     :data-index="tab.index"
+                    v-auth="tab.auth"
                 >
                     {{ $t('patients.' + tab.name) }}
                 </div>
@@ -163,6 +164,7 @@
     import PatientDetails from './tabs/patient-details.vue';
     import TherapyData from './tabs/therapy-data/index.vue';
     import type { UserInfo } from '~/api/login/types';
+    import { RoleType } from '~/enums/RolesEnum';
 
     const Prescription = defineAsyncComponent(() => import('./tabs/prescription.vue'));
 
@@ -184,22 +186,27 @@
         {
             name: 'TherapyData',
             index: 1,
+            auth: [RoleType.DMETherapist, RoleType.Physician],
         },
         {
             name: 'Prescription',
             index: 2,
+            auth: [RoleType.DMETherapist, RoleType.Physician],
         },
         {
             name: 'PatientDetails',
             index: 3,
+            auth: [RoleType.DMETherapist],
         },
         {
             name: 'Notes',
             index: 4,
+            auth: [RoleType.DMETherapist],
         },
         {
             name: 'Logs',
             index: 5,
+            auth: [RoleType.DMETherapist],
         },
     ]);
 

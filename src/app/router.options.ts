@@ -2,6 +2,7 @@
 // 页面内使用 definePageMeta({layout: 'main'}) 会失效
 import type { RouteRecordRaw } from 'vue-router';
 import Layout from '@/components/Layout/index.vue';
+import { RoleType } from '~/enums/RolesEnum';
 
 export const routes: RouteRecordRaw[] = [
     {
@@ -31,7 +32,7 @@ export const routes: RouteRecordRaw[] = [
             affix: true,
 
             keepalive: false,
-            roles: process.env.NODE_ENV === 'development' ? ['SleepRes'] : ['SleepRes'],
+            roles: [RoleType.SleepRes],
         },
     },
     {
@@ -41,10 +42,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'patients',
             keepalive: false,
-            roles:
-                process.env.NODE_ENV === 'development'
-                    ? ['DME', 'Physician', 'SleepRes', 'DME User', 'Physician User']
-                    : ['DME User', 'Physician User', 'Physician', 'DME'],
+            roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
         },
     },
     {
@@ -54,10 +52,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'users',
             keepalive: false,
-            roles:
-                process.env.NODE_ENV === 'development'
-                    ? ['DME', 'Physician', 'SleepRes']
-                    : ['DME User', 'Physician User', 'Physician', 'DME'],
+            roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
         },
     },
     {
@@ -67,10 +62,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'organization',
             keepalive: false,
-            roles:
-                process.env.NODE_ENV === 'development'
-                    ? ['DME', 'Physician', 'SleepRes']
-                    : ['DME User', 'Physician User', 'Physician', 'DME'],
+            roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
         },
     },
 

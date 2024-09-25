@@ -15,11 +15,18 @@
             <base-button
                 type="primary"
                 @click="create"
+                v-auth="[RoleType.DMETherapist]"
                 >{{ $t('patients.AddPatient') }}
             </base-button>
+            <!-- <base-button
+                type="primary"
+                @click="create"
+                >{{ $t('patients.AddPatient') }}
+            </base-button> -->
             <base-button
                 type="primary"
                 @click="showUploadFiles"
+                class="m-l-auto"
                 >{{ $t('patients.SDCardUpload') }}
             </base-button>
         </div>
@@ -212,7 +219,7 @@
 <script setup lang="ts">
     // import AddUserDialog from './compononets/add.vue';
     // import PatientRecord from './compononets/patient-record.vue';
-
+    import { RoleType } from '~/enums/RolesEnum';
     import { getPatient } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
     import type { UploadFiles } from '#build/components';
