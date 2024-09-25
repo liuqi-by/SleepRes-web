@@ -131,7 +131,7 @@
                             :label="$t('patients.Therapist')"
                         >
                             <div class="form-item">
-                                <el-select
+                                <!-- <el-select
                                     v-model="formData.therapist_id"
                                     placeholder="Please select"
                                 >
@@ -140,7 +140,20 @@
                                         :label="userStore.userInfo?.nickname"
                                         :value="userStore.userInfo.id"
                                     />
-                                </el-select>
+                                </el-select> -->
+                                <select-physician
+                                    :model-value="
+                                        formData.therapist_id
+                                            ? {
+                                                  id: Number(formData.therapist_id),
+                                                  nickname: formData.therapist_name,
+                                              }
+                                            : ''
+                                    "
+                                    @change="handleChangeSelect('therapist', 'nickname', $event)"
+                                    :key="formData.therapist_id"
+                                    :type="1"
+                                />
                             </div>
                         </el-form-item>
                         <el-form-item
@@ -361,6 +374,7 @@
         institution_id: userStore.userInfo?.institution_id || '',
         institution_name: userStore.userInfo?.institution_name || '',
         therapist_id: userStore.userInfo?.id || '',
+        therapist_name: userStore.userInfo?.nickname || '',
         physician_id: '',
     });
     const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
@@ -445,6 +459,18 @@
             formData.value.institution_name = '';
         }
         formRef.value?.validateField('institution_id');
+    };
+
+    const handleChangeSelect = (key: string, label: string, val: any) => {
+        if (val) {
+            formData.value[(key + '_id') as keyof typeof formData.value] = val.id;
+            formData.value[(key + '_name') as keyof typeof formData.value] = val[label];
+        } else {
+            // @ts-expect-error
+            formData.value[(key + '_id') as keyof typeof formData.value] = '';
+            // @ts-expect-error
+            formData.value[(key + '_name') as keyof typeof formData.value] = '';
+        }
     };
 
     defineExpose({

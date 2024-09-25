@@ -2,7 +2,7 @@
 <template>
     <base-select-search
         v-model="value"
-        :getListApi="getDoctor"
+        :getListApi="type === 1 ? getTherapist : getDoctor"
         :searchPlaceholder="$t('patients.searchPlaceholderDoctor')"
         value="id"
         label="nickname"
@@ -19,11 +19,15 @@
 </template>
 
 <script setup lang="ts">
-    import { getDoctor } from '~/api/patient';
+    import { getDoctor, getTherapist } from '~/api/patient';
 
-    const value = defineModel({
-        type: Object,
-        default: '',
+    const value = defineModel<any>();
+
+    defineProps({
+        type: {
+            type: Number,
+            default: 0,
+        },
     });
 </script>
 

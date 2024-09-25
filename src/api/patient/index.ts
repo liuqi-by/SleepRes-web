@@ -22,12 +22,27 @@ export const addPatient = (data: Partial<AddPatientReq>) => {
 };
 
 /**
- * @description 医生/治疗师列表&搜索
+ * @description 医生列表&搜索
  */
-export const getDoctor = (data: GetPatientReq & PageQuery) => {
+export const getDoctor = (data: GetPatientReq & PageQuery & { type: number }) => {
     return useClientRequest<ResPonseType<UserInfo[]>>('/api/patient/pySearch', {
         method: 'GET',
-        query: data,
+        query: {
+            ...data,
+            type: 0,
+        },
+    });
+};
+/**
+ * @description 治疗师列表&搜索
+ */
+export const getTherapist = (data: GetPatientReq & PageQuery & { type: number }) => {
+    return useClientRequest<ResPonseType<UserInfo[]>>('/api/patient/pySearch', {
+        method: 'GET',
+        query: {
+            ...data,
+            type: 1,
+        },
     });
 };
 

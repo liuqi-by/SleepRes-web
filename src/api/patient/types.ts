@@ -6,6 +6,12 @@ export interface GetPatientReq {
     val: string;
 }
 
+// 获取医生
+export interface GetDoctorReq {
+    val: string;
+    type: number;
+}
+
 // 添加患者
 export interface AddPatientReq {
     first_name: string;
@@ -20,6 +26,7 @@ export interface AddPatientReq {
     gender: number;
     setup_date: string;
     therapist_id: string;
+    therapist_name: string;
     physician_id: string;
     physician_name: string;
     sn: string;
