@@ -12,7 +12,7 @@ export default defineNuxtRouteMiddleware(async to => {
     if (whiteList.includes(to.path)) {
         return;
     }
-
+    console.log('step1');
     // 如果登录
     if (!isLogin) {
         console.log('没有登录');
@@ -21,6 +21,7 @@ export default defineNuxtRouteMiddleware(async to => {
             return navigateTo('/login?redirect=' + to.path);
         }
     } else {
+        console.log('step2');
         try {
             // 如果登录，获取用户信息
             if (userStore.userInfo === null) {
@@ -53,7 +54,7 @@ export default defineNuxtRouteMiddleware(async to => {
                 // return navigateTo(menuRoute[0].path);
             }
         } catch (error) {
-            console.log('error', error);
+            console.log('step3');
             userStore.logout();
             return navigateTo('/login?redirect=' + to.path);
         }

@@ -61,11 +61,16 @@
                     </el-input>
                 </div>
             </el-form-item>
-            <p>SleepRes Admin: admin a654321</p>
-            <p>DME: dme-admin 123456</p>
-            <p>Physician: 1234567 123456</p>
-            <p>DME User:10234656@qq.com 123456</p>
-            <p>Physician User:test22@qq.com 123456</p>
+
+            <p>Sleep Res Admin: admin a654321</p>
+            <p>dme-admin:dme-admin 123456</p>
+            <p>dme-therapist : dme-therapist@qq.com 123456</p>
+            <p>dme-admin+therapist: admin-therapist@qq.com 123456</p>
+            <p>Physician admin: 10267696@qq.com 123456</p>
+            <p>Physician: Physician@qq.com 123456</p>
+            <p>Clinician: Clinician@qq.com 123456</p>
+            <p>Physician + Physician admin: Physician-PhysicianAdmin@qq.com 123456</p>
+            <p>Clinician+ Physician admin :Clinician-admin@qq.com 123456</p>
             <div class="m-t-[48px]">
                 <div class="form-bottom">
                     <!-- 注册DME -->

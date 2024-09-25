@@ -2,6 +2,8 @@
 
 1. Fix the issue of selecting Office verification(修复选择Office校验的问题)
 2. Fix the issue with SD Card Upload(修复SD Card Upload的问题)
+3. Adjust role permissions according to the prototype diagram(按照原型图完成角色权限的调整)
+4. Update version 0.0.1-alpha.4(更新版本0.0.1-alpha.4)
 
 # 2024/09/24
 

@@ -118,6 +118,7 @@
                         :disabled="!isEdit"
                         @change="handleChangeSelect('therapist', 'nickname', $event)"
                         :key="formData.therapist_id"
+                        :type="1"
                     />
                 </div>
             </el-form-item>

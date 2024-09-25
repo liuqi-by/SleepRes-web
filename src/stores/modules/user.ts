@@ -102,8 +102,6 @@ export const useUserStore = defineStore(
                             }
                             console.log('roles', roles.value);
                             if (import.meta.client) {
-                                checkInactivity();
-
                                 startInactivityTimer();
                             }
 

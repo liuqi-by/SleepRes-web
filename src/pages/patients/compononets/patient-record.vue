@@ -158,6 +158,7 @@
 
 <script setup lang="ts">
     // import { Select, CloseBold } from '@element-plus/icons-vue';
+
     import Logs from './tabs/logs.vue';
     import Notes from './tabs/notes.vue';
     // import Prescription from './tabs/prescription.vue';
@@ -186,12 +187,12 @@
         {
             name: 'TherapyData',
             index: 1,
-            auth: [RoleType.DMETherapist, RoleType.Physician],
+            auth: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
         },
         {
             name: 'Prescription',
             index: 2,
-            auth: [RoleType.DMETherapist, RoleType.Physician],
+            auth: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
         },
         {
             name: 'PatientDetails',
