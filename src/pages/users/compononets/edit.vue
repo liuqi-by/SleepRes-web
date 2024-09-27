@@ -182,7 +182,7 @@
             userStore.rolesOption.filter(item => {
                 return haveRoles(item.roles, userStore.roles);
             }) || [];
-        formData.value.group_id = arr[0]?.value as unknown as string;
+
         return arr;
     });
 
@@ -286,6 +286,7 @@
     const selectOfficeRef = ref<InstanceType<typeof SelectOffice>>();
     const focusRef = ref<InputInstance>();
     const showDialog = (item?: UserInfo) => {
+        console.log(item);
         if (item) {
             formData.value = { ...item };
         }

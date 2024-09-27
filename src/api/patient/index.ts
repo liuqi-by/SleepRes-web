@@ -75,3 +75,13 @@ export const getLogs = (data: GetLogsReq & PageQuery) => {
         query: data,
     });
 };
+
+/**
+ * @description 获取SD卡文件处理进度
+ */
+export const getProgress = (data: { user_id: number | string }) => {
+    return useClientRequest<ResPonseType<void>>('/api/common/sd_upload_speed', {
+        method: 'GET',
+        query: data,
+    });
+};

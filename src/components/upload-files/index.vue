@@ -6,7 +6,7 @@
             title=""
             width="900"
             @close="close"
-            class="form form-dialog"
+            class="form form-dialog upload"
         >
             <div class="form-title">
                 {{ $t('patients.SDCardUpload') }}
@@ -18,7 +18,7 @@
                 @file-added="onFileAdded"
                 :fileStatusText="fileStatusText"
                 allowDuplicateUploads
-                @file-complete="onFileComplete"
+                @complete="onFileComplete"
             >
                 <!-- 定义不支持上传的提示 -->
                 <uploader-unsupport />
@@ -28,14 +28,14 @@
                 <div class="top-header">
                     <!-- <el-dropdown type="primary"> -->
 
-                    <el-button type="primary">
+                    <div class="el-button el-button--primary el-button--default">
                         <uploader-btn
-                            class="btn"
+                            class="btn wh-full el-button el-button--primary el-button--default"
                             :directory="true"
                         >
                             {{ $t('upload.Select') }}
                         </uploader-btn>
-                    </el-button>
+                    </div>
 
                     <!-- <template #dropdown>
                             <el-dropdown-menu>
@@ -118,7 +118,7 @@
                                     </uploader-file>
                                 </template>
                             </el-table-column>
-                            <el-table-column
+                            <!-- <el-table-column
                                 prop="operate"
                                 label="operate"
                                 width="100"
@@ -132,7 +132,7 @@
                                         {{ $t('upload.retry') }}
                                     </el-button>
                                 </template>
-                            </el-table-column>
+                            </el-table-column> -->
                         </el-table>
                     </template>
                 </uploader-files>
@@ -143,6 +143,7 @@
 
 <script setup lang="ts">
     import { Select, CloseBold } from '@element-plus/icons-vue';
+    import { getProgress } from '~/api/patient';
     import { useUserStore } from '~/stores/modules/user';
 
     const dialogVisible = ref(false);
@@ -151,25 +152,45 @@
 
     const showDialog = (id?: string) => {
         dialogVisible.value = true;
-        userId = id || 0;
+        userId = id || Math.random() + Date.now();
     };
 
     const close = () => {
         dialogVisible.value = false;
         userId = 0;
         clearFiles();
+        timer && clearInterval(timer);
+        timer = null;
+        loadingInstance.close();
     };
 
     const options = {
         testChunks: false,
         target: '/api/common/sd_upload',
+
         processParams: (file: any) => {
             return {
                 name: file.filename,
-                user_id: userId || 0,
+                // 有userId时，传userId，否则传时间戳和userid随机数
+                user_id: userId,
                 token: useUserStore().loginStatus?.token,
                 userid: useUserStore().loginStatus?.id,
             };
+        },
+
+        processResponse: (response: any, cb: Function, file: any) => {
+            response = JSON.parse(response);
+            // console.log('processResponse', response);
+            // if (response && response.code === 1) {
+            // } else {
+            //     file.error = true;
+            // }
+            console.log('processResponse', response, file);
+            if (response && response.code === 0) {
+                file.CusetomError = true;
+            }
+
+            cb(null, response);
         },
     };
 
@@ -180,7 +201,7 @@
     };
 
     const uploaderRef = ref();
-    const onFileAdded = () => {
+    const onFileAdded = file => {
         // 每次上传前清空
         // uploaderRef.value.uploader.files = [];
         // uploaderRef.value.uploader.fileList = [];
@@ -198,17 +219,71 @@
     };
 
     // 重新上传
-    const retry = (file: any) => {
-        file.retry();
-        file.uploading = false;
-        file.paused = false;
-        file.completed = false;
-        file.time = Date.now();
+    // const retry = (file: any) => {
+    //     file.retry();
+    //     file.uploading = false;
+    //     file.paused = false;
+    //     file.completed = false;
+    //     file.time = Date.now();
+    // };
+    let loadingInstance: any = null;
+    const onFileComplete = () => {
+        // 判断文件是否上传成功
+        console.log('onFileComplete', uploaderRef.value.uploader.files);
+        let isAllSuccess = true;
+        isAllSuccess = !uploaderRef.value.uploader.files.some((file: any) => file.CusetomError === true);
+        if (!isAllSuccess) {
+            ElMessage.error('上传失败');
+        } else {
+            loadingInstance = ElLoading.service({
+                lock: true,
+                text: '文件正在处理中，请稍后...',
+                target: '.upload',
+            });
+            checkFileSuccess();
+        }
     };
 
-    const onFileComplete = () => {
-        console.log('onComplete');
+    let timer: NodeJS.Timeout | null = null;
+    const checkFileSuccess = () => {
+        timer = setInterval(() => {
+            getProgress({
+                user_id: userId,
+            })
+                .then(res => {
+                    // 文件处理成功
+                    if (res.code === 1) {
+                        if (res.msg === 'successful') {
+                            loadingInstance.setText('文件处理成功');
+                        } else if (res.msg === 'Processing') {
+                            loadingInstance.setText('文件正在处理中，请稍后...');
+                        } else if (res.msg === 'Processing failed') {
+                            loadingInstance.setText('文件处理失败');
+                        }
+
+                        switch (res.msg) {
+                            case 'successful':
+                            case 'Processing failed':
+                                timer && clearInterval(timer);
+                                timer = null;
+                                loadingInstance.close();
+                        }
+                    }
+                })
+                .catch(() => {
+                    loadingInstance.setText('服务器错误');
+                    timer && clearInterval(timer);
+                    timer = null;
+                    loadingInstance.close();
+                });
+        }, 5000);
     };
+
+    onUnmounted(() => {
+        if (timer) {
+            clearInterval(timer);
+        }
+    });
 
     defineExpose({
         showDialog,
@@ -224,6 +299,8 @@
     }
 
     .uploader-file {
+        display: flex;
+        align-items: center;
         height: auto;
         line-height: normal;
         border: 0;
