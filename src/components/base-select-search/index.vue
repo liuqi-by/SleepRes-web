@@ -58,6 +58,11 @@
             type: Function,
             default: () => {},
         },
+        status: {
+            type: Number,
+            required: false,
+            default: 0,
+        },
         searchPlaceholder: {
             type: String,
             default: '',
@@ -101,11 +106,14 @@
     ];
     const getList = () => {
         props
-            .getListApi({
-                page: pageOption.value.currentPage - 1,
-                pagesize: pageOption.value.pageSize,
-                val: searchVal.value || '',
-            })
+            .getListApi(
+                {
+                    page: pageOption.value.currentPage - 1,
+                    pagesize: pageOption.value.pageSize,
+                    val: searchVal.value || '',
+                },
+                props.status,
+            )
             .then((res: ResPonseType<any>) => {
                 if (res.code === 1) {
                     options.value = res.data;

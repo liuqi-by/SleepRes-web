@@ -6,7 +6,8 @@
  * @returns
  */
 export const usePageTable = <T>(
-    Fn: (params: { page: number; pagesize: number; val: string }) => Promise<ResPonseType<T>>,
+    Fn: (params: { page: number; pagesize: number; val: string }, status?: number) => Promise<ResPonseType<T>>,
+    status?: number,
 ) => {
     // 搜索条件
     const searchOption = ref('');
@@ -27,11 +28,14 @@ export const usePageTable = <T>(
     const getData = useDebounceFn(() => {
         loading.value = true;
 
-        Fn({
-            page: pageOption.value.currentPage - 1,
-            pagesize: pageOption.value.pageSize,
-            val: searchOption.value,
-        })
+        Fn(
+            {
+                page: pageOption.value.currentPage - 1,
+                pagesize: pageOption.value.pageSize,
+                val: searchOption.value,
+            },
+            status,
+        )
             .then(res => {
                 if (res.data) {
                     tableList.value = res.data;

@@ -185,7 +185,7 @@
     import type { Organization } from '~/api/organization/types';
 
     const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
-        usePageTable(getOrganization);
+        usePageTable(getOrganization, 2);
 
     // 冻结/解冻
     const frozen = useDebounceFn((row: Organization) => {

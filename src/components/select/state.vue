@@ -5,6 +5,7 @@
         placeholder="Please select"
         filterable
         clearable
+        value-on-clear=""
     >
         <!-- <el-option
             label="All"

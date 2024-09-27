@@ -8,7 +8,7 @@
             @close="close"
             class="form form-dialog"
         >
-            <div class="form-title">{{ $t('office.CreateOffice') }}</div>
+            <div class="form-title">{{ formData.id ? 'Edit Office Information' : $t('office.CreateOffice') }}</div>
             <el-form
                 ref="formRef"
                 :model="formData"
@@ -201,6 +201,7 @@
 
             if (formData.value.id) {
                 // 编辑
+                console.log(formData.value);
                 editOrganization({
                     ...formData.value,
                 })
@@ -240,6 +241,17 @@
         formRef.value?.clearValidate();
 
         formRef.value?.resetFields();
+        formData.value = {
+            name: '',
+            email: '',
+            mobile: '',
+            city: '',
+            state: '',
+            zip_code: '',
+            address: '',
+            id: '',
+            status: '',
+        };
     };
 
     const focusRef = ref<InputInstance>();

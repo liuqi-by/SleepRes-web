@@ -197,8 +197,8 @@
         last_name: '',
         // 账户类型:2=DME User,5=Physician User
         group_id: '',
-        institution_id: userStore.userInfo?.institution_id || '',
-        institution_name: userStore.userInfo?.institution_name || '',
+        institution_id: '',
+        institution_name: '',
         username: '',
         account_id: '',
     };

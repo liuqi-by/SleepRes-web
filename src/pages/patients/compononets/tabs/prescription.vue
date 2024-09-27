@@ -30,53 +30,79 @@
                     >Bind Device</base-button
                 >
             </el-form-item>
-            <el-form-item
-                prop="mode"
-                label="Mode"
-            >
-                <div class="form-item">
-                    <el-select v-model="mode">
-                        <el-option
-                            :label="item.label"
-                            :value="item.id"
-                            v-for="item in modeOptions"
-                            :key="item.id"
-                        />
-                    </el-select>
-                </div>
-            </el-form-item>
-
-            <div class="column-box">
+            <div v-if="modeOptions && modeOptions.length > 0">
                 <el-form-item
-                    :label="$t(`deviceSettings.par${item}`)"
-                    v-for="(item, index) in modeSettingList[mode]"
-                    :key="index"
+                    prop="mode"
+                    label="Mode"
                 >
                     <div class="form-item">
-                        <el-select
-                            v-model="modeSettingValue[item]['v' + mode]"
-                            v-if="modeSettingValue[item]['v' + mode]"
-                        >
+                        <el-select v-model="mode">
                             <el-option
-                                v-for="inItem in modeSettingOptions[item]"
-                                :value="inItem.value"
-                                :label="inItem.label"
-                                :key="inItem.value"
-                            />
-                        </el-select>
-                        <el-select
-                            v-model="modeSettingValue[item].val"
-                            v-else
-                        >
-                            <el-option
-                                v-for="inItem in modeSettingOptions[item]"
-                                :value="inItem.value"
-                                :label="inItem.label"
-                                :key="inItem.value"
+                                :label="item.label"
+                                :value="item.id"
+                                v-for="item in modeOptions"
+                                :key="item.id"
                             />
                         </el-select>
                     </div>
                 </el-form-item>
+
+                <div class="column-box">
+                    <el-form-item
+                        :label="$t(`deviceSettings.par${item}`)"
+                        v-for="(item, index) in modeSettingList[mode]"
+                        :key="index"
+                    >
+                        <div class="form-item">
+                            <el-select
+                                v-model="modeSettingValue[item]['v' + mode]"
+                                v-if="modeSettingValue[item]['v' + mode]"
+                            >
+                                <el-option
+                                    v-for="inItem in modeSettingOptions[item]"
+                                    :value="inItem.value"
+                                    :label="inItem.label"
+                                    :key="inItem.value"
+                                />
+                            </el-select>
+                            <el-select
+                                v-model="modeSettingValue[item].val"
+                                v-else
+                            >
+                                <el-option
+                                    v-for="inItem in modeSettingOptions[item]"
+                                    :value="inItem.value"
+                                    :label="inItem.label"
+                                    :key="inItem.value"
+                                />
+                            </el-select>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="Tubing">
+                        <div class="form-item">
+                            <el-select>
+                                <el-option
+                                    value="Standard Tubing"
+                                    label="Standard Tubing"
+                                />
+                                <el-option
+                                    value="Heated Tubing"
+                                    label="Heated Tubing"
+                                />
+                            </el-select>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="Mask">
+                        <div class="form-item w-[300px]!">
+                            <el-input
+                                v-model="formData.sn"
+                                class="form-input"
+                                :maxlength="inputLength.sn"
+                                :readonly="!isEdit"
+                            />
+                        </div>
+                    </el-form-item>
+                </div>
             </div>
         </el-form>
         <div class="footer-btn">
@@ -131,16 +157,16 @@
             return;
         }
         let timerOut = 5;
-        ElMessageBox.confirm(' ', '确定向设备推送设置参数?', {
-            confirmButtonText: t('form.Confirm'),
-            cancelButtonText: t('form.Cancel'),
+        ElMessageBox.confirm(' ', 'Would you like to send the Rx settings to the PAP device?', {
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
             type: 'warning',
         }).then(() => {
             loading.value = true;
 
             let loadingInstance = ElLoading.service({
                 lock: true,
-                text: '正在进行调参，请勿关闭页面',
+                text: 'Parameter adjustment in progress, please do not close the interface',
                 target: '.prescription',
             });
 
@@ -162,7 +188,7 @@
                 if (timerOut <= 0) {
                     loadingInstance.close();
                     timer_update && clearInterval(timer_update);
-                    ElMessage.error('调参超时，请重试');
+                    ElMessage.error('Request timeout, please retry');
                 }
 
                 updateDeviceModel({
@@ -176,7 +202,7 @@
                         //     ...modeSettingValue.value,
                         // };
                         if (res.msg === 'Successfully') {
-                            loadingInstance.setText('参数调整成功');
+                            loadingInstance.setText('The new settings have been sent to the PAP device');
                             setTimeout(() => {
                                 loadingInstance.close();
                                 timer_update && clearInterval(timer_update);
@@ -186,7 +212,9 @@
                             }, 1000);
                         }
                         if (res.msg === 'No Online') {
-                            loadingInstance.setText('设备不在线，请检查设备');
+                            loadingInstance.setText(
+                                'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
+                            );
                             setTimeout(() => {
                                 loadingInstance.close();
                                 timer_update && clearInterval(timer_update);

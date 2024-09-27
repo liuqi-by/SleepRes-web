@@ -1,3 +1,7 @@
+# 2024/09/27
+
+1. Fix Office freeze selection issue(修复Office冻结选择问题)
+
 # 2024/09/25
 
 1. Fix the issue of selecting Office verification(修复选择Office校验的问题)

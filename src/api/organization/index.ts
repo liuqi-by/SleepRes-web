@@ -1,12 +1,15 @@
 import type { OrganizationListReq, Organization, AddOrganizationReq, EditOrganizationReq } from './types';
 
 /**
- * @description 组织机构列表
+ * @description 组织机构列表 // 状态0=正常，1=冻结，2=全部
  */
-export const getOrganization = (data: OrganizationListReq & PageQuery) => {
+export const getOrganization = (data: OrganizationListReq & PageQuery, status = 2) => {
     return useClientRequest<ResPonseType<Organization[]>>('/api/institution/list', {
         method: 'GET',
-        query: data,
+        query: {
+            ...data,
+            status,
+        },
     });
 };
 
