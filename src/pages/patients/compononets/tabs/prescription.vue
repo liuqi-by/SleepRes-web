@@ -78,9 +78,12 @@
                             </el-select>
                         </div>
                     </el-form-item>
-                    <el-form-item label="Tubing">
+                    <el-form-item
+                        label="Tubing"
+                        prop="tubing"
+                    >
                         <div class="form-item">
-                            <el-select>
+                            <el-select v-model="formData.tubing">
                                 <el-option
                                     value="Standard Tubing"
                                     label="Standard Tubing"
@@ -92,12 +95,15 @@
                             </el-select>
                         </div>
                     </el-form-item>
-                    <el-form-item label="Mask">
+                    <el-form-item
+                        label="Mask"
+                        prop="mask"
+                    >
                         <div class="form-item w-[300px]!">
                             <el-input
-                                v-model="formData.sn"
+                                v-model="formData.mask"
                                 class="form-input"
-                                :maxlength="inputLength.sn"
+                                :maxlength="inputLength.mask"
                                 :readonly="!isEdit"
                             />
                         </div>
@@ -128,7 +134,7 @@
     import type { FormInstance, InputInstance } from 'element-plus';
     import editBtn from './components/edit-btn.vue';
     import type { UserInfo } from '~/api/login/types';
-    import { getDeviceModel, updateDeviceModel } from '~/api/device';
+    import { getDeviceModel, updateDeviceModel, updateTubingAndMask } from '~/api/device';
     import type { Parshow } from '~/api/device/types';
     import { editPatient } from '~/api/patient';
 
@@ -137,6 +143,8 @@
     const formData = ref({
         mode: 0,
         sn: '',
+        mask: '',
+        tubing: 'Standard Tubing',
     });
 
     const { sn } = useFormRules();
@@ -148,7 +156,7 @@
 
     const loading = ref(false);
     const formRef = ref<FormInstance>(); // 表单ref
-    const { t } = useI18n();
+    // const { t } = useI18n();
 
     let timer_update: NodeJS.Timeout | null = null;
     // 保存
@@ -228,6 +236,13 @@
                         loading.value = false;
                     });
             }, 1000);
+
+            // 更新面罩信息
+            updateTubingAndMask({
+                sn: patient.value.sn,
+                tubing: formData.value.tubing,
+                mask: formData.value.mask,
+            });
         });
     };
 
@@ -598,6 +613,8 @@
                         return res.data.model_type.includes(index);
                     });
                 mode.value = res.data.model_type_default;
+                formData.value.mask = res.data.info.mask;
+                formData.value.tubing = res.data.info.tubing;
                 modeSettingList.value = res.data.par_show;
                 modeSettingValue.value = res.data.par_show_val;
                 modeSettingSaveValue.value = JSON.parse(JSON.stringify(res.data.par_show_val));

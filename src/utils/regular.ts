@@ -31,4 +31,5 @@ export const inputLength = {
     office_name: 30,
     city: 15,
     patientID: 20,
+    mask: 15,
 };

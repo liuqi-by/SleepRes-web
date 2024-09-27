@@ -6,6 +6,52 @@ export interface DeviceModelRes {
     model_type_default: number;
     par_show_val: Parshowval;
     device_type_id: number;
+    info: DeviceInfo;
+}
+
+export interface DeviceInfo {
+    id: number;
+    sn: string;
+    type_id: number;
+    version: null;
+    user_id: number;
+    buy_time: null;
+    buy_orderid: null;
+    status_switch: number;
+    admin_id: number;
+    institution_id: null;
+    online_switch: null;
+    createtime: number;
+    usetime: number;
+    percent_usage: number;
+    compliant: number;
+    use_end_time: number;
+    create_userid: number;
+    start_time: number;
+    end_time: number;
+    Setting: string;
+    address: null;
+    default_value: number;
+    updatetime: null;
+    username: null;
+    email: null;
+    mobile: null;
+    gender: null;
+    birthday: null;
+    source: null;
+    nickname: null;
+    did: number;
+    sort_id: null;
+    remark: null;
+    tubing: null;
+    mask: null;
+    buy_time_text: string;
+    status_switch_text: string;
+    online_switch_text: string;
+    usetime_text: string;
+    use_end_time_text: string;
+    start_time_text: string;
+    end_time_text: string;
 }
 
 export interface Parshow {
@@ -23,4 +69,10 @@ export interface Parshowval {
 export interface UpdateDeviceModelReq {
     sn: string;
     data: string;
+}
+
+export interface UpdateTubingAndMaskReq {
+    sn: string;
+    tubing: string;
+    mask: string;
 }
