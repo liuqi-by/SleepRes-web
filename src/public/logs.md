@@ -1,6 +1,8 @@
 # 2024/09/27
 
 1. Fix Office freeze selection issue(修复Office冻结选择问题)
+2. Basic completion of the prescription function(基本完成prescription的功能)
+3. Update version 0.0.1-alpha.5(更新版本0.0.1-alpha.5)
 
 # 2024/09/25
 

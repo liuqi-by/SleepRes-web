@@ -613,8 +613,8 @@
                         return res.data.model_type.includes(index);
                     });
                 mode.value = res.data.model_type_default;
-                formData.value.mask = res.data.info.mask;
-                formData.value.tubing = res.data.info.tubing;
+                formData.value.mask = res.data.info.mask || '';
+                formData.value.tubing = res.data.info.tubing || 'Standard Tubing';
                 modeSettingList.value = res.data.par_show;
                 modeSettingValue.value = res.data.par_show_val;
                 modeSettingSaveValue.value = JSON.parse(JSON.stringify(res.data.par_show_val));

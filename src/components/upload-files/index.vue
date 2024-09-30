@@ -161,7 +161,7 @@
         clearFiles();
         timer && clearInterval(timer);
         timer = null;
-        loadingInstance.close();
+        loadingInstance && loadingInstance.close();
     };
 
     const options = {
@@ -233,14 +233,23 @@
         let isAllSuccess = true;
         isAllSuccess = !uploaderRef.value.uploader.files.some((file: any) => file.CusetomError === true);
         if (!isAllSuccess) {
-            ElMessage.error('上传失败');
+            ElMessage.error('Upload failed');
         } else {
-            loadingInstance = ElLoading.service({
-                lock: true,
-                text: '文件正在处理中，请稍后...',
-                target: '.upload',
+            // loadingInstance = ElLoading.service({
+            //     lock: true,
+            //     text: 'The file is currently being processed, please wait',
+            //     target: '.upload',
+            // });
+            // checkFileSuccess();
+            getProgress({
+                user_id: userId,
+            }).then(res => {
+                if (res.code === 1) {
+                    ElMessage.success(res.msg);
+                } else {
+                    ElMessage.error(res.msg);
+                }
             });
-            checkFileSuccess();
         }
     };
 
@@ -254,11 +263,11 @@
                     // 文件处理成功
                     if (res.code === 1) {
                         if (res.msg === 'successful') {
-                            loadingInstance.setText('文件处理成功');
+                            loadingInstance.setText('File processing successful');
                         } else if (res.msg === 'Processing') {
-                            loadingInstance.setText('文件正在处理中，请稍后...');
+                            loadingInstance.setText('The file is currently being processed, please wait');
                         } else if (res.msg === 'Processing failed') {
-                            loadingInstance.setText('文件处理失败');
+                            loadingInstance.setText('file processing failed');
                         }
 
                         switch (res.msg) {
@@ -271,7 +280,7 @@
                     }
                 })
                 .catch(() => {
-                    loadingInstance.setText('服务器错误');
+                    loadingInstance.setText('Server error');
                     timer && clearInterval(timer);
                     timer = null;
                     loadingInstance.close();

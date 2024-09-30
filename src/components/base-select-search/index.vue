@@ -118,6 +118,9 @@
                 if (res.code === 1) {
                     options.value = res.data;
                     pageOption.value.total = res.data_other.num;
+                } else {
+                    options.value = [];
+                    pageOption.value.total = 0;
                 }
             });
     };
