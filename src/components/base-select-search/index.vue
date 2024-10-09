@@ -7,8 +7,8 @@
         class="auto-width"
         ref="selectRef"
         :value-key="value"
-        clearable
         :value-on-clear="valueOnClear"
+        v-bind="$attrs"
     >
         <template #header>
             <div class="header">

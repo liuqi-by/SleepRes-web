@@ -3,6 +3,6 @@
  * Last, First Name
  */
 
-export const nameFormat = (name: string) => {
-    return name.replace(/ /g, ',');
+export const nameFormat = (userInfo?: { first_name?: string; last_name?: string; [key: string]: any }) => {
+    return userInfo ? `${userInfo.last_name},${userInfo.first_name}` : '';
 };

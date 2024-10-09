@@ -48,7 +48,7 @@
                 >
                     <template #default="{ row }">
                         <span>
-                            {{ nameFormat(row.nickname) }}
+                            {{ nameFormat(row) }}
                         </span>
                     </template>
                     <template #header="{ column }">
@@ -201,7 +201,7 @@
 
     const userSotre = useUserStore();
 
-    const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
+    const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password-admin.vue'));
 
     const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
         usePageTable(getUserlist);

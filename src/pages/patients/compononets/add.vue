@@ -161,7 +161,10 @@
                             :label="$t('patients.Physician')"
                         >
                             <div class="min-w-[150px]">
-                                <select-physician v-model="formData.physician_id" />
+                                <select-physician
+                                    v-model="formData.physician_id"
+                                    clearable
+                                />
                             </div>
                         </el-form-item>
                     </div>
@@ -374,7 +377,7 @@
         institution_id: userStore.userInfo?.institution_id || '',
         institution_name: userStore.userInfo?.institution_name || '',
         therapist_id: userStore.userInfo?.id || '',
-        therapist_name: userStore.userInfo?.nickname || '',
+        therapist_name: userStore.userInfo ? nameFormat(userStore.userInfo) : '',
         physician_id: '',
     });
     const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);

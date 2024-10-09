@@ -8,6 +8,7 @@
         label="name"
         ref="baseSelectRef"
         v-bind="$attrs"
+        clearable
     >
         <template #option="{ data }">
             <div class="flex justify-between">

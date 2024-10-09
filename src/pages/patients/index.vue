@@ -56,7 +56,7 @@
                             class="link"
                             @click="showPatientReport(row)"
                         >
-                            {{ nameFormat(row.nickname) }}
+                            {{ nameFormat(row) }}
                         </span>
                     </template>
                     <template #header="{ column }">
@@ -275,9 +275,9 @@
     };
 
     const compliantOptions = [
-        { label: 'Compliance', value: 0 },
+        { label: 'Adherent', value: 0 },
         { label: 'Monitoring', value: 1 },
-        { label: 'Non-compliance', value: 2 },
+        { label: 'Non-Adherent', value: 2 },
     ];
 
     provide('update', getData);

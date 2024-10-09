@@ -159,9 +159,9 @@
         dialogVisible.value = false;
         userId = 0;
         clearFiles();
-        timer && clearInterval(timer);
-        timer = null;
-        loadingInstance && loadingInstance.close();
+        // timer && clearInterval(timer);
+        // timer = null;
+        // loadingInstance && loadingInstance.close();
     };
 
     const options = {
@@ -201,7 +201,7 @@
     };
 
     const uploaderRef = ref();
-    const onFileAdded = file => {
+    const onFileAdded = () => {
         // 每次上传前清空
         // uploaderRef.value.uploader.files = [];
         // uploaderRef.value.uploader.fileList = [];
@@ -226,7 +226,7 @@
     //     file.completed = false;
     //     file.time = Date.now();
     // };
-    let loadingInstance: any = null;
+    // let loadingInstance: any = null;
     const onFileComplete = () => {
         // 判断文件是否上传成功
         console.log('onFileComplete', uploaderRef.value.uploader.files);
@@ -253,45 +253,45 @@
         }
     };
 
-    let timer: NodeJS.Timeout | null = null;
-    const checkFileSuccess = () => {
-        timer = setInterval(() => {
-            getProgress({
-                user_id: userId,
-            })
-                .then(res => {
-                    // 文件处理成功
-                    if (res.code === 1) {
-                        if (res.msg === 'successful') {
-                            loadingInstance.setText('File processing successful');
-                        } else if (res.msg === 'Processing') {
-                            loadingInstance.setText('The file is currently being processed, please wait');
-                        } else if (res.msg === 'Processing failed') {
-                            loadingInstance.setText('file processing failed');
-                        }
+    // let timer: NodeJS.Timeout | null = null;
+    // const checkFileSuccess = () => {
+    //     timer = setInterval(() => {
+    //         getProgress({
+    //             user_id: userId,
+    //         })
+    //             .then(res => {
+    //                 // 文件处理成功
+    //                 if (res.code === 1) {
+    //                     if (res.msg === 'successful') {
+    //                         loadingInstance.setText('File processing successful');
+    //                     } else if (res.msg === 'Processing') {
+    //                         loadingInstance.setText('The file is currently being processed, please wait');
+    //                     } else if (res.msg === 'Processing failed') {
+    //                         loadingInstance.setText('file processing failed');
+    //                     }
 
-                        switch (res.msg) {
-                            case 'successful':
-                            case 'Processing failed':
-                                timer && clearInterval(timer);
-                                timer = null;
-                                loadingInstance.close();
-                        }
-                    }
-                })
-                .catch(() => {
-                    loadingInstance.setText('Server error');
-                    timer && clearInterval(timer);
-                    timer = null;
-                    loadingInstance.close();
-                });
-        }, 5000);
-    };
+    //                     switch (res.msg) {
+    //                         case 'successful':
+    //                         case 'Processing failed':
+    //                             timer && clearInterval(timer);
+    //                             timer = null;
+    //                             loadingInstance.close();
+    //                     }
+    //                 }
+    //             })
+    //             .catch(() => {
+    //                 loadingInstance.setText('Server error');
+    //                 timer && clearInterval(timer);
+    //                 timer = null;
+    //                 loadingInstance.close();
+    //             });
+    //     }, 5000);
+    // };
 
     onUnmounted(() => {
-        if (timer) {
-            clearInterval(timer);
-        }
+        // if (timer) {
+        //     clearInterval(timer);
+        // }
     });
 
     defineExpose({

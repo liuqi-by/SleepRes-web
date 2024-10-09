@@ -22,13 +22,15 @@
                 <!-- DME name -->
                 <el-form-item
                     prop="username"
-                    :label="tabType === 'registerDme' ? $t('login.dmeName') : $t('login.PracticeName')"
+                    :label="tabType === 'registerDme' ? $t('login.accountName') : $t('login.PracticeName')"
                 >
                     <div class="form-item">
                         <el-input
                             v-model="formData.username"
                             class="form-input"
-                            :placeholder="tabType === 'registerDme' ? $t('login.dmeName') : $t('login.PracticeName')"
+                            :placeholder="
+                                tabType === 'registerDme' ? $t('login.accountName') : $t('login.PracticeName')
+                            "
                             type="text"
                             :maxlength="inputLength.dme_name"
                             ref="focusRef"

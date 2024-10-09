@@ -139,6 +139,7 @@
                         :disabled="!isEdit"
                         @change="handleChangeSelect('physician', 'nickname', $event)"
                         :key="formData.physician_id"
+                        clearable
                     />
                 </div>
             </el-form-item>

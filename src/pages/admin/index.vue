@@ -25,6 +25,22 @@
                 :page-sizes="[25, 50, 100]"
             >
                 <el-table-column
+                    prop="username"
+                    :label="$t('login.accountName')"
+                    min-width="140"
+                    align="center"
+                    sortable
+                >
+                    <template #default="{ row }">
+                        <span class="link">
+                            {{ row.username }}
+                        </span>
+                    </template>
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
+                <el-table-column
                     prop="account_num"
                     :label="$t('admin.AccountNumber')"
                     min-width="120"
@@ -72,7 +88,7 @@
                 <el-table-column
                     prop="mobile"
                     :label="$t('login.PhoneNumber')"
-                    min-width="125"
+                    min-width="145"
                     align="center"
                     sortable
                 >
@@ -83,7 +99,7 @@
                 <el-table-column
                     prop="group_name"
                     :label="$t('admin.AccountType')"
-                    min-width="120"
+                    min-width="140"
                     align="center"
                     sortable
                 >
@@ -98,7 +114,7 @@
                 <el-table-column
                     prop="frozen"
                     :label="$t('admin.AccountStatus')"
-                    min-width="125"
+                    min-width="150"
                     align="center"
                     sortable
                 >
@@ -143,7 +159,7 @@
                 <el-table-column
                     prop="zip_code"
                     :label="$t('login.ZipCode')"
-                    min-width="100"
+                    min-width="110"
                     align="center"
                     sortable
                 >
@@ -192,7 +208,7 @@
     import type { UserInfo } from '~/api/login/types';
     import { useUserStore } from '~/stores/modules/user';
 
-    const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password.vue'));
+    const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password-admin.vue'));
 
     const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
         usePageTable(getUserlist);

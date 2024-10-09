@@ -11,7 +11,7 @@
             @close="close"
             class="form form-dialog patient-record-dialog"
         >
-            <div class="form-title">{{ formData.nickname }}</div>
+            <div class="form-title">{{ nameFormat(formData) }}</div>
             <base-button
                 type="primary"
                 class="absolute right-[80px] top-[40px]"

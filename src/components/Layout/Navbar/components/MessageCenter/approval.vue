@@ -23,12 +23,12 @@
             >
                 <!-- DME name -->
                 <el-form-item
-                    prop="dmename"
+                    prop="username"
                     :label="tabType === 'DME' ? $t('login.dmeName') : $t('login.PracticeName')"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.dmename"
+                            v-model="formData.username"
                             class="form-input"
                             :placeholder="tabType === 'DME' ? $t('login.dmeName') : $t('login.PracticeName')"
                             type="text"
@@ -195,7 +195,7 @@
                 </el-form-item>
 
                 <!-- AccountName -->
-                <el-form-item
+                <!-- <el-form-item
                     prop="username"
                     :label="$t('message.AccountName')"
                 >
@@ -208,7 +208,7 @@
                             :maxlength="inputLength.account_name"
                         />
                     </div>
-                </el-form-item>
+                </el-form-item> -->
                 <!-- AccountNumber -->
                 <el-form-item
                     prop="account_num"
@@ -257,13 +257,13 @@
     const { t } = useI18n(); // 国际化
 
     const formData = ref<Partial<UserInfo>>({});
-    const { accountName, accountNumber, firstName, lastName, email, dmeName, practiceName } = useFormRules();
+    const { accountName, accountNumber, firstName, lastName, email, practiceName } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
-            username: accountName,
+            username: tabType.value === 'DME' ? accountName : practiceName,
             account_num: accountNumber,
-            dmename: tabType.value === 'DME' ? dmeName : practiceName,
+            // dmename: tabType.value === 'DME' ? dmeName : practiceName,
             first_name: firstName,
             last_name: lastName,
             email,
@@ -322,7 +322,7 @@
                 status: 1,
                 first_name: formData.value?.first_name || '',
                 last_name: formData.value?.last_name || '',
-                dmename: formData.value?.dmename || '',
+                // dmename: formData.value?.dmename || '',
                 zip_code: formData.value?.zip_code || '',
                 mobile: formData.value?.mobile || '',
                 email: formData.value?.email || '',

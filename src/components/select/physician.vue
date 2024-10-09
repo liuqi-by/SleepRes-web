@@ -11,7 +11,7 @@
     >
         <template #option="{ data }">
             <div class="flex justify-between">
-                <span class="m-r-[20px]">{{ data.nickname }}</span>
+                <span class="m-r-[20px]">{{ nameFormat(data) }}</span>
                 <span>{{ data.email }}</span>
             </div>
         </template>

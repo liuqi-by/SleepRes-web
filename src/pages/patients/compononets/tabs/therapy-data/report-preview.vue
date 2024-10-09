@@ -30,7 +30,7 @@
                 </div>
                 <div class="top-Info">
                     <div class="report-row">
-                        <div class="title">{{ patient?.nickname }}</div>
+                        <div class="title">{{ nameFormat(patient) }}</div>
                     </div>
                     <div class="report-row-content">
                         <div class="info-box">
@@ -42,7 +42,9 @@
                             <div class="detail text-nowrap!">
                                 {{
                                     options.reportType !== 3
-                                        ? `${barChartData.dates[0]} - ${barChartData.dates[barChartData.dates.length - 1]}`
+                                        ? barChartData.dates && barChartData.dates.length > 0
+                                            ? `${barChartData.dates[0]} - ${barChartData.dates[barChartData.dates.length - 1]}`
+                                            : deviceReport?.start_date + ' - ' + deviceReport?.end_date
                                         : options.selDate
                                 }}
                             </div>

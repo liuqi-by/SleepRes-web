@@ -43,7 +43,17 @@
                         <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
-
+                <el-table-column
+                    prop="address"
+                    :label="$t('login.Address')"
+                    min-width="120"
+                    align="center"
+                    sortable
+                >
+                    <template #header="{ column }">
+                        <table-filter-header :column="column" />
+                    </template>
+                </el-table-column>
                 <el-table-column
                     prop="city"
                     :label="$t('office.City')"
@@ -77,17 +87,7 @@
                         <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="address"
-                    :label="$t('login.Address')"
-                    min-width="120"
-                    align="center"
-                    sortable
-                >
-                    <template #header="{ column }">
-                        <table-filter-header :column="column" />
-                    </template>
-                </el-table-column>
+
                 <el-table-column
                     prop="mobile"
                     :label="$t('office.Telephone')"
@@ -111,7 +111,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    :label="$t('office.Modify')"
+                    :label="$t('office.Edit')"
                     min-width="120"
                     align="center"
                 >
@@ -119,13 +119,13 @@
                         <span
                             class="link"
                             @click="edit(row)"
-                            >{{ $t('office.Edit') }}</span
+                            >{{ $t('office.Modify') }}</span
                         >
-                        <span
+                        <!-- <span
                             class="link m-l-[20px]"
                             @click="deleteItem(row)"
                             >{{ $t('admin.delete') }}</span
-                        >
+                        > -->
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -180,7 +180,11 @@
 
 <script setup lang="ts">
     import EditOffice from './compononets/edit.vue';
-    import { deleteOrganization, editOrganization, getOrganization } from '~/api/organization';
+    import {
+        // deleteOrganization,
+        editOrganization,
+        getOrganization,
+    } from '~/api/organization';
 
     import type { Organization } from '~/api/organization/types';
 
@@ -214,24 +218,24 @@
     };
 
     // 删除
-    const { t } = useI18n();
-    const deleteItem = (row: Organization) => {
-        let msg = t('admin.ConfirmDelete');
-        ElMessageBox.confirm(' ', msg, {
-            confirmButtonText: t('form.Confirm'),
-            cancelButtonText: t('form.Cancel'),
-            type: 'warning',
-            customStyle: { minHeight: 0 },
-            dangerouslyUseHTMLString: true,
-        }).then(() => {
-            deleteOrganization(row.id).then(res => {
-                if (res.code === 1) {
-                    ElMessage.success(t('admin.DeleteSuccess'));
-                    getData();
-                }
-            });
-        });
-    };
+    // const { t } = useI18n();
+    // const deleteItem = (row: Organization) => {
+    //     let msg = t('admin.ConfirmDelete');
+    //     ElMessageBox.confirm(' ', msg, {
+    //         confirmButtonText: t('form.Confirm'),
+    //         cancelButtonText: t('form.Cancel'),
+    //         type: 'warning',
+    //         customStyle: { minHeight: 0 },
+    //         dangerouslyUseHTMLString: true,
+    //     }).then(() => {
+    //         deleteOrganization(row.id).then(res => {
+    //             if (res.code === 1) {
+    //                 ElMessage.success(t('admin.DeleteSuccess'));
+    //                 getData();
+    //             }
+    //         });
+    //     });
+    // };
 
     // 表格筛选
     const {

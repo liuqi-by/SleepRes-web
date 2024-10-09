@@ -50,9 +50,9 @@
 
                     <p
                         class="user-name"
-                        :title="userStore.userInfo?.nickname"
+                        :title="userStore.userInfo ? nameFormat(userStore.userInfo) : ''"
                     >
-                        {{ userStore.userInfo?.nickname }}
+                        {{ userStore.userInfo ? nameFormat(userStore.userInfo) : '' }}
                     </p>
                 </ClientOnly>
             </div>

@@ -65,22 +65,6 @@
                         />
                     </div>
                 </el-form-item>
-                <!-- PhoneNumber -->
-                <el-form-item
-                    prop="mobile"
-                    :label="$t('login.PhoneNumber')"
-                >
-                    <div class="form-item">
-                        <el-input
-                            v-model="formData.mobile"
-                            class="form-input"
-                            :placeholder="$t('login.PhoneNumber')"
-                            type="text"
-                            :maxlength="inputLength.mobile"
-                            @input="filterMobile('mobile')"
-                        />
-                    </div>
-                </el-form-item>
                 <!-- Office location -->
                 <el-form-item
                     prop="institution_id"
@@ -98,25 +82,20 @@
                         />
                     </div>
                 </el-form-item>
-                <!-- Role -->
+                <!-- PhoneNumber -->
                 <el-form-item
-                    prop="group_id"
-                    :label="$t('users.Role')"
+                    prop="mobile"
+                    :label="$t('login.PhoneNumber')"
                 >
                     <div class="form-item">
-                        <el-select
-                            v-model="formData.group_id"
-                            placeholder="Please select"
-                            filterable
-                            clearable
-                        >
-                            <el-option
-                                v-for="item in rolesOption"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            />
-                        </el-select>
+                        <el-input
+                            v-model="formData.mobile"
+                            class="form-input"
+                            :placeholder="$t('login.PhoneNumber')"
+                            type="text"
+                            :maxlength="inputLength.mobile"
+                            @input="filterMobile('mobile')"
+                        />
                     </div>
                 </el-form-item>
                 <!-- status -->
@@ -148,6 +127,27 @@
                             :maxlength="inputLength.npi"
                             @input="filterNumberAndChart('account_id')"
                         />
+                    </div>
+                </el-form-item>
+                <!-- Role -->
+                <el-form-item
+                    prop="group_id"
+                    :label="$t('users.Role')"
+                >
+                    <div class="form-item">
+                        <el-select
+                            v-model="formData.group_id"
+                            placeholder="Please select"
+                            filterable
+                            clearable
+                        >
+                            <el-option
+                                v-for="item in rolesOption"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            />
+                        </el-select>
                     </div>
                 </el-form-item>
             </el-form>
