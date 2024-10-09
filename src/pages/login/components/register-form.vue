@@ -274,7 +274,24 @@
             })
                 .then(res => {
                     if (res.code === 1) {
-                        ElMessage.success(t('login.RegisterSuccess'));
+                        ElMessageBox.alert(
+                            '<p class="msg">Your account submission has been sent.  We will contact you within 2 – 3 business days with your account information.</p><p class="author">Your SleepRes Account Team</p>',
+                            'Thank you!',
+                            {
+                                // if you want to disable its autofocus
+                                // autofocus: false,
+                                showConfirmButton: false,
+                                center: true,
+                                dangerouslyUseHTMLString: true,
+                                customClass: 'register-dialog',
+                                closeOnClickModal: true,
+                                closeOnPressEscape: true,
+                            },
+                        );
+                        // 这里就可以自动关闭弹窗了
+                        setTimeout(() => {
+                            ElMessageBox.close(); // 重要
+                        }, 5000);
                         // 重置
                         formRef.value?.resetFields();
                         dialogVisible.value = false;
@@ -310,5 +327,30 @@
 <style lang="scss" scoped>
     .el-form-item {
         margin-bottom: 18px !important;
+    }
+</style>
+
+<style lang="scss">
+    .register-dialog {
+        .el-message-box__content {
+            padding-left: 10px !important;
+        }
+
+        .author {
+            margin-top: 20px;
+            font-size: $font-small;
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .msg {
+            font-size: $font-small;
+            text-indent: 2em;
+        }
+
+        .el-message-box__title {
+            font-size: $font-large;
+            font-weight: bold;
+        }
     }
 </style>
