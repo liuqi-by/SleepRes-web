@@ -193,6 +193,14 @@ export function useFormRules(formData?: any) {
                 message: t('form.PleaseEnter') + t('patients.Notes'),
             },
         ],
+        // npi
+        npi: [
+            {
+                required: true,
+                trigger: 'blur',
+                message: t('form.PleaseEnter') + t('users.NPI'),
+            },
+        ],
         // birthdate
         birthdate: [
             {

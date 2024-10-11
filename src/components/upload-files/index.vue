@@ -27,16 +27,14 @@
                 <!-- 定义上传按钮，使用Element UI的按钮组件 -->
                 <div class="top-header">
                     <!-- <el-dropdown type="primary"> -->
-
-                    <div class="el-button el-button--primary el-button--default">
+                    <div class="el-button el-button--primary el-button--default p-x-[0]!">
                         <uploader-btn
-                            class="btn wh-full el-button el-button--primary el-button--default"
+                            class="el-button el-button--primary el-button--default"
                             :directory="true"
                         >
                             {{ $t('upload.Select') }}
                         </uploader-btn>
                     </div>
-
                     <!-- <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item>
@@ -152,7 +150,7 @@
 
     const showDialog = (id?: string) => {
         dialogVisible.value = true;
-        userId = id || Math.random() + Date.now();
+        userId = id || Math.round(Math.random() * 9) + 1 + '' + Date.now();
     };
 
     const close = () => {
@@ -245,7 +243,7 @@
                 user_id: userId,
             }).then(res => {
                 if (res.code === 1) {
-                    ElMessage.success(res.msg);
+                    checkFileSuccess();
                 } else {
                     ElMessage.error(res.msg);
                 }
@@ -254,39 +252,28 @@
     };
 
     // let timer: NodeJS.Timeout | null = null;
-    // const checkFileSuccess = () => {
-    //     timer = setInterval(() => {
-    //         getProgress({
-    //             user_id: userId,
-    //         })
-    //             .then(res => {
-    //                 // 文件处理成功
-    //                 if (res.code === 1) {
-    //                     if (res.msg === 'successful') {
-    //                         loadingInstance.setText('File processing successful');
-    //                     } else if (res.msg === 'Processing') {
-    //                         loadingInstance.setText('The file is currently being processed, please wait');
-    //                     } else if (res.msg === 'Processing failed') {
-    //                         loadingInstance.setText('file processing failed');
-    //                     }
-
-    //                     switch (res.msg) {
-    //                         case 'successful':
-    //                         case 'Processing failed':
-    //                             timer && clearInterval(timer);
-    //                             timer = null;
-    //                             loadingInstance.close();
-    //                     }
-    //                 }
-    //             })
-    //             .catch(() => {
-    //                 loadingInstance.setText('Server error');
-    //                 timer && clearInterval(timer);
-    //                 timer = null;
-    //                 loadingInstance.close();
-    //             });
-    //     }, 5000);
-    // };
+    const checkFileSuccess = () => {
+        getProgress({
+            user_id: userId,
+        })
+            .then(res => {
+                ElMessageBox.close();
+                // 文件处理成功
+                ElMessageBox.alert(`<p class="msg">${res.msg}</p>`, '', {
+                    // if you want to disable its autofocus
+                    // autofocus: false,
+                    showConfirmButton: false,
+                    showCancelButton: true,
+                    cancelButtonText: 'Close',
+                    center: true,
+                    dangerouslyUseHTMLString: true,
+                    customClass: 'confirm-dialog',
+                    closeOnClickModal: true,
+                    closeOnPressEscape: true,
+                });
+            })
+            .catch(() => {});
+    };
 
     onUnmounted(() => {
         // if (timer) {
@@ -322,6 +309,27 @@
         &:hover {
             color: inherit;
             background-color: inherit;
+        }
+    }
+</style>
+<style lang="scss">
+    .confirm-dialog {
+        top: -50px;
+        min-width: auto !important;
+        min-height: auto !important;
+
+        .el-message-box__content {
+            padding-left: 10px !important;
+        }
+
+        .msg {
+            margin-bottom: 20px;
+            font-size: $font-middle;
+        }
+
+        .el-message-box__title {
+            font-size: $font-large;
+            font-weight: bold;
         }
     }
 </style>

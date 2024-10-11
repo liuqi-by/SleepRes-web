@@ -1,3 +1,22 @@
+# 2024/10/11
+
+1. Fix the issue with notes names(修复notes 姓名的问题)
+2. Add Patient modify the equipment(添加患者设备相关的修改)
+
+# 2024/10/10
+
+1. Add admin account modification function(新增admin账号修改account功能)
+2. Modify the way users select roles(修改用户角色选择的方式)
+3. Fix bug where editing does not display institutional information(修复编辑不显示机构信息的问题)
+
+# 2024/10/09
+
+1. Apply for account addition pop-up prompt(申请账号增加弹窗提示)
+2. Change all names to last_name, first_name(修改所有姓名，改成last_name,first_name)
+3. Modify the default requirement for patients to select a therapist(修改患者默认必须选择一个治疗师)
+4. Modify the dme admin Organization list(修改dme admin Organization列表)
+5. Remove dmename and change to account name(去除dmename,改为accountname)
+
 # 2024/09/27
 
 1. Fix Office freeze selection issue(修复Office冻结选择问题)

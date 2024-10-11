@@ -1,6 +1,7 @@
 import type { UserInfo } from '../login/types';
 import type {
     CheckMessageReq,
+    EditAccountReq,
     FrozenUserReq,
     MessageReq,
     MessageRes,
@@ -53,6 +54,16 @@ export const frozenUser = (data: FrozenUserReq) => {
  */
 export const resetPasswordByToken = (data: ResetPasswordByTokenReq) => {
     return useClientRequest<ResPonseType<void>>('/api/admin/editpwdbytoken', {
+        method: 'POST',
+        body: queryString(data),
+    });
+};
+
+/**
+ * @description 修改账号
+ */
+export const editAccount = (data: EditAccountReq) => {
+    return useClientRequest<ResPonseType<void>>('/api/admin/edit', {
         method: 'POST',
         body: queryString(data),
     });

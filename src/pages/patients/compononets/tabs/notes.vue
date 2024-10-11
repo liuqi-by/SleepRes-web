@@ -16,7 +16,12 @@
                         :key="index"
                     >
                         <p>
-                            <b class="m-r-10px">{{ nameFormat(item) }}</b>
+                            <b class="m-r-10px">{{
+                                nameFormat({
+                                    first_name: item.first_name,
+                                    last_name: item.last_name,
+                                })
+                            }}</b>
                             {{ item.add_time && moment(item.add_time * 1000).format(dateFormatReg + ' HH:mm:ss') }}
                         </p>
                         <p class="m-t-5px">{{ item.note }}</p>

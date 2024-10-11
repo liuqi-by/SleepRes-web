@@ -32,7 +32,10 @@
                     sortable
                 >
                     <template #default="{ row }">
-                        <span class="link">
+                        <span
+                            class="link"
+                            @click="handleEdit(row)"
+                        >
                             {{ row.username }}
                         </span>
                     </template>
@@ -200,10 +203,16 @@
                 :filterCustomOptions="filterCustomOptions"
             />
         </client-only>
+        <!-- 新增/编辑账号 -->
+        <EditAccount
+            ref="editAccount"
+            @refresh="getData"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
+    import EditAccount from './components/edit.vue';
     import { frozenUser, getUserlist } from '~/api/admin';
     import type { UserInfo } from '~/api/login/types';
     import { useUserStore } from '~/stores/modules/user';
@@ -289,6 +298,12 @@
         { label: 'DME', value: 'DME' },
         { label: 'Physician', value: 'Physician' },
     ];
+
+    const editAccount = ref<InstanceType<typeof EditAccount> | null>(null);
+    // 编辑用户
+    const handleEdit = (row: UserInfo) => {
+        editAccount.value?.showDialog(row);
+    };
 </script>
 
 <style lang="scss" scoped></style>

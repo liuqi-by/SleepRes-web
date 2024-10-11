@@ -65,6 +65,25 @@
                         />
                     </div>
                 </el-form-item>
+
+                <!-- NPI -->
+                <el-form-item
+                    prop="account_id"
+                    :label="$t('users.NPI')"
+                    v-if="userStore.userInfo?.group_id === 4"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.account_id"
+                            class="form-input"
+                            :placeholder="$t('users.NPI')"
+                            type="text"
+                            :maxlength="inputLength.npi"
+                            @input="filterNumberAndChart('account_id')"
+                        />
+                    </div>
+                </el-form-item>
+
                 <!-- Office location -->
                 <el-form-item
                     prop="institution_id"
@@ -112,30 +131,14 @@
                         />
                     </div>
                 </el-form-item>
-                <!-- NPI -->
-                <el-form-item
-                    prop="account_id"
-                    :label="$t('users.NPI')"
-                    v-if="userStore.userInfo?.group_id === 4"
-                >
-                    <div class="form-item">
-                        <el-input
-                            v-model="formData.account_id"
-                            class="form-input"
-                            :placeholder="$t('users.NPI')"
-                            type="text"
-                            :maxlength="inputLength.npi"
-                            @input="filterNumberAndChart('account_id')"
-                        />
-                    </div>
-                </el-form-item>
+
                 <!-- Role -->
                 <el-form-item
                     prop="group_id"
                     :label="$t('users.Role')"
                 >
                     <div class="form-item">
-                        <el-select
+                        <!-- <el-select
                             v-model="formData.group_id"
                             placeholder="Please select"
                             filterable
@@ -147,7 +150,19 @@
                                 :label="item.label"
                                 :value="item.value"
                             />
-                        </el-select>
+                        </el-select> -->
+                        <el-checkbox-group v-model="selectedRoles">
+                            <el-checkbox
+                                v-for="item in rolesOption"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                                :disabled="
+                                    (item.value === 13 && selectedRoles.includes(14)) ||
+                                    (item.value === 14 && selectedRoles.includes(13))
+                                "
+                            />
+                        </el-checkbox-group>
                     </div>
                 </el-form-item>
             </el-form>
@@ -180,7 +195,7 @@
     const rolesOption = computed(() => {
         let arr =
             userStore.rolesOption.filter(item => {
-                return haveRoles(item.roles, userStore.roles);
+                return haveRoles(item.roles, userStore.roles) && item.type !== 'group';
             }) || [];
 
         return arr;
@@ -203,11 +218,27 @@
         account_id: '',
     };
 
+    const selectedRoles = ref<(string | number)[]>([]);
+
+    watch(selectedRoles, val => {
+        if (val.length > 1) {
+            if (val.includes(3) && val.includes(7)) {
+                formData.value.group_id = 8;
+            } else if (val.includes(5) && val.includes(13)) {
+                formData.value.group_id = 15;
+            } else if (val.includes(5) && val.includes(14)) {
+                formData.value.group_id = 16;
+            }
+        } else {
+            formData.value.group_id = val[0];
+        }
+    });
+
     const formData = ref<any>({
         ...formDataInit,
     });
     const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
-    const { firstName, lastName, email, role, office } = useFormRules();
+    const { firstName, lastName, email, role, office, npi } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
@@ -216,6 +247,7 @@
             email,
             group_id: role,
             institution_id: office,
+            account_id: npi,
         };
     });
 
@@ -281,6 +313,10 @@
     const close = () => {
         dialogVisible.value = false;
         formRef.value?.resetFields();
+        selectedRoles.value = [];
+        formData.value = {
+            ...formDataInit,
+        };
     };
 
     const selectOfficeRef = ref<InstanceType<typeof SelectOffice>>();
@@ -289,6 +325,19 @@
         console.log(item);
         if (item) {
             formData.value = { ...item };
+            switch (item.group_id) {
+                case 8:
+                    selectedRoles.value = [3, 7];
+                    break;
+                case 15:
+                    selectedRoles.value = [5, 13];
+                    break;
+                case 16:
+                    selectedRoles.value = [5, 14];
+                    break;
+                default:
+                    selectedRoles.value = [item.group_id];
+            }
         }
         // selectOfficeRef.value?.initOptions();
 
@@ -312,5 +361,13 @@
 <style lang="scss" scoped>
     .el-form-item {
         margin-bottom: 18px !important;
+    }
+
+    .el-checkbox {
+        display: flex;
+    }
+
+    .el-checkbox__inner {
+        border-radius: 50% !important; /* 内部容器也设置为圆形 */
     }
 </style>

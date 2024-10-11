@@ -70,3 +70,21 @@ export interface ResetPasswordByTokenReq {
     pwd_token: string;
     newpassword: string;
 }
+
+// 修改当前用户
+export interface EditAccountReq {
+    user_id: string;
+    account_name?: string;
+    account_num?: string;
+
+    first_name: string;
+    last_name: string;
+
+    zip_code: string;
+    mobile: string;
+    email: string;
+    account_id: string;
+    frozen: string | number;
+    address: string;
+    state: string;
+}

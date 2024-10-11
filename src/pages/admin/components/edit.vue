@@ -1,4 +1,4 @@
-<!-- 注册 -->
+<!-- 查看消息 -->
 <template>
     <div>
         <el-dialog
@@ -6,31 +6,29 @@
             title=""
             width="600"
             @close="close"
-            class="form form-dialog"
+            class="form-dialog from"
+            style="margin-top: 5vh"
+            append-to-body
         >
-            <div class="form-title">
-                {{ tabType === 'registerDme' ? $t('login.registerDmeTitle') : $t('login.registerPhysicianTitle') }}
-            </div>
+            <div class="form-title">Account Information</div>
             <el-form
                 ref="formRef"
                 :model="formData"
                 :rules="formRules"
-                class="login-form line-form"
-                :label-width="tabType === 'registerDme' ? '180px' : '200px'"
+                class="form line-form"
+                :label-width="tabType === 'DME' ? '180px' : '200px'"
                 label-position="left"
             >
                 <!-- DME name -->
                 <el-form-item
                     prop="username"
-                    :label="tabType === 'registerDme' ? $t('login.accountName') : $t('login.PracticeName')"
+                    :label="tabType === 'DME' ? $t('login.dmeName') : $t('login.PracticeName')"
                 >
                     <div class="form-item">
                         <el-input
                             v-model="formData.username"
                             class="form-input"
-                            :placeholder="
-                                tabType === 'registerDme' ? $t('login.accountName') : $t('login.PracticeName')
-                            "
+                            :placeholder="tabType === 'DME' ? $t('login.dmeName') : $t('login.PracticeName')"
                             type="text"
                             :maxlength="inputLength.dme_name"
                             ref="focusRef"
@@ -67,10 +65,25 @@
                     </div>
                 </el-form-item>
                 <!-- SleepResAccountNumber -->
+                <!-- <el-form-item
+                    prop="account_id"
+                    :label="tabType === 'DME' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.account_id"
+                            class="form-input"
+                            :placeholder="
+                                tabType === 'DME' ? $t('login.SleepResAccountNumber') : $t('login.PhysicianNPI')
+                            "
+                            type="text"
+                        />
+                    </div>
+                </el-form-item> -->
                 <el-form-item
                     prop="account_num"
                     :label="$t('login.SleepResAccountNumber')"
-                    v-if="tabType === 'registerDme'"
+                    v-if="tabType === 'DME'"
                 >
                     <div class="form-item">
                         <el-input
@@ -79,6 +92,7 @@
                             :placeholder="$t('login.SleepResAccountNumber')"
                             type="text"
                             :maxlength="inputLength.account_num"
+                            ref="focusRef"
                             @input="filterNumberAndChart('account_num')"
                         />
                     </div>
@@ -95,6 +109,7 @@
                             :placeholder="$t('login.PhysicianNPI')"
                             type="text"
                             :maxlength="inputLength.npi"
+                            ref="focusRef"
                             @input="filterNumberAndChart('account_id')"
                         />
                     </div>
@@ -161,7 +176,7 @@
                 </el-form-item>
                 <!-- ZipCode -->
                 <el-form-item
-                    prop="zip_code"
+                    prop="zipCode"
                     :label="$t('login.ZipCode')"
                 >
                     <div class="form-item">
@@ -176,6 +191,51 @@
                         />
                     </div>
                 </el-form-item>
+
+                <!-- AccountName -->
+                <!-- <el-form-item
+                    prop="username"
+                    :label="$t('message.AccountName')"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.username"
+                            class="form-input"
+                            :placeholder="`${$t('message.AccountName')}`"
+                            type="text"
+                            :maxlength="inputLength.account_name"
+                        />
+                    </div>
+                </el-form-item> -->
+                <!-- AccountNumber -->
+                <el-form-item
+                    prop="account_num"
+                    :label="$t('message.AccountNumber')"
+                    v-if="tabType !== 'DME'"
+                >
+                    <div class="form-item">
+                        <el-input
+                            v-model="formData.account_num"
+                            class="form-input"
+                            :placeholder="`${$t('message.AccountNumber')}`"
+                            type="text"
+                            :maxlength="inputLength.account_num"
+                            @input="filterNumberAndChart('username')"
+                        />
+                    </div>
+                </el-form-item>
+                <el-form-item
+                    prop="frozen"
+                    :label="$t('admin.AccountStatus')"
+                >
+                    <div class="form-item">
+                        <base-switch
+                            v-model="formData.frozen"
+                            :active-value="0"
+                            :inactive-value="1"
+                        />
+                    </div>
+                </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
@@ -185,7 +245,7 @@
                         class="m-r-[10px]"
                         :loading="loading"
                     >
-                        {{ $t('form.Submit') }}
+                        {{ $t('form.Save') }}
                     </base-button>
                     <base-button @click="dialogVisible = false">{{ $t('form.Cancel') }}</base-button>
                 </div>
@@ -196,59 +256,34 @@
 
 <script setup lang="ts">
     import type { FormInstance, InputInstance } from 'element-plus';
-    import type { TabType } from '../index.vue';
-    import type { RegisterReq } from '~/api/login/types';
-    import { registerAccount } from '~/api/login';
+    import { editAccount } from '~/api/admin';
 
-    const dialogVisible = defineModel({ type: Boolean, default: false });
+    import type { UserInfo } from '~/api/login/types';
 
-    const props = defineProps<{ tabType: TabType }>();
+    const dialogVisible = ref(false);
+    const tabType = ref('DME');
 
     const formRef = ref<FormInstance>(); // 登录表单ref
-    // const { t } = useI18n(); // 国际化
+    const { t } = useI18n(); // 国际化
 
-    // const formDataInit: RegisterReq = {
-    //     username: '',
-    //     email: '',
-    //     mobile: '',
-    //     first_name: '',
-    //     last_name: '',
-    //     account_id: '',
-    //     account_num: '',
-    //     address: '',
-    //     state: '',
-    //     zip_code: '',
-    //     // 账户类型:2=DME,4=Physician
-    //     type: '',
-    // };
-
-    const formData = ref<RegisterReq>({
-        username: '',
-        email: '',
-        first_name: '',
-        last_name: '',
-        group_id: 2,
-        account_num: '',
-        account_id: '',
-        mobile: '',
-        address: '',
-        state: '',
-        zip_code: '',
-    });
-    const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
-    const { dmeName, practiceName, firstName, lastName, email } = useFormRules();
+    const formData = ref<Partial<UserInfo>>({});
+    const { accountName, accountNumber, firstName, lastName, email, practiceName } = useFormRules();
     // 表单规则
     const formRules = computed(() => {
         return {
-            username: props.tabType === 'registerDme' ? dmeName : practiceName,
+            username: tabType.value === 'DME' ? accountName : practiceName,
+            account_num: accountNumber,
+            // dmename: tabType.value === 'DME' ? dmeName : practiceName,
             first_name: firstName,
             last_name: lastName,
             email,
         };
     });
 
+    const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
+
     watch(
-        () => props.tabType,
+        () => tabType,
         () => {
             nextTick(() => {
                 formRef.value?.resetFields();
@@ -256,9 +291,26 @@
         },
     );
 
+    const focusRef = ref<InputInstance>();
+
+    // 打开
+    const showDialog = (item: UserInfo) => {
+        formData.value = {
+            ...item,
+        };
+
+        dialogVisible.value = true;
+        tabType.value = item.group_id === 2 ? 'DME' : 'Physician';
+
+        setTimeout(() => {
+            focusRef.value?.focus();
+        }, 0);
+    };
+
     const loading = ref(false); // 按钮loading
+    const emit = defineEmits(['refresh']);
     /**
-     * 注册
+     * 批准
      */
     const submit = () => {
         formRef.value?.validate((valid: boolean) => {
@@ -267,33 +319,29 @@
             }
             loading.value = true;
 
-            // 注册
-            registerAccount({
-                ...formData.value,
-                group_id: props.tabType === 'registerDme' ? 2 : 4,
+            if (!formData.value.id) {
+                return;
+            }
+
+            editAccount({
+                user_id: formData.value?.id || '',
+                account_num: formData.value?.account_num || '',
+                account_name: formData.value?.username || '',
+                frozen: formData.value?.frozen || '',
+                first_name: formData.value?.first_name || '',
+                last_name: formData.value?.last_name || '',
+                // dmename: formData.value?.dmename || '',
+                zip_code: formData.value?.zip_code || '',
+                mobile: formData.value?.mobile || '',
+                email: formData.value?.email || '',
+                account_id: formData.value?.account_id || '',
+                state: formData.value?.state || '',
+                address: formData.value?.address || '',
             })
                 .then(res => {
                     if (res.code === 1) {
-                        ElMessageBox.alert(
-                            '<p class="msg">Your account submission has been sent.  We will contact you within 2 – 3 business days with your account information.</p><p class="author">Your SleepRes Account Team</p>',
-                            'Thank you!',
-                            {
-                                // if you want to disable its autofocus
-                                // autofocus: false,
-                                showConfirmButton: false,
-                                center: true,
-                                dangerouslyUseHTMLString: true,
-                                customClass: 'register-dialog',
-                                closeOnClickModal: true,
-                                closeOnPressEscape: true,
-                            },
-                        );
-                        // 这里就可以自动关闭弹窗了
-                        setTimeout(() => {
-                            ElMessageBox.close(); // 重要
-                        }, 5000);
-                        // 重置
-                        formRef.value?.resetFields();
+                        ElMessage.success(t('message.Approved'));
+                        emit('refresh');
                         dialogVisible.value = false;
                     }
                 })
@@ -307,50 +355,17 @@
         formRef.value?.resetFields();
     };
 
-    // 聚焦第一个输入框
-    const focusRef = ref<InputInstance>();
-    watch(
-        dialogVisible,
-        val => {
-            if (val) {
-                setTimeout(() => {
-                    focusRef.value?.focus();
-                }, 0);
-            }
-        },
-        {
-            immediate: true,
-        },
-    );
+    defineExpose({
+        showDialog,
+    });
 </script>
 
 <style lang="scss" scoped>
-    .el-form-item {
-        margin-bottom: 18px !important;
+    .form-item {
+        word-break: break-all;
     }
-</style>
 
-<style lang="scss">
-    .register-dialog {
-        .el-message-box__content {
-            padding-left: 10px !important;
-        }
-
-        .author {
-            margin-top: 20px;
-            font-size: $font-small;
-            font-weight: 500;
-            text-align: right;
-        }
-
-        .msg {
-            font-size: $font-small;
-            text-indent: 2em;
-        }
-
-        .el-message-box__title {
-            font-size: $font-large;
-            font-weight: bold;
-        }
+    .el-form-item {
+        margin-bottom: 20px !important;
     }
 </style>

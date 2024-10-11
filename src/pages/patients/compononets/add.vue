@@ -193,11 +193,14 @@
                             :label="$t('patients.Mode')"
                         >
                             <div class="form-item">
-                                <el-input
-                                    v-model="formData.mode_name"
-                                    class="form-input"
-                                    :placeholder="$t('patients.Mode')"
-                                />
+                                <el-select v-model="formData.mode_name">
+                                    <el-option
+                                        v-for="inItem in modeOptions"
+                                        :value="inItem.value"
+                                        :label="inItem.label"
+                                        :key="inItem.value"
+                                    />
+                                </el-select>
                             </div>
                         </el-form-item>
                         <el-form-item
@@ -205,11 +208,14 @@
                             :label="$t('patients.Pressure')"
                         >
                             <div class="form-item">
-                                <el-input
-                                    v-model="formData.pressure"
-                                    class="form-input"
-                                    :placeholder="$t('patients.Pressure')"
-                                />
+                                <el-select v-model="formData.pressure">
+                                    <el-option
+                                        v-for="inItem in pressureOptions"
+                                        :value="inItem.value"
+                                        :label="inItem.label"
+                                        :key="inItem.value"
+                                    />
+                                </el-select>
                             </div>
                         </el-form-item>
                         <el-form-item
@@ -217,11 +223,14 @@
                             :label="$t('patients.Ramp')"
                         >
                             <div class="form-item">
-                                <el-input
-                                    v-model="formData.ramp"
-                                    class="form-input"
-                                    :placeholder="$t('patients.Ramp')"
-                                />
+                                <el-select v-model="formData.ramp">
+                                    <el-option
+                                        v-for="inItem in rampOptions"
+                                        :value="inItem.value"
+                                        :label="inItem.label"
+                                        :key="inItem.value"
+                                    />
+                                </el-select>
                             </div>
                         </el-form-item>
                         <br />
@@ -234,6 +243,7 @@
                                     v-model="formData.mask"
                                     class="form-input"
                                     :placeholder="$t('patients.Mask')"
+                                    :maxlength="inputLength.mask"
                                 />
                             </div>
                         </el-form-item>
@@ -379,6 +389,8 @@
         therapist_id: userStore.userInfo?.id || '',
         therapist_name: userStore.userInfo ? nameFormat(userStore.userInfo) : '',
         physician_id: '',
+        ramp: '0',
+        mode_name: '0',
     });
     const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
     const { firstName, lastName, emailNoRequired, role, office, setupDate, birthdate, sn } = useFormRules();
@@ -475,6 +487,46 @@
             formData.value[(key + '_name') as keyof typeof formData.value] = '';
         }
     };
+
+    const getRangeOptions = (min: number, max: number, unit: string, step: number = 1, override: number = 1) => {
+        let options = [];
+        for (let i = min; i <= max; i = add(i, step)) {
+            options.push({
+                label: i + ' ' + unit,
+                value: String(i * override),
+            });
+        }
+        return options;
+    };
+
+    const rampOptions = [
+        ...new Array(61).fill(0).map((_, index) => {
+            if (index > 0) {
+                return {
+                    label: index + 'min',
+                    value: String(index),
+                };
+            } else {
+                return {
+                    label: 'OFF',
+                    value: '0',
+                };
+            }
+        }),
+    ];
+
+    const modeOptions = [
+        {
+            label: 'CPAP',
+            value: '0',
+        },
+        {
+            label: 'Auto CPAP',
+            value: '1',
+        },
+    ];
+
+    const pressureOptions = getRangeOptions(4, 20, 'cmH2O', 0.5, 10);
 
     defineExpose({
         showDialog,

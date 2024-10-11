@@ -36,6 +36,7 @@ export const useUserStore = defineStore(
                 value: 8,
                 label: RoleType.DMEAdminTherapist,
                 roles: [RoleType.DMEAdmin],
+                type: 'group',
             },
             {
                 value: 5,
@@ -56,11 +57,13 @@ export const useUserStore = defineStore(
                 value: 15,
                 label: RoleType.PhysicianAdminPhysician,
                 roles: [RoleType.PhysicianAdmin],
+                type: 'group',
             },
             {
                 value: 16,
                 label: RoleType.PhysicianAdminClinician,
                 roles: [RoleType.PhysicianAdmin],
+                type: 'group',
             },
         ];
 

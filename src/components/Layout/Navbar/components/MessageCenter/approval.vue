@@ -99,6 +99,7 @@
                         />
                     </div>
                 </el-form-item>
+                <!-- account_id 是npi number -->
                 <el-form-item
                     prop="account_id"
                     :label="$t('login.PhysicianNPI')"
