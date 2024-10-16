@@ -160,12 +160,28 @@
                             prop="physician_id"
                             :label="$t('patients.Physician')"
                         >
-                            <div class="min-w-[150px]">
-                                <select-physician
+                            <div class="w-[150px]">
+                                <!-- <select-physician
                                     v-model="formData.physician_id"
                                     clearable
+                                /> -->
+                                <el-input
+                                    v-model="formData.physician_name"
+                                    readonly
+                                    class="form-input"
+                                    @click="showAddPhysician"
+                                    :key="formData.physician_name"
                                 />
                             </div>
+                            <span
+                                class="link m-l-[10px]"
+                                @click="showAddPhysician"
+                                >Add Physician</span
+                            >
+                            <select-physician-dialog
+                                v-model="showSelectPhysician"
+                                @change="handleChangeSelect('physician', 'label', $event)"
+                            />
                         </el-form-item>
                     </div>
                 </div>
@@ -382,15 +398,19 @@
 
     const formRef = ref<FormInstance>(); // 表单ref
 
-    const formData = ref<Partial<AddPatientReq>>({
+    const formDataInit = {
         gender: 0,
         institution_id: userStore.userInfo?.institution_id || '',
         institution_name: userStore.userInfo?.institution_name || '',
         therapist_id: userStore.userInfo?.id || '',
         therapist_name: userStore.userInfo ? nameFormat(userStore.userInfo) : '',
         physician_id: '',
+        physician_name: '',
         ramp: '0',
         mode_name: '0',
+    };
+    const formData = ref<Partial<AddPatientReq>>({
+        ...formDataInit,
     });
     const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
     const { firstName, lastName, emailNoRequired, role, office, setupDate, birthdate, sn } = useFormRules();
@@ -415,37 +435,87 @@
      * submit
      */
     const submit = () => {
-        console.log(formData.value.physician_id);
         formRef.value?.validate((valid: boolean) => {
             if (!valid) {
                 return;
             }
-            loading.value = true;
+            // 如果没有选择医生
+            if (!formData.value.physician_id) {
+                ElMessageBox.alert(
+                    `<p class="msg">By not adding a physician to the patient record the phsycian will not be able to access the patients account in the SleepRes cloud platform.</p>
+                <p class="msg">Would you like to add a physician?</p>`,
+                    'Warning: A physician has not been added to the patient record',
+                    {
+                        // if you want to disable its autofocus
+                        // autofocus: false,
+                        showConfirmButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'Add Physician',
+                        cancelButtonText: 'Cancel',
+                        center: true,
+                        dangerouslyUseHTMLString: true,
+                        customClass: 'message-dialog',
+                        closeOnClickModal: true,
+                        closeOnPressEscape: true,
+                    },
+                )
+                    .then(() => {
+                        return showAddPhysician();
+                    })
+                    .catch(() => {
+                        loading.value = true;
 
-            // 去除formData null和undefined
-            Object.keys(formData.value).forEach(key => {
-                let value = formData.value[key as keyof AddPatientReq];
-                if (value === null || value === undefined) {
-                    formData.value[key as keyof AddPatientReq] = '' as any;
-                }
-            });
+                        // 去除formData null和undefined
+                        Object.keys(formData.value).forEach(key => {
+                            let value = formData.value[key as keyof AddPatientReq];
+                            if (value === null || value === undefined) {
+                                formData.value[key as keyof AddPatientReq] = '' as any;
+                            }
+                        });
 
-            // 新增
-            addPatient({
-                ...formData.value,
-                physician_id: formData.value?.physician_id ? (formData.value?.physician_id as any).id : '',
-            })
-                .then(res => {
-                    if (res.code === 1) {
-                        ElMessage.success(t('form.createSuccess'));
-                        dialogVisible.value = false;
-                        emit('refresh');
-                        formRef.value?.resetFields();
+                        // 新增
+                        addPatient({
+                            ...formData.value,
+                            physician_id: formData.value?.physician_id ? formData.value?.physician_id : '',
+                        })
+                            .then(res => {
+                                if (res.code === 1) {
+                                    ElMessage.success(t('form.createSuccess'));
+                                    dialogVisible.value = false;
+                                    emit('refresh');
+                                }
+                            })
+                            .finally(() => {
+                                loading.value = false;
+                            });
+                    });
+            } else {
+                loading.value = true;
+
+                // 去除formData null和undefined
+                Object.keys(formData.value).forEach(key => {
+                    let value = formData.value[key as keyof AddPatientReq];
+                    if (value === null || value === undefined) {
+                        formData.value[key as keyof AddPatientReq] = '' as any;
                     }
-                })
-                .finally(() => {
-                    loading.value = false;
                 });
+
+                // 新增
+                addPatient({
+                    ...formData.value,
+                    physician_id: formData.value?.physician_id ? formData.value?.physician_id : '',
+                })
+                    .then(res => {
+                        if (res.code === 1) {
+                            ElMessage.success(t('form.createSuccess'));
+                            dialogVisible.value = false;
+                            emit('refresh');
+                        }
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    });
+            }
         });
     };
 
@@ -453,6 +523,7 @@
         dialogVisible.value = false;
 
         formRef.value?.resetFields();
+        formData.value = { ...formDataInit };
     };
 
     const selectOfficeRef = ref<InstanceType<typeof SelectOffice>>();
@@ -477,6 +548,7 @@
     };
 
     const handleChangeSelect = (key: string, label: string, val: any) => {
+        console.log(val);
         if (val) {
             formData.value[(key + '_id') as keyof typeof formData.value] = val.id;
             formData.value[(key + '_name') as keyof typeof formData.value] = val[label];
@@ -528,6 +600,12 @@
 
     const pressureOptions = getRangeOptions(4, 20, 'cmH2O', 0.5, 10);
 
+    // 选择医生
+    const showSelectPhysician = ref(false);
+    const showAddPhysician = () => {
+        showSelectPhysician.value = true;
+    };
+
     defineExpose({
         showDialog,
     });
@@ -564,6 +642,26 @@
             justify-content: flex-end;
             min-width: 101px;
             font-size: $font-standard;
+        }
+    }
+</style>
+<style lang="scss">
+    .message-dialog {
+        min-width: 800px !important;
+
+        .el-message-box__content {
+            padding-left: 10px !important;
+        }
+
+        .msg {
+            margin-bottom: 20px;
+            font-size: $font-small;
+            text-align: center;
+        }
+
+        .el-message-box__title {
+            font-size: $font-large;
+            font-weight: bold;
         }
     }
 </style>

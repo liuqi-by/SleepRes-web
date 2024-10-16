@@ -230,7 +230,11 @@
 
     provide('patient', formData);
 
+    const isUpdate = ref(false);
+    provide('isUpdate', isUpdate);
+
     const updatePatient = (item: UserInfo) => {
+        // 强制formData触发更新
         formData.value = item;
     };
 

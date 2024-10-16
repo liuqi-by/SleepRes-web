@@ -41,11 +41,9 @@
                             <div class="label">Date range of report:</div>
                             <div class="detail text-nowrap!">
                                 {{
-                                    options.reportType !== 3
-                                        ? barChartData.dates && barChartData.dates.length > 0
-                                            ? `${barChartData.dates[0]} - ${barChartData.dates[barChartData.dates.length - 1]}`
-                                            : deviceReport?.start_date + ' - ' + deviceReport?.end_date
-                                        : options.selDate
+                                    barChartData.dates && barChartData.dates.length > 0
+                                        ? `${barChartData.dates[0]} - ${barChartData.dates[barChartData.dates.length - 1]}`
+                                        : deviceReport?.start_date + ' - ' + deviceReport?.end_date
                                 }}
                             </div>
                         </div>
@@ -321,7 +319,6 @@
 </template>
 
 <script setup lang="ts">
-    import moment from 'moment';
     import TherapyReport from './report-chart-module/therapy-report.vue';
     import DetailedReport from './report-chart-module/detailed-report.vue';
     import ComplianceReport from './report-chart-module/compliance-report.vue';
@@ -364,7 +361,10 @@
         if (options.value.reportType === 3) {
             loading.value = true;
             nextTick(() => {
-                detailedReportRef.value?.initData(options.value.selDate || moment().format('YYYY-MM-DD'));
+                detailedReportRef.value?.initData(options.value.customDate);
+                setTimeout(() => {
+                    loading.value = false;
+                }, 2000);
             });
         } else {
             getChartData(options.value.customDate);
@@ -408,7 +408,7 @@
             start_date: options.value.customDate[0],
             end_date: options.value.customDate[1],
         }).then((res: any) => {
-            if (res.code === 1 && res.data) {
+            if (res.code === 1 && res.data && res.data.length > 0) {
                 deviceSettings.value = res.data[Object.keys(res.data).pop() as string].map((item: string) => {
                     let arr = item.split(':');
                     return {

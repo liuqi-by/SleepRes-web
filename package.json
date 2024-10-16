@@ -40,7 +40,7 @@
         "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
         "@types/node": "^20.12.11",
         "@unocss/nuxt": "^0.60.3",
-        "element-plus": "^2.7.4",
+        "element-plus": "^2.7.7",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.1.3",

@@ -75,6 +75,7 @@
             margin-right: 30px;
 
             .search-module-item-label {
+                width: 60px;
                 margin-right: 20px;
             }
         }

@@ -126,8 +126,8 @@
                 prop="physician_id"
                 :label="$t('patients.Physician')"
             >
-                <div class="min-w-[192px] form-item">
-                    <select-physician
+                <div class="min-w-[202px] form-item">
+                    <!-- <select-physician
                         :model-value="
                             formData.physician_id
                                 ? {
@@ -140,8 +140,26 @@
                         @change="handleChangeSelect('physician', 'nickname', $event)"
                         :key="formData.physician_id"
                         clearable
+                    /> -->
+
+                    <el-input
+                        v-model="formData.physician_name"
+                        readonly
+                        class="form-input"
+                        @click="showAddPhysician"
+                        :key="formData.physician_name"
+                        clearable
                     />
                 </div>
+                <span
+                    class="link m-l-[10px]"
+                    @click="showAddPhysician"
+                    >Add Physician</span
+                >
+                <select-physician-dialog
+                    v-model="showSelectPhysician"
+                    @change="handleChangeSelect('physician', 'label', $event)"
+                />
             </el-form-item>
             <!-- <br /><br />
             <el-form-item
@@ -287,9 +305,17 @@
                     institution_name: val.institution_name || '',
                     setup_date: val.patient.setup_date || '',
                     therapist_id: val.patient.therapist_id || '',
-                    therapist_name: val.patient.therapist_name || '',
+                    therapist_name:
+                        nameFormat({
+                            first_name: val.patient.therapist_first_name,
+                            last_name: val.patient.therapist_last_name,
+                        }) || '',
                     physician_id: val.patient.physician_id || '',
-                    physician_name: val.patient.physician_name || '',
+                    physician_name:
+                        nameFormat({
+                            first_name: val.patient.physician_first_name,
+                            last_name: val.patient.physician_last_name,
+                        }) || '',
                     sn: val.sn || '',
                     city: val.patient.city || '',
                     state: val.state || '',
@@ -323,20 +349,61 @@
     const save = () => {
         formRef.value?.validate(valid => {
             if (valid) {
-                loading.value = true;
-                editPatient({ ...formData.value })
-                    .then(res => {
-                        loading.value = false;
-                        if (res.code === 1) {
-                            ElMessage.success('Update success');
-                            isEdit.value = false;
-                            emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
-                            update && update();
-                        }
-                    })
-                    .finally(() => {
-                        loading.value = false;
-                    });
+                // 如果没有选择医生
+                if (!formData.value.physician_id) {
+                    ElMessageBox.alert(
+                        `<p class="msg">By not adding a physician to the patient record the phsycian will not be able to access the patients account in the SleepRes cloud platform.</p>
+                <p class="msg">Would you like to add a physician?</p>`,
+                        'Warning: A physician has not been added to the patient record',
+                        {
+                            // if you want to disable its autofocus
+                            // autofocus: false,
+                            showConfirmButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: 'Add Physician',
+                            cancelButtonText: 'Cancel',
+                            center: true,
+                            dangerouslyUseHTMLString: true,
+                            customClass: 'message-dialog',
+                            closeOnClickModal: true,
+                            closeOnPressEscape: true,
+                        },
+                    )
+                        .then(() => {
+                            return showAddPhysician();
+                        })
+                        .catch(() => {
+                            loading.value = true;
+                            editPatient({ ...formData.value })
+                                .then(res => {
+                                    loading.value = false;
+                                    if (res.code === 1) {
+                                        ElMessage.success('Update success');
+                                        isEdit.value = false;
+                                        emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
+                                        update && update();
+                                    }
+                                })
+                                .finally(() => {
+                                    loading.value = false;
+                                });
+                        });
+                } else {
+                    loading.value = true;
+                    editPatient({ ...formData.value })
+                        .then(res => {
+                            loading.value = false;
+                            if (res.code === 1) {
+                                ElMessage.success('Update success');
+                                isEdit.value = false;
+                                emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
+                                update && update();
+                            }
+                        })
+                        .finally(() => {
+                            loading.value = false;
+                        });
+                }
             }
         });
     };
@@ -354,9 +421,17 @@
             institution_name: val.institution_name || '',
             setup_date: val.patient.setup_date || '',
             therapist_id: val.patient.therapist_id || '',
-            therapist_name: val.patient.therapist_name || '',
+            therapist_name:
+                nameFormat({
+                    first_name: val.patient.therapist_first_name,
+                    last_name: val.patient.therapist_last_name,
+                }) || '',
             physician_id: val.patient.physician_id || '',
-            physician_name: val.patient.physician_name || '',
+            physician_name:
+                nameFormat({
+                    first_name: val.patient.physician_first_name,
+                    last_name: val.patient.physician_last_name,
+                }) || '',
             sn: val.sn || '',
             city: val.patient.city || '',
             state: val.state || '',
@@ -374,6 +449,14 @@
         } else {
             formData.value[(key + '_id') as keyof typeof formData.value] = '';
             formData.value[(key + '_name') as keyof typeof formData.value] = '';
+        }
+    };
+
+    // 选择医生
+    const showSelectPhysician = ref(false);
+    const showAddPhysician = () => {
+        if (isEdit.value) {
+            showSelectPhysician.value = true;
         }
     };
 </script>

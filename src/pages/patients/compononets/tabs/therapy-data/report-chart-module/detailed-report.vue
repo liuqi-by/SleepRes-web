@@ -57,6 +57,7 @@
     import EventChart from '../charts/event-chart.vue';
     import type { UserInfo } from '~/api/login/types';
     import type { AllDataRes, ConnectChartRes, EventRes } from '~/api/report/types';
+    import { getChartDate } from '~/api/report';
 
     // 动态图表
 
@@ -71,7 +72,7 @@
     let queryOption = ref({
         startValue: '12:00:00',
         endValue: '11:59:59',
-        hapdate: moment().format('YYYY-MM-DD'),
+        hapdate: '',
     });
 
     // x start end
@@ -120,6 +121,10 @@
     // 接口请求
     const queryData = () => {
         if (!patient || !patient.value.sn) {
+            return;
+        }
+
+        if (!queryOption.value.hapdate) {
             return;
         }
 
@@ -225,7 +230,8 @@
     const resetData = () => {
         queryOption.value.startValue = '12:00:00';
         queryOption.value.endValue = '11:59:59';
-        queryOption.value.hapdate = moment().format('YYYY-MM-DD');
+        queryOption.value.hapdate = '';
+        rangeDate = [moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')];
         dataZoom.value = [0, 100];
         level.value = 1;
     };
@@ -241,11 +247,31 @@
         },
     );
 
-    const initData = (date?: string) => {
-        if (date) {
-            queryOption.value.hapdate = date;
+    let rangeDate = [moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')];
+    const initData = (date?: string[]) => {
+        console.log('date', date);
+        if (date && date[1]) {
+            rangeDate = date;
+            getDate();
         }
         // queryData();
+    };
+
+    const getDate = () => {
+        if (!patient || !patient.value.sn) {
+            return;
+        }
+        // 获取曲线日期
+        getChartDate({
+            sn: patient.value.sn,
+            start_date: rangeDate[0],
+            end_date: rangeDate[1],
+        }).then(res => {
+            console.log(res);
+            if (res.code === 1 && res.data.date) {
+                queryOption.value.hapdate = res.data.date;
+            }
+        });
     };
 
     defineExpose({

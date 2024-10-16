@@ -6,6 +6,8 @@ import type {
     BarChartRes,
     ParamInfoRes,
     ConnectChartReq,
+    GetChartDateReq,
+    GetChartDateRes,
 } from './types';
 
 /**
@@ -65,5 +67,15 @@ export const getConnectChartData = <T>(data: ConnectChartReq, type: string) => {
     return useClientRequest<ResPonseType<T>>('/api/report/' + type, {
         method: 'POST',
         body: queryString(data),
+    });
+};
+
+/**
+ * @description 获取区间时间内曲线的日期
+ */
+export const getChartDate = (data: GetChartDateReq) => {
+    return useClientRequest<ResPonseType<GetChartDateRes>>('/api/report/getdate', {
+        method: 'GET',
+        params: data,
     });
 };

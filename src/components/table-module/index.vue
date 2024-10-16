@@ -14,6 +14,7 @@
                 v-bind="$attrs"
                 ref="tableRef"
                 @wheel="handleMouseWheel"
+                @current-change="selectRowChange"
             >
                 <slot></slot>
             </el-table>
@@ -26,6 +27,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             v-if="isPagination"
+            :layout="layout"
         />
     </div>
 </template>
@@ -38,6 +40,7 @@
         tableData?: Array<any>;
         isPagination?: boolean;
         pageSizes?: Array<number>;
+        layout?: string;
     }
 
     withDefaults(defineProps<Props>(), {
@@ -45,6 +48,7 @@
         tableData: () => [],
         isPagination: true,
         pageSizes: () => [10, 20, 30, 40, 50, 100],
+        layout: 'prev, pager, next, jumper,->,total,,sizes',
     });
 
     // const pageOption = defineModel('pageOption', {
@@ -69,7 +73,7 @@
         default: 0,
     });
 
-    const emit = defineEmits(['size-change', 'current-change']);
+    const emit = defineEmits(['size-change', 'current-change', 'selectRowChange']);
 
     const handleSizeChange = (val: number) => {
         emit('size-change', val);
@@ -77,6 +81,10 @@
 
     const handleCurrentChange = (val: number) => {
         emit('current-change', val);
+    };
+
+    const selectRowChange = (row: any) => {
+        emit('selectRowChange', row);
     };
 
     const tableRef = ref<TableInstance>();
@@ -95,6 +103,16 @@
             }
         }
     };
+
+    const setCurrentRow = (row?: any) => {
+        if (tableRef.value) {
+            tableRef.value.setCurrentRow(row);
+        }
+    };
+
+    defineExpose({
+        setCurrentRow,
+    });
 </script>
 
 <style lang="scss" scoped>

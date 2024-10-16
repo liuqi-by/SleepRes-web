@@ -135,3 +135,13 @@ export interface DeviceReportRes {
     ca_avg: string;
     leak_avg_time: string;
 }
+
+export interface GetChartDateReq {
+    sn: string;
+    start_date: string;
+    end_date: string;
+}
+
+export interface GetChartDateRes {
+    date: string;
+}

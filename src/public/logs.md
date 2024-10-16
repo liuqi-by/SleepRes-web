@@ -1,7 +1,16 @@
+# 2024/10/16
+
+1. Modify detailed report(修改详细报告)
+
+# 2024/10/12
+
+1. Modify the content related to selecting a doctor(修改选择医生相关的内容)
+
 # 2024/10/11
 
 1. Fix the issue with notes names(修复notes 姓名的问题)
 2. Add Patient modify the equipment(添加患者设备相关的修改)
+3. Update version 0.0.1-alpha.6(更新版本0.0.1-alpha.6)
 
 # 2024/10/10
 
