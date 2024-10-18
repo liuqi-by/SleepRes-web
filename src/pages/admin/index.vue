@@ -80,7 +80,7 @@
                 <el-table-column
                     prop="email"
                     :label="$t('login.Email')"
-                    min-width="120"
+                    min-width="140"
                     align="center"
                     sortable
                 >
@@ -88,7 +88,7 @@
                         <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="mobile"
                     :label="$t('login.PhoneNumber')"
                     min-width="145"
@@ -98,7 +98,7 @@
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
                     prop="group_name"
                     :label="$t('admin.AccountType')"
@@ -117,17 +117,18 @@
                 <el-table-column
                     prop="frozen"
                     :label="$t('admin.AccountStatus')"
-                    min-width="150"
+                    min-width="110"
                     align="center"
                     sortable
                 >
                     <template #default="{ row }">
-                        <base-switch
+                        <!-- <base-switch
                             v-model="row.frozen"
                             :active-value="0"
                             :inactive-value="1"
                             @change="frozenAccount(row)"
-                        />
+                        /> -->
+                        {{ row.frozen == 0 ? 'Active' : 'Deactivated' }}
                     </template>
                     <template #header="{ column }">
                         <table-filter-header
@@ -137,7 +138,7 @@
                         />
                     </template>
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="address"
                     :label="$t('login.Address')"
                     min-width="110"
@@ -147,8 +148,8 @@
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="state"
                     :label="$t('admin.State')"
                     min-width="90"
@@ -169,10 +170,10 @@
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
-                    :label="$t('admin.Operate')"
-                    min-width="100"
+                    :label="$t('login.resetPwd')"
+                    min-width="120"
                     align="center"
                     fixed="right"
                 >
@@ -213,7 +214,7 @@
 
 <script setup lang="ts">
     import EditAccount from './components/edit.vue';
-    import { frozenUser, getUserlist } from '~/api/admin';
+    import { getUserlist } from '~/api/admin';
     import type { UserInfo } from '~/api/login/types';
     import { useUserStore } from '~/stores/modules/user';
 
@@ -242,20 +243,20 @@
     // };
 
     // 冻结/解冻
-    const frozenAccount = useDebounceFn((row: UserInfo) => {
-        frozenUser({
-            user_id: row.id,
-            frozen: row.frozen,
-        })
-            .then(res => {
-                if (res.code === 1) {
-                    // ElMessage.success('操作成功');
-                }
-            })
-            .catch(() => {
-                row.frozen = row.frozen === 1 ? 0 : 1;
-            });
-    }, 300);
+    // const frozenAccount = useDebounceFn((row: UserInfo) => {
+    //     frozenUser({
+    //         user_id: row.id,
+    //         frozen: row.frozen,
+    //     })
+    //         .then(res => {
+    //             if (res.code === 1) {
+    //                 // ElMessage.success('操作成功');
+    //             }
+    //         })
+    //         .catch(() => {
+    //             row.frozen = row.frozen === 1 ? 0 : 1;
+    //         });
+    // }, 300);
 
     // 获取消息
     const getMessageNum = () => {

@@ -101,6 +101,9 @@
                             type="select"
                         />
                     </template>
+                    <!-- <template #default="{ row }">
+                        {{ getRolesName(row.group_id) }}
+                    </template> -->
                 </el-table-column>
                 <el-table-column
                     prop="account_id"
@@ -198,6 +201,7 @@
     import { frozenUser, getUserlist } from '~/api/admin';
     import type { UserInfo } from '~/api/login/types';
     import { useUserStore } from '~/stores/modules/user';
+    // import { getRolesName } from '~/enums/RolesEnum';
 
     const userSotre = useUserStore();
 

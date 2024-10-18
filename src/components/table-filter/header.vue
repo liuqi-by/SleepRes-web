@@ -1,23 +1,25 @@
 <!-- 筛选标题 -->
 <template>
     <div class="table-header">
-        <span>{{ column.label }}</span>
-        <el-icon
-            :ref="
-                el => {
-                    showKeyRef[column.property] = el;
-                }
-            "
-            @click.stop="toggleNameFilter(column.property)"
-            class="filter-icon"
-            :class="{
-                active: Array.isArray(searchData[column.property])
-                    ? searchData[column.property].length > 0
-                    : searchData[column.property],
-            }"
-        >
-            <base-svg-icon icon="filter" />
-        </el-icon>
+        <span class="flex-1">{{ column.label }}</span>
+        <div class="flex-shrink-0">
+            <el-icon
+                :ref="
+                    el => {
+                        showKeyRef[column.property] = el;
+                    }
+                "
+                @click.stop="toggleNameFilter(column.property)"
+                class="filter-icon"
+                :class="{
+                    active: Array.isArray(searchData[column.property])
+                        ? searchData[column.property].length > 0
+                        : searchData[column.property],
+                }"
+            >
+                <base-svg-icon icon="filter" />
+            </el-icon>
+        </div>
     </div>
 </template>
 
@@ -79,6 +81,10 @@
     }
 
     .table-header {
-        display: inline;
+        position: relative;
+        display: flex;
+        flex: 1;
+        flex-wrap: nowrap;
+        align-items: center;
     }
 </style>

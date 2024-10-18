@@ -289,9 +289,9 @@
                             },
                         );
                         // 这里就可以自动关闭弹窗了
-                        setTimeout(() => {
-                            ElMessageBox.close(); // 重要
-                        }, 5000);
+                        // setTimeout(() => {
+                        //     ElMessageBox.close(); // 重要
+                        // }, 5000);
                         // 重置
                         formRef.value?.resetFields();
                         dialogVisible.value = false;
