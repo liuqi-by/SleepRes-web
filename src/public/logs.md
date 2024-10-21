@@ -1,3 +1,12 @@
+# 2024/10/21
+
+1. Modify the content on pages 10-16 of Version 3 ppt(修改Version3 ppt 10-16页 内容)
+2. Update version 0.0.1-alpha.7(更新版本0.0.1-alpha.7)
+
+# 2024/10/18
+
+1. Modify the content on pages 2-9 of Version 3 ppt(修改Version3 ppt 2-9页 内容)
+
 # 2024/10/16
 
 1. Modify detailed report(修改详细报告)

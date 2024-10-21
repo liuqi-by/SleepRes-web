@@ -9,6 +9,7 @@
             class="form"
             inline
             label-width="140px"
+            :disabled="!isEdit"
         >
             <!-- first_name -->
             <el-form-item
@@ -20,7 +21,6 @@
                         v-model="formData.first_name"
                         class="form-input"
                         :maxlength="inputLength.first_name"
-                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -34,7 +34,6 @@
                         v-model="formData.last_name"
                         class="form-input"
                         :maxlength="inputLength.last_name"
-                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -48,7 +47,6 @@
                         v-model="formData.birthdate"
                         type="date"
                         :disabled-date="disabledDateFun"
-                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -62,7 +60,6 @@
                         v-model="formData.patientid"
                         class="form-input"
                         :maxlength="inputLength.patientID"
-                        :readonly="!isEdit"
                         @input="filterChart('patientid')"
                     />
                 </div>
@@ -84,7 +81,6 @@
                         @change="handleChangeSelect('institution', 'name', $event)"
                         ref="selectOfficeRef"
                         :key="formData.institution_id"
-                        :disabled="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -97,7 +93,6 @@
                     <date-picker
                         v-model="formData.setup_date"
                         type="date"
-                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -115,18 +110,18 @@
                                   }
                                 : ''
                         "
-                        :disabled="!isEdit"
                         @change="handleChangeSelect('therapist', 'nickname', $event)"
                         :key="formData.therapist_id"
                         :type="1"
                     />
                 </div>
             </el-form-item>
+            <br />
             <el-form-item
                 prop="physician_id"
                 :label="$t('patients.Physician')"
             >
-                <div class="min-w-[202px] form-item">
+                <div class="min-w-[200px] form-item">
                     <!-- <select-physician
                         :model-value="
                             formData.physician_id
@@ -154,6 +149,7 @@
                 <span
                     class="link m-l-[10px]"
                     @click="showAddPhysician"
+                    v-show="isEdit"
                     >Add Physician</span
                 >
                 <select-physician-dialog
@@ -184,7 +180,6 @@
                     <el-input
                         v-model="formData.city"
                         class="form-input"
-                        :readonly="!isEdit"
                         :maxlength="inputLength.city"
                     />
                 </div>
@@ -194,10 +189,7 @@
                 :label="$t('login.State')"
             >
                 <div class="min-w-[192px]">
-                    <select-state
-                        v-model="formData.state"
-                        :disabled="!isEdit"
-                    />
+                    <select-state v-model="formData.state" />
                 </div>
             </el-form-item>
             <el-form-item
@@ -209,7 +201,6 @@
                         v-model="formData.address"
                         class="form-input"
                         :maxlength="inputLength.address"
-                        :readonly="!isEdit"
                     />
                 </div>
             </el-form-item>
@@ -222,7 +213,6 @@
                         v-model="formData.email"
                         class="form-input"
                         :maxlength="inputLength.email"
-                        :readonly="!isEdit"
                         @input="filterChart('email')"
                     />
                 </div>
@@ -236,7 +226,6 @@
                         v-model="formData.mobile"
                         class="form-input"
                         :maxlength="inputLength.mobile"
-                        :readonly="!isEdit"
                         @input="filterMobile('mobile')"
                     />
                 </div>
@@ -350,60 +339,60 @@
         formRef.value?.validate(valid => {
             if (valid) {
                 // 如果没有选择医生
-                if (!formData.value.physician_id) {
-                    ElMessageBox.alert(
-                        `<p class="msg">By not adding a physician to the patient record the phsycian will not be able to access the patients account in the SleepRes cloud platform.</p>
-                <p class="msg">Would you like to add a physician?</p>`,
-                        'Warning: A physician has not been added to the patient record',
-                        {
-                            // if you want to disable its autofocus
-                            // autofocus: false,
-                            showConfirmButton: true,
-                            showCancelButton: true,
-                            confirmButtonText: 'Add Physician',
-                            cancelButtonText: 'Cancel',
-                            center: true,
-                            dangerouslyUseHTMLString: true,
-                            customClass: 'message-dialog',
-                            closeOnClickModal: true,
-                            closeOnPressEscape: true,
-                        },
-                    )
-                        .then(() => {
-                            return showAddPhysician();
-                        })
-                        .catch(() => {
-                            loading.value = true;
-                            editPatient({ ...formData.value })
-                                .then(res => {
-                                    loading.value = false;
-                                    if (res.code === 1) {
-                                        ElMessage.success('Update success');
-                                        isEdit.value = false;
-                                        emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
-                                        update && update();
-                                    }
-                                })
-                                .finally(() => {
-                                    loading.value = false;
-                                });
-                        });
-                } else {
-                    loading.value = true;
-                    editPatient({ ...formData.value })
-                        .then(res => {
-                            loading.value = false;
-                            if (res.code === 1) {
-                                ElMessage.success('Update success');
-                                isEdit.value = false;
-                                emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
-                                update && update();
-                            }
-                        })
-                        .finally(() => {
-                            loading.value = false;
-                        });
-                }
+                // if (!formData.value.physician_id) {
+                //     ElMessageBox.alert(
+                //         `<p class="msg">By not adding a physician to the patient record the phsycian will not be able to access the patients account in the SleepRes cloud platform.</p>
+                // <p class="msg">Would you like to add a physician?</p>`,
+                //         'Warning: A physician has not been added to the patient record',
+                //         {
+                //             // if you want to disable its autofocus
+                //             // autofocus: false,
+                //             showConfirmButton: true,
+                //             showCancelButton: true,
+                //             confirmButtonText: 'Yes',
+                //             cancelButtonText: 'No',
+                //             center: true,
+                //             dangerouslyUseHTMLString: true,
+                //             customClass: 'message-dialog',
+                //             closeOnClickModal: true,
+                //             closeOnPressEscape: true,
+                //         },
+                //     )
+                //         .then(() => {
+                //             return showAddPhysician();
+                //         })
+                //         .catch(() => {
+                //             loading.value = true;
+                //             editPatient({ ...formData.value })
+                //                 .then(res => {
+                //                     loading.value = false;
+                //                     if (res.code === 1) {
+                //                         ElMessage.success('Update success');
+                //                         isEdit.value = false;
+                //                         emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
+                //                         update && update();
+                //                     }
+                //                 })
+                //                 .finally(() => {
+                //                     loading.value = false;
+                //                 });
+                //         });
+                // } else {
+                loading.value = true;
+                editPatient({ ...formData.value })
+                    .then(res => {
+                        loading.value = false;
+                        if (res.code === 1) {
+                            ElMessage.success('Update success');
+                            isEdit.value = false;
+                            emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
+                            update && update();
+                        }
+                    })
+                    .finally(() => {
+                        loading.value = false;
+                    });
+                // }
             }
         });
     };

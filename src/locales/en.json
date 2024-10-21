@@ -24,7 +24,7 @@
         "username": "Username",
         "accountName": "Account Name",
         "password": "Password",
-        "registerDme": "Create a DME account",
+        "registerDme": "Create A DME account",
         "registerPhysician": "Create A Physician account",
         "resetPwd": "Reset Password",
         "pwdReset": "Password Reset",
