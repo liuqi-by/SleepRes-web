@@ -45,6 +45,7 @@
     const toggleNameFilter = (key: string) => {
         if (props.type === 'select' && props.customOptions && props.customOptions?.length > 0) {
             // emit('toggleNameFilter', { key, type: props.type, options: props.customOptions });
+
             toggleNameFilterInject({ key, type: props.type, options: props.customOptions });
         } else {
             toggleNameFilterInject({ key, type: props.type });

@@ -115,7 +115,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="frozen"
+                    prop="status"
                     :label="$t('admin.AccountStatus')"
                     min-width="110"
                     align="center"
@@ -128,7 +128,15 @@
                             :inactive-value="1"
                             @change="frozenAccount(row)"
                         /> -->
-                        {{ row.frozen == 0 ? 'Active' : 'Deactivated' }}
+                        {{
+                            row.status == 1
+                                ? 'Pending'
+                                : row.status == 2
+                                  ? 'Active'
+                                  : row.status == 3
+                                    ? 'Deactivated'
+                                    : ''
+                        }}
                     </template>
                     <template #header="{ column }">
                         <table-filter-header
@@ -291,13 +299,14 @@
     } = useFilterTableHeader(tableList);
 
     const statusOptions = [
-        { label: 'Off', value: 1 },
-        { label: 'On', value: 0 },
+        { label: 'Pending', value: 1 },
+        { label: 'Active', value: 2 },
+        { label: 'Deactivated', value: 3 },
     ];
 
     const accountOptions = [
-        { label: 'DME', value: 'DME' },
-        { label: 'Physician', value: 'Physician' },
+        { label: 'Administrator', value: 'Administrator' },
+        { label: 'Physician Admin', value: 'Physician Admin' },
     ];
 
     const editAccount = ref<InstanceType<typeof EditAccount> | null>(null);

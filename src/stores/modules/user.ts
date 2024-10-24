@@ -203,15 +203,23 @@ export const useUserStore = defineStore(
             logTimer.value = setInterval(checkInactivity, 60000); // 每分钟检查一次
         };
 
-        const resetTimer = () => {
+        const resetTimer = useThrottleFn(() => {
             lastActiveTime.value = Date.now();
-        };
+        }, 200);
 
         const checkInactivity = () => {
             // 如果超过30分钟没有操作，执行注销逻辑
-            if (Date.now() - lastActiveTime.value > 15 * 60 * 1000) {
+            console.log('checkInactivity');
+            if (Date.now() - lastActiveTime.value > 30 * 60 * 1000) {
+                if (!logTimer.value) {
+                    clearInterval(logTimer.value);
+                    window.removeEventListener('mousemove', resetTimer);
+                    window.removeEventListener('keydown', resetTimer);
+                    window.removeEventListener('click', resetTimer);
+                }
                 // 执行注销操作，例如调用API或者进行页面跳转
                 logout();
+
                 // this.$auth.logout(); // 假设有一个logout方法用于注销
             }
         };

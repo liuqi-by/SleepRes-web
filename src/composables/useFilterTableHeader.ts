@@ -94,7 +94,10 @@ export default function useFilterTableHeader(tableData: any) {
 
         showKey.value = key;
 
+        console.log(searchData.value[key]);
+
         filterInput.value = searchData.value[key] || '';
+
         selectFilter.value = searchData.value[key] || [];
         filterType.value = type;
 

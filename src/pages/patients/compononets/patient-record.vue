@@ -238,6 +238,8 @@
         formData.value = item;
     };
 
+    provide('update', updatePatient);
+
     defineExpose({
         showDialog,
     });

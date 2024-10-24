@@ -284,8 +284,8 @@
                                 center: true,
                                 dangerouslyUseHTMLString: true,
                                 customClass: 'register-dialog',
-                                closeOnClickModal: true,
-                                closeOnPressEscape: true,
+                                closeOnClickModal: false,
+                                closeOnPressEscape: false,
                             },
                         );
                         // 这里就可以自动关闭弹窗了
