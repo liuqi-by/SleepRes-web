@@ -138,18 +138,9 @@
                 v-if="dialogVisible"
             >
                 <TherapyData v-if="activeIndex === 1" />
-                <Prescription
-                    v-if="activeIndex === 2"
-                    @update="updatePatient"
-                />
-                <PatientDetails
-                    v-if="activeIndex === 3"
-                    @update="updatePatient"
-                />
-                <Notes
-                    v-if="activeIndex === 4"
-                    @update="updatePatient"
-                />
+                <Prescription v-if="activeIndex === 2" />
+                <PatientDetails v-if="activeIndex === 3" />
+                <Notes v-if="activeIndex === 4" />
                 <Logs v-if="activeIndex === 5" />
             </div>
         </el-dialog>
@@ -238,7 +229,7 @@
         formData.value = item;
     };
 
-    provide('update', updatePatient);
+    provide('updatePatient', updatePatient);
 
     defineExpose({
         showDialog,

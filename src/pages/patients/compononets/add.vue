@@ -208,7 +208,11 @@
                                     </div>
                                 </el-form-item>
                                 <br />
-                                <el-form-item
+                                <device-mode
+                                    ref="deviceModeRef"
+                                    :class="formData.sn ? 'min-h-[50px]' : ''"
+                                />
+                                <!-- <el-form-item
                                     prop="mode_name"
                                     :label="$t('patients.Mode')"
                                 >
@@ -266,7 +270,7 @@
                                             :maxlength="inputLength.mask"
                                         />
                                     </div>
-                                </el-form-item>
+                                </el-form-item> -->
                             </div>
                         </template>
                     </collapse-panel>
@@ -382,6 +386,7 @@
 <script setup lang="ts">
     import type { FormInstance, InputInstance } from 'element-plus';
     import moment from 'moment';
+    import deviceMode from './tabs/components/device-mode.vue';
     import { useUserStore } from '~/stores/modules/user';
     import type { AddPatientReq } from '~/api/patient/types';
     import { addPatient } from '~/api/patient';
@@ -423,9 +428,11 @@
         mode_name: '0',
         setup_date: moment().format('YYYY-MM-DD'),
     };
+
     const formData = ref<Partial<AddPatientReq>>({
         ...formDataInit,
     });
+
     const { filterMobile, filterNumberAndChart, filterChart } = useFilterInput(formData);
     const { firstName, lastName, emailNoRequired, role, office, setupDate, birthdate, sn } = useFormRules();
     // 表单规则
@@ -445,6 +452,7 @@
     const { t } = useI18n();
     const emit = defineEmits(['refresh']);
     const loading = ref(false); // 按钮loading
+    const deviceModeRef = ref<InstanceType<typeof deviceMode>>();
     /**
      * submit
      */
@@ -495,13 +503,25 @@
                             .then(res => {
                                 if (res.code === 1) {
                                     ElMessage.success(t('form.createSuccess'));
-                                    dialogVisible.value = false;
-                                    emit('refresh');
+                                    loading.value = false;
+                                    if (formData.value?.sn) {
+                                        emit('refresh');
+                                        deviceModeRef.value
+                                            ?.update()
+                                            .then(() => {
+                                                dialogVisible.value = false;
+                                            })
+                                            .finally(() => {
+                                                setTimeout(() => {
+                                                    loading.value = false;
+                                                }, 1000);
+                                            });
+                                    } else {
+                                        dialogVisible.value = false;
+                                    }
                                 }
                             })
-                            .finally(() => {
-                                loading.value = false;
-                            });
+                            .finally(() => {});
                     });
             } else {
                 loading.value = true;
@@ -522,13 +542,23 @@
                     .then(res => {
                         if (res.code === 1) {
                             ElMessage.success(t('form.createSuccess'));
-                            dialogVisible.value = false;
-                            emit('refresh');
+                            loading.value = false;
+                            if (formData.value?.sn) {
+                                emit('refresh');
+                                deviceModeRef.value
+                                    ?.update()
+                                    .then(() => {})
+                                    .finally(() => {
+                                        setTimeout(() => {
+                                            loading.value = false;
+                                        }, 1000);
+                                    });
+                            } else {
+                                dialogVisible.value = false;
+                            }
                         }
                     })
-                    .finally(() => {
-                        loading.value = false;
-                    });
+                    .finally(() => {});
             }
         });
     };
@@ -574,51 +604,13 @@
         }
     };
 
-    const getRangeOptions = (min: number, max: number, unit: string, step: number = 1, override: number = 1) => {
-        let options = [];
-        for (let i = min; i <= max; i = add(i, step)) {
-            options.push({
-                label: i + ' ' + unit,
-                value: String(i * override),
-            });
-        }
-        return options;
-    };
-
-    const rampOptions = [
-        ...new Array(61).fill(0).map((_, index) => {
-            if (index > 0) {
-                return {
-                    label: index + 'min',
-                    value: String(index),
-                };
-            } else {
-                return {
-                    label: 'OFF',
-                    value: '0',
-                };
-            }
-        }),
-    ];
-
-    const modeOptions = [
-        {
-            label: 'CPAP',
-            value: '0',
-        },
-        {
-            label: 'Auto CPAP',
-            value: '1',
-        },
-    ];
-
-    const pressureOptions = getRangeOptions(4, 20, 'cmH2O', 0.5, 10);
-
     // 选择医生
     const showSelectPhysician = ref(false);
     const showAddPhysician = () => {
         showSelectPhysician.value = true;
     };
+
+    provide('patient', formData);
 
     defineExpose({
         showDialog,

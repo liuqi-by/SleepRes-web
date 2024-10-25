@@ -83,8 +83,9 @@
 
     const loading = ref(false);
     const formRef = ref<FormInstance>(); // 表单ref
-    const emit = defineEmits(['update']);
+    // const emit = defineEmits(['update']);
     const update = inject<Function>('update');
+    const updatePatient = inject<Function>('updatePatient');
     // 保存
     const save = () => {
         formRef.value?.validate(valid => {
@@ -100,8 +101,10 @@
                     .then(res => {
                         if (res.code === 1) {
                             ElMessage.success(res.msg);
-                            emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
+                            // emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
+                            // update && update();
                             update && update();
+                            updatePatient && updatePatient({ ...res.data, patient: JSON.parse(res.data.patient) });
                             formData.notes = '';
                         }
                     })

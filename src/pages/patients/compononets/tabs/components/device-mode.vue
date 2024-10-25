@@ -1,14 +1,11 @@
 <template>
-    <div
-        v-loading="loadingSetting"
-        class="min-h-[300px]"
-    >
+    <div v-loading="loadingSetting">
         <div v-if="modeOptions && modeOptions.length > 0">
             <el-form-item
                 prop="mode"
                 label="Mode"
             >
-                <div class="form-item">
+                <div class="form-item w-[200px]!">
                     <el-select v-model="mode">
                         <el-option
                             :label="item.label"
@@ -345,7 +342,7 @@
             '84': getPressOptions(Math.max(getOptionsValue('75'), 4), getMaxPre('84')),
             '89': APsensOptions,
             // 最小压力
-            '82': getPressOptions(4, Math.min(getOptionsValue('83'), getMaxPre('82'))),
+            '82': getPressOptions(Math.max(getOptionsValue('75'), 4), Math.min(getOptionsValue('83'), getMaxPre('82'))),
             // 最大压力 最大压力大于等于最小压力
             '83': getPressOptions(Math.max(getOptionsValue('82'), 4), getMaxPre('83')),
             // 呼气灵敏度 ESens
@@ -433,6 +430,85 @@
         }
     });
 
+    const update = () => {
+        return new Promise<void>((resolve, _reject) => {
+            if (!patient?.value.sn) {
+                return;
+            }
+            let timerOut = 5;
+
+            let loadingInstance = ElLoading.service({
+                lock: true,
+                text: 'Parameter adjustment in progress, please do not close the interface',
+                target: '.prescription',
+            });
+
+            let data: any = {};
+
+            for (const key of modeSettingList.value[mode.value]) {
+                data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
+            }
+
+            data['90'] = String(mode.value);
+
+            if (timer_update) {
+                clearInterval(timer_update);
+            }
+
+            timer_update = setInterval(() => {
+                timerOut--;
+
+                if (timerOut <= 0) {
+                    loadingInstance.close();
+                    timer_update && clearInterval(timer_update);
+                    ElMessage.error('Request timeout, please retry');
+                }
+
+                updateDeviceModel({
+                    data: JSON.stringify(data),
+                    sn: patient.value.sn,
+                })
+                    .then(res => {
+                        console.log(res);
+                        // ElMessage.success(res.msg);
+                        // modeSettingSaveValue.value = {
+                        //     ...modeSettingValue.value,
+                        // };
+                        if (res.msg === 'Successfully') {
+                            loadingInstance.setText('The new settings have been sent to the PAP device');
+                            setTimeout(() => {
+                                loadingInstance.close();
+                                timer_update && clearInterval(timer_update);
+                                modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
+                                modeSave.value = mode.value;
+                            }, 1000);
+                        }
+                        if (res.msg === 'No Online') {
+                            loadingInstance.setText(
+                                'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
+                            );
+                            setTimeout(() => {
+                                loadingInstance.close();
+                                timer_update && clearInterval(timer_update);
+                                modeSave.value = mode.value;
+                                modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
+                            });
+                        }
+                    })
+                    .finally(() => {
+                        resolve();
+                    });
+            }, 1000);
+
+            // 更新面罩信息
+            updateTubingAndMask({
+                sn: patient.value.sn,
+                tubing: formData.value.tubing,
+                mask: formData.value.mask,
+            });
+        });
+    };
+
     const save = () => {
         return new Promise<void>((resolve, _reject) => {
             if (!patient?.value.sn) {
@@ -443,83 +519,101 @@
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
                 type: 'warning',
-            }).then(() => {
-                let loadingInstance = ElLoading.service({
-                    lock: true,
-                    text: 'Parameter adjustment in progress, please do not close the interface',
-                    target: '.prescription',
-                });
+            })
+                .then(() => {
+                    let loadingInstance = ElLoading.service({
+                        lock: true,
+                        text: 'Parameter adjustment in progress, please do not close the interface',
+                        target: '.prescription',
+                    });
 
-                let data: any = {};
+                    let data: any = {};
 
-                for (const key of modeSettingList.value[mode.value]) {
-                    data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
-                }
-
-                data['90'] = String(mode.value);
-
-                if (timer_update) {
-                    clearInterval(timer_update);
-                }
-
-                timer_update = setInterval(() => {
-                    timerOut--;
-
-                    if (timerOut <= 0) {
-                        loadingInstance.close();
-                        timer_update && clearInterval(timer_update);
-                        ElMessage.error('Request timeout, please retry');
+                    for (const key of modeSettingList.value[mode.value]) {
+                        data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
                     }
 
-                    updateDeviceModel({
-                        data: JSON.stringify(data),
-                        sn: patient.value.sn,
-                    })
-                        .then(res => {
-                            console.log(res);
-                            // ElMessage.success(res.msg);
-                            // modeSettingSaveValue.value = {
-                            //     ...modeSettingValue.value,
-                            // };
-                            if (res.msg === 'Successfully') {
-                                loadingInstance.setText('The new settings have been sent to the PAP device');
-                                setTimeout(() => {
-                                    loadingInstance.close();
-                                    timer_update && clearInterval(timer_update);
-                                    modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
-                                    modeSave.value = mode.value;
-                                }, 1000);
-                            }
-                            if (res.msg === 'No Online') {
-                                loadingInstance.setText(
-                                    'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
-                                );
-                                setTimeout(() => {
-                                    loadingInstance.close();
-                                    timer_update && clearInterval(timer_update);
-                                    modeSave.value = mode.value;
-                                    modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
-                                });
-                            }
-                        })
-                        .finally(() => {
-                            resolve();
-                        });
-                }, 1000);
+                    data['90'] = String(mode.value);
 
-                // 更新面罩信息
-                updateTubingAndMask({
-                    sn: patient.value.sn,
-                    tubing: formData.value.tubing,
-                    mask: formData.value.mask,
+                    if (timer_update) {
+                        clearInterval(timer_update);
+                    }
+
+                    timer_update = setInterval(() => {
+                        timerOut--;
+
+                        if (timerOut <= 0) {
+                            loadingInstance.close();
+                            timer_update && clearInterval(timer_update);
+                            ElMessage.error('Request timeout, please retry');
+                        }
+
+                        updateDeviceModel({
+                            data: JSON.stringify(data),
+                            sn: patient.value.sn,
+                        })
+                            .then(res => {
+                                console.log(res);
+                                // ElMessage.success(res.msg);
+                                // modeSettingSaveValue.value = {
+                                //     ...modeSettingValue.value,
+                                // };
+                                if (res.msg === 'Successfully') {
+                                    loadingInstance.setText('The new settings have been sent to the PAP device');
+                                    setTimeout(() => {
+                                        loadingInstance.close();
+                                        timer_update && clearInterval(timer_update);
+                                        modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
+                                        modeSave.value = mode.value;
+                                    }, 1000);
+                                }
+                                if (res.msg === 'No Online') {
+                                    loadingInstance.setText(
+                                        'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
+                                    );
+                                    setTimeout(() => {
+                                        loadingInstance.close();
+                                        timer_update && clearInterval(timer_update);
+                                        modeSave.value = mode.value;
+                                        modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
+                                    });
+                                }
+                            })
+                            .finally(() => {
+                                resolve();
+                            });
+                    }, 1000);
+
+                    // 更新面罩信息
+                    updateTubingAndMask({
+                        sn: patient.value.sn,
+                        tubing: formData.value.tubing,
+                        mask: formData.value.mask,
+                    });
+                })
+                .catch(() => {
+                    resolve();
                 });
-            });
         });
     };
 
     const loadingSetting = ref(false);
-    const getDeviceModelInfo = () => {
+    const getDeviceModelInfo = useDebounceFn(() => {
         if (!patient || !patient.value?.sn) {
+            modeOptions.value = [];
+            // 模式显示
+            mode.value = 0;
+            formData.value.mask = '';
+            formData.value.tubing = 'Standard Tubing';
+            modeSettingList.value = {};
+            modeSettingValue.value = {};
+
+            deviceType.value = undefined;
+
+            saveApiData.value.mode = 0;
+            saveApiData.value.modeSettingValue = {};
+            saveApiData.value.mask = '';
+            saveApiData.value.tubing = 'Standard Tubing';
             return;
         }
         loadingSetting.value = true;
@@ -569,13 +663,11 @@
             .finally(() => {
                 loadingSetting.value = false;
             });
-    };
+    }, 500);
 
     watch(
         () => patient?.value.sn,
         () => {
-            console.log('patient?.value.sn');
-
             getDeviceModelInfo();
         },
         {
@@ -591,9 +683,12 @@
         formData.value.tubing = saveApiData.value.tubing;
     };
 
+    onUpdated(() => {});
+
     defineExpose({
         save,
         resetEdit,
+        update,
     });
 </script>
 
@@ -605,5 +700,9 @@
     .column-box {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    :deep(.el-loading-mask) {
+        z-index: 999999;
     }
 </style>

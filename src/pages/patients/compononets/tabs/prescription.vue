@@ -517,6 +517,7 @@
 
     // const emit = defineEmits(['update']);
     const update = inject<Function>('update');
+    const updatePatient = inject<Function>('updatePatient');
     // // 修改设备
     const changeDevice = () => {
         formRef.value?.validate(valid => {
@@ -545,8 +546,9 @@
                         if (res.code === 1) {
                             ElMessage.success('Change success');
                             isEdit.value = false;
-                            // emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
-                            update && update({ ...res.data, patient: JSON.parse(res.data.patient) });
+
+                            update && update();
+                            updatePatient && updatePatient({ ...res.data, patient: JSON.parse(res.data.patient) });
                         }
                     })
                     .finally(() => {});

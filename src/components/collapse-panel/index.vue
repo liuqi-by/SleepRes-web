@@ -20,10 +20,12 @@
         >
             <div
                 ref="content"
-                class="collapse-content"
-                :style="{ height: isOpen ? contentHeight + 'px' : 0 }"
+                class="auto-height"
+                :style="{ gridTemplateRows: isOpen ? '1fr' : '0fr' }"
             >
-                <slot name="content"></slot>
+                <div class="box">
+                    <slot name="content"> </slot>
+                </div>
             </div>
         </transition>
     </div>
@@ -32,13 +34,13 @@
 <script setup lang="ts">
     import { Plus, Minus } from '@element-plus/icons-vue';
 
-    interface PropsInterface {
-        resize?: boolean;
-    }
+    // interface PropsInterface {
+    //     resize?: boolean;
+    // }
 
-    const props = withDefaults(defineProps<PropsInterface>(), {
-        resize: true,
-    });
+    // const props = withDefaults(defineProps<PropsInterface>(), {
+    //     resize: true,
+    // });
 
     const isOpen = ref(false);
 
@@ -46,55 +48,64 @@
         isOpen.value = !isOpen.value;
     };
 
-    const content = ref<HTMLElement>();
-    const contentHeight = ref(0);
-    // 计算内容高度
-    const measureContentHeight = () => {
-        nextTick(() => {
-            if (content.value) {
-                contentHeight.value = content.value.children[0].scrollHeight;
-            }
-        });
-    };
+    // const content = ref<HTMLElement>();
+    // const contentHeight = ref(0);
+    // // 计算内容高度
+    // const measureContentHeight = () => {
+    //     nextTick(() => {
+    //         if (content.value) {
+    //             contentHeight.value = content.value.children[0].scrollHeight;
+    //         }
+    //     });
+    // };
 
-    const { width } = useWindowSize();
+    // const { width } = useWindowSize();
 
-    watch(width, () => {
-        if (!props.resize) {
-            return;
-        }
-        measureContentHeight();
-    });
-
-    onMounted(() => {
-        measureContentHeight();
-        isOpen.value = false;
-        useIntersectionObserver(content.value, () => {
-            if (!contentHeight.value) {
-                measureContentHeight();
-            }
-        });
-    });
+    // watch(width, () => {
+    //     if (!props.resize) {
+    //         return;
+    //     }
+    //     measureContentHeight();
+    // });
+    // onMounted(() => {
+    //     measureContentHeight();
+    //     isOpen.value = false;
+    //     useIntersectionObserver(content.value, () => {
+    //         if (!contentHeight.value) {
+    //             measureContentHeight();
+    //         }
+    //     });
+    // });
 </script>
 
 <style lang="scss" scoped>
-    .collapse-panel {
+    // .collapse-panel {
+    //     overflow: hidden;
+    // }
+
+    // .collapse-content {
+    //     overflow: hidden;
+    //     transition: max-height 0.3s ease-in-out;
+    // }
+
+    // /* 定义过渡的进入和离开状态 */
+    // .collapse-enter-active,
+    // .collapse-leave-active {
+    //     overflow: hidden; /* 确保内容不会被裁剪 */
+    // }
+
+    // .collapse-enter,
+    // .collapse-leave-to {
+    //     max-height: 0;
+    // }
+
+    .auto-height {
+        display: grid;
+        grid-template-rows: 1fr;
+        transition: 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    .box {
         overflow: hidden;
-    }
-
-    .collapse-content {
-        overflow: hidden;
-        transition: height 0.3s ease-in-out;
-    }
-
-    /* 定义过渡的进入和离开状态 */
-    .collapse-enter-active,
-    .collapse-leave-active {
-        overflow: hidden; /* 确保内容不会被裁剪 */
-    }
-
-    .collapse-enter,
-    .collapse-leave-to {
-        height: 0;
     }
 </style>

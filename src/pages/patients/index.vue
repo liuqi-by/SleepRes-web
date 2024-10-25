@@ -189,6 +189,7 @@
                 ref="addUserDialogRef"
                 @refresh="getData"
                 v-model="isShowAddUserDialog"
+                v-if="isShowAddUserDialog"
             />
             <!-- 患者记录 -->
             <patient-record
