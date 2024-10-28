@@ -1,3 +1,11 @@
+# 2024/10/28
+
+1. Complete the dashboard first static page(完成dashboard首页静态页面)
+
+# 2024/10/25
+
+1. Modify and add patient prescription(修改新增患者处方)
+
 # 2024/10/21
 
 1. Modify the content on pages 10-16 of Version 3 ppt(修改Version3 ppt 10-16页 内容)

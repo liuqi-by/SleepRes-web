@@ -65,6 +65,16 @@ export const routes: RouteRecordRaw[] = [
             roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
         },
     },
+    {
+        path: '/dashboard',
+        component: () => import('@/pages/dashboard/index.vue'),
+        name: '仪表盘',
+        meta: {
+            title: 'dashboard',
+            keepalive: false,
+            roles: [RoleType.DMETherapist],
+        },
+    },
 
     {
         path: '/login',
