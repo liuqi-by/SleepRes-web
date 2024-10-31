@@ -9,6 +9,7 @@
                 format="MMMM"
                 value-format="MM"
                 popper-class="month-selector"
+                :disabled-date="disabledMonth"
             />
         </div>
 
@@ -18,14 +19,26 @@
                 v-model="year"
                 type="year"
                 placeholder="Pick a year"
+                format="YYYY"
+                value-format="YYYY"
+                :disabled-date="disabledDate"
             />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    const month = ref('');
-    const year = ref('');
+    const month = defineModel<string>('month');
+    const year = defineModel<string>('year');
+
+    // 限制只能选今年和之前的
+    const disabledDate = (time: Record<string, any>): boolean => {
+        return time.getFullYear() > new Date().getFullYear();
+    };
+
+    const disabledMonth = (time: Record<string, any>): boolean => {
+        return new Date(year.value ? year.value + '-' + (time.getMonth() + 1) : '').getTime() > new Date().getTime();
+    };
 </script>
 
 <style lang="scss" scoped>

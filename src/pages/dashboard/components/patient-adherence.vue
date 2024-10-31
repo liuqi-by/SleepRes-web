@@ -7,6 +7,7 @@
                 :autoresize="true"
                 :option="option"
                 class="chart"
+                @click="handleClick"
             />
             <div class="table-container">
                 <table
@@ -28,7 +29,10 @@
                 </table>
             </div>
         </div>
-        <select-date />
+        <select-date
+            v-model:month="month"
+            v-model:year="year"
+        />
     </client-only>
 </template>
 
@@ -64,9 +68,9 @@
                 radius: '50%',
                 center: ['50%', '45%'],
                 data: [
-                    { value: 1048, name: 'Adherent', itemStyle: { color: '#156082' } },
-                    { value: 735, name: 'Monitoring', itemStyle: { color: '#E97132' } },
-                    { value: 580, name: 'Non-Adherent', itemStyle: { color: '#196B24' } },
+                    { value: 1048, name: 'Adherent', itemStyle: { color: '#156082' }, status: 0 },
+                    { value: 735, name: 'Monitoring', itemStyle: { color: '#E97132' }, status: 1 },
+                    { value: 580, name: 'Non-Adherent', itemStyle: { color: '#196B24' }, status: 2 },
                 ],
                 itemStyle: {
                     borderWidth: 2, // 设置间隙宽度
@@ -85,6 +89,25 @@
                 },
             },
         ],
+    });
+
+    const router = useRouter();
+    const handleClick = (params: any) => {
+        let { status } = params.data;
+        router.push({
+            path: '/dashboard/list',
+            query: {
+                type: 1,
+                status,
+            },
+        });
+    };
+
+    const month = ref('');
+    const year = ref('');
+
+    watchEffect(() => {
+        console.log(month.value, year.value);
     });
 </script>
 

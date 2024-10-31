@@ -11,6 +11,19 @@ export const usePermissionStore = defineStore('permission', () => {
     };
 
     const userStore = useUserStore();
+
+    // const filterRoute = (routes: any[], result: RouteRecordRaw[] = []): any[] => {
+    //     routes.forEach(item => {
+    //         if (item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) {
+    //             result.push({ ...item, children: undefined });
+    //         }
+    //         if (item.children) {
+    //             filterRoute(item.children, result);
+    //         }
+    //     });
+    //     return result;
+    // };
+
     /**
      * 获取菜单
      */
@@ -19,6 +32,7 @@ export const usePermissionStore = defineStore('permission', () => {
         let route = routes.filter(item => {
             return (item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) || !item.meta?.roles;
         });
+        // let route = filterRoute(routes);
 
         // function getRoutes(routes: any[], result: RouteRecordRaw[] = []) {
         //     routes.forEach(item => {

@@ -6,6 +6,7 @@
                 :autoresize="true"
                 :option="option"
                 class="chart"
+                @click="handleClick"
             />
         </div>
     </client-only>
@@ -37,7 +38,6 @@
 
         series: [
             {
-                name: 'Access From',
                 type: 'pie',
                 radius: '50%',
                 center: ['50%', '45%'],
@@ -65,6 +65,17 @@
             },
         ],
     });
+
+    const handleClick = (params: any) => {
+        let ahi = params.dataIndex;
+        navigateTo({
+            path: '/dashboard/list',
+            query: {
+                type: 6,
+                ahi,
+            },
+        });
+    };
 </script>
 
 <style lang="scss" scoped>

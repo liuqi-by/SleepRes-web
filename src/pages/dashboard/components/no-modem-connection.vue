@@ -7,6 +7,7 @@
                 :autoresize="true"
                 :option="option"
                 class="chart"
+                @click="handleClick"
             />
         </div>
     </client-only>
@@ -38,7 +39,6 @@
 
         series: [
             {
-                name: 'Access From',
                 type: 'pie',
                 radius: '50%',
                 center: ['50%', '45%'],
@@ -47,7 +47,7 @@
                     { value: 735, name: '6-10 Days', itemStyle: { color: '#E97132' } },
                     { value: 580, name: '11-15 Days', itemStyle: { color: '#196B24' } },
                     { value: 484, name: '16-20 Days', itemStyle: { color: '#1EA4D8' } },
-                    { value: 300, name: '21-30 Days', itemStyle: { color: '#A02B93' } },
+                    { value: 300, name: '21 Days or Greater', itemStyle: { color: '#A02B93' } },
                 ],
                 itemStyle: {
                     borderWidth: 2, // 设置间隙宽度
@@ -67,6 +67,18 @@
             },
         ],
     });
+
+    const handleClick = (params: any) => {
+        console.log(params);
+        let days = params.dataIndex;
+        navigateTo({
+            path: '/dashboard/list',
+            query: {
+                type: 4,
+                days,
+            },
+        });
+    };
 </script>
 
 <style lang="scss" scoped>

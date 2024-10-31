@@ -60,8 +60,6 @@
             resetPasswordForm.value?.showResetPassword();
         }
     };
-
-    // const showResetPasswordForm = ref(false); // 是否显示重置密码表单
 </script>
 
 <style lang="scss" scoped>

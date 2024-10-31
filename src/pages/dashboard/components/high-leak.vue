@@ -7,6 +7,7 @@
                 :autoresize="true"
                 :option="option"
                 class="chart"
+                @click="handleClick"
             />
         </div>
     </client-only>
@@ -38,16 +39,14 @@
 
         series: [
             {
-                name: 'Access From',
                 type: 'pie',
                 radius: '50%',
                 center: ['50%', '45%'],
                 data: [
-                    { value: 1048, name: 'High Leak', itemStyle: { color: '#156082' } },
-                    { value: 735, name: '10-19 LPM', itemStyle: { color: '#E97132' } },
-                    { value: 580, name: '20-29 LPM', itemStyle: { color: '#196B24' } },
-                    { value: 484, name: '30-39 LPM', itemStyle: { color: '#1EA4D8' } },
-                    { value: 300, name: '40 LPM or Greater', itemStyle: { color: '#A02B93' } },
+                    { value: 1048, name: '10-19 LPM', itemStyle: { color: '#156082' } },
+                    { value: 735, name: '20-29 LPM', itemStyle: { color: '#E97132' } },
+                    { value: 580, name: '30-39 LPM', itemStyle: { color: '#196B24' } },
+                    { value: 484, name: '40 LPM or Greater', itemStyle: { color: '#1EA4D8' } },
                 ],
                 itemStyle: {
                     borderWidth: 2, // 设置间隙宽度
@@ -67,6 +66,17 @@
             },
         ],
     });
+
+    const handleClick = (params: any) => {
+        let leak = params.dataIndex;
+        navigateTo({
+            path: '/dashboard/list',
+            query: {
+                type: 5,
+                leak,
+            },
+        });
+    };
 </script>
 
 <style lang="scss" scoped>

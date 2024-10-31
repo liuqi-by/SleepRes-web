@@ -683,8 +683,6 @@
         formData.value.tubing = saveApiData.value.tubing;
     };
 
-    onUpdated(() => {});
-
     defineExpose({
         save,
         resetEdit,

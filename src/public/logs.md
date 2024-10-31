@@ -1,3 +1,7 @@
+# 2024/10/31
+
+1. Complete the dashboard list static page(完成dashboard List静态页面)
+
 # 2024/10/28
 
 1. Complete the dashboard first static page(完成dashboard首页静态页面)

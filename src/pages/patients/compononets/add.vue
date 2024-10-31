@@ -204,6 +204,7 @@
                                             :placeholder="$t('patients.DeviceSerialNumber')"
                                             :maxlength="inputLength.sn"
                                             @input="filterNumberAndChart('sn')"
+                                            @blur="checkSn"
                                         />
                                     </div>
                                 </el-form-item>
@@ -389,7 +390,7 @@
     import deviceMode from './tabs/components/device-mode.vue';
     import { useUserStore } from '~/stores/modules/user';
     import type { AddPatientReq } from '~/api/patient/types';
-    import { addPatient } from '~/api/patient';
+    import { addPatient, checkSerial } from '~/api/patient';
     import type { SelectOffice } from '#build/components';
 
     const userStore = useUserStore();
@@ -450,7 +451,7 @@
     });
 
     const { t } = useI18n();
-    const emit = defineEmits(['refresh']);
+    const emit = defineEmits(['refresh', 'showPatientReport']);
     const loading = ref(false); // 按钮loading
     const deviceModeRef = ref<InstanceType<typeof deviceMode>>();
     /**
@@ -580,7 +581,6 @@
     };
 
     const handleChangeOffice = (val: { id: string; name: string }) => {
-        console.log(val);
         if (val) {
             formData.value.institution_id = val.id;
             formData.value.institution_name = val.name;
@@ -610,7 +610,93 @@
         showSelectPhysician.value = true;
     };
 
-    provide('patient', formData);
+    const deviceSn = ref({
+        sn: formData.value.sn,
+    });
+    provide('patient', deviceSn);
+
+    const checkSn = () => {
+        formRef.value?.validateField('sn').then(valid => {
+            if (!valid) {
+                return;
+            }
+            if (formData.value.sn) {
+                checkSerial({ sn: formData.value.sn }).then(res => {
+                    console.log(res);
+                    if (res.code === 1) {
+                        if (res.data_other === 0) {
+                            deviceSn.value.sn = formData.value.sn;
+                        } else if (res.data_other === 1) {
+                            // 序列号错误
+                            ElMessageBox.alert(
+                                '<p class="msg">Sorry， the device you are trying to add is not recognized by the SleepResplatform. Please check that the serial number you are entering is corrector contact SleepRes technical support for assistance.</p>' +
+                                    '<p class="author"><p>Technical Support</p><p>1-800-555-5555</p><p>technical.support@sleepres.com</p></p>',
+                                'Unable to Accept Device',
+                                {
+                                    // if you want to disable its autofocus
+                                    // autofocus: false,
+                                    showConfirmButton: false,
+                                    center: true,
+                                    dangerouslyUseHTMLString: true,
+                                    customClass: 'register-dialog',
+                                    closeOnClickModal: false,
+                                    closeOnPressEscape: false,
+                                },
+                            );
+                        } else if (res.data_other === 2) {
+                            let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
+                            // 序列号已被绑定
+                            ElMessageBox.alert(
+                                () =>
+                                    h('p', { class: 'msg' }, [
+                                        'The serial number you are trying to use is already attached to Patient ID ',
+                                        h(
+                                            'span',
+                                            {
+                                                class: 'link',
+                                                onClick: () => {
+                                                    ElMessageBox.close();
+                                                    showDetail(userInfo);
+                                                }, // 注意在Vue 3中应该使用`onClick`而不是`@click`
+                                            },
+                                            userInfo.patient.patientid,
+                                        ),
+                                        '. Please verify the serial number you are entering is correct or remove the device from Patient ID ',
+                                        h(
+                                            'span',
+                                            {
+                                                class: 'link',
+                                                onClick: () => {
+                                                    ElMessageBox.close();
+                                                    showDetail(userInfo);
+                                                },
+                                            },
+                                            userInfo.patient.patientid,
+                                        ),
+                                        ' file.',
+                                    ]),
+                                'Device already attached to another patient file',
+                                {
+                                    // if you want to disable its autofocus
+                                    // autofocus: false,
+                                    showConfirmButton: false,
+                                    center: true,
+                                    dangerouslyUseHTMLString: true,
+                                    customClass: 'register-dialog',
+                                    closeOnClickModal: false,
+                                    closeOnPressEscape: false,
+                                },
+                            );
+                        }
+                    }
+                });
+            }
+        });
+    };
+
+    const showDetail = (userInfo: any) => {
+        emit('showPatientReport', userInfo);
+    };
 
     defineExpose({
         showDialog,
@@ -669,5 +755,9 @@
             font-size: $font-large;
             font-weight: bold;
         }
+    }
+
+    .register-dialog {
+        top: -200px;
     }
 </style>

@@ -154,3 +154,31 @@ body {
 .avoid-page-break {
     page-break-inside: avoid;
 }
+
+.register-dialog {
+    .el-message-box__content {
+        padding-left: 10px !important;
+    }
+
+    .author {
+        margin-top: 20px;
+        font-size: $font-small;
+        font-weight: 500;
+        text-align: right;
+    }
+
+    .msg {
+        font-size: $font-small;
+        text-indent: 2em;
+    }
+
+    .el-message-box__title {
+        font-size: $font-large;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .link {
+        display: inline;
+    }
+}

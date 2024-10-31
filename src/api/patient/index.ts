@@ -85,3 +85,13 @@ export const getProgress = (data: { user_id: number | string }) => {
         query: data,
     });
 };
+
+/**
+ * @description 添加患者时对序列号对校验
+ */
+export const checkSerial = (data: { sn: string }) => {
+    return useClientRequest<ResPonseType<UserInfo>>('/api/patient/sn_check', {
+        method: 'GET',
+        query: data,
+    });
+};

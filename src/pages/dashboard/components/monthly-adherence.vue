@@ -5,6 +5,7 @@
             :autoresize="true"
             :option="option"
             class="chart"
+            @click="handleClick"
         />
     </client-only>
 </template>
@@ -15,13 +16,23 @@
     import { TitleComponent, TooltipComponent, LegendComponent, GridComponent } from 'echarts/components';
     import { BarChart } from 'echarts/charts';
     import { CanvasRenderer } from 'echarts/renderers';
+    import moment from 'moment';
+    import { useDashboard } from '~/stores/modules/dashboard';
 
     use([TooltipComponent, TitleComponent, BarChart, CanvasRenderer, LegendComponent, GridComponent]);
+
+    const xDate = useDashboard().monthRange;
 
     const option = ref({
         xAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: xDate,
+            axisLabel: {
+                formatter: function (params: any) {
+                    // 转换成 Jue 23
+                    return moment(params).format('MMM YY');
+                },
+            },
         },
         yAxis: {
             type: 'value',
@@ -70,6 +81,19 @@
             },
         ],
     });
+
+    const handleClick = (params: any) => {
+        let status = params.seriesIndex === 0 ? 0 : 2;
+        let date = params.name;
+        navigateTo({
+            path: '/dashboard/list',
+            query: {
+                type: 2,
+                status,
+                date,
+            },
+        });
+    };
 </script>
 
 <style lang="scss" scoped>

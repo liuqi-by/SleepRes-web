@@ -75,6 +75,17 @@ export const routes: RouteRecordRaw[] = [
             roles: [RoleType.DMETherapist],
         },
     },
+    {
+        path: '/dashboard/list',
+        component: () => import('@/pages/dashboard/list.vue'),
+        name: '仪表盘列表',
+        meta: {
+            title: 'dashboard',
+            keepalive: false,
+            roles: [RoleType.DMETherapist],
+            hidden: true,
+        },
+    },
 
     {
         path: '/login',
