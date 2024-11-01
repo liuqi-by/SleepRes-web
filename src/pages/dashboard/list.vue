@@ -31,25 +31,10 @@
                     class="m-r-[40px]"
                     v-if="listType < 4"
                 />
-                <select-adherent
-                    v-model:status="status"
-                    v-if="listType < 3"
-                />
-                <select-hours
-                    v-model="hours"
-                    v-if="listType === 3"
-                />
-                <select-days
-                    v-model="days"
-                    v-if="listType === 4"
-                />
-                <select-leak
-                    v-model="leak"
-                    v-if="listType === 5"
-                />
-                <select-ahi
-                    v-model="ahi"
-                    v-if="listType === 6"
+                <select-options
+                    v-model="selectConfig.model"
+                    :options="selectConfig.option"
+                    :label="selectConfig.label"
                 />
             </div>
         </div>
@@ -202,11 +187,11 @@
                 </el-table-column>
                 <el-table-column
                     prop="patient.compliant"
-                    label="Modem Type"
+                    :label="listType === 4 ? 'Modem Type' : 'Mask'"
                     min-width="120"
                     align="center"
                     sortable
-                    v-if="listType === 4"
+                    v-if="listType === 4 || listType === 5"
                 >
                     <template #default="{ row }">
                         <compliant-status :compliant="Number(row.patient.compliant)" />
@@ -219,25 +204,7 @@
                         />
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="patient.compliant"
-                    label="Mask"
-                    min-width="120"
-                    align="center"
-                    sortable
-                    v-if="listType === 5"
-                >
-                    <template #default="{ row }">
-                        <compliant-status :compliant="Number(row.patient.compliant)" />
-                    </template>
-                    <template #header="{ column }">
-                        <table-filter-header
-                            :column="column"
-                            type="select"
-                            :customOptions="compliantOptions"
-                        />
-                    </template>
-                </el-table-column>
+
                 <el-table-column
                     prop="patient.use_end_time"
                     :label="$t('patients.LastUpdateDate')"
@@ -292,6 +259,7 @@
                         />
                     </template>
                 </el-table-column>
+
                 <el-table-column
                     prop="patient.percent_usage"
                     label="% of days >4 hours last 30 days"
@@ -322,28 +290,14 @@
                         <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
+
                 <el-table-column
                     prop="patient.percent_usage"
-                    label="Avg Leak Last 5 Days"
+                    :label="listType === 5 ? 'Avg Leak Last 5 Days' : 'Avg AHI Last 5 Days'"
                     min-width="120"
                     align="center"
                     sortable
-                    v-if="listType === 5"
-                >
-                    <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage || 0 }}%</span>
-                    </template>
-                    <template #header="{ column }">
-                        <table-filter-header :column="column" />
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="patient.percent_usage"
-                    label="Avg AHI Last 5 Days"
-                    min-width="120"
-                    align="center"
-                    sortable
-                    v-if="listType === 6"
+                    v-if="listType > 5"
                 >
                     <template #default="{ row }">
                         <span>{{ row.patient.percent_usage || 0 }}%</span>
@@ -376,12 +330,7 @@
     // import AddUserDialog from './compononets/add.vue';
     // import PatientRecord from './compononets/patient-record.vue';
     import moment from 'moment';
-    import selectAdherent from './components/select-adherent.vue';
     import selectMonthYear from './components/select-month-year.vue';
-    import selectHours from './components/select-hours.vue';
-    import selectDays from './components/select-days.vue';
-    import selectLeak from './components/select-leak.vue';
-    import selectAhi from './components/select-ahi.vue';
     import { RoleType } from '~/enums/RolesEnum';
     import { getPatient } from '~/api/patient';
 
@@ -439,5 +388,138 @@
         days.value = route.query.days || '';
         leak.value = route.query.leak || '';
         ahi.value = route.query.ahi || '';
+    });
+
+    const hoursOptions = [
+        {
+            label: '0 (Zero)',
+            value: 0,
+        },
+        {
+            label: '0.1 - 2.0',
+            value: 1,
+        },
+        {
+            label: '2.1 - 4.0',
+            value: 2,
+        },
+        {
+            label: '4.1 - 6.0',
+            value: 3,
+        },
+        {
+            label: '6.1 - 8.0',
+            value: 4,
+        },
+        {
+            label: 'Greater than 8.0',
+            value: 5,
+        },
+    ];
+
+    const daysOptions = [
+        {
+            label: '3-5 Days',
+            value: 0,
+        },
+        {
+            label: '6-10 Days',
+            value: 1,
+        },
+        {
+            label: '11-15 Days',
+            value: 2,
+        },
+        {
+            label: '16-20 Days',
+            value: 3,
+        },
+        {
+            label: '21 Days or Greater',
+            value: 4,
+        },
+    ];
+
+    const leakOptions = [
+        {
+            label: '10 - 19 LPM',
+            value: 0,
+        },
+        {
+            label: '20 - 29 LPM',
+            value: 1,
+        },
+        {
+            label: '30 - 39 LPM',
+            value: 2,
+        },
+        {
+            label: '40 LPM or greater',
+            value: 3,
+        },
+    ];
+
+    const ahiOptions = [
+        {
+            label: '10 - 19',
+            value: 0,
+        },
+        {
+            label: '20 - 29',
+            value: 1,
+        },
+        {
+            label: '30 - 39',
+            value: 2,
+        },
+        {
+            label: '40 or greater',
+            value: 3,
+        },
+    ];
+
+    const selectConfig = computed(() => {
+        switch (listType.value) {
+            case 1:
+                return {
+                    option: compliantOptions,
+                    model: status.value,
+                };
+            case 2:
+                return {
+                    option: compliantOptions.filter(item => item.value !== 1),
+                    model: status.value,
+                };
+            case 3:
+                return {
+                    option: hoursOptions,
+                    model: hours.value,
+                    label: 'Hours',
+                };
+            case 4:
+                return {
+                    option: daysOptions,
+                    model: days.value,
+                    label: 'Days',
+                };
+            case 5:
+                return {
+                    option: leakOptions,
+                    model: leak.value,
+                    label: 'Leak',
+                };
+            case 6:
+                return {
+                    option: ahiOptions,
+                    model: ahi.value,
+                    label: 'AHI',
+                };
+            default:
+                return {
+                    option: [],
+                    model: '',
+                    label: '',
+                };
+        }
     });
 </script>
