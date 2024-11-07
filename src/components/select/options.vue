@@ -38,4 +38,8 @@
         align-items: center;
         min-width: 300px;
     }
+
+    :deep(.el-select__wrapper) {
+        min-height: 40px;
+    }
 </style>

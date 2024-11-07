@@ -156,6 +156,9 @@ body {
 }
 
 .register-dialog {
+    position: relative;
+    top: -20%;
+
     .el-message-box__content {
         padding-left: 10px !important;
     }
@@ -169,7 +172,7 @@ body {
 
     .msg {
         font-size: $font-small;
-        text-indent: 2em;
+        text-indent: 1em;
     }
 
     .el-message-box__title {

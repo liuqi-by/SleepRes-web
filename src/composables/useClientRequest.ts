@@ -29,7 +29,6 @@ export const useClientRequest = <T = unknown>(url: string, opts?: FetchOptions) 
             if (loginStatus?.token) {
                 options.query = { ...options.query, token: loginStatus.token, userid: loginStatus.id };
             }
-
             // options.query = { ...options.query, };
         },
         onResponse({ response }) {

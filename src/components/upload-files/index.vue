@@ -15,10 +15,12 @@
             <uploader
                 :options="options"
                 ref="uploaderRef"
-                @file-added="onFileAdded"
+                @files-added="onFileAdded"
                 :fileStatusText="fileStatusText"
                 allowDuplicateUploads
                 @complete="onFileComplete"
+                :autoStart="false"
+                minSize="0"
             >
                 <!-- 定义不支持上传的提示 -->
                 <uploader-unsupport />
@@ -63,6 +65,7 @@
                             class="file-table"
                             style="height: 400px"
                             :data="files"
+                            :resize="false"
                         >
                             <el-table-column
                                 type="index"
@@ -81,7 +84,7 @@
                                 width="180"
                             >
                                 <template #default="{ row }">
-                                    {{ Math.floor((row.size / 1024 / 1024) * 100) / 100 }} MB
+                                    {{ Math.ceil((row.size / 1024 / 1024) * 100) / 100 }} MB
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -141,21 +144,25 @@
 
 <script setup lang="ts">
     import { Select, CloseBold } from '@element-plus/icons-vue';
+    import { h } from 'vue';
+    import BaseButton from '@/components/base-button/index.vue';
     import { getProgress } from '~/api/patient';
     import { useUserStore } from '~/stores/modules/user';
-
     const dialogVisible = ref(false);
 
     let userId: number | string = 0;
+    let user_id: number | string = 0;
 
     const showDialog = (id?: string) => {
         dialogVisible.value = true;
         userId = id || Math.round(Math.random() * 9) + 1 + '' + Date.now();
+        user_id = id || 0;
     };
 
     const close = () => {
         dialogVisible.value = false;
         userId = 0;
+        user_id = 0;
         clearFiles();
         // timer && clearInterval(timer);
         // timer = null;
@@ -197,15 +204,208 @@
             return 'fail: ' + response.msg;
         }
     };
-
     const uploaderRef = ref();
-    const onFileAdded = () => {
+    const onFileAdded = (files: any) => {
         // 每次上传前清空
         // uploaderRef.value.uploader.files = [];
         // uploaderRef.value.uploader.fileList = [];
         // uploaderRef.value.files = [];
         // uploaderRef.value.fileList = [];
         // clearFiles();
+
+        let logFile = files.find((file: any) => file.name.endsWith('.log'));
+
+        if (!logFile) {
+            ElMessage.error('Please upload a log file');
+        } else {
+            // formdata
+            const formData = new FormData();
+            const loginStatus = useUserStore().loginStatus;
+            formData.append('file', logFile.file); // 添加文件到表单数据
+            formData.append('token', loginStatus!.token); // 添加文件名到表单数据
+            formData.append('userid', loginStatus!.id); // 添加用户id到表单数据
+
+            if (user_id) {
+                // 场景2
+                formData.append('user_id', user_id as string);
+                $fetch('/api/common/sd_upload_check', {
+                    method: 'POST',
+                    body: formData,
+                }).then((res: any) => {
+                    res = JSON.parse(res);
+                    if (res.code === 1) {
+                        // 校验通过
+                        startUpload();
+                    } else if (res.error_code === 1) {
+                        ElMessageBox.alert(
+                            h('div', [
+                                h(
+                                    'p',
+                                    { class: 'msg' },
+                                    'the serial number in the patient record does not match the serial number on the SD card.',
+                                ),
+                                h('div', { class: 'flex absolute bottom-[30px] ' }, [
+                                    h(
+                                        BaseButton,
+                                        {
+                                            class: 'btn',
+                                            type: 'primary',
+                                            onClick: () => {
+                                                startUpload();
+                                                ElMessageBox.close();
+                                            },
+                                        },
+                                        'download anyway',
+                                    ),
+                                    h(
+                                        BaseButton,
+                                        {
+                                            class: 'btn ',
+                                            type: 'primary',
+                                            onClick: () => {
+                                                if (res.data) {
+                                                    ElMessageBox.alert(
+                                                        `<p class="msg">Patient ${nameFormat(res.data)} currently has a matching serial number to the SD Card.  Would you like to download the data into this patient’s file?</p>`,
+                                                        '',
+                                                        {
+                                                            showConfirmButton: true,
+                                                            showCancelButton: true,
+                                                            cancelButtonText: 'No',
+                                                            confirmButtonText: 'Yes',
+                                                            center: true,
+                                                            dangerouslyUseHTMLString: true,
+                                                            customClass: 'register-dialog',
+                                                            closeOnClickModal: false,
+                                                            closeOnPressEscape: false,
+                                                        },
+                                                    )
+                                                        .then(() => {
+                                                            // 上传文件
+                                                            startUpload();
+                                                        })
+                                                        .catch(() => {
+                                                            console.log('取消');
+                                                            // 取消
+                                                            close();
+                                                        });
+                                                } else {
+                                                    // 没有患者
+                                                    ElMessageBox.alert(
+                                                        `<p class="msg">No patient was found in the database with that serial number</p>`,
+                                                        '',
+                                                        {
+                                                            // if you want to disable its autofocus
+                                                            // autofocus: false,
+                                                            showConfirmButton: false,
+                                                            showCancelButton: true,
+                                                            cancelButtonText: 'Close',
+                                                            center: true,
+                                                            dangerouslyUseHTMLString: true,
+                                                            customClass: 'register-dialog',
+                                                            closeOnClickModal: false,
+                                                            closeOnPressEscape: false,
+                                                        },
+                                                    ).catch(() => {
+                                                        // 取消
+                                                        close();
+                                                    });
+                                                }
+                                            },
+                                        },
+                                        'search database for matching serial number',
+                                    ),
+                                    h(
+                                        BaseButton,
+                                        {
+                                            class: 'btn',
+                                            onClick: () => {
+                                                ElMessageBox.close();
+                                            },
+                                        },
+                                        'Cancel',
+                                    ),
+                                ]),
+                            ]),
+                            '',
+                            {
+                                showConfirmButton: false,
+                                showCancelButton: false,
+                                cancelButtonText: 'No',
+                                confirmButtonText: 'Yes',
+                                center: true,
+                                dangerouslyUseHTMLString: true,
+                                customClass: 'register-dialog',
+                                customStyle: { 'min-width': '700px' },
+                                closeOnClickModal: false,
+                                closeOnPressEscape: false,
+                            },
+                        );
+                    }
+                });
+            } else {
+                // 场景1
+                $fetch('/api/common/sd_upload_check', {
+                    method: 'POST',
+                    body: formData,
+                }).then((res: any) => {
+                    res = JSON.parse(res);
+                    if (res.code === 1) {
+                        // 校验通过
+                        ElMessageBox.alert(
+                            `<p class="msg">Patient ${nameFormat(res.data)} currently has a matching serial number to the SD Card.  Would you like to download the data into this patient’s file?</p>`,
+                            '',
+                            {
+                                showConfirmButton: true,
+                                showCancelButton: true,
+                                cancelButtonText: 'No',
+                                confirmButtonText: 'Yes',
+                                center: true,
+                                dangerouslyUseHTMLString: true,
+                                customClass: 'register-dialog',
+                                closeOnClickModal: false,
+                                closeOnPressEscape: false,
+                            },
+                        )
+                            .then(() => {
+                                // 上传文件
+                                startUpload();
+                            })
+                            .catch(() => {
+                                console.log('取消');
+                                // 取消
+                                close();
+                            });
+                    } else {
+                        // 没有匹配的序列号患者
+                        ElMessageBox.alert(
+                            `<p class="msg">No patient with a serial number (list the serial number from the SD card) was found.</p>`,
+                            '',
+                            {
+                                // if you want to disable its autofocus
+                                // autofocus: false,
+                                showConfirmButton: false,
+                                showCancelButton: true,
+                                cancelButtonText: 'Close',
+                                center: true,
+                                dangerouslyUseHTMLString: true,
+                                customClass: 'register-dialog',
+                                closeOnClickModal: false,
+                                closeOnPressEscape: false,
+                            },
+                        ).catch(() => {
+                            // 取消
+                            close();
+                        });
+                    }
+                });
+            }
+        }
+    };
+
+    // 开始上传文件
+    const startUpload = () => {
+        uploaderRef.value.uploader.upload();
+        console.log('startUpload');
     };
 
     const clearFiles = () => {
@@ -256,15 +456,15 @@
         getProgress({
             user_id: userId,
         })
-            .then(res => {
+            .then(_res => {
                 ElMessageBox.close();
                 // 文件处理成功
-                ElMessageBox.alert(`<p class="msg">${res.msg}</p>`, '', {
+                ElMessageBox.alert(`<p class="msg">the data upload is complete</p>`, '', {
                     // if you want to disable its autofocus
                     // autofocus: false,
                     showConfirmButton: false,
                     showCancelButton: true,
-                    cancelButtonText: 'Close',
+                    cancelButtonText: 'Exit',
                     center: true,
                     dangerouslyUseHTMLString: true,
                     customClass: 'confirm-dialog',

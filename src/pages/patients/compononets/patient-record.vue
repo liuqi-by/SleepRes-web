@@ -98,7 +98,7 @@
                 >
                     <div class="form-item">
                         <div class="el-input">
-                            <div class="el-input__wrapper w-192px h-40px">
+                            <div class="el-input__wrapper w-192px h-40px justify-start!">
                                 <!-- <Select
                                     size="6"
                                     color="var(--el-color-success)"

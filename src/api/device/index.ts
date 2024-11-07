@@ -29,3 +29,13 @@ export const updateTubingAndMask = (data: UpdateTubingAndMaskReq) => {
         params: data,
     });
 };
+
+/**
+ * 上传SD卡验证
+ */
+export const uploadSDCardCheck = (formdata: FormData) => {
+    return $fetch('/api/common/sd_upload_check', {
+        method: 'POST',
+        body: formdata,
+    });
+};

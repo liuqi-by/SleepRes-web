@@ -373,7 +373,7 @@
     const status = ref(0);
     const route = useRoute();
     const date = ref();
-    const listType = ref(1);
+    const listType = ref();
     const setupDate = ref();
     const hours = ref();
     const days = ref();
@@ -478,48 +478,70 @@
         },
     ];
 
-    const selectConfig = computed(() => {
-        switch (listType.value) {
-            case 1:
-                return {
-                    option: compliantOptions,
-                    model: status.value,
-                };
-            case 2:
-                return {
-                    option: compliantOptions.filter(item => item.value !== 1),
-                    model: status.value,
-                };
-            case 3:
-                return {
-                    option: hoursOptions,
-                    model: hours.value,
-                    label: 'Hours',
-                };
-            case 4:
-                return {
-                    option: daysOptions,
-                    model: days.value,
-                    label: 'Days',
-                };
-            case 5:
-                return {
-                    option: leakOptions,
-                    model: leak.value,
-                    label: 'Leak',
-                };
-            case 6:
-                return {
-                    option: ahiOptions,
-                    model: ahi.value,
-                    label: 'AHI',
-                };
-            default:
-                return {
-                    option: [],
-                    model: '',
-                    label: '',
-                };
-        }
+    const selectConfig = ref<any>({
+        option: [],
+        model: '',
+        label: '',
     });
+
+    watch(
+        listType,
+        () => {
+            switch (listType.value) {
+                case 1:
+                    selectConfig.value = {
+                        option: compliantOptions,
+                        model: status.value,
+                        label: 'Status',
+                    };
+                    break;
+                case 2:
+                    selectConfig.value = {
+                        option: compliantOptions.filter(item => item.value !== 1),
+                        model: status.value,
+                        label: 'Status',
+                    };
+                    break;
+                case 3:
+                    selectConfig.value = {
+                        option: hoursOptions,
+                        model: hours.value,
+                        label: 'Hours',
+                    };
+                    break;
+                case 4:
+                    selectConfig.value = {
+                        option: daysOptions,
+                        model: days.value,
+                        label: 'Days',
+                    };
+                    break;
+                case 5:
+                    selectConfig.value = {
+                        option: leakOptions,
+                        model: leak.value,
+                        label: 'Leak',
+                    };
+                    break;
+                case 6:
+                    selectConfig.value = {
+                        option: ahiOptions,
+                        model: ahi.value,
+                        label: 'AHI',
+                    };
+                    break;
+                default:
+                    selectConfig.value = {
+                        option: [],
+                        model: '',
+                        label: '',
+                    };
+                    break;
+            }
+        },
+        {
+            immediate: true,
+            deep: true,
+        },
+    );
 </script>

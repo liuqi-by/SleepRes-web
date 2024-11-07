@@ -1,3 +1,7 @@
+# 2024/11/1
+
+1. Update version 0.0.2-alpha.1(更新版本0.0.2-alpha.1)
+
 # 2024/10/31
 
 1. Complete the dashboard list static page(完成dashboard List静态页面)

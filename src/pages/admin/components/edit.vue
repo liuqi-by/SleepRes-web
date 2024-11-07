@@ -327,7 +327,7 @@
                 user_id: formData.value?.id || '',
                 account_num: formData.value?.account_num || '',
                 account_name: formData.value?.username || '',
-                frozen: formData.value?.frozen || '',
+                frozen: formData.value?.frozen || 0,
                 first_name: formData.value?.first_name || '',
                 last_name: formData.value?.last_name || '',
                 // dmename: formData.value?.dmename || '',
