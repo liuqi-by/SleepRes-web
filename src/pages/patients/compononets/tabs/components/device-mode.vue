@@ -511,7 +511,8 @@
 
     const save = () => {
         return new Promise<void>((resolve, _reject) => {
-            if (!patient?.value.sn) {
+            if (!patient?.value.sn || !modeOptions.value || modeOptions.value?.length === 0) {
+                resolve();
                 return;
             }
             let timerOut = 5;
