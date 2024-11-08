@@ -236,11 +236,15 @@
                     body: formData,
                 }).then((res: any) => {
                     res = JSON.parse(res);
-                    res.data.patient = JSON.parse(res.data.patient);
+
                     if (res.code === 1) {
                         // 校验通过
                         startUpload();
-                    } else if (res.error_code === 1) {
+                    } else {
+                        if (res.data && res.data.patient) {
+                            res.data.patient = JSON.parse(res.data.patient);
+                        }
+
                         ElMessageBox.alert(
                             h('div', [
                                 h(
@@ -277,6 +281,8 @@
                                                                     class: 'link',
                                                                     onClick: () => {
                                                                         showDetail(res.data);
+                                                                        close();
+                                                                        ElMessageBox.close();
                                                                     },
                                                                 },
                                                                 `Patient ID ${res.data.patient.patientid}`,
@@ -306,25 +312,7 @@
                                                         .catch(() => {});
                                                 } else {
                                                     // 没有患者
-                                                    ElMessageBox.alert(
-                                                        `<p class="msg">No patient was found in the database with that serial number</p>`,
-                                                        '',
-                                                        {
-                                                            // if you want to disable its autofocus
-                                                            // autofocus: false,
-                                                            showConfirmButton: false,
-                                                            showCancelButton: true,
-                                                            cancelButtonText: 'Close',
-                                                            center: true,
-                                                            dangerouslyUseHTMLString: true,
-                                                            customClass: 'register-dialog',
-                                                            closeOnClickModal: false,
-                                                            closeOnPressEscape: false,
-                                                        },
-                                                    ).catch(() => {
-                                                        // 取消
-                                                        close();
-                                                    });
+                                                    noPatientMessage();
                                                 }
                                             },
                                         },
@@ -380,38 +368,20 @@
                                 customClass: 'register-dialog',
                                 closeOnClickModal: false,
                                 closeOnPressEscape: false,
+                                callback: (action: any) => {
+                                    if (action === 'confirm') {
+                                        // 上传文件
+                                        startUpload();
+                                    } else {
+                                        // 取消
+                                        close();
+                                    }
+                                },
                             },
-                        )
-                            .then(() => {
-                                // 上传文件
-                                startUpload();
-                            })
-                            .catch(() => {
-                                console.log('取消');
-                                // 取消
-                                close();
-                            });
+                        );
                     } else {
                         // 没有匹配的序列号患者
-                        ElMessageBox.alert(
-                            `<p class="msg">No patient with a serial number (list the serial number from the SD card) was found.</p>`,
-                            '',
-                            {
-                                // if you want to disable its autofocus
-                                // autofocus: false,
-                                showConfirmButton: false,
-                                showCancelButton: true,
-                                cancelButtonText: 'Close',
-                                center: true,
-                                dangerouslyUseHTMLString: true,
-                                customClass: 'register-dialog',
-                                closeOnClickModal: false,
-                                closeOnPressEscape: false,
-                            },
-                        ).catch(() => {
-                            // 取消
-                            close();
-                        });
+                        noPatientMessage();
                     }
                 });
             }
@@ -474,21 +444,46 @@
         })
             .then(_res => {
                 ElMessageBox.close();
-                // 文件处理成功
-                ElMessageBox.alert(`<p class="msg">the data upload is complete</p>`, '', {
-                    // if you want to disable its autofocus
-                    // autofocus: false,
-                    showConfirmButton: false,
-                    showCancelButton: true,
-                    cancelButtonText: 'Exit',
-                    center: true,
-                    dangerouslyUseHTMLString: true,
-                    customClass: 'confirm-dialog',
-                    closeOnClickModal: true,
-                    closeOnPressEscape: true,
-                });
+                completeMessage();
             })
             .catch(() => {});
+    };
+
+    // 文件处理成功
+    const completeMessage = () => {
+        ElMessageBox.alert(`<p class="msg">the data upload is complete</p>`, '', {
+            // if you want to disable its autofocus
+            // autofocus: false,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonText: 'Close',
+            center: true,
+            dangerouslyUseHTMLString: true,
+            customClass: 'confirm-dialog',
+            closeOnClickModal: true,
+            closeOnPressEscape: true,
+        });
+    };
+
+    // 没找到患者
+    const noPatientMessage = () => {
+        // 没有匹配的序列号患者
+        ElMessageBox.alert(
+            `<p class="msg">No patient with a serial number (list the serial number from the SD card) was found.</p>`,
+            '',
+            {
+                // if you want to disable its autofocus
+                // autofocus: false,
+                showConfirmButton: false,
+                showCancelButton: true,
+                cancelButtonText: 'Close',
+                center: true,
+                dangerouslyUseHTMLString: true,
+                customClass: 'register-dialog',
+                closeOnClickModal: false,
+                closeOnPressEscape: false,
+            },
+        ).catch(() => {});
     };
 
     onUnmounted(() => {
@@ -499,7 +494,11 @@
 
     const emit = defineEmits(['showPatientReport']);
     const showDetail = (userInfo: any) => {
-        emit('showPatientReport', userInfo);
+        if (userInfo) {
+            emit('showPatientReport', userInfo);
+        } else {
+            console.log('没有搜索到');
+        }
     };
 
     defineExpose({

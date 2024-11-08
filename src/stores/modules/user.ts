@@ -213,7 +213,11 @@ export const useUserStore = defineStore(
         };
 
         const resetTimer = useThrottleFn(() => {
-            lastActiveTime.value = Date.now();
+            if (loginStatus.value?.token) {
+                lastActiveTime.value = Date.now();
+            } else {
+                logout();
+            }
         }, 200);
 
         const checkInactivity = () => {
