@@ -65,23 +65,25 @@
                             class="file-table"
                             style="height: 400px"
                             :data="files"
-                            :resize="false"
                         >
                             <el-table-column
                                 type="index"
                                 label="No."
                                 width="70"
                                 align="center"
+                                :resizable="false"
                             />
                             <el-table-column
                                 prop="name"
                                 label="filename"
                                 min-width="180"
+                                :resizable="false"
                             />
                             <el-table-column
                                 prop="size"
                                 label="size"
                                 width="180"
+                                :resizable="false"
                             >
                                 <template #default="{ row }">
                                     {{ Math.ceil((row.size / 1024 / 1024) * 100) / 100 }} MB
@@ -91,6 +93,7 @@
                                 prop="success"
                                 label="status"
                                 width="180"
+                                :resizable="false"
                             >
                                 <template #default="{ row }">
                                     <uploader-file
@@ -233,6 +236,7 @@
                     body: formData,
                 }).then((res: any) => {
                     res = JSON.parse(res);
+                    res.data.patient = JSON.parse(res.data.patient);
                     if (res.code === 1) {
                         // 校验通过
                         startUpload();
@@ -265,29 +269,41 @@
                                             onClick: () => {
                                                 if (res.data) {
                                                     ElMessageBox.alert(
-                                                        `<p class="msg">Patient ${nameFormat(res.data)} currently has a matching serial number to the SD Card.  Would you like to download the data into this patient’s file?</p>`,
+                                                        h('p', { class: 'msg' }, [
+                                                            '“SD Card serial number is currently assigned to ',
+                                                            h(
+                                                                'span',
+                                                                {
+                                                                    class: 'link',
+                                                                    onClick: () => {
+                                                                        showDetail(res.data);
+                                                                    },
+                                                                },
+                                                                `Patient ID ${res.data.patient.patientid}`,
+                                                            ),
+                                                            '  Please remove the serial number before continuing with the download',
+                                                        ]),
                                                         '',
                                                         {
-                                                            showConfirmButton: true,
+                                                            showConfirmButton: false,
                                                             showCancelButton: true,
-                                                            cancelButtonText: 'No',
+                                                            cancelButtonText: 'Cancel',
                                                             confirmButtonText: 'Yes',
                                                             center: true,
                                                             dangerouslyUseHTMLString: true,
                                                             customClass: 'register-dialog',
                                                             closeOnClickModal: false,
                                                             closeOnPressEscape: false,
+                                                            customStyle: {
+                                                                minWidth: '500px',
+                                                            },
                                                         },
                                                     )
                                                         .then(() => {
                                                             // 上传文件
                                                             startUpload();
                                                         })
-                                                        .catch(() => {
-                                                            console.log('取消');
-                                                            // 取消
-                                                            close();
-                                                        });
+                                                        .catch(() => {});
                                                 } else {
                                                     // 没有患者
                                                     ElMessageBox.alert(
@@ -480,6 +496,11 @@
         //     clearInterval(timer);
         // }
     });
+
+    const emit = defineEmits(['showPatientReport']);
+    const showDetail = (userInfo: any) => {
+        emit('showPatientReport', userInfo);
+    };
 
     defineExpose({
         showDialog,

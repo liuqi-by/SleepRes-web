@@ -117,7 +117,7 @@
                 <el-table-column
                     prop="status"
                     :label="$t('admin.AccountStatus')"
-                    min-width="110"
+                    min-width="140"
                     align="center"
                     sortable
                 >
@@ -183,7 +183,6 @@
                     :label="$t('login.resetPwd')"
                     min-width="120"
                     align="center"
-                    fixed="right"
                 >
                     <template #default="{ row }">
                         <span

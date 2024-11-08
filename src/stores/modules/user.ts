@@ -14,11 +14,17 @@ export const useUserStore = defineStore(
             maxAge: 60 * 60 * 24,
         });
 
-        const userInfoInit = null;
+        // const userInfoInit = null;
         // 用户信息
-        const userInfo = ref<UserInfo | null>(userInfoInit);
+        const userInfo = useCookie<UserInfo | null>('userInfo', {});
         // 角色权限
-        const roles = ref<string[]>([]);
+        const roles = computed(() => {
+            if (userInfo.value?.group_id) {
+                return getRoles(Number(userInfo.value.group_id));
+            } else {
+                return [];
+            }
+        });
 
         // 角色下拉选择框的选项
         const rolesOption = [
@@ -87,7 +93,7 @@ export const useUserStore = defineStore(
             });
         }
 
-        const permissionStore = usePermissionStore();
+        // const permissionStore = usePermissionStore();
         /**
          * 获取信息(用户昵称、头像、角色集合、权限集合)
          * @return {Promise<UserInfo>}
@@ -98,24 +104,27 @@ export const useUserStore = defineStore(
                     .then((res: any) => {
                         if (res) {
                             userInfo.value = isServer ? res.data.value.data : res.data;
-                            if (userInfo.value?.group_id) {
-                                roles.value = getRoles(Number(userInfo.value.group_id));
-                            } else {
-                                roles.value = [];
-                            }
-                            console.log('roles', roles.value);
+                            // if (userInfo.value?.group_id) {
+                            //     roles.value = getRoles(Number(userInfo.value.group_id));
+                            // } else {
+                            //     roles.value = [];
+                            // }
+                            // console.log('roles', roles.value);
                             if (import.meta.client) {
                                 startInactivityTimer();
                             }
 
                             // roles.value = userInfo.value?.group_id === 1 ? ['SleepRes'] : [];
-                            permissionStore.getPermissionRoutes();
+
                             resolve(userInfo.value as UserInfo);
                         }
                     })
                     .catch((error: any) => {
                         reject(error);
                     });
+                // .finally(() => {
+                //     permissionStore.getPermissionRoutes();
+                // });
             });
         }
 
@@ -142,7 +151,7 @@ export const useUserStore = defineStore(
 
                 try {
                     userInfo.value = null;
-                    roles.value = [];
+
                     // useMessageStore().stopInterval();
                     usePermissionStore().setPermissionRoutes([]);
                     tagsViewStore.delAllViews();

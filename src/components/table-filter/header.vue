@@ -1,7 +1,7 @@
 <!-- 筛选标题 -->
 <template>
     <div class="table-header">
-        <span class="flex-1">{{ column.label }}</span>
+        <span class="flex-1 label">{{ column.label }}</span>
         <div class="flex-shrink-0">
             <el-icon
                 :ref="
@@ -58,6 +58,10 @@
 </script>
 
 <style lang="scss" scoped>
+    .label {
+        white-space: nowrap;
+    }
+
     .filter-icon {
         position: relative;
         top: 2px;

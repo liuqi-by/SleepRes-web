@@ -199,7 +199,10 @@
             />
 
             <!-- 上传SD -->
-            <lazy-upload-files ref="uploadFilesRef" />
+            <lazy-upload-files
+                ref="uploadFilesRef"
+                @show-patient-report="showPatientReport"
+            />
 
             <!-- 筛选弹窗 -->
             <table-filter-popover
