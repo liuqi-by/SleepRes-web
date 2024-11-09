@@ -1,4 +1,3 @@
-import { usePermissionStore } from './permission';
 import { useTagsViewStore } from './tagsView';
 import { getMessage } from '~/api/admin';
 
@@ -18,13 +17,19 @@ export const useUserStore = defineStore(
         // 用户信息
         const userInfo = useCookie<UserInfo | null>('userInfo', {});
         // 角色权限
-        const roles = computed(() => {
-            if (userInfo.value?.group_id) {
-                return getRoles(Number(userInfo.value.group_id));
-            } else {
-                return [];
-            }
-        });
+        const roles = ref<string[]>([]);
+
+        watch(
+            () => userInfo.value?.group_id,
+            () => {
+                console.log('group_id', userInfo.value?.group_id);
+                roles.value = userInfo.value?.group_id ? getRoles(Number(userInfo.value.group_id)) : [];
+            },
+            {
+                immediate: true,
+                deep: true,
+            },
+        );
 
         // 角色下拉选择框的选项
         const rolesOption = [
@@ -153,7 +158,7 @@ export const useUserStore = defineStore(
                     userInfo.value = null;
 
                     // useMessageStore().stopInterval();
-                    usePermissionStore().setPermissionRoutes([]);
+                    // usePermissionStore().setPermissionRoutes([]);
                     tagsViewStore.delAllViews();
 
                     if (!loginStatus.value) {
@@ -208,22 +213,27 @@ export const useUserStore = defineStore(
             if (!logTimer.value) {
                 clearInterval(logTimer.value);
             }
-            // 创建定时器检查是否30分钟过去
-            logTimer.value = setInterval(checkInactivity, 60000); // 每分钟检查一次
+            // 创建定时器检查是否15分钟过去
+            logTimer.value = setInterval(checkInactivity, 30000); // 每30秒检查一次
         };
 
         const resetTimer = useThrottleFn(() => {
-            if (loginStatus.value?.token) {
-                lastActiveTime.value = Date.now();
-            } else {
+            lastActiveTime.value = Date.now();
+            if (!loginStatus.value?.token) {
                 logout();
+                if (!logTimer.value) {
+                    clearInterval(logTimer.value);
+                    window.removeEventListener('mousemove', resetTimer);
+                    window.removeEventListener('keydown', resetTimer);
+                    window.removeEventListener('click', resetTimer);
+                }
             }
         }, 200);
 
         const checkInactivity = () => {
-            // 如果超过30分钟没有操作，执行注销逻辑
+            // 如果超过15分钟没有操作，执行注销逻辑
             console.log('checkInactivity');
-            if (Date.now() - lastActiveTime.value > 30 * 60 * 1000) {
+            if (Date.now() - lastActiveTime.value > 15 * 60 * 1000) {
                 if (!logTimer.value) {
                     clearInterval(logTimer.value);
                     window.removeEventListener('mousemove', resetTimer);

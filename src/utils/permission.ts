@@ -12,5 +12,6 @@ export function haveRoles(checkRoles: string[], roles?: string[]) {
     if (!roles) {
         roles = userStore.roles;
     }
+    console.log('roles', roles);
     return checkRoles.some(item => roles.includes(item));
 }

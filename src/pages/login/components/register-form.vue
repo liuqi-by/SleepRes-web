@@ -275,7 +275,7 @@
                 .then(res => {
                     if (res.code === 1) {
                         ElMessageBox.alert(
-                            '<p class="msg">Your account submission has been sent.  We will contact you within 2 – 3 business days with your account information.</p><p class="author">Sincerly,Your SleepRes Account Team</p>',
+                            '<p class="msg">Your account submission has been sent.  We will contact you within 2 – 3 business days with your account information.</p><p class="author">Sincerly,<br/>Your SleepRes Account Team</p>',
                             'Thank you!',
                             {
                                 // if you want to disable its autofocus
@@ -286,6 +286,9 @@
                                 customClass: 'register-dialog',
                                 closeOnClickModal: false,
                                 closeOnPressEscape: false,
+                                customStyle: {
+                                    minWidth: '500px',
+                                },
                             },
                         );
                         // 这里就可以自动关闭弹窗了

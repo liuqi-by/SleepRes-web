@@ -3,7 +3,9 @@ import { useUserStore } from './user';
 import { routes } from '@/app/router.options';
 
 export const usePermissionStore = defineStore('permission', () => {
-    const permissionRoutes = ref<RouteRecordRaw[]>([]);
+    const permissionRoutes = useCookie<RouteRecordRaw[]>('routes', {
+        default: () => [],
+    });
 
     // 设置权限路由
     const setPermissionRoutes = (routes: any) => {
@@ -62,6 +64,13 @@ export const usePermissionStore = defineStore('permission', () => {
         //     );
         // });
     };
+
+    watch(
+        () => userStore.roles,
+        () => {
+            getPermissionRoutes();
+        },
+    );
 
     return {
         permissionRoutes,

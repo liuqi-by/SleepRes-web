@@ -1,3 +1,8 @@
+# 2024/11/8
+
+1. Modify SD card upload, mostly completed(修改SD卡上传吗，部分完成)
+2. Modify prescription bug(修改处方bug)
+
 # 2024/11/1
 
 1. Update version 0.0.2-alpha.1(更新版本0.0.2-alpha.1)

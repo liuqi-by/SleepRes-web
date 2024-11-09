@@ -9,7 +9,7 @@
             class="form form-dialog"
         >
             <div class="form-title">
-                {{ formData.id ? $t('users.EditUserInfo') : $t('users.CreateUser') }}
+                {{ $t('users.EditUserInfo') }}
             </div>
             <el-form
                 ref="formRef"

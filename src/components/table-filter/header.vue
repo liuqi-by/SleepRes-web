@@ -59,7 +59,7 @@
 
 <style lang="scss" scoped>
     .label {
-        white-space: nowrap;
+        word-wrap: keep-all;
     }
 
     .filter-icon {
