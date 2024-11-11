@@ -19,7 +19,7 @@ export const useAppStore = defineStore('app', () => {
     /** 是否显示logo */
     const isShowLogo = ref<AppSettings['isShowLogo']>(true);
     /** 布局 顶部或左边 */
-    const layout = useCookie<AppSettings['layout']>('layout', { default: () => 'top' });
+    const layout = ref<AppSettings['layout']>('left');
     /** 是否显示菜单图标 */
     const isShowMenuIcon = ref<AppSettings['isShowMenuIcon']>(false);
     /** 主题 黑暗/明亮 */

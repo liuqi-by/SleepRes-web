@@ -106,6 +106,10 @@ body {
         min-height: 240px;
         padding: 25px;
 
+        .el-message-box__message {
+            font-size: $font-small;
+        }
+
         .el-message-box__content {
             flex: 1;
             padding-left: 50px;

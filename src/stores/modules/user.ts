@@ -154,6 +154,12 @@ export const useUserStore = defineStore(
                     resolve();
                 }, 500);
 
+                if (!logTimer.value) {
+                    clearInterval(logTimer.value);
+                    window.removeEventListener('mousemove', resetTimer);
+                    window.removeEventListener('keydown', resetTimer);
+                    window.removeEventListener('click', resetTimer);
+                }
                 try {
                     userInfo.value = null;
 
@@ -232,8 +238,8 @@ export const useUserStore = defineStore(
 
         const checkInactivity = () => {
             // 如果超过15分钟没有操作，执行注销逻辑
-            console.log('checkInactivity');
-            if (Date.now() - lastActiveTime.value > 15 * 60 * 1000) {
+            if (Date.now() - lastActiveTime.value > 15 * 60 * 10000) {
+                console.log('超过15分钟没有操作，执行注销逻辑');
                 if (!logTimer.value) {
                     clearInterval(logTimer.value);
                     window.removeEventListener('mousemove', resetTimer);

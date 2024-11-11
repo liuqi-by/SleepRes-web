@@ -165,6 +165,7 @@
     // 保存
     const save = () => {
         loading.value = true;
+
         deviceModeRef.value?.save().finally(() => {
             loading.value = false;
         });
@@ -545,8 +546,6 @@
                     .then(res => {
                         if (res.code === 1) {
                             ElMessage.success('Change success');
-                            isEdit.value = false;
-
                             update && update();
                             updatePatient && updatePatient({ ...res.data, patient: JSON.parse(res.data.patient) });
                         }

@@ -7,10 +7,15 @@
                 to="/"
                 no-prefetch
             > -->
-            <base-svg-icon
+            <!-- <base-svg-icon
                 icon="logo"
                 width="208px"
                 height="64px"
+            /> -->
+            <img
+                src="@/assets/images/logo.png"
+                alt="logo"
+                class="logo"
             />
             <!-- </NuxtLink> -->
         </transition>
@@ -39,5 +44,10 @@
             width: 100%;
             height: 100%;
         }
+    }
+
+    .logo {
+        width: 100%;
+        height: 100%;
     }
 </style>

@@ -108,6 +108,9 @@
             confirmButtonText: t('form.Confirm'),
             cancelButtonText: t('form.Cancel'),
             type: 'warning',
+            customStyle: {
+                top: '-40px',
+            },
         }).then(() => {
             userStore.logout();
         });

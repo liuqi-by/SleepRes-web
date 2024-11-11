@@ -9,7 +9,7 @@
             class="hover: cursor-pointer relative"
         >
             <slot name="title"> </slot>
-            <el-icon class="absolute right-0 top-0 color-[#333]">
+            <el-icon class="absolute left-[-20px] top-[2px] color-[#333]">
                 <Plus v-if="!isOpen" />
                 <Minus v-else />
             </el-icon>

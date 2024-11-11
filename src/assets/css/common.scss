@@ -175,6 +175,10 @@ body {
         text-indent: 1em;
     }
 
+    .text {
+        font-size: $font-small;
+    }
+
     .el-message-box__title {
         font-size: $font-large;
         font-weight: bold;

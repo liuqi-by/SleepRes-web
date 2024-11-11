@@ -77,6 +77,7 @@
                                     :placeholder="$t('patients.PatientID')"
                                     :maxlength="inputLength.patientID"
                                     @input="filterChart('patientid')"
+                                    @blur="checkId"
                                 />
                             </div>
                         </el-form-item>
@@ -391,7 +392,8 @@
     import { useUserStore } from '~/stores/modules/user';
     import type { AddPatientReq } from '~/api/patient/types';
     import { addPatient, checkSerial } from '~/api/patient';
-    import type { SelectOffice } from '#build/components';
+    import { type SelectOffice } from '#build/components';
+    import BaseButton from '@/components/base-button/index.vue';
 
     const userStore = useUserStore();
 
@@ -465,103 +467,98 @@
             // 如果没有选择医生
             if (!formData.value.physician_id) {
                 ElMessageBox.alert(
-                    `<p class="msg">By not adding a physician to the patient record the phsycian will not be able to access the patients account in the SleepRes cloud platform.</p>
-                <p class="msg">Would you like to add a physician?</p>`,
+                    h('div', {}, [
+                        h(
+                            'p',
+                            { class: 'msg' },
+                            'By not adding a physician to the patient record the phsycian will not be able to access the patients account in the SleepRes cloud platform.',
+                        ),
+                        h('p', { class: 'msg' }, 'Would you like to add a physician?'),
+                        h('div', { class: 'el-message-box__btns' }, [
+                            h(
+                                BaseButton,
+                                {
+                                    onClick: () => {
+                                        ElMessageBox.close();
+                                        showAddPhysician();
+                                    },
+                                },
+                                'YES',
+                            ),
+                            h(
+                                BaseButton,
+                                {
+                                    onClick: () => {
+                                        ElMessageBox.close();
+                                        saveForm();
+                                    },
+                                },
+                                'No',
+                            ),
+                        ]),
+                    ]),
                     'Warning: A physician has not been added to the patient record',
                     {
                         // if you want to disable its autofocus
                         // autofocus: false,
-                        showConfirmButton: true,
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes',
-                        cancelButtonText: 'No',
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        confirmButtonText: 'No',
+                        cancelButtonText: 'Yes',
                         center: true,
                         dangerouslyUseHTMLString: true,
-                        customClass: 'message-dialog',
+                        customClass: 'message-dialog custom-btn',
                         closeOnClickModal: true,
                         closeOnPressEscape: true,
                     },
-                )
-                    .then(() => {
-                        return showAddPhysician();
-                    })
-                    .catch(() => {
-                        loading.value = true;
-
-                        // 去除formData null和undefined
-                        Object.keys(formData.value).forEach(key => {
-                            let value = formData.value[key as keyof AddPatientReq];
-                            if (value === null || value === undefined) {
-                                formData.value[key as keyof AddPatientReq] = '' as any;
-                            }
-                        });
-
-                        // 新增
-                        addPatient({
-                            ...formData.value,
-                            physician_id: formData.value?.physician_id ? formData.value?.physician_id : '',
-                        })
-                            .then(res => {
-                                if (res.code === 1) {
-                                    ElMessage.success(t('form.createSuccess'));
-                                    loading.value = false;
-                                    if (formData.value?.sn) {
-                                        emit('refresh');
-                                        deviceModeRef.value
-                                            ?.update()
-                                            .then(() => {
-                                                dialogVisible.value = false;
-                                            })
-                                            .finally(() => {
-                                                setTimeout(() => {
-                                                    loading.value = false;
-                                                }, 1000);
-                                            });
-                                    } else {
-                                        dialogVisible.value = false;
-                                    }
-                                }
-                            })
-                            .finally(() => {});
-                    });
+                );
             } else {
-                loading.value = true;
-
-                // 去除formData null和undefined
-                Object.keys(formData.value).forEach(key => {
-                    let value = formData.value[key as keyof AddPatientReq];
-                    if (value === null || value === undefined) {
-                        formData.value[key as keyof AddPatientReq] = '' as any;
-                    }
-                });
-
-                // 新增
-                addPatient({
-                    ...formData.value,
-                    physician_id: formData.value?.physician_id ? formData.value?.physician_id : '',
-                })
-                    .then(res => {
-                        if (res.code === 1) {
-                            ElMessage.success(t('form.createSuccess'));
-                            loading.value = false;
-                            if (formData.value?.sn) {
-                                emit('refresh');
-                                deviceModeRef.value
-                                    ?.update()
-                                    .then(() => {})
-                                    .finally(() => {
-                                        setTimeout(() => {
-                                            loading.value = false;
-                                        }, 1000);
-                                    });
-                            } else {
-                                dialogVisible.value = false;
-                            }
-                        }
-                    })
-                    .finally(() => {});
+                saveForm();
             }
         });
+    };
+
+    const saveForm = () => {
+        loading.value = true;
+
+        // 去除formData null和undefined
+        Object.keys(formData.value).forEach(key => {
+            let value = formData.value[key as keyof AddPatientReq];
+            if (value === null || value === undefined) {
+                formData.value[key as keyof AddPatientReq] = '' as any;
+            }
+        });
+
+        // 新增
+        addPatient({
+            ...formData.value,
+            physician_id: formData.value?.physician_id ? formData.value?.physician_id : '',
+        })
+            .then((res: any) => {
+                if (res.code === 1) {
+                    ElMessage.success(t('form.createSuccess'));
+                    emit('refresh');
+                    if (formData.value?.sn) {
+                        deviceModeRef.value
+                            ?.update()
+                            .then(() => {})
+                            .finally(() => {
+                                setTimeout(() => {
+                                    loading.value = false;
+                                }, 1000);
+                            });
+                    } else {
+                        setTimeout(() => {
+                            dialogVisible.value = false;
+                            let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
+                            showDetail(userInfo);
+                        }, 500);
+                    }
+                }
+            })
+            .finally(() => {
+                loading.value = false;
+            });
     };
 
     const close = () => {
@@ -615,6 +612,7 @@
     });
     provide('patient', deviceSn);
 
+    // 校验序列号
     const checkSn = () => {
         formRef.value?.validateField('sn').then(valid => {
             if (!valid) {
@@ -694,6 +692,62 @@
         });
     };
 
+    // 校验ID
+    const checkId = () => {
+        if (formData.value.patientid) {
+            ElMessageBox.alert(
+                () =>
+                    h('div', {}, [
+                        h('div', { class: 'msg' }, [
+                            'Sorry, the patient ID you are trying to use is already assigned to patient ( ',
+                            h(
+                                'span',
+                                {
+                                    class: 'link',
+                                    onClick: () => {
+                                        ElMessageBox.close();
+                                    }, // 注意在Vue 3中应该使用`onClick`而不是`@click`
+                                },
+                                '1234',
+                            ),
+                            ' ).  Please either create a different ID or modify the ID in patient ( ',
+                            h(
+                                'span',
+                                {
+                                    class: 'link',
+                                    onClick: () => {
+                                        ElMessageBox.close();
+                                    },
+                                },
+                                '123',
+                            ),
+                            ' ) SleepRes account.',
+                        ]),
+                        h('div', { class: 'text-left m-t-[20px] text' }, [
+                            h('p', { class: '' }, 'Technical Support'),
+                            h('p', { class: '' }, '1-800-555-5555'),
+                            h('p', { class: '' }, 'technical.support@sleepres.com'),
+                        ]),
+                    ]),
+
+                'Patient ID Already Exists',
+                {
+                    // if you want to disable its autofocus
+                    // autofocus: false,
+                    showConfirmButton: false,
+                    center: true,
+                    dangerouslyUseHTMLString: true,
+                    customClass: 'register-dialog',
+                    closeOnClickModal: false,
+                    closeOnPressEscape: false,
+                    customStyle: {
+                        minWidth: '630px',
+                    },
+                },
+            );
+        }
+    };
+
     const showDetail = (userInfo: any) => {
         emit('showPatientReport', userInfo);
     };
@@ -738,6 +792,10 @@
     }
 </style>
 <style lang="scss">
+    .custom-btn {
+        padding-bottom: 15px !important;
+    }
+
     .message-dialog {
         min-width: 800px !important;
 

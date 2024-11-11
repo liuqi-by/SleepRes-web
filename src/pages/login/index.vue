@@ -2,11 +2,16 @@
 <template>
     <div class="login-container">
         <!-- logo -->
-        <base-svg-icon
+        <!-- <base-svg-icon
             icon="logo"
             color="#fff"
             width="210px"
             height="68px"
+            class="login-logo"
+        /> -->
+        <img
+            src="@/assets/images/logo.png"
+            alt="logo"
             class="login-logo"
         />
         <!-- 表单 -->
