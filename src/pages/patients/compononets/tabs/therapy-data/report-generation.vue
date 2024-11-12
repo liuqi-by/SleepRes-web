@@ -1,7 +1,7 @@
 <template>
     <!-- 图表生成选项 -->
     <div class="report-generation">
-        <el-dialog
+        <base-dialog
             v-model="dialogVisible"
             title=""
             width="900"
@@ -89,7 +89,7 @@
                     >
                 </span>
             </template>
-        </el-dialog>
+        </base-dialog>
         <report-preview ref="reportPreviewRef" />
     </div>
 </template>

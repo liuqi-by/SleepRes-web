@@ -1,7 +1,7 @@
 <!-- 添加医生 -->
 <template>
     <div>
-        <el-dialog
+        <base-dialog
             v-model="dialogVisible"
             title=""
             width="700"
@@ -51,7 +51,7 @@
                     <base-button @click="close">CANCEL </base-button>
                 </div>
             </div>
-        </el-dialog>
+        </base-dialog>
     </div>
 </template>
 

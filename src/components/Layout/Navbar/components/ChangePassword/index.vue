@@ -1,7 +1,7 @@
 <!-- 修改密码 -->
 <template>
     <div>
-        <el-dialog
+        <base-dialog
             v-model="editVisible"
             width="520"
             :title="$t('layout.ChangePassword')"
@@ -70,7 +70,7 @@
                     </base-button>
                 </div>
             </el-form>
-        </el-dialog>
+        </base-dialog>
     </div>
 </template>
 

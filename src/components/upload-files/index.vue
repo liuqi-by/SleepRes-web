@@ -1,7 +1,7 @@
 <!-- 上传文件 -->
 <template>
     <div>
-        <el-dialog
+        <base-dialog
             v-model="dialogVisible"
             title=""
             width="900"
@@ -141,7 +141,7 @@
                     </template>
                 </uploader-files>
             </uploader>
-        </el-dialog>
+        </base-dialog>
     </div>
 </template>
 

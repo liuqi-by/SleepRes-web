@@ -4,7 +4,7 @@
         class="patient-record"
         :key="formData.id"
     >
-        <el-dialog
+        <base-dialog
             v-model="dialogVisible"
             title=""
             width="1250"
@@ -143,7 +143,7 @@
                 <Notes v-if="activeIndex === 4" />
                 <Logs v-if="activeIndex === 5" />
             </div>
-        </el-dialog>
+        </base-dialog>
     </div>
 </template>
 

@@ -1,6 +1,7 @@
+<!-- 版本更新 -->
 <template>
     <div>
-        <el-dialog
+        <base-dialog
             v-model="dialogVisible"
             title=""
             width="700"
@@ -12,7 +13,7 @@
                 border="1px solid #e0e0e0"
                 v-html="mdData"
             ></div>
-        </el-dialog>
+        </base-dialog>
     </div>
 </template>
 

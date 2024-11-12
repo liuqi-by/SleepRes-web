@@ -1,7 +1,7 @@
 <!-- 查看消息 -->
 <template>
     <div>
-        <el-dialog
+        <base-dialog
             v-model="dialogVisible"
             title=""
             width="600"
@@ -250,7 +250,7 @@
                     <base-button @click="dialogVisible = false">{{ $t('form.Cancel') }}</base-button>
                 </div>
             </template>
-        </el-dialog>
+        </base-dialog>
     </div>
 </template>
 

@@ -1,7 +1,7 @@
 <!-- 报告打印预览 -->
 <template>
     <div class="report-preview">
-        <el-dialog
+        <base-dialog
             v-model="dialogVisible"
             width="830"
             @close="close"
@@ -314,7 +314,7 @@
                     </div>
                 </div>
             </div>
-        </el-dialog>
+        </base-dialog>
     </div>
 </template>
 

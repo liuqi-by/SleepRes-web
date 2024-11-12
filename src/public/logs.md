@@ -1,3 +1,8 @@
+# 2024/11/12
+
+1. Fix (Bugs, Errors and Changes Version 4) Most of the issues(修改(Bugs, Errors and Changes Version 4)大部分界面问题)
+2. Update version 0.0.2-alpha.2(更新版本0.0.2-alpha.2)
+
 # 2024/11/8
 
 1. Modify SD card upload, mostly completed(修改SD卡上传吗，部分完成)
