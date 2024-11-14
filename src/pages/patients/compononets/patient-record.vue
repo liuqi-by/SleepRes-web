@@ -139,7 +139,10 @@
             >
                 <TherapyData v-if="activeIndex === 1" />
                 <Prescription v-if="activeIndex === 2" />
-                <PatientDetails v-if="activeIndex === 3" />
+                <PatientDetails
+                    v-if="activeIndex === 3"
+                    @show-dialog="showDialog"
+                />
                 <Notes v-if="activeIndex === 4" />
                 <Logs v-if="activeIndex === 5" />
             </div>

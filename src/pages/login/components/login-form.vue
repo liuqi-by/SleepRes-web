@@ -109,7 +109,7 @@
 
 <script setup lang="ts">
     import type { FormInstance, InputInstance } from 'element-plus';
-    import type { LocationQuery, LocationQueryValue } from 'vue-router';
+    // import type { LocationQuery, LocationQueryValue } from 'vue-router';
     import type { TabType } from '../index.vue';
     import { useUserStore } from '@/stores/modules/user';
     import { usePermissionStore } from '~/stores/modules/permission';
@@ -135,8 +135,8 @@
         };
     });
 
-    const route = useRoute();
-    const router = useRouter();
+    // const route = useRoute();
+    // const router = useRouter();
     const permissionStore = usePermissionStore();
     /**
      * 登录
@@ -160,30 +160,34 @@
                     // 登录成功后，获取用户信息
                     await userStore.getUserInfo();
 
-                    const query: LocationQuery = route.query;
+                    // const query: LocationQuery = route.query;
 
-                    const redirect = (query.redirect as LocationQueryValue) ?? '/';
+                    // const redirect = (query.redirect as LocationQueryValue) || '/';
 
-                    const otherQueryParams = Object.keys(query).reduce((acc: any, cur: string) => {
-                        if (cur !== 'redirect') {
-                            acc[cur] = query[cur];
-                        }
-                        return acc;
-                    }, {});
+                    // const otherQueryParams = Object.keys(query).reduce((acc: any, cur: string) => {
+                    //     if (cur !== 'redirect') {
+                    //         acc[cur] = query[cur];
+                    //     }
+                    //     return acc;
+                    // }, {});
 
                     let menuRoute = permissionStore.permissionRoutes.filter(route => !route.meta?.hidden);
-                    console.log('menuRoute', menuRoute);
 
                     // 如果跳转的路由不在权限路由中，跳转到第一个菜单路由
-                    if (menuRoute.length > 0) {
-                        if (menuRoute.findIndex(route => route.path === redirect) === -1) {
-                            return navigateTo(menuRoute[0].path);
-                        }
-                    } else {
-                        return navigateTo('/');
-                    }
+                    nextTick(() => {
+                        setTimeout(() => {
+                            if (menuRoute.length > 0) {
+                                // if (menuRoute.findIndex(route => route.path === redirect) === -1) {
+                                return navigateTo(menuRoute[0].path);
+                                // }
+                            } else {
+                                return navigateTo('/');
+                            }
+                        }, 200);
+                    });
 
-                    router.push({ path: redirect, query: otherQueryParams });
+                    // navigateTo({ path: redirect, query: otherQueryParams });
+                    // router.push({ path: redirect, query: otherQueryParams });
                 })
                 .finally(() => {
                     loading.value = false;

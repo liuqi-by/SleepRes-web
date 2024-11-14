@@ -695,56 +695,7 @@
     // 校验ID
     const checkId = () => {
         if (formData.value.patientid) {
-            ElMessageBox.alert(
-                () =>
-                    h('div', {}, [
-                        h('div', { class: 'msg' }, [
-                            'Sorry, the patient ID you are trying to use is already assigned to patient ( ',
-                            h(
-                                'span',
-                                {
-                                    class: 'link',
-                                    onClick: () => {
-                                        ElMessageBox.close();
-                                    }, // 注意在Vue 3中应该使用`onClick`而不是`@click`
-                                },
-                                '1234',
-                            ),
-                            ' ).  Please either create a different ID or modify the ID in patient ( ',
-                            h(
-                                'span',
-                                {
-                                    class: 'link',
-                                    onClick: () => {
-                                        ElMessageBox.close();
-                                    },
-                                },
-                                '123',
-                            ),
-                            ' ) SleepRes account.',
-                        ]),
-                        h('div', { class: 'text-left m-t-[20px] text' }, [
-                            h('p', { class: '' }, 'Technical Support'),
-                            h('p', { class: '' }, '1-800-555-5555'),
-                            h('p', { class: '' }, 'technical.support@sleepres.com'),
-                        ]),
-                    ]),
-
-                'Patient ID Already Exists',
-                {
-                    // if you want to disable its autofocus
-                    // autofocus: false,
-                    showConfirmButton: false,
-                    center: true,
-                    dangerouslyUseHTMLString: true,
-                    customClass: 'register-dialog',
-                    closeOnClickModal: false,
-                    closeOnPressEscape: false,
-                    customStyle: {
-                        minWidth: '630px',
-                    },
-                },
-            );
+            checkPatientIdFn(formData.value.patientid, showDetail);
         }
     };
 

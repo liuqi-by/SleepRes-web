@@ -1,4 +1,5 @@
 import { useTagsViewStore } from './tagsView';
+import { usePermissionStore } from './permission';
 import { getMessage } from '~/api/admin';
 
 import { loginAccount, getUserDetailInfo, loginOut } from '~/api/login';
@@ -15,21 +16,25 @@ export const useUserStore = defineStore(
 
         // const userInfoInit = null;
         // 用户信息
-        const userInfo = useCookie<UserInfo | null>('userInfo', {});
+        const userInfo = useCookie<UserInfo | null>('userInfo', {
+            default: () => null,
+        });
         // 角色权限
-        const roles = ref<string[]>([]);
+        const roles = useCookie<string[]>('roles', {
+            default: () => [],
+        });
 
-        watch(
-            () => userInfo.value?.group_id,
-            () => {
-                console.log('group_id', userInfo.value?.group_id);
-                roles.value = userInfo.value?.group_id ? getRoles(Number(userInfo.value.group_id)) : [];
-            },
-            {
-                immediate: true,
-                deep: true,
-            },
-        );
+        // watch(
+        //     () => userInfo.value?.group_id,
+        //     () => {
+        //         console.log('group_id', userInfo.value?.group_id);
+        //         roles.value = userInfo.value?.group_id ? getRoles(Number(userInfo.value.group_id)) : [];
+        //     },
+        //     {
+        //         immediate: true,
+        //         deep: true,
+        //     },
+        // );
 
         // 角色下拉选择框的选项
         const rolesOption = [
@@ -98,7 +103,7 @@ export const useUserStore = defineStore(
             });
         }
 
-        // const permissionStore = usePermissionStore();
+        const permissionStore = usePermissionStore();
         /**
          * 获取信息(用户昵称、头像、角色集合、权限集合)
          * @return {Promise<UserInfo>}
@@ -109,22 +114,24 @@ export const useUserStore = defineStore(
                     .then((res: any) => {
                         if (res) {
                             userInfo.value = isServer ? res.data.value.data : res.data;
-                            // if (userInfo.value?.group_id) {
-                            //     roles.value = getRoles(Number(userInfo.value.group_id));
-                            // } else {
-                            //     roles.value = [];
-                            // }
+                            if (userInfo.value?.group_id) {
+                                roles.value = getRoles(Number(userInfo.value.group_id));
+                            } else {
+                                roles.value = [];
+                            }
                             // console.log('roles', roles.value);
+
+                            // roles.value = userInfo.value?.group_id === 1 ? ['SleepRes'] : [];
+                            permissionStore.getPermissionRoutes(); // 获取权限路由
+
                             if (import.meta.client) {
                                 startInactivityTimer();
                             }
-
-                            // roles.value = userInfo.value?.group_id === 1 ? ['SleepRes'] : [];
-
                             resolve(userInfo.value as UserInfo);
                         }
                     })
                     .catch((error: any) => {
+                        permissionStore.setPermissionRoutes([]);
                         reject(error);
                     });
                 // .finally(() => {
@@ -144,11 +151,12 @@ export const useUserStore = defineStore(
             return new Promise<void>((resolve, reject) => {
                 setTimeout(() => {
                     if (route.path !== '/login') {
-                        if (route.fullPath !== '/') {
-                            navigateTo(`/login?redirect=${route.fullPath}`);
-                        } else {
-                            navigateTo(`/login`);
-                        }
+                        // if (route.fullPath !== '/') {
+                        //     navigateTo(`/login?redirect=${route.fullPath}`);
+                        // } else {
+                        //     navigateTo(`/login`);
+                        // }
+                        navigateTo(`/login`);
                     }
 
                     resolve();
@@ -161,10 +169,10 @@ export const useUserStore = defineStore(
                     window.removeEventListener('click', resetTimer);
                 }
                 try {
-                    userInfo.value = null;
-
                     // useMessageStore().stopInterval();
-                    // usePermissionStore().setPermissionRoutes([]);
+                    userInfo.value = null;
+                    roles.value = [];
+                    usePermissionStore().setPermissionRoutes([]);
                     tagsViewStore.delAllViews();
 
                     if (!loginStatus.value) {
@@ -219,7 +227,7 @@ export const useUserStore = defineStore(
             if (!logTimer.value) {
                 clearInterval(logTimer.value);
             }
-            // 创建定时器检查是否15分钟过去
+            // 创建定时器检查是否15分钟过去30000
             logTimer.value = setInterval(checkInactivity, 30000); // 每30秒检查一次
         };
 
@@ -237,8 +245,8 @@ export const useUserStore = defineStore(
         }, 200);
 
         const checkInactivity = () => {
-            // 如果超过15分钟没有操作，执行注销逻辑
-            if (Date.now() - lastActiveTime.value > 15 * 60 * 10000) {
+            // 如果超过15分钟没有操作，执行注销逻辑15 * 60 * 1000
+            if (Date.now() - lastActiveTime.value > 15 * 60 * 1000) {
                 console.log('超过15分钟没有操作，执行注销逻辑');
                 if (!logTimer.value) {
                     clearInterval(logTimer.value);

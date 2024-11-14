@@ -5,17 +5,17 @@ import Layout from '@/components/Layout/index.vue';
 import { RoleType } from '~/enums/RolesEnum';
 
 export const routes: RouteRecordRaw[] = [
-    {
-        path: '/redirect',
-        meta: { hidden: true },
-        component: Layout,
-        children: [
-            {
-                path: '/redirect/:path(.*)',
-                component: () => import('@/pages/redirect/index.vue'),
-            },
-        ],
-    },
+    // {
+    //     path: '/redirect',
+    //     meta: { hidden: true },
+    //     component: Layout,
+    //     children: [
+    //         {
+    //             path: '/redirect/:path(.*)',
+    //             component: () => import('@/pages/redirect/index.vue'),
+    //         },
+    //     ],
+    // },
 
     {
         path: '/',

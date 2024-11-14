@@ -18,7 +18,7 @@ export default defineNuxtRouteMiddleware(async to => {
         console.log('没有登录');
         // 如果没有登录，跳转到登录页面
         if (!whiteList.includes(to.path)) {
-            return navigateTo('/login?redirect=' + to.path);
+            return navigateTo('/login');
         }
     } else {
         try {
@@ -29,6 +29,7 @@ export default defineNuxtRouteMiddleware(async to => {
             let menuRoute = permissionStore.permissionRoutes.filter(route => route.meta?.title || !route.meta?.hidden);
             // 菜单访问的路由
             console.log('路由', permissionStore.permissionRoutes);
+            console.log('菜单路由', menuRoute);
 
             if (menuRoute.length <= 0) {
                 return showError({
@@ -37,6 +38,10 @@ export default defineNuxtRouteMiddleware(async to => {
             }
             // 如果跳转的路由不在权限路由中，跳转到第一个菜单路由
             console.log('跳转的路由', to);
+            console.log(
+                '符合理由',
+                menuRoute.findIndex(route => route.meta?.title === to.meta.title),
+            );
             if (menuRoute.findIndex(route => route.meta?.title === to.meta.title) === -1) {
                 if (to.path === '/') {
                     return navigateTo(menuRoute[0].path);
@@ -52,7 +57,7 @@ export default defineNuxtRouteMiddleware(async to => {
                 // return navigateTo(menuRoute[0].path);
             }
         } catch (error) {
-            console.log(error);
+            console.log('error', error);
             // userStore.logout();
             // return navigateTo('/login?redirect=' + to.path);
         }

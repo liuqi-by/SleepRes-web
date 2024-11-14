@@ -61,6 +61,7 @@
                         class="form-input"
                         :maxlength="inputLength.patientID"
                         @input="filterChart('patientid')"
+                        @blur="checkId"
                     />
                 </div>
             </el-form-item>
@@ -278,6 +279,10 @@
         mobile: '',
         user_id: '',
     });
+
+    const saveDate = ref({
+        ...formData.value,
+    });
     const { filterMobile, filterChart } = useFilterInput(formData);
     const patient = inject<Ref<UserInfo>>('patient');
 
@@ -312,6 +317,10 @@
                     email: val.email || '',
                     mobile: val.mobile || '',
                     user_id: val.id || '',
+                };
+
+                saveDate.value = {
+                    ...formData.value,
                 };
             }
         },
@@ -399,38 +408,43 @@
         });
     };
 
+    watch(isEdit, () => {
+        if (!isEdit.value) {
+            let val = patient!.value;
+
+            formData.value = {
+                first_name: val.first_name || '',
+                last_name: val.last_name || '',
+                birthdate: val.patient.birthdate || '',
+                patientid: val.patient.patientid || '',
+                institution_id: val.institution_id || '',
+                institution_name: val.institution_name || '',
+                setup_date: val.patient.setup_date || '',
+                therapist_id: val.patient.therapist_id || '',
+                therapist_name:
+                    nameFormat({
+                        first_name: val.patient.therapist_first_name,
+                        last_name: val.patient.therapist_last_name,
+                    }) || '',
+                physician_id: val.patient.physician_id || '',
+                physician_name:
+                    nameFormat({
+                        first_name: val.patient.physician_first_name,
+                        last_name: val.patient.physician_last_name,
+                    }) || '',
+                sn: val.sn || '',
+                city: val.patient.city || '',
+                state: val.state || '',
+                address: val.address || '',
+                email: val.email || '',
+                mobile: val.mobile || '',
+                user_id: val.id || '',
+            };
+        }
+    });
+
     const cancel = () => {
         isEdit.value = false;
-        let val = patient!.value;
-
-        formData.value = {
-            first_name: val.first_name || '',
-            last_name: val.last_name || '',
-            birthdate: val.patient.birthdate || '',
-            patientid: val.patient.patientid || '',
-            institution_id: val.institution_id || '',
-            institution_name: val.institution_name || '',
-            setup_date: val.patient.setup_date || '',
-            therapist_id: val.patient.therapist_id || '',
-            therapist_name:
-                nameFormat({
-                    first_name: val.patient.therapist_first_name,
-                    last_name: val.patient.therapist_last_name,
-                }) || '',
-            physician_id: val.patient.physician_id || '',
-            physician_name:
-                nameFormat({
-                    first_name: val.patient.physician_first_name,
-                    last_name: val.patient.physician_last_name,
-                }) || '',
-            sn: val.sn || '',
-            city: val.patient.city || '',
-            state: val.state || '',
-            address: val.address || '',
-            email: val.email || '',
-            mobile: val.mobile || '',
-            user_id: val.id || '',
-        };
     };
 
     const handleChangeSelect = (key: string, label: string, val: any) => {
@@ -449,6 +463,21 @@
         if (isEdit.value) {
             showSelectPhysician.value = true;
         }
+    };
+
+    // 校验ID
+    const checkId = () => {
+        if (formData.value.patientid) {
+            if (formData.value.patientid === patient!.value.patient.patientid) {
+                return;
+            }
+            checkPatientIdFn(formData.value.patientid, showDetail);
+        }
+    };
+
+    const emit = defineEmits(['showDialog']);
+    const showDetail = (userInfo: any) => {
+        emit('showDialog', userInfo);
     };
 </script>
 

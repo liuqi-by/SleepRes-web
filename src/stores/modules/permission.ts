@@ -65,13 +65,6 @@ export const usePermissionStore = defineStore('permission', () => {
         // });
     };
 
-    watch(
-        () => userStore.roles,
-        () => {
-            getPermissionRoutes();
-        },
-    );
-
     return {
         permissionRoutes,
         setPermissionRoutes,

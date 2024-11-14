@@ -190,11 +190,13 @@
                 @refresh="getData"
                 v-model="isShowAddUserDialog"
                 @show-patient-report="showPatientReport"
+                v-if="showPatientReport"
             />
             <!-- 患者记录 -->
             <patient-record
                 ref="patientRecordRef"
                 @show-upload-files="showUploadFiles"
+                v-if="showUploadFiles"
             />
 
             <!-- 上传SD -->

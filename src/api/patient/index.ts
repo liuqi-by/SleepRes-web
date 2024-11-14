@@ -95,3 +95,13 @@ export const checkSerial = (data: { sn: string }) => {
         query: data,
     });
 };
+
+/**
+ * @description 添加患者时对患者ID校验
+ */
+export const checkPatientId = (data: { patientid: string }) => {
+    return useClientRequest<ResPonseType<UserInfo>>('/api/patient/patientid_check', {
+        method: 'GET',
+        query: data,
+    });
+};
