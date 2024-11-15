@@ -244,8 +244,8 @@
                         if (res.data && res.data.patient) {
                             res.data.patient = JSON.parse(res.data.patient);
                         }
-
-                        ElMessageBox.alert(
+                        // 序列号不匹配
+                        useElMessageBox().alert(
                             h('div', [
                                 h(
                                     'p',
@@ -272,39 +272,40 @@
                                             type: 'primary',
                                             onClick: () => {
                                                 if (res.data) {
-                                                    ElMessageBox.alert(
-                                                        h('p', { class: 'msg' }, [
-                                                            '“SD Card serial number is currently assigned to ',
-                                                            h(
-                                                                'span',
-                                                                {
-                                                                    class: 'link',
-                                                                    onClick: () => {
-                                                                        showDetail(res.data);
-                                                                        close();
-                                                                        ElMessageBox.close();
+                                                    useElMessageBox()
+                                                        .alert(
+                                                            h('p', { class: 'msg' }, [
+                                                                'SD Card serial number is currently assigned to ',
+                                                                h(
+                                                                    'span',
+                                                                    {
+                                                                        class: 'link',
+                                                                        onClick: () => {
+                                                                            showDetail(res.data);
+                                                                            close();
+                                                                            ElMessageBox.close();
+                                                                        },
                                                                     },
+                                                                    `Patient ID ${res.data.patient.patientid}`,
+                                                                ),
+                                                                '  Please remove the serial number before continuing with the download',
+                                                            ]),
+                                                            '',
+                                                            {
+                                                                showConfirmButton: false,
+                                                                showCancelButton: true,
+                                                                cancelButtonText: 'Cancel',
+                                                                confirmButtonText: 'Yes',
+                                                                center: true,
+                                                                dangerouslyUseHTMLString: true,
+                                                                customClass: 'register-dialog',
+                                                                closeOnClickModal: false,
+                                                                closeOnPressEscape: false,
+                                                                customStyle: {
+                                                                    minWidth: '500px',
                                                                 },
-                                                                `Patient ID ${res.data.patient.patientid}`,
-                                                            ),
-                                                            '  Please remove the serial number before continuing with the download',
-                                                        ]),
-                                                        '',
-                                                        {
-                                                            showConfirmButton: false,
-                                                            showCancelButton: true,
-                                                            cancelButtonText: 'Cancel',
-                                                            confirmButtonText: 'Yes',
-                                                            center: true,
-                                                            dangerouslyUseHTMLString: true,
-                                                            customClass: 'register-dialog',
-                                                            closeOnClickModal: false,
-                                                            closeOnPressEscape: false,
-                                                            customStyle: {
-                                                                minWidth: '500px',
                                                             },
-                                                        },
-                                                    )
+                                                        )
                                                         .then(() => {
                                                             // 上传文件
                                                             startUpload();
@@ -355,7 +356,7 @@
                     res = JSON.parse(res);
                     if (res.code === 1) {
                         // 校验通过
-                        ElMessageBox.alert(
+                        useElMessageBox().alert(
                             `<p class="msg">Patient ${nameFormat(res.data)} currently has a matching serial number to the SD Card.  Would you like to download the data into this patient’s file?</p>`,
                             '',
                             {
@@ -451,9 +452,10 @@
 
     // 文件处理成功
     const completeMessage = () => {
-        ElMessageBox.alert(`<p class="msg">the data upload is complete</p>`, '', {
+        useElMessageBox().alert(`<p class="msg">the data upload is complete</p>`, '', {
             // if you want to disable its autofocus
             // autofocus: false,
+
             showConfirmButton: false,
             showCancelButton: true,
             cancelButtonText: 'Close',
@@ -468,22 +470,24 @@
     // 没找到患者
     const noPatientMessage = () => {
         // 没有匹配的序列号患者
-        ElMessageBox.alert(
-            `<p class="msg">No patient with a serial number (list the serial number from the SD card) was found.</p>`,
-            '',
-            {
-                // if you want to disable its autofocus
-                // autofocus: false,
-                showConfirmButton: false,
-                showCancelButton: true,
-                cancelButtonText: 'Close',
-                center: true,
-                dangerouslyUseHTMLString: true,
-                customClass: 'register-dialog',
-                closeOnClickModal: false,
-                closeOnPressEscape: false,
-            },
-        ).catch(() => {});
+        useElMessageBox()
+            .alert(
+                `<p class="msg">No patient with a serial number (list the serial number from the SD card) was found.</p>`,
+                '',
+                {
+                    // if you want to disable its autofocus
+                    // autofocus: false,
+                    showConfirmButton: false,
+                    showCancelButton: true,
+                    cancelButtonText: 'Close',
+                    center: true,
+                    dangerouslyUseHTMLString: true,
+                    customClass: 'register-dialog',
+                    closeOnClickModal: false,
+                    closeOnPressEscape: false,
+                },
+            )
+            .catch(() => {});
     };
 
     onUnmounted(() => {

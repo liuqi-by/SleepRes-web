@@ -31,7 +31,7 @@ export const checkPatientIdFn = (patientId: string, callback: Function) => {
         if (res.code === 1) {
             if (res.data) {
                 let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
-                ElMessageBox.alert(
+                useElMessageBox().alert(
                     () =>
                         h('div', {}, [
                             h('div', { class: 'msg' }, [
@@ -72,6 +72,7 @@ export const checkPatientIdFn = (patientId: string, callback: Function) => {
                     {
                         // if you want to disable its autofocus
                         // autofocus: false,
+
                         showConfirmButton: false,
                         center: true,
                         dangerouslyUseHTMLString: true,

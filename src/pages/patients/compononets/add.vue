@@ -466,7 +466,7 @@
             }
             // 如果没有选择医生
             if (!formData.value.physician_id) {
-                ElMessageBox.alert(
+                useElMessageBox().alert(
                     h('div', {}, [
                         h(
                             'p',
@@ -501,6 +501,7 @@
                     {
                         // if you want to disable its autofocus
                         // autofocus: false,
+
                         showConfirmButton: false,
                         showCancelButton: false,
                         confirmButtonText: 'No',
@@ -626,13 +627,14 @@
                             deviceSn.value.sn = formData.value.sn;
                         } else if (res.data_other === 1) {
                             // 序列号错误
-                            ElMessageBox.alert(
+                            useElMessageBox().alert(
                                 '<p class="msg">Sorry， the device you are trying to add is not recognized by the SleepResplatform. Please check that the serial number you are entering is corrector contact SleepRes technical support for assistance.</p>' +
                                     '<p class="author"><p>Technical Support</p><p>1-800-555-5555</p><p>technical.support@sleepres.com</p></p>',
                                 'Unable to Accept Device',
                                 {
                                     // if you want to disable its autofocus
                                     // autofocus: false,
+
                                     showConfirmButton: false,
                                     center: true,
                                     dangerouslyUseHTMLString: true,
@@ -644,7 +646,7 @@
                         } else if (res.data_other === 2) {
                             let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
                             // 序列号已被绑定
-                            ElMessageBox.alert(
+                            useElMessageBox().alert(
                                 () =>
                                     h('p', { class: 'msg' }, [
                                         'The serial number you are trying to use is already attached to Patient ID ',
@@ -677,6 +679,7 @@
                                 {
                                     // if you want to disable its autofocus
                                     // autofocus: false,
+
                                     showConfirmButton: false,
                                     center: true,
                                     dangerouslyUseHTMLString: true,

@@ -67,7 +67,7 @@
                 <el-table-column
                     prop="patient.patientid"
                     :label="$t('patients.PatientID')"
-                    min-width="120"
+                    min-width="100"
                     align="center"
                     sortable
                 >

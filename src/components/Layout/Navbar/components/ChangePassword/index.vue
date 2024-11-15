@@ -111,13 +111,15 @@
                     return;
                 }
                 let msg = t('layout.ConfirmChangePassword');
-                ElMessageBox.confirm(' ', msg, {
-                    confirmButtonText: t('form.Confirm'),
-                    cancelButtonText: t('form.Cancel'),
-                    type: 'warning',
-                    customStyle: { minHeight: 0 },
-                    dangerouslyUseHTMLString: true,
-                })
+
+                useElMessageBox()
+                    .confirm(' ', msg, {
+                        confirmButtonText: t('form.Confirm'),
+                        cancelButtonText: t('form.Cancel'),
+                        type: 'warning',
+                        customStyle: { minHeight: 0 },
+                        dangerouslyUseHTMLString: true,
+                    })
                     .then(() => {
                         changePassword({
                             password: editFormData.value.oldPassword,

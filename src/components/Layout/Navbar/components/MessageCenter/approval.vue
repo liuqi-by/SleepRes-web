@@ -347,13 +347,14 @@
     // 拒绝
     const reject = () => {
         let msg = t('message.confirmReject');
-        ElMessageBox.confirm(' ', msg, {
-            confirmButtonText: t('form.Confirm'),
-            cancelButtonText: t('form.Cancel'),
-            type: 'warning',
-            customStyle: { minHeight: 0 },
-            dangerouslyUseHTMLString: true,
-        })
+        useElMessageBox()
+            .confirm(' ', msg, {
+                confirmButtonText: t('form.Confirm'),
+                cancelButtonText: t('form.Cancel'),
+                type: 'warning',
+                customStyle: { minHeight: 0, top: '-15vh' },
+                dangerouslyUseHTMLString: true,
+            })
             .then(() => {
                 if (!formData.value.id) {
                     return;

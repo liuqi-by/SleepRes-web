@@ -516,11 +516,12 @@
                 return;
             }
             let timerOut = 5;
-            ElMessageBox.confirm(' ', 'Would you like to send the Rx settings to the PAP device?', {
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                type: 'warning',
-            })
+            useElMessageBox()
+                .confirm(' ', 'Would you like to send the Rx settings to the PAP device?', {
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    type: 'warning',
+                })
                 .then(() => {
                     let loadingInstance = ElLoading.service({
                         lock: true,

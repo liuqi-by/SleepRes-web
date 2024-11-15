@@ -1,3 +1,8 @@
+# 2024/11/13
+
+1. Modify login crash issue(修改登录闪退问题)
+2. Add verification for PatientID(增加patientID的校验)
+
 # 2024/11/12
 
 1. Fix (Bugs, Errors and Changes Version 4) Most of the issues(修改(Bugs, Errors and Changes Version 4)大部分界面问题)

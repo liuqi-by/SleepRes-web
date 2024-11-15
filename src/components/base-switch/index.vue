@@ -27,13 +27,14 @@
 
     const beforStatusChange = () => {
         return new Promise<boolean>((resolve, reject) => {
-            ElMessageBox.confirm(' ', val.value ? t(props.msgOn) : t(props.msgOff), {
-                confirmButtonText: t('form.Confirm'),
-                cancelButtonText: t('form.Cancel'),
-                type: 'warning',
-                customStyle: { minHeight: 0, top: '-15vh' },
-                dangerouslyUseHTMLString: true,
-            })
+            useElMessageBox()
+                .confirm(' ', val.value ? t(props.msgOn) : t(props.msgOff), {
+                    confirmButtonText: t('form.Confirm'),
+                    cancelButtonText: t('form.Cancel'),
+                    type: 'warning',
+                    customStyle: { minHeight: 0, top: '-15vh' },
+                    dangerouslyUseHTMLString: true,
+                })
                 .then(() => {
                     resolve(true);
                 })

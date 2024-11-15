@@ -104,16 +104,18 @@
      * 注销
      */
     const logout = () => {
-        ElMessageBox.confirm(t('login.ConfirmLogout'), t('login.logout'), {
-            confirmButtonText: t('form.Confirm'),
-            cancelButtonText: t('form.Cancel'),
-            type: 'warning',
-            customStyle: {
-                top: '-40px',
-            },
-        }).then(() => {
-            userStore.logout();
-        });
+        useElMessageBox()
+            .confirm(t('login.ConfirmLogout'), t('login.logout'), {
+                confirmButtonText: t('form.Confirm'),
+                cancelButtonText: t('form.Cancel'),
+                type: 'warning',
+                customStyle: {
+                    top: '-40px',
+                },
+            })
+            .then(() => {
+                userStore.logout();
+            });
     };
 
     /**
