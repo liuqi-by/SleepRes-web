@@ -53,6 +53,8 @@
     watch(
         () => props.dates,
         () => {
+            console.log('props.dates', props.dates);
+
             const { commonOption } = useStaticChartCommonOption(props.dates);
 
             option.value = {

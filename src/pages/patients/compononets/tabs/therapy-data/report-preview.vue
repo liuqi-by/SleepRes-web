@@ -43,7 +43,7 @@
                                 {{
                                     barChartData.dates && barChartData.dates.length > 0
                                         ? `${barChartData.dates[0]} - ${barChartData.dates[barChartData.dates.length - 1]}`
-                                        : deviceReport?.start_date + ' - ' + deviceReport?.end_date
+                                        : (deviceReport?.start_date || '') + ' - ' + (deviceReport?.end_date || '')
                                 }}
                             </div>
                         </div>
@@ -352,7 +352,7 @@
 
     const detailedReportRef = ref<InstanceType<typeof DetailedReport>>();
     const show = (option: Options) => {
-        options.value = option;
+        options.value = { ...option };
         dialogVisible.value = true;
 
         getReportInfo();

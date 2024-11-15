@@ -74,12 +74,23 @@
         if (activeTime.value === 'best30') {
             return ['30', '30'];
         } else if (typeof activeTime.value === 'number') {
-            return [
-                moment()
-                    .subtract(activeTime.value - 1, 'day')
-                    .format('YYYY-MM-DD'),
-                moment().format('YYYY-MM-DD'),
-            ];
+            // 判断是否12点前,过了中午12点就传当天日期 12点之前传前一天日期
+            const now = new Date();
+            if (now.getHours() < 12) {
+                return [
+                    moment()
+                        .subtract(activeTime.value - 1, 'day')
+                        .format('YYYY-MM-DD'),
+                    moment().subtract(1, 'day').format('YYYY-MM-DD'),
+                ];
+            } else {
+                return [
+                    moment()
+                        .subtract(activeTime.value - 1, 'day')
+                        .format('YYYY-MM-DD'),
+                    moment().format('YYYY-MM-DD'),
+                ];
+            }
         } else {
             return [];
         }
@@ -173,6 +184,7 @@
     const loading = ref(false);
     const getChartData = (rangeDate: string[]) => {
         if (!patient || !patient.value.sn) {
+            barChartData.value.dates = getDatesBetween(rangeDate[0], rangeDate[1]);
             return;
         }
         loading.value = true;
@@ -182,12 +194,15 @@
             end_date: rangeDate[1],
         })
             .then(res => {
+                console.log('error');
                 if (res.code === 1) {
                     barChartData.value = res.data;
                 } else {
-                    barChartData.value = initBartChartData;
+                    barChartData.value = { ...initBartChartData };
+                    barChartData.value.dates = getDatesBetween(rangeDate[0], rangeDate[1]);
                 }
             })
+
             .finally(() => {
                 loading.value = false;
             });
@@ -197,8 +212,8 @@
         activeTime,
         async () => {
             const rangeDate = getRangeDate();
-            await Promise.all([getStaticReport(rangeDate), getChartData(rangeDate)]);
 
+            await Promise.all([getStaticReport(rangeDate), getChartData(rangeDate)]);
             if (barChartData.value.dates.length === 0) {
                 barChartData.value.dates = getDatesBetween(rangeDate[0], rangeDate[1]);
             }
