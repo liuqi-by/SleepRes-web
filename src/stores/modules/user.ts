@@ -147,20 +147,20 @@ export const useUserStore = defineStore(
 
         const tagsViewStore = useTagsViewStore();
         function logout() {
-            const route = useRoute();
+            // const route = useRoute();
             return new Promise<void>((resolve, reject) => {
                 setTimeout(() => {
-                    if (route.path !== '/login') {
-                        // if (route.fullPath !== '/') {
-                        //     navigateTo(`/login?redirect=${route.fullPath}`);
-                        // } else {
-                        //     navigateTo(`/login`);
-                        // }
-                        navigateTo(`/login`);
-                    }
-
+                    // if (route.path !== '/login') {
+                    //     // if (route.fullPath !== '/') {
+                    //     //     navigateTo(`/login?redirect=${route.fullPath}`);
+                    //     // } else {
+                    //     //     navigateTo(`/login`);
+                    //     // }
+                    //     navigateTo(`/login`);
+                    // }
+                    location.reload();
                     resolve();
-                }, 500);
+                }, 200);
 
                 if (!logTimer.value) {
                     clearInterval(logTimer.value);
