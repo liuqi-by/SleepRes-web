@@ -237,6 +237,42 @@
                 }).then((res: any) => {
                     res = JSON.parse(res);
 
+                    const showAssigned = (info: any) => {
+                        useElMessageBox().alert(
+                            h('p', { class: 'msg' }, [
+                                'SD Card serial number is currently assigned to ',
+                                h(
+                                    'span',
+                                    {
+                                        class: 'link',
+                                        onClick: () => {
+                                            showDetail(info);
+                                            close();
+                                            ElMessageBox.close();
+                                        },
+                                    },
+                                    `Patient ID ${info.patient.patientid}`,
+                                ),
+                                '  Please remove the serial number before continuing with the download',
+                            ]),
+                            '',
+                            {
+                                showConfirmButton: false,
+                                showCancelButton: true,
+                                cancelButtonText: 'Cancel',
+                                confirmButtonText: 'Yes',
+                                center: true,
+                                dangerouslyUseHTMLString: true,
+                                customClass: 'register-dialog',
+                                closeOnClickModal: false,
+                                closeOnPressEscape: false,
+                                customStyle: {
+                                    minWidth: '500px',
+                                },
+                            },
+                        );
+                    };
+
                     if (res.code === 1) {
                         // 校验通过
                         startUpload();
@@ -245,6 +281,7 @@
                             res.data.patient = JSON.parse(res.data.patient);
                         }
                         // 序列号不匹配
+
                         useElMessageBox().alert(
                             h('div', [
                                 h(
@@ -259,8 +296,12 @@
                                             class: 'btn',
                                             type: 'primary',
                                             onClick: () => {
-                                                startUpload();
-                                                ElMessageBox.close();
+                                                if (res.data) {
+                                                    showAssigned(res.data);
+                                                } else {
+                                                    startUpload();
+                                                    ElMessageBox.close();
+                                                }
                                             },
                                         },
                                         'download anyway',
@@ -272,45 +313,7 @@
                                             type: 'primary',
                                             onClick: () => {
                                                 if (res.data) {
-                                                    useElMessageBox()
-                                                        .alert(
-                                                            h('p', { class: 'msg' }, [
-                                                                'SD Card serial number is currently assigned to ',
-                                                                h(
-                                                                    'span',
-                                                                    {
-                                                                        class: 'link',
-                                                                        onClick: () => {
-                                                                            showDetail(res.data);
-                                                                            close();
-                                                                            ElMessageBox.close();
-                                                                        },
-                                                                    },
-                                                                    `Patient ID ${res.data.patient.patientid}`,
-                                                                ),
-                                                                '  Please remove the serial number before continuing with the download',
-                                                            ]),
-                                                            '',
-                                                            {
-                                                                showConfirmButton: false,
-                                                                showCancelButton: true,
-                                                                cancelButtonText: 'Cancel',
-                                                                confirmButtonText: 'Yes',
-                                                                center: true,
-                                                                dangerouslyUseHTMLString: true,
-                                                                customClass: 'register-dialog',
-                                                                closeOnClickModal: false,
-                                                                closeOnPressEscape: false,
-                                                                customStyle: {
-                                                                    minWidth: '500px',
-                                                                },
-                                                            },
-                                                        )
-                                                        .then(() => {
-                                                            // 上传文件
-                                                            startUpload();
-                                                        })
-                                                        .catch(() => {});
+                                                    showAssigned(res.data);
                                                 } else {
                                                     // 没有患者
                                                     noPatientMessage();
