@@ -393,7 +393,7 @@
                     .then(res => {
                         loading.value = false;
                         if (res.code === 1) {
-                            ElMessage.success('Update success');
+                            ElMessage.success('Update successful');
                             isEdit.value = false;
                             // emit('update', { ...res.data, patient: JSON.parse(res.data.patient) });
                             update && update();

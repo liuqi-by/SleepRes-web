@@ -166,7 +166,7 @@ export function useFormRules(formData?: any) {
             {
                 required: true,
                 trigger: 'change',
-                message: t('form.PleaseSelect') + t('users.Role'),
+                message: t('form.selectRole'),
             },
         ],
         // office loaction
@@ -174,7 +174,7 @@ export function useFormRules(formData?: any) {
             {
                 required: true,
                 trigger: 'change',
-                message: t('form.PleaseSelect') + t('users.OfficeLocation'),
+                message: t('form.selectOfficeLocation'),
             },
         ],
         // setupDate
@@ -182,7 +182,7 @@ export function useFormRules(formData?: any) {
             {
                 required: true,
                 trigger: 'change',
-                message: t('form.PleasePick') + t('patients.SetupDate'),
+                message: t('form.pickSetup'),
             },
         ],
         // notes
@@ -206,7 +206,7 @@ export function useFormRules(formData?: any) {
             {
                 required: true,
                 trigger: 'change',
-                message: t('form.PleasePick') + t('patients.Birthdate'),
+                message: t('form.pickBirth'),
             },
         ],
         // 序列号

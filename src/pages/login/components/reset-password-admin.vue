@@ -123,7 +123,7 @@
         resetPasswordByEmail(formData.value)
             .then(res => {
                 if (res.code === 1) {
-                    ElMessage.success('Send Successfully');
+                    ElMessage.success('Password reset email sent successfully');
                     dialogVisible.value = false;
                     formData.value.email = '';
                     formData.value.name = '';

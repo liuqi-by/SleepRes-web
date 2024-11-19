@@ -545,7 +545,7 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success('Change success');
+                            ElMessage.success('Update successful');
                             update && update();
                             updatePatient && updatePatient({ ...res.data, patient: JSON.parse(res.data.patient) });
                         }

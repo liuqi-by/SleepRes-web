@@ -71,6 +71,7 @@
     }));
 
     const formRef = ref<FormInstance>();
+    const { t } = useI18n();
     const updatePassword = () => {
         formRef.value?.validate(valid => {
             if (valid) {
@@ -79,7 +80,7 @@
                     pwd_token: useRoute().query.token as string,
                 }).then(res => {
                     if (res.code === 1) {
-                        ElMessage.success('Password reset successfully');
+                        ElMessage.success(t('login.resetPwdSuccess'));
                         setTimeout(() => {
                             navigateTo('/login');
                         }, 500);

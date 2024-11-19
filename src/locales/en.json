@@ -16,7 +16,11 @@
         "lengthRule": "limit {length} characters",
         "Search": "Search",
         "saveSuccess": "Save successfully",
-        "createSuccess": "Create successfully"
+        "createSuccess": "Create successfully",
+        "selectOfficeLocation": "Please select an office location",
+        "selectRole": "Please select a role",
+        "pickBirth": "Please enter the date of birth",
+        "pickSetup": "Please enter the date of setup"
     },
     "login": {
         "login": "Login",
@@ -28,6 +32,7 @@
         "registerPhysician": "Create A Physician account",
         "resetPwd": "Reset Password",
         "pwdReset": "Password Reset",
+
         "loginSuccess": "Login Successfully",
         "registerDmeTitle": "DME Account Creation",
         "registerPhysicianTitle": "Physician Account Creation",
@@ -46,8 +51,8 @@
         "NPI": "NPI Number",
         "logout": "Log Out",
         "ConfirmLogout": "Are you sure you want to log out?",
-        "passwordRule": "Password must be 10-20 characters,And with 1 special character",
-        "resetPwdSuccess": "Password reset success",
+        "passwordRule": "Password must be 10 - 20 charaters long, and contain 1 special charactor",
+        "resetPwdSuccess": "Password reset successful",
         "ConfirmResetPassword": "Are you sure you want to reset the password?"
     },
     "message": {
@@ -92,7 +97,7 @@
         "newPasswordPlaceHolder": "Please enter new password",
         "confirmPassword": "Confirm Password",
         "inputConfirmPassword": "Please reenter your password to confirm",
-        "passwordNotMatch": "The password entered twice is inconsistent",
+        "passwordNotMatch": "Passwords do not match",
         "NewPasswordCannotBeSameAsOldPassword": "New password cannot be same as old password",
         "ConfirmChangePassword": "Confirm Change Password",
         "PasswordChangedSuccessfully": "Password changed successfully,Please log in again"
@@ -126,8 +131,8 @@
         "searchPlaceholder": "Name / Email / Phone number",
         "NPI": "NPI",
         "Modify": "Modify",
-        "statusOff": "Are you sure you would like to turn this account status off?",
-        "statusOn": "Are you sure you would like to turn this account status on?",
+        "statusOff": "Are you sure you would like to deactivate this account?",
+        "statusOn": "Are you sure you would like to activate this account?",
         "AccountStatus": "Account Status"
     },
     "office": {

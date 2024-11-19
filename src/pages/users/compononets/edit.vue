@@ -251,7 +251,6 @@
         };
     });
 
-    const { t } = useI18n();
     const emit = defineEmits(['refresh']);
     const loading = ref(false); // 按钮loading
     /**
@@ -278,7 +277,7 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success(t('form.saveSuccess'));
+                            ElMessage.success('Account saved successfully');
                             dialogVisible.value = false;
                             emit('refresh');
                             formData.value = {
@@ -297,7 +296,7 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success(t('form.createSuccess'));
+                            ElMessage.success('Account created successfully');
                             dialogVisible.value = false;
                             emit('refresh');
                             formRef.value?.resetFields();

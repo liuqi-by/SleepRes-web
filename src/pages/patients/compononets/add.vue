@@ -452,7 +452,6 @@
         };
     });
 
-    const { t } = useI18n();
     const emit = defineEmits(['refresh', 'showPatientReport']);
     const loading = ref(false); // 按钮loading
     const deviceModeRef = ref<InstanceType<typeof deviceMode>>();
@@ -537,7 +536,7 @@
         })
             .then((res: any) => {
                 if (res.code === 1) {
-                    ElMessage.success(t('form.createSuccess'));
+                    ElMessage.success('Patiented created successfully');
                     emit('refresh');
                     if (formData.value?.sn) {
                         deviceModeRef.value?.update().finally(() => {

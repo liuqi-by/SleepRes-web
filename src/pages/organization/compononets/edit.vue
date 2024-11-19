@@ -164,7 +164,7 @@
     const dialogVisible = ref(false);
 
     const formRef = ref<FormInstance>(); // 登录表单ref
-    const { t } = useI18n(); // 国际化
+    // const { t } = useI18n(); // 国际化
 
     const formData = ref<EditOrganizationReq>({
         name: '',
@@ -207,7 +207,7 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success(t('form.saveSuccess'));
+                            ElMessage.success('Office saved successfully');
                             dialogVisible.value = false;
                             emit('refresh');
                             formRef.value?.resetFields();
@@ -223,7 +223,7 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success(t('form.createSuccess'));
+                            ElMessage.success('Office created successfully');
                             dialogVisible.value = false;
                             emit('refresh');
                             formRef.value?.resetFields();
