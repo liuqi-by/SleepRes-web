@@ -431,44 +431,44 @@
     });
 
     const update = () => {
-        return new Promise<void>((resolve, _reject) => {
+        return new Promise<void>((resolve, reject) => {
             if (!patient?.value.sn) {
                 return;
             }
             let timerOut = 5;
+            try {
+                let loadingInstance = ElLoading.service({
+                    lock: true,
+                    text: 'Parameter adjustment in progress, please do not close the interface',
+                    target: '.add-patient-dialog',
+                });
 
-            let loadingInstance = ElLoading.service({
-                lock: true,
-                text: 'Parameter adjustment in progress, please do not close the interface',
-                target: '.prescription',
-            });
+                let data: any = {};
 
-            let data: any = {};
-
-            for (const key of modeSettingList.value[mode.value]) {
-                data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
-            }
-
-            data['90'] = String(mode.value);
-
-            if (timer_update) {
-                clearInterval(timer_update);
-            }
-
-            timer_update = setInterval(() => {
-                timerOut--;
-
-                if (timerOut <= 0) {
-                    loadingInstance.close();
-                    timer_update && clearInterval(timer_update);
-                    ElMessage.error('Request timeout, please retry');
+                for (const key of modeSettingList.value[mode.value]) {
+                    data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
                 }
 
-                updateDeviceModel({
-                    data: JSON.stringify(data),
-                    sn: patient.value.sn,
-                })
-                    .then(res => {
+                data['90'] = String(mode.value);
+
+                if (timer_update) {
+                    clearInterval(timer_update);
+                }
+
+                timer_update = setInterval(() => {
+                    timerOut--;
+
+                    if (timerOut <= 0) {
+                        loadingInstance.close();
+                        timer_update && clearInterval(timer_update);
+                        ElMessage.error('Request timeout, please retry');
+                        resetData();
+                    }
+
+                    updateDeviceModel({
+                        data: JSON.stringify(data),
+                        sn: patient.value.sn,
+                    }).then(res => {
                         console.log(res);
                         // ElMessage.success(res.msg);
                         // modeSettingSaveValue.value = {
@@ -479,8 +479,8 @@
                             setTimeout(() => {
                                 loadingInstance.close();
                                 timer_update && clearInterval(timer_update);
-                                modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
-                                modeSave.value = mode.value;
+                                resetData();
+                                resolve();
                             }, 1000);
                         }
                         if (res.msg === 'No Online') {
@@ -490,22 +490,25 @@
                             setTimeout(() => {
                                 loadingInstance.close();
                                 timer_update && clearInterval(timer_update);
-                                modeSave.value = mode.value;
-                                modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
-                            });
+                                resetData();
+                                resolve();
+                            }, 1000);
                         }
-                    })
-                    .finally(() => {
-                        resolve();
                     });
-            }, 1000);
+                    // .finally(() => {
+                    //     resolve();
+                    // });
+                }, 1000);
 
-            // 更新面罩信息
-            updateTubingAndMask({
-                sn: patient.value.sn,
-                tubing: formData.value.tubing,
-                mask: formData.value.mask,
-            });
+                // 更新面罩信息
+                updateTubingAndMask({
+                    sn: patient.value.sn,
+                    tubing: formData.value.tubing,
+                    mask: formData.value.mask,
+                });
+            } catch {
+                reject();
+            }
         });
     };
 
@@ -599,23 +602,27 @@
         });
     };
 
+    const resetData = () => {
+        modeOptions.value = [];
+        mode.value = 0;
+        formData.value.mask = '';
+        formData.value.tubing = 'Standard Tubing';
+        modeSettingList.value = {};
+        modeSettingValue.value = {};
+
+        deviceType.value = undefined;
+
+        saveApiData.value.mode = 0;
+        saveApiData.value.modeSettingValue = {};
+        saveApiData.value.mask = '';
+        saveApiData.value.tubing = 'Standard Tubing';
+    };
+
     const loadingSetting = ref(false);
     const getDeviceModelInfo = useDebounceFn(() => {
         if (!patient || !patient.value?.sn) {
-            modeOptions.value = [];
             // 模式显示
-            mode.value = 0;
-            formData.value.mask = '';
-            formData.value.tubing = 'Standard Tubing';
-            modeSettingList.value = {};
-            modeSettingValue.value = {};
-
-            deviceType.value = undefined;
-
-            saveApiData.value.mode = 0;
-            saveApiData.value.modeSettingValue = {};
-            saveApiData.value.mask = '';
-            saveApiData.value.tubing = 'Standard Tubing';
+            resetData();
             return;
         }
         loadingSetting.value = true;
@@ -635,31 +642,18 @@
                             return res.data.model_type.includes(index);
                         });
                     mode.value = res.data.model_type_default;
-                    formData.value.mask = res.data.info.mask || '';
-                    formData.value.tubing = res.data.info.tubing || 'Standard Tubing';
+                    formData.value.mask = (res.data.info && res.data.info.mask) || '';
+                    formData.value.tubing = (res.data.info && res.data.info.tubing) || 'Standard Tubing';
                     modeSettingList.value = res.data.par_show;
                     modeSettingValue.value = res.data.par_show_val;
                     deviceType.value = res.data.device_type_id;
 
                     saveApiData.value.mode = mode.value;
                     saveApiData.value.modeSettingValue = JSON.parse(JSON.stringify(res.data.par_show_val));
-                    saveApiData.value.mask = res.data.info.mask || '';
-                    saveApiData.value.tubing = res.data.info.tubing || 'Standard Tubing';
+                    saveApiData.value.mask = (res.data.info && res.data.info.mask) || '';
+                    saveApiData.value.tubing = (res.data.info && res.data.info.tubing) || 'Standard Tubing';
                 } else {
-                    modeOptions.value = [];
-                    // 模式显示
-                    mode.value = 0;
-                    formData.value.mask = '';
-                    formData.value.tubing = 'Standard Tubing';
-                    modeSettingList.value = {};
-                    modeSettingValue.value = {};
-
-                    deviceType.value = undefined;
-
-                    saveApiData.value.mode = 0;
-                    saveApiData.value.modeSettingValue = {};
-                    saveApiData.value.mask = '';
-                    saveApiData.value.tubing = 'Standard Tubing';
+                    resetData();
                 }
             })
             .finally(() => {

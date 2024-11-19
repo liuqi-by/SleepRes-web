@@ -6,7 +6,7 @@
             title=""
             width="1250"
             @close="close"
-            class="form form-dialog"
+            class="form form-dialog add-patient-dialog"
         >
             <div class="form-title">
                 {{ $t('patients.AddPatient') }}
@@ -540,14 +540,14 @@
                     ElMessage.success(t('form.createSuccess'));
                     emit('refresh');
                     if (formData.value?.sn) {
-                        deviceModeRef.value
-                            ?.update()
-                            .then(() => {})
-                            .finally(() => {
-                                setTimeout(() => {
-                                    loading.value = false;
-                                }, 1000);
-                            });
+                        deviceModeRef.value?.update().finally(() => {
+                            setTimeout(() => {
+                                loading.value = false;
+                                dialogVisible.value = false;
+                                let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
+                                showDetail(userInfo);
+                            }, 500);
+                        });
                     } else {
                         setTimeout(() => {
                             dialogVisible.value = false;
@@ -566,6 +566,7 @@
         dialogVisible.value = false;
 
         formRef.value?.resetFields();
+        deviceSn.value.sn = '';
         formData.value = { ...formDataInit };
     };
 
