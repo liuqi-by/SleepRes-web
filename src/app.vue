@@ -12,23 +12,7 @@
             <!-- 页面 -->
             <NuxtPage />
         </NuxtLayout>
-        <div class="version">
-            v{{ version }}
-            <!-- 版本更新内容 -->
-            <div
-                class="release-logs"
-                @click="openLogs"
-            >
-                <base-svg-icon
-                    icon="logs"
-                    width="24"
-                    height="24"
-                />
-                <p>Release Logs</p>
-            </div>
-        </div>
-        <!-- 更新日志 -->
-        <release-logs ref="releaseLogsRef" />
+        <div class="version">v{{ version }}</div>
     </ElConfigProvider>
 </template>
 <script setup lang="ts">
@@ -38,7 +22,6 @@
     import { DeviceEnum } from './enums/AppSettingsEnum';
     import { useAppStore } from '@/stores/modules/app';
     import { useUserStore } from '@/stores/modules/user';
-    import type { ReleaseLogs } from '#build/components';
 
     const { t } = useI18n();
     const appStore = useAppStore();
@@ -86,13 +69,6 @@
             },
         });
     }
-
-    const releaseLogsRef = ref<InstanceType<typeof ReleaseLogs>>();
-
-    // 打开版本迭代文件
-    const openLogs = () => {
-        releaseLogsRef.value?.showDialog();
-    };
 </script>
 <style lang="scss">
     @import '@/assets/css/index';

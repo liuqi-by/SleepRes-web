@@ -269,6 +269,11 @@
                                 customStyle: {
                                     minWidth: '500px',
                                 },
+                                callback: () => {
+                                    if (!user_id) {
+                                        clearFiles();
+                                    }
+                                },
                             },
                         );
                     };
@@ -328,6 +333,7 @@
                                             class: 'btn',
                                             onClick: () => {
                                                 ElMessageBox.close();
+                                                clearFiles();
                                             },
                                         },
                                         'Cancel',
@@ -338,14 +344,15 @@
                             {
                                 showConfirmButton: false,
                                 showCancelButton: false,
-                                cancelButtonText: 'No',
-                                confirmButtonText: 'Yes',
                                 center: true,
                                 dangerouslyUseHTMLString: true,
                                 customClass: 'register-dialog',
                                 customStyle: { 'min-width': '700px' },
                                 closeOnClickModal: false,
                                 closeOnPressEscape: false,
+                                callback: () => {
+                                    clearFiles();
+                                },
                             },
                         );
                     }
@@ -455,19 +462,26 @@
 
     // 文件处理成功
     const completeMessage = () => {
-        useElMessageBox().alert(`<p class="msg">the data upload is complete</p>`, '', {
-            // if you want to disable its autofocus
-            // autofocus: false,
+        useElMessageBox()
+            .alert(`<p class="msg">the data upload is complete</p>`, '', {
+                // if you want to disable its autofocus
+                // autofocus: false,
 
-            showConfirmButton: false,
-            showCancelButton: true,
-            cancelButtonText: 'Close',
-            center: true,
-            dangerouslyUseHTMLString: true,
-            customClass: 'confirm-dialog',
-            closeOnClickModal: true,
-            closeOnPressEscape: true,
-        });
+                showConfirmButton: false,
+                showCancelButton: true,
+                cancelButtonText: 'Close',
+                center: true,
+                dangerouslyUseHTMLString: true,
+                customClass: 'confirm-dialog',
+                closeOnClickModal: true,
+                closeOnPressEscape: true,
+            })
+            .catch(() => {
+                // 点击关闭按钮
+                dialogVisible.value = false;
+                clearFiles();
+                emit('uploadDown', user_id);
+            });
     };
 
     // 没找到患者
@@ -490,7 +504,13 @@
                     closeOnPressEscape: false,
                 },
             )
-            .catch(() => {});
+            .catch(() => {
+                // 点击关闭按钮
+                // 清空文件
+                if (!user_id) {
+                    clearFiles();
+                }
+            });
     };
 
     onUnmounted(() => {
@@ -499,7 +519,7 @@
         // }
     });
 
-    const emit = defineEmits(['showPatientReport']);
+    const emit = defineEmits(['showPatientReport', 'uploadDown']);
     const showDetail = (userInfo: any) => {
         if (userInfo) {
             emit('showPatientReport', userInfo);

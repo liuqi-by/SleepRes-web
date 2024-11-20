@@ -31,24 +31,26 @@ export const usePermissionStore = defineStore('permission', () => {
      */
     const getPermissionRoutes = () => {
         // let res = await useClientRequest<ResPonseType<RouteRecordRaw[]>>('/api/menu');
-        let route = routes.filter(item => {
-            return (item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) || !item.meta?.roles;
-        });
+        // let route = routes.filter(item => {
+        //     return (item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) || !item.meta?.roles;
+        // });
         // let route = filterRoute(routes);
 
-        // function getRoutes(routes: any[], result: RouteRecordRaw[] = []) {
-        //     routes.forEach(item => {
-        //         if (item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) {
-        //             result.push({ ...item, children: undefined });
+        function getRoutes(routes: any[], result: RouteRecordRaw[] = []) {
+            routes.forEach(item => {
+                if ((item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) || !item.meta?.roles) {
+                    result.push({ ...item, children: undefined });
 
-        //             if (item.children) {
-        //                 getRoutes(item.children, result);
-        //             }
-        //         }
-        //     });
-        //     return result;
-        // }
-
+                    if (item.children) {
+                        return getRoutes(item.children, result);
+                    }
+                }
+            });
+            return result;
+        }
+        console.log(routes);
+        let route = getRoutes(routes);
+        console.log(route);
         permissionRoutes.value = JSON.parse(JSON.stringify(route));
         return permissionRoutes.value;
 

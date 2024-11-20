@@ -1,5 +1,17 @@
 <template>
     <div class="right-menu">
+        <!-- 日志 -->
+
+        <el-tooltip
+            content="Release Logs"
+            effect="dark"
+            placement="bottom"
+        >
+            <Logs
+                class="right-menu-item"
+                :size="size"
+            />
+        </el-tooltip>
         <!-- 切换主题 -->
         <el-tooltip
             :content="$t('layout.PersonalizedSettings')"
@@ -81,6 +93,7 @@
     import Screenfull from './components/Screenfull/index.vue';
     import MessageCenter from './components/MessageCenter/index.vue';
     import ChangePassword from './components/ChangePassword/index.vue';
+    import Logs from './components/Logs/index.vue';
 
     import { useAppStore } from '@/stores/modules/app';
     import { useUserStore } from '@/stores/modules/user';

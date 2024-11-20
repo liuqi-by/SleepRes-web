@@ -45,6 +45,39 @@ export const routes: RouteRecordRaw[] = [
             roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
         },
     },
+    // {
+    //     path: '/administrator',
+    //     redirect: '/administrator/users',
+    //     name: 'Administrator',
+    //     component: Layout,
+    //     meta: {
+    //         title: 'Administrator',
+    //         keepalive: false,
+    //         roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
+    //     },
+    //     children: [
+    //         {
+    //             path: 'users',
+    //             component: () => import('@/pages/users/index.vue'),
+    //             name: '用户',
+    //             meta: {
+    //                 title: 'users',
+    //                 keepalive: false,
+    //                 roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
+    //             },
+    //         },
+    //         {
+    //             path: 'organization',
+    //             component: () => import('@/pages/organization/index.vue'),
+    //             name: '机构',
+    //             meta: {
+    //                 title: 'users',
+    //                 keepalive: false,
+    //                 roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
+    //             },
+    //         },
+    //     ],
+    // },
     {
         path: '/users',
         component: () => import('@/pages/users/index.vue'),

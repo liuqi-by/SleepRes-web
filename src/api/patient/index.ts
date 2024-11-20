@@ -105,3 +105,13 @@ export const checkPatientId = (data: { patientid: string }) => {
         query: data,
     });
 };
+
+/**
+ * @description 获取患者信息
+ */
+export const getPatientInfo = (data: { user_id: string }) => {
+    return useClientRequest<ResPonseType<UserInfo>>('/api/patient/detail', {
+        method: 'GET',
+        query: data,
+    });
+};

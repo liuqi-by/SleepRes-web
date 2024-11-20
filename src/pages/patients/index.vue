@@ -203,6 +203,7 @@
             <lazy-upload-files
                 ref="uploadFilesRef"
                 @show-patient-report="showPatientReport"
+                @upload-down="uploadDown"
             />
 
             <!-- 筛选弹窗 -->
@@ -226,7 +227,7 @@
     // import AddUserDialog from './compononets/add.vue';
     // import PatientRecord from './compononets/patient-record.vue';
     import { RoleType } from '~/enums/RolesEnum';
-    import { getPatient } from '~/api/patient';
+    import { getPatient, getPatientInfo } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
     import type { UploadFiles } from '#build/components';
     // import type { FilterType } from '~/components/table-filter/header.vue';
@@ -285,6 +286,18 @@
         { label: 'Monitoring', value: 1 },
         { label: 'Non-Adherent', value: 2 },
     ];
+
+    const uploadDown = async (id: string) => {
+        await getData();
+        if (id) {
+            getPatientInfo({ user_id: id }).then(res => {
+                if (res.data) {
+                    let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
+                    patientRecordRef.value?.showDialog(userInfo);
+                }
+            });
+        }
+    };
 
     provide('update', getData);
 </script>

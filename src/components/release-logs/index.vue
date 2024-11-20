@@ -9,7 +9,7 @@
         >
             <div class="form-title">Release Logs</div>
             <div
-                class="max-h-500px m-b-20px overflow-y-auto p-[10px]"
+                class="max-h-500px m-b-20px overflow-y-auto p-[10px] text-left"
                 border="1px solid #e0e0e0"
                 v-html="mdData"
             ></div>

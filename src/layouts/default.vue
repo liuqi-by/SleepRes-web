@@ -148,7 +148,6 @@
         top: 0;
         bottom: 0;
         left: 0;
-        z-index: 999;
         box-sizing: border-box;
         width: $sidebar-width;
         height: 100%;
@@ -202,6 +201,7 @@
         }
 
         .sidebar-container {
+            z-index: 999;
             width: $sidebar-width;
             transition: transform 0.28s;
         }
@@ -227,11 +227,11 @@
         }
     }
 
-    .el-popup-parent--hidden {
-        .fixed-header {
-            padding-right: 15px;
-        }
-    }
+    // .el-popup-parent--hidden {
+    //     .fixed-header {
+    //         padding-right: 15px;
+    //     }
+    // }
 
     // 没有过渡效果
     .withoutAnimation {
