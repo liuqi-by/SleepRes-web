@@ -20,7 +20,7 @@
             <div class="column-box">
                 <el-form-item
                     :label="$t(`deviceSettings.par${item}`)"
-                    v-for="(item, index) in modeSettingList[mode]"
+                    v-for="(item, index) in filterModeSettingList"
                     :key="index"
                 >
                     <div class="form-item">
@@ -36,7 +36,7 @@
                             />
                         </el-select>
                         <el-select
-                            v-model="modeSettingValue[item].val"
+                            v-model="modeSettingValue[item].default_val"
                             v-else
                         >
                             <el-option
@@ -113,6 +113,28 @@
 
     // 模式设置框的选项
     const modeSettingList = ref<Parshow>({});
+
+    const filterModeSettingList = computed(() => {
+        if (modeSettingList.value && modeSettingList.value[mode.value]) {
+            let result = modeSettingList.value[mode.value];
+            // KPAP开关
+            if (Number(modeSettingValue.value['96'].default_val) !== 1) {
+                result = result.filter((item: any) => {
+                    return item < 97;
+                });
+                console.log(result);
+            }
+            // autoSet开关
+            if (Number(modeSettingValue.value['97'].default_val) === 1) {
+                result = result.filter((item: any) => {
+                    return item < 98 || item > 99;
+                });
+            }
+            return result;
+        } else {
+            return {};
+        }
+    });
     // 储存接口数据
     const saveApiData = ref({
         modeSettingValue: {},
@@ -409,6 +431,19 @@
             '80': getPressOptions(getOptionsValue('76') + 2, Math.min(getOptionsValue('77'), getMaxPre('80'))),
             // 目标潮气量 VT
             '85': getRangeOptions(200, 2000, 'ml', 50),
+            // KPAP
+            '96': onAndOff,
+            // AutoSet
+            '97': onAndOff,
+
+            // CS1
+            '98': getRangeOptions(0, 3, '', 1),
+            // CS2
+            '99': getRangeOptions(0, 3, '', 1),
+            // ExpDecayConstant
+            '100': getRangeOptions(900, 1000, '', 1),
+            // CorrectionGain
+            '101': getRangeOptions(0, 1000, '', 10),
         };
     });
 
@@ -446,11 +481,13 @@
                 let data: any = {};
 
                 for (const key of modeSettingList.value[mode.value]) {
-                    data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
+                    data[key] =
+                        modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].default_val;
                 }
 
                 data['90'] = String(mode.value);
-
+                console.log('data', data['97']);
+                data['97'] = data['97'] > 0 ? (mode.value === 0 ? data['84'] : data['82']) : 0;
                 if (timer_update) {
                     clearInterval(timer_update);
                 }
@@ -476,9 +513,9 @@
                         // };
                         if (res.msg === 'Successfully') {
                             loadingInstance.setText('The new settings have been sent to the PAP device');
+                            timer_update && clearInterval(timer_update);
                             setTimeout(() => {
                                 loadingInstance.close();
-                                timer_update && clearInterval(timer_update);
                                 resetData();
                                 resolve();
                             }, 1000);
@@ -487,9 +524,10 @@
                             loadingInstance.setText(
                                 'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
                             );
+                            timer_update && clearInterval(timer_update);
                             setTimeout(() => {
                                 loadingInstance.close();
-                                timer_update && clearInterval(timer_update);
+
                                 resetData();
                                 resolve();
                             }, 1000);
@@ -535,10 +573,27 @@
                     let data: any = {};
 
                     for (const key of modeSettingList.value[mode.value]) {
-                        data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].val;
+                        data[key] =
+                            modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].default_val;
                     }
 
                     data['90'] = String(mode.value);
+                    console.log('data', data['97']);
+                    data['97'] = data['97'] > 0 ? (mode.value === 0 ? data['84'] : data['82']) : 0;
+
+                    // 去掉data['98']
+                    if (data['97'] > 0) {
+                        delete data['98'];
+                        delete data['99'];
+                    }
+
+                    if (Number(data['96']) !== 1) {
+                        delete data['97'];
+                        delete data['98'];
+                        delete data['99'];
+                        delete data['100'];
+                        delete data['101'];
+                    }
 
                     if (timer_update) {
                         clearInterval(timer_update);
@@ -565,9 +620,10 @@
                                 // };
                                 if (res.msg === 'Successfully') {
                                     loadingInstance.setText('The new settings have been sent to the PAP device');
+                                    timer_update && clearInterval(timer_update);
                                     setTimeout(() => {
                                         loadingInstance.close();
-                                        timer_update && clearInterval(timer_update);
+
                                         modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
                                         modeSave.value = mode.value;
                                     }, 1000);
@@ -576,9 +632,9 @@
                                     loadingInstance.setText(
                                         'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
                                     );
+                                    timer_update && clearInterval(timer_update);
                                     setTimeout(() => {
                                         loadingInstance.close();
-                                        timer_update && clearInterval(timer_update);
                                         modeSave.value = mode.value;
                                         modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
                                     });
@@ -644,6 +700,11 @@
                     mode.value = res.data.model_type_default;
                     formData.value.mask = (res.data.info && res.data.info.mask) || '';
                     formData.value.tubing = (res.data.info && res.data.info.tubing) || 'Standard Tubing';
+                    res.data.par_show_val['97'] =
+                        Number(res.data.par_show_val['97'].default_val) > 0
+                            ? { ...res.data.par_show_val['97'], default_val: '1' }
+                            : res.data.par_show_val['97'];
+                    console.log(res.data.par_show_val['97']);
                     modeSettingList.value = res.data.par_show;
                     modeSettingValue.value = res.data.par_show_val;
                     deviceType.value = res.data.device_type_id;
@@ -688,7 +749,7 @@
 
 <style lang="scss" scoped>
     .form-item {
-        max-width: 200px;
+        max-width: 180px;
     }
 
     .column-box {
@@ -698,5 +759,9 @@
 
     :deep(.el-loading-mask) {
         z-index: 999999;
+    }
+
+    :deep(.el-form-item__label) {
+        width: 160px !important;
     }
 </style>

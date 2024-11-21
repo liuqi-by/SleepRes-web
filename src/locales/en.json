@@ -308,6 +308,12 @@
         "par89": "APsens",
         "par90": "Mode",
         "par91": "Flow",
-        "par92": "VAF Settings"
+        "par92": "VAF Settings",
+        "par96": "KPAP",
+        "par97": "AutoSet",
+        "par98": "CS1",
+        "par99": "CS2",
+        "par100": "ExpDecayConstant",
+        "par101": "CorrectionGain"
     }
 }

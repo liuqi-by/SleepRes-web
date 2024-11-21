@@ -1,3 +1,9 @@
+# 2024/11/21
+
+1. Modify SD card upload, all completed(修改SD卡上传，全部完成)
+2. Modify prescription KPAP(基本完成KPAP支持)
+3. Update version 0.0.2-alpha.3(更新版本0.0.2-alpha.3)
+
 # 2024/11/13
 
 1. Modify login crash issue(修改登录闪退问题)
@@ -10,7 +16,7 @@
 
 # 2024/11/8
 
-1. Modify SD card upload, mostly completed(修改SD卡上传吗，部分完成)
+1. Modify SD card upload, mostly completed(修改SD卡上传，部分完成)
 2. Modify prescription bug(修改处方bug)
 
 # 2024/11/1
