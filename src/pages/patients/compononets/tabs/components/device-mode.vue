@@ -118,14 +118,14 @@
         if (modeSettingList.value && modeSettingList.value[mode.value]) {
             let result = modeSettingList.value[mode.value];
             // KPAP开关
-            if (Number(modeSettingValue.value['96'].default_val) !== 1) {
+            if (Number(modeSettingValue.value['96']['v' + mode.value]) !== 1) {
                 result = result.filter((item: any) => {
                     return item < 97;
                 });
                 console.log(result);
             }
             // autoSet开关
-            if (Number(modeSettingValue.value['97'].default_val) === 1) {
+            if (Number(modeSettingValue.value['97']['v' + mode.value]) === 1) {
                 result = result.filter((item: any) => {
                     return item < 98 || item > 99;
                 });
@@ -470,24 +470,171 @@
             if (!patient?.value.sn) {
                 return;
             }
-            let timerOut = 5;
+            let data = generateReqParams(); // 生成请求参数
+
+            // 发送请求
+            updateDevice(data, '.add-patient-dialog')
+                .then(() => {
+                    resolve();
+                })
+                .catch(() => {
+                    reject();
+                });
+
+            // let timerOut = 50;
+            // try {
+            //     let loadingInstance = ElLoading.service({
+            //         lock: true,
+            //         text: 'Parameter adjustment in progress, please do not close the interface',
+            //         target: '.add-patient-dialog',
+            //     });
+
+            //     let data: any = {};
+
+            //     for (const key of modeSettingList.value[mode.value]) {
+            //         data[key] =
+            //             modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].default_val;
+            //     }
+
+            //     data['90'] = String(mode.value);
+            //     console.log('data', data['97']);
+            //     data['97'] = data['97'] > 0 ? (mode.value === 0 ? data['84'] : data['82']) : 0;
+            //     if (timer_update) {
+            //         clearInterval(timer_update);
+            //     }
+
+            //     timer_update = setInterval(() => {
+            //         timerOut--;
+
+            //         if (timerOut <= 0) {
+            //             loadingInstance.close();
+            //             timer_update && clearInterval(timer_update);
+            //             ElMessage.error('Request timeout, please retry');
+            //             resetData();
+            //         }
+
+            //         updateDeviceModel({
+            //             data: JSON.stringify(data),
+            //             sn: patient.value.sn,
+            //         }).then(res => {
+            //             if (res.msg === 'Successfully') {
+            //                 loadingInstance.setText('The new settings have been sent to the PAP device');
+            //                 timer_update && clearInterval(timer_update);
+            //                 saveApiData.value.modeSettingValue = JSON.parse(JSON.stringify(modeSettingValue.value));
+            //                 saveApiData.value.mode = mode.value;
+            //                 setTimeout(() => {
+            //                     loadingInstance.close();
+            //                     resetData();
+            //                     resolve();
+            //                 }, 2000);
+            //             }
+            //             if (res.msg === 'No Online') {
+            //                 loadingInstance.setText(
+            //                     'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
+            //                 );
+            //                 timer_update && clearInterval(timer_update);
+            //                 setTimeout(() => {
+            //                     loadingInstance.close();
+            //                     resetData();
+            //                     resolve();
+            //                 }, 3000);
+            //             }
+            //         });
+            //         // .finally(() => {
+            //         //     resolve();
+            //         // });
+            //     }, 1000);
+
+            //     // 更新面罩信息
+            //     updateTubingAndMask({
+            //         sn: patient.value.sn,
+            //         tubing: formData.value.tubing,
+            //         mask: formData.value.mask,
+            //     });
+            // } catch {
+            //     reject();
+            // }
+        });
+    };
+
+    // 患者记录保存
+    const save = () => {
+        return new Promise<void>((resolve, reject) => {
+            if (!patient?.value.sn || !modeOptions.value || modeOptions.value?.length === 0) {
+                resolve();
+                return;
+            }
+
+            useElMessageBox()
+                .confirm(' ', 'Would you like to send the Rx settings to the PAP device?', {
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    type: 'warning',
+                })
+                .then(() => {
+                    let data = generateReqParams(); // 生成请求参数
+
+                    // 发送请求
+                    updateDevice(data)
+                        .then(() => {
+                            resolve();
+                        })
+                        .catch(() => {
+                            reject();
+                        });
+                })
+                .catch(() => {
+                    resolve();
+                });
+        });
+    };
+
+    // 生成请求参数
+    const generateReqParams = () => {
+        // KPAP关闭时，去掉data['97']、data['98']、data['99']、data['100']、data['101']
+        let data: any = {};
+
+        // 赋值
+        for (const key of modeSettingList.value[mode.value]) {
+            data[key] = modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].default_val;
+        }
+        // 模式
+        data['90'] = String(mode.value);
+        // CPAP AutoSet 传压力值    APAP传最小压力值
+        data['97'] = data['97'] > 0 ? (mode.value === 0 ? data['84'] : data['82']) : 0;
+
+        // KPAP关闭时，去掉data['97']、data['98']、data['99']、data['100']、data['101']
+        if (Number(data['96']) !== 1) {
+            delete data['97'];
+            delete data['98'];
+            delete data['99'];
+            delete data['100'];
+            delete data['101'];
+        }
+
+        // autoSET
+        if (data['97'] && data['97'] > 0) {
+            delete data['98'];
+            delete data['99'];
+        }
+        return data;
+    };
+
+    // 更新设备参数
+    const updateDevice = (data: any, target: string = '.prescription') => {
+        return new Promise<void>((resolve, reject) => {
+            if (!patient?.value.sn) {
+                return;
+            }
             try {
+                let timerOut = 50; // 超时次数
+
                 let loadingInstance = ElLoading.service({
                     lock: true,
                     text: 'Parameter adjustment in progress, please do not close the interface',
-                    target: '.add-patient-dialog',
+                    target,
                 });
 
-                let data: any = {};
-
-                for (const key of modeSettingList.value[mode.value]) {
-                    data[key] =
-                        modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].default_val;
-                }
-
-                data['90'] = String(mode.value);
-                console.log('data', data['97']);
-                data['97'] = data['97'] > 0 ? (mode.value === 0 ? data['84'] : data['82']) : 0;
                 if (timer_update) {
                     clearInterval(timer_update);
                 }
@@ -499,43 +646,42 @@
                         loadingInstance.close();
                         timer_update && clearInterval(timer_update);
                         ElMessage.error('Request timeout, please retry');
-                        resetData();
                     }
 
                     updateDeviceModel({
                         data: JSON.stringify(data),
                         sn: patient.value.sn,
-                    }).then(res => {
-                        console.log(res);
-                        // ElMessage.success(res.msg);
-                        // modeSettingSaveValue.value = {
-                        //     ...modeSettingValue.value,
-                        // };
-                        if (res.msg === 'Successfully') {
-                            loadingInstance.setText('The new settings have been sent to the PAP device');
-                            timer_update && clearInterval(timer_update);
-                            setTimeout(() => {
-                                loadingInstance.close();
-                                resetData();
-                                resolve();
-                            }, 1000);
-                        }
-                        if (res.msg === 'No Online') {
-                            loadingInstance.setText(
-                                'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
-                            );
-                            timer_update && clearInterval(timer_update);
-                            setTimeout(() => {
-                                loadingInstance.close();
-
-                                resetData();
-                                resolve();
-                            }, 1000);
-                        }
-                    });
-                    // .finally(() => {
-                    //     resolve();
-                    // });
+                    })
+                        .then(res => {
+                            console.log(res);
+                            // ElMessage.success(res.msg);
+                            // modeSettingSaveValue.value = {
+                            //     ...modeSettingValue.value,
+                            // };
+                            if (res.msg === 'Successfully') {
+                                loadingInstance.setText('The new settings have been sent to the PAP device');
+                                timer_update && clearInterval(timer_update);
+                                saveApiData.value.modeSettingValue = JSON.parse(JSON.stringify(modeSettingValue.value));
+                                saveApiData.value.mode = mode.value;
+                                setTimeout(() => {
+                                    loadingInstance.close();
+                                }, 2000);
+                            }
+                            if (res.msg === 'No Online') {
+                                loadingInstance.setText(
+                                    'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
+                                );
+                                timer_update && clearInterval(timer_update);
+                                setTimeout(() => {
+                                    loadingInstance.close();
+                                    modeSave.value = mode.value;
+                                    modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
+                                }, 2000);
+                            }
+                        })
+                        .finally(() => {
+                            resolve();
+                        });
                 }, 1000);
 
                 // 更新面罩信息
@@ -550,114 +696,7 @@
         });
     };
 
-    const save = () => {
-        return new Promise<void>((resolve, _reject) => {
-            if (!patient?.value.sn || !modeOptions.value || modeOptions.value?.length === 0) {
-                resolve();
-                return;
-            }
-            let timerOut = 5;
-            useElMessageBox()
-                .confirm(' ', 'Would you like to send the Rx settings to the PAP device?', {
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    type: 'warning',
-                })
-                .then(() => {
-                    let loadingInstance = ElLoading.service({
-                        lock: true,
-                        text: 'Parameter adjustment in progress, please do not close the interface',
-                        target: '.prescription',
-                    });
-
-                    let data: any = {};
-
-                    for (const key of modeSettingList.value[mode.value]) {
-                        data[key] =
-                            modeSettingValue.value[key]['v' + mode.value] || modeSettingValue.value[key].default_val;
-                    }
-
-                    data['90'] = String(mode.value);
-                    console.log('data', data['97']);
-                    data['97'] = data['97'] > 0 ? (mode.value === 0 ? data['84'] : data['82']) : 0;
-
-                    // 去掉data['98']
-                    if (data['97'] > 0) {
-                        delete data['98'];
-                        delete data['99'];
-                    }
-
-                    if (Number(data['96']) !== 1) {
-                        delete data['97'];
-                        delete data['98'];
-                        delete data['99'];
-                        delete data['100'];
-                        delete data['101'];
-                    }
-
-                    if (timer_update) {
-                        clearInterval(timer_update);
-                    }
-
-                    timer_update = setInterval(() => {
-                        timerOut--;
-
-                        if (timerOut <= 0) {
-                            loadingInstance.close();
-                            timer_update && clearInterval(timer_update);
-                            ElMessage.error('Request timeout, please retry');
-                        }
-
-                        updateDeviceModel({
-                            data: JSON.stringify(data),
-                            sn: patient.value.sn,
-                        })
-                            .then(res => {
-                                console.log(res);
-                                // ElMessage.success(res.msg);
-                                // modeSettingSaveValue.value = {
-                                //     ...modeSettingValue.value,
-                                // };
-                                if (res.msg === 'Successfully') {
-                                    loadingInstance.setText('The new settings have been sent to the PAP device');
-                                    timer_update && clearInterval(timer_update);
-                                    setTimeout(() => {
-                                        loadingInstance.close();
-
-                                        modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
-                                        modeSave.value = mode.value;
-                                    }, 1000);
-                                }
-                                if (res.msg === 'No Online') {
-                                    loadingInstance.setText(
-                                        'The device is not connected to the server, and the parameters take effect after the device is connected to the server',
-                                    );
-                                    timer_update && clearInterval(timer_update);
-                                    setTimeout(() => {
-                                        loadingInstance.close();
-                                        modeSave.value = mode.value;
-                                        modeSettingSaveValue.value = JSON.parse(JSON.stringify(modeSettingValue.value));
-                                    });
-                                }
-                            })
-                            .finally(() => {
-                                resolve();
-                            });
-                    }, 1000);
-
-                    // 更新面罩信息
-                    updateTubingAndMask({
-                        sn: patient.value.sn,
-                        tubing: formData.value.tubing,
-                        mask: formData.value.mask,
-                    });
-                })
-                .catch(() => {
-                    resolve();
-                });
-        });
-    };
-
+    // 重置data
     const resetData = () => {
         modeOptions.value = [];
         mode.value = 0;
@@ -700,11 +739,16 @@
                     mode.value = res.data.model_type_default;
                     formData.value.mask = (res.data.info && res.data.info.mask) || '';
                     formData.value.tubing = (res.data.info && res.data.info.tubing) || 'Standard Tubing';
-                    res.data.par_show_val['97'] =
-                        Number(res.data.par_show_val['97'].default_val) > 0
-                            ? { ...res.data.par_show_val['97'], default_val: '1' }
-                            : res.data.par_show_val['97'];
-                    console.log(res.data.par_show_val['97']);
+                    // res.data.par_show_val['97'] =
+                    //     Number(res.data.par_show_val['97'].default_val) > 0
+                    //         ? { ...res.data.par_show_val['97'], default_val: '1' }
+                    //         : res.data.par_show_val['97'];
+
+                    for (const key in res.data.par_show_val['97']) {
+                        if (Number(res.data.par_show_val['97'][key]) > 0) {
+                            res.data.par_show_val['97'][key] = '1';
+                        }
+                    }
                     modeSettingList.value = res.data.par_show;
                     modeSettingValue.value = res.data.par_show_val;
                     deviceType.value = res.data.device_type_id;

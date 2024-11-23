@@ -1,9 +1,6 @@
 <!-- 患者记录 -->
 <template>
-    <div
-        class="patient-record"
-        :key="formData.id"
-    >
+    <div class="patient-record">
         <base-dialog
             v-model="dialogVisible"
             title=""
@@ -23,11 +20,13 @@
                 label-position="left"
                 inline
                 label-width="120px"
+                :key="formData.id"
             >
                 <!-- PatientID -->
                 <el-form-item
                     prop="patient.patientid"
                     :label="$t('patients.PatientID')"
+                    v-if="formData.patient"
                 >
                     <div class="form-item">
                         <el-input
@@ -68,6 +67,7 @@
                     prop="birthdate"
                     :label="$t('patients.DateOfBirth')"
                     label-width="120px"
+                    v-if="formData.patient"
                 >
                     <div class="form-item">
                         <el-input
@@ -82,6 +82,7 @@
                     prop="setup_date"
                     :label="$t('patients.SetupDate')"
                     label-width="130px"
+                    v-if="formData.patient"
                 >
                     <div class="form-item">
                         <el-input
@@ -110,7 +111,7 @@
                                     v-else-if="formData.patient.compliant === 2"
                                 />
                                 <span v-else-if="formData.patient.compliant === 1">Monitoring</span> -->
-                                <compliant-status :compliant="Number(formData.patient.compliant)" />
+                                <compliant-status :compliant="Number(formData.compliant)" />
                             </div>
                         </div>
                     </div>
@@ -135,7 +136,8 @@
             <!-- Tab Content -->
             <div
                 class="tab-content"
-                v-if="dialogVisible"
+                v-if="dialogVisible && formData.patient"
+                :key="formData.id"
             >
                 <TherapyData v-if="activeIndex === 1" />
                 <Prescription v-if="activeIndex === 2" />
@@ -158,6 +160,7 @@
     // import Prescription from './tabs/prescription.vue';
     import PatientDetails from './tabs/patient-details.vue';
     import TherapyData from './tabs/therapy-data/index.vue';
+    import { getPatientInfo } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
     import { RoleType } from '~/enums/RolesEnum';
 
@@ -172,9 +175,20 @@
     };
 
     const showDialog = (item: UserInfo) => {
+        getPatientDetail(item.id);
         formData.value = item;
         activeIndex.value = 1;
         dialogVisible.value = true;
+    };
+
+    const getPatientDetail = (user_id: string) => {
+        getPatientInfo({
+            user_id,
+        }).then(res => {
+            if (res.code === 1 && res.data) {
+                formData.value = { ...res.data, patient: JSON.parse(res.data.patient) };
+            }
+        });
     };
 
     const Tabs = ref([

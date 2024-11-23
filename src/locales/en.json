@@ -77,7 +77,8 @@
         "users": "Users",
         "login": "login",
         "organization": "Organization",
-        "patientReport": "Patient Report"
+        "patientReport": "Patient Report",
+        "Administrator": "Administrator"
     },
     "layout": {
         "screenfull": "Full Screen",

@@ -2,11 +2,39 @@ import type { RouteRecordRaw } from 'vue-router';
 import { useUserStore } from './user';
 import { routes } from '@/app/router.options';
 
+const generateRoute = (routes: any[], result: any[] = []) => {
+    for (const item of routes) {
+        let route = JSON.parse(JSON.stringify(item));
+
+        if (route.meta?.title && !route.meta?.hidden) {
+            if (route.meta && route.meta.parent) {
+                let index = result.findIndex((item: any) => item.meta.title === route.meta.parentTitle);
+                if (index === -1) {
+                    result.push({
+                        meta: { title: route.meta.parentTitle },
+                        path: route.meta.parent,
+                        children: [route],
+                    });
+                } else {
+                    result[index].children?.push(route);
+                }
+            } else {
+                result.push(route);
+            }
+        }
+    }
+    console.log('菜单', result);
+    return result;
+};
+
 export const usePermissionStore = defineStore('permission', () => {
     const permissionRoutes = useCookie<RouteRecordRaw[]>('routes', {
         default: () => [],
     });
 
+    const menuRoute = useCookie<RouteRecordRaw[]>('menuRoute', {
+        default: () => [],
+    });
     // 设置权限路由
     const setPermissionRoutes = (routes: any) => {
         permissionRoutes.value = routes;
@@ -34,25 +62,22 @@ export const usePermissionStore = defineStore('permission', () => {
         // let route = routes.filter(item => {
         //     return (item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) || !item.meta?.roles;
         // });
-        // let route = filterRoute(routes);
+        let routesAsync = routes;
+
+        let route = getRoutes(routesAsync);
 
         function getRoutes(routes: any[], result: RouteRecordRaw[] = []) {
             routes.forEach(item => {
                 if ((item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) || !item.meta?.roles) {
-                    result.push({ ...item, children: undefined });
-
-                    if (item.children) {
-                        return getRoutes(item.children, result);
-                    }
+                    result.push(item);
                 }
             });
             return result;
         }
-        console.log(routes);
-        let route = getRoutes(routes);
-        console.log(route);
-        permissionRoutes.value = JSON.parse(JSON.stringify(route));
-        return permissionRoutes.value;
+        console.log('routes', routesAsync);
+
+        permissionRoutes.value = JSON.parse(JSON.stringify(route)).filter((item: any) => item.path !== '/');
+        menuRoute.value = generateRoute(permissionRoutes.value);
 
         // permissionRoutes.value = routes.filter(item => {
         //     return (
@@ -68,8 +93,9 @@ export const usePermissionStore = defineStore('permission', () => {
     };
 
     return {
-        permissionRoutes,
-        setPermissionRoutes,
         getPermissionRoutes,
+        setPermissionRoutes,
+        menuRoute,
+        permissionRoutes,
     };
 });

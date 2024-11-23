@@ -538,20 +538,25 @@
                 if (res.code === 1) {
                     ElMessage.success('Patiented created successfully');
                     emit('refresh');
-                    if (formData.value?.sn) {
-                        deviceModeRef.value?.update().finally(() => {
+
+                    function addSuccess() {
+                        setTimeout(() => {
+                            loading.value = false;
+                            dialogVisible.value = false;
+                            let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
                             setTimeout(() => {
-                                loading.value = false;
-                                dialogVisible.value = false;
-                                let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
                                 showDetail(userInfo);
                             }, 500);
+                        }, 500);
+                    }
+
+                    if (formData.value?.sn) {
+                        deviceModeRef.value?.update().finally(() => {
+                            addSuccess();
                         });
                     } else {
                         setTimeout(() => {
-                            dialogVisible.value = false;
-                            let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
-                            showDetail(userInfo);
+                            addSuccess();
                         }, 500);
                     }
                 }

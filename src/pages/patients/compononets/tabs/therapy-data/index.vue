@@ -79,7 +79,7 @@
             if (now.getHours() < 12) {
                 return [
                     moment()
-                        .subtract(activeTime.value - 1, 'day')
+                        .subtract(activeTime.value - 2, 'day')
                         .format('YYYY-MM-DD'),
                     moment().subtract(1, 'day').format('YYYY-MM-DD'),
                 ];

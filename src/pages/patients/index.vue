@@ -132,14 +132,14 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="patient.percent_usage"
+                    prop="percent_usage"
                     :label="$t('patients.PercentUsage')"
                     min-width="120"
                     align="center"
                     sortable
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage || 0 }}%</span>
+                        <span>{{ row.percent_usage || 0 }}%</span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -163,7 +163,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="patient.compliant"
+                    prop="compliant"
                     :label="$t('patients.Compliant')"
                     min-width="120"
                     align="center"

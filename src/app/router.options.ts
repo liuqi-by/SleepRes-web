@@ -5,18 +5,6 @@ import Layout from '@/components/Layout/index.vue';
 import { RoleType } from '~/enums/RolesEnum';
 
 export const routes: RouteRecordRaw[] = [
-    // {
-    //     path: '/redirect',
-    //     meta: { hidden: true },
-    //     component: Layout,
-    //     children: [
-    //         {
-    //             path: '/redirect/:path(.*)',
-    //             component: () => import('@/pages/redirect/index.vue'),
-    //         },
-    //     ],
-    // },
-
     {
         path: '/',
         // redirect: '/admin',
@@ -27,10 +15,10 @@ export const routes: RouteRecordRaw[] = [
         path: '/admin',
         component: () => import('@/pages/admin/index.vue'),
         name: '管理页',
+
         meta: {
             title: 'admin',
             affix: true,
-
             keepalive: false,
             roles: [RoleType.SleepRes],
         },
@@ -39,63 +27,36 @@ export const routes: RouteRecordRaw[] = [
         path: '/patients',
         component: () => import('@/pages/patients/index.vue'),
         name: '患者',
+
         meta: {
             title: 'patients',
             keepalive: false,
             roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
         },
     },
-    // {
-    //     path: '/administrator',
-    //     redirect: '/administrator/users',
-    //     name: 'Administrator',
-    //     component: Layout,
-    //     meta: {
-    //         title: 'Administrator',
-    //         keepalive: false,
-    //         roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
-    //     },
-    //     children: [
-    //         {
-    //             path: 'users',
-    //             component: () => import('@/pages/users/index.vue'),
-    //             name: '用户',
-    //             meta: {
-    //                 title: 'users',
-    //                 keepalive: false,
-    //                 roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
-    //             },
-    //         },
-    //         {
-    //             path: 'organization',
-    //             component: () => import('@/pages/organization/index.vue'),
-    //             name: '机构',
-    //             meta: {
-    //                 title: 'users',
-    //                 keepalive: false,
-    //                 roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
-    //             },
-    //         },
-    //     ],
-    // },
+
     {
-        path: '/users',
+        path: '/administrator/users',
         component: () => import('@/pages/users/index.vue'),
         name: '用户',
         meta: {
             title: 'users',
             keepalive: false,
             roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
+            parent: 'administrator',
+            parentTitle: 'Administrator',
         },
     },
     {
-        path: '/organization',
+        path: '/administrator/organization',
         component: () => import('@/pages/organization/index.vue'),
         name: '机构',
         meta: {
             title: 'organization',
             keepalive: false,
             roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
+            parent: 'administrator',
+            parentTitle: 'Administrator',
         },
     },
     {
@@ -113,13 +74,12 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/pages/dashboard/list.vue'),
         name: '仪表盘列表',
         meta: {
-            title: 'dashboard',
+            title: 'dashboardList',
             keepalive: false,
             roles: [RoleType.DMETherapist],
             hidden: true,
         },
     },
-
     {
         path: '/login',
         component: () => import('@/pages/login/index.vue'),
@@ -132,6 +92,26 @@ export const routes: RouteRecordRaw[] = [
         name: '重置密码',
         meta: { title: 'resetpwd', hidden: true, layout: 'custom' },
     },
+    // {
+    //     path: '/users',
+    //     component: () => import('@/pages/users/index.vue'),
+    //     name: '用户',
+    //     meta: {
+    //         title: 'users',
+    //         keepalive: false,
+    //         roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
+    //     },
+    // },
+    // {
+    //     path: '/organization',
+    //     component: () => import('@/pages/organization/index.vue'),
+    //     name: '机构',
+    //     meta: {
+    //         title: 'organization',
+    //         keepalive: false,
+    //         roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
+    //     },
+    // },
     // {
     //     path: '/patientReport',
     //     component: () => import('@/pages/patients/detail.vue'),

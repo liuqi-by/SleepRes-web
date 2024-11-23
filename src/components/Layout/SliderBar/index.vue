@@ -22,21 +22,24 @@
                 :mode="layout === LayoutEnum.LEFT || device === DeviceEnum.MOBILE ? 'vertical' : 'horizontal'"
                 router
             >
-                <!--    <div
+                <div
                     v-for="item in permission_routes"
                     :key="item.path"
                 >
                     <el-sub-menu
-                        v-if="item.children && hasOneShowingChild(item.children)"
+                        v-if="item.children"
                         :index="item.path"
                     >
                         <template #title>{{ $t(`router.${item.meta?.title}`) }}</template>
+
                         <el-menu-item
                             v-for="child in item.children"
                             :key="child.path"
                             :index="child.path"
                             :title="$t(`router.${child.meta?.title}`)"
-                        />
+                        >
+                            <span>{{ $t(`router.${child.meta?.title}`) }}</span>
+                        </el-menu-item>
                     </el-sub-menu>
                     <el-menu-item
                         v-else
@@ -45,15 +48,15 @@
                     >
                         <span>{{ $t(`router.${item.meta?.title}`) }}</span>
                     </el-menu-item>
-                </div> -->
-                <el-menu-item
+                </div>
+                <!-- <el-menu-item
                     :title="$t(`router.${item.meta?.title}`)"
                     :index="item.path"
                     v-for="item in permission_routes"
                     :key="item.path"
                 >
                     <span>{{ $t(`router.${item.meta?.title}`) }}</span>
-                </el-menu-item>
+                </el-menu-item> -->
 
                 <!-- <el-menu-item
                     index="/admin"
@@ -95,7 +98,6 @@
 </template>
 
 <script setup lang="ts">
-    import type { RouteRecordRaw } from 'vue-router';
     import NavbarRight from '../Navbar/NavbarRight.vue';
     import Logo from './components/Logo.vue';
 
@@ -108,9 +110,7 @@
     const appStore = useAppStore();
     const { width } = useWindowSize();
     const permissionStore = usePermissionStore();
-    const permission_routes = computed(() =>
-        permissionStore.permissionRoutes.filter(route => route.meta?.title && !route.meta?.hidden),
-    );
+    const permission_routes = computed(() => permissionStore.menuRoute);
     // console.log(permission_routes);
 
     // 是否显示logo
@@ -140,29 +140,5 @@
     // 	}
     // 	return path;
     // });
-
-    /**
-     * @description: 判断有一个展示的child
-     * @param {RouteRecordRaw[]} children
-     * @param {RouteRecordRaw} parent
-     * @returns {boolean}
-     */
-    const hasOneShowingChild = (children: RouteRecordRaw[] = []) => {
-        const showingChildren = children.filter(item => {
-            if (item.meta && item.meta.hidden) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-        // 只有一个子菜单，只显示子菜单
-        // if (showingChildren.length > 1) {
-        //     return true;
-        // }
-        if (showingChildren.length === 0) {
-            return true;
-        }
-        return false;
-    };
 </script>
 <style lang="scss" scoped></style>

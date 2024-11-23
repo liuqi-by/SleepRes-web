@@ -61,6 +61,7 @@ export interface UserInfo {
     sn: string;
     device_type: string;
     best30: string;
+    compliant: string;
 }
 
 // 注册
