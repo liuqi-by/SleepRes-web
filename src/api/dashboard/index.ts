@@ -3,6 +3,8 @@ import type {
     AdherenceProportionResponse,
     AdherenceProportionByMonth,
     AdherenceProportionByMonthResponse,
+    UseMonth,
+    UseMonthResponse,
 } from './types';
 
 /**
@@ -20,6 +22,16 @@ export const getAdherenceProportion = (data: AdherenceProportion) => {
  */
 export const getAdherenceProportionByMonth = (data: AdherenceProportionByMonth) => {
     return useClientRequest<ResPonseType<AdherenceProportionByMonthResponse>>('/api/index/Adherence_Month', {
+        method: 'GET',
+        params: data,
+    });
+};
+
+/**
+ * 获取患者使用时长
+ */
+export const getUseMonth = (data: UseMonth) => {
+    return useClientRequest<ResPonseType<UseMonthResponse>>('/api/index/Use_Month', {
         method: 'GET',
         params: data,
     });

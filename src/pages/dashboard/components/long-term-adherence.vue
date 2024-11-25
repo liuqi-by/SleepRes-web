@@ -7,7 +7,10 @@
             class="chart"
             @click="handleClick"
         />
-        <select-date />
+        <select-date
+            v-model:month="month"
+            v-model:year="year"
+        />
     </client-only>
 </template>
 
@@ -19,7 +22,9 @@
     import { CanvasRenderer } from 'echarts/renderers';
     import moment from 'moment';
     import selectDate from './select-date.vue';
+    import type { UseMonth } from '@/api/dashboard/types';
     import { useDashboard } from '~/stores/modules/dashboard';
+    import { getUseMonth } from '~/api/dashboard';
 
     use([TooltipComponent, TitleComponent, BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 
@@ -32,8 +37,10 @@
             axisLabel: {
                 formatter: function (params: any) {
                     // 转换成 Jue 23
-                    return moment(params).format('MMM YY');
+                    return moment(params).format('MMMYY');
                 },
+                showMaxLabel: true,
+                showMinLabel: true,
             },
         },
         yAxis: {
@@ -58,60 +65,60 @@
         },
         series: [
             {
-                data: [120, 200, 150, 80, 70, 110, 130],
+                data: [],
                 type: 'bar',
                 name: '0 hours',
-                barWidth: '30',
+                barMaxWidth: '30',
                 stack: 'total',
                 itemStyle: {
                     color: '#156082',
                 },
             },
             {
-                data: [20, 31, 332, 132, 132, 132, 132],
+                data: [],
                 type: 'bar',
                 name: '0.1 to 2 hours',
-                barWidth: '30',
+                barMaxWidth: '30',
                 stack: 'total',
                 itemStyle: {
                     color: '#E97132',
                 },
             },
             {
-                data: [21, 21, 21, 21, 21, 21, 21],
+                data: [],
                 type: 'bar',
                 name: '2.1 to 4 hours',
-                barWidth: '30',
+                barMaxWidth: '30',
                 stack: 'total',
                 itemStyle: {
                     color: '#196B24',
                 },
             },
             {
-                data: [11, 11, 11, 11, 11, 11, 11],
+                data: [],
                 type: 'bar',
                 name: '4.1 to 6 hours',
-                barWidth: '30',
+                barMaxWidth: '30',
                 stack: 'total',
                 itemStyle: {
                     color: '#0F9ED5',
                 },
             },
             {
-                data: [31, 31, 31, 31, 31, 31, 31],
+                data: [],
                 type: 'bar',
                 name: '6.1 to 8 hours',
-                barWidth: '30',
+                barMaxWidth: '30',
                 stack: 'total',
                 itemStyle: {
                     color: '#A02B93',
                 },
             },
             {
-                data: [41, 41, 41, 41, 41, 41, 41],
+                data: [],
                 type: 'bar',
                 name: '8 or more',
-                barWidth: '30',
+                barMaxWidth: '30',
                 stack: 'total',
                 itemStyle: {
                     color: '#50A831',
@@ -133,6 +140,57 @@
             },
         });
     };
+
+    const month = ref('');
+    const year = ref('');
+
+    const date = computed(() => {
+        return year.value ? year.value + '-' + month.value : '';
+    });
+
+    watch(date, () => {
+        getData();
+    });
+
+    const getData = () => {
+        let params: UseMonth = {
+            type: 0,
+        };
+
+        if (month.value && year.value) {
+            params = {
+                date: year.value + '-' + month.value,
+                type: 2,
+            };
+        } else if (year.value) {
+            params = {
+                date: year.value,
+                type: 1,
+            };
+        } else {
+            params = {
+                type: 0,
+            };
+        }
+
+        getUseMonth(params).then(res => {
+            if (res.code === 1 && res.data) {
+                // 将对象转成数组
+                let data = Object.values(res.data);
+                data.forEach((item: any) => {
+                    for (let i = 0; i <= 5; i++) {
+                        let key: any = 'sta' + i;
+                        option.value.series[i].data.push(item[key] as never);
+                    }
+                });
+                option.value.xAxis.data = Object.keys(res.data);
+            }
+        });
+    };
+
+    onMounted(() => {
+        getData();
+    });
 </script>
 
 <style lang="scss" scoped>

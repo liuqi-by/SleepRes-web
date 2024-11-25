@@ -107,10 +107,6 @@
     const month = ref('');
     const year = ref('');
 
-    watchEffect(() => {
-        console.log(month.value, year.value);
-    });
-
     const date = computed(() => {
         return year.value ? year.value + '-' + month.value : '';
     });

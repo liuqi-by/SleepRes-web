@@ -122,6 +122,7 @@
 
                 option.value.series[0].data = data0 as never[];
                 option.value.series[1].data = data2 as never[];
+                option.value.xAxis.data = Object.keys(res.data);
             }
         });
     };
