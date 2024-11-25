@@ -18,6 +18,7 @@
     import { CanvasRenderer } from 'echarts/renderers';
     import moment from 'moment';
     import { useDashboard } from '~/stores/modules/dashboard';
+    import { getAdherenceProportionByMonth } from '~/api/dashboard';
 
     use([TooltipComponent, TitleComponent, BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 
@@ -30,8 +31,10 @@
             axisLabel: {
                 formatter: function (params: any) {
                     // 转换成 Jue 23
-                    return moment(params).format('MMM YY');
+                    return moment(params).format('MMMYY');
                 },
+                showMaxLabel: true,
+                showMinLabel: true,
             },
         },
         yAxis: {
@@ -56,10 +59,10 @@
         },
         series: [
             {
-                data: [120, 200, 150, 80, 70, 110, 130],
+                data: [],
                 type: 'bar',
                 name: 'Adherent Patients',
-                barWidth: '20',
+                barMaxWidth: '20',
                 itemStyle: {
                     color: '#156082',
                 },
@@ -67,13 +70,16 @@
                     show: true,
                     position: 'top',
                     // 百分比
-                    formatter: '0%',
+                    formatter: function (params: any) {
+                        let { dataIndex } = params;
+                        return calculatePercentage(params.value, totalData.value[dataIndex]) + '%';
+                    },
                 },
             },
             {
-                data: [120, 200, 150, 80, 70, 110, 130],
+                data: [],
                 type: 'bar',
-                barWidth: '20',
+                barMaxWidth: '20',
                 name: 'Non-Adherent Patients',
                 itemStyle: {
                     color: '#E97132',
@@ -94,6 +100,34 @@
             },
         });
     };
+
+    const totalData = ref<number[]>([]);
+
+    const getData = () => {
+        getAdherenceProportionByMonth({
+            start_date: xDate[0],
+            end_date: xDate[xDate.length - 1],
+        }).then(res => {
+            if (res.code === 1 && res.data) {
+                // 将对象转成数组
+                let data = Object.values(res.data);
+
+                let data0 = data.map(item => item.compliant0);
+                let data1 = data.map(item => item.compliant1);
+                let data2 = data.map(item => item.compliant2);
+
+                totalData.value = data0.map((item, index) => {
+                    return item + data1[index] + data2[index];
+                });
+
+                option.value.series[0].data = data0 as never[];
+                option.value.series[1].data = data2 as never[];
+            }
+        });
+    };
+    onMounted(() => {
+        getData();
+    });
 </script>
 
 <style lang="scss" scoped>

@@ -27,7 +27,7 @@ export default defineNuxtRouteMiddleware(async to => {
                 await userStore.getUserInfo();
             }
 
-            let menuRoute = permissionStore.permissionRoutes.filter(route => !route.meta?.hidden);
+            let menuRoute = permissionStore.permissionRoutes.filter(route => !whiteList.includes(route.path));
             // 菜单访问的路由
             console.log('路由', permissionStore.permissionRoutes);
             console.log('菜单路由', menuRoute);

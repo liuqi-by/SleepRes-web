@@ -86,7 +86,7 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/pages/dashboard/list.vue'),
         name: '仪表盘列表',
         meta: {
-            title: 'dashboardList',
+            title: 'dashboard',
             keepalive: false,
             roles: [RoleType.DMETherapist],
             hidden: true,

@@ -10,3 +10,18 @@ export interface AdherenceProportionResponse {
     compliant1: number;
     compliant2: number;
 }
+
+export interface AdherenceProportionByMonth {
+    start_date: string;
+    end_date: string;
+}
+
+export interface AdherenceProportionByMonthResponse {
+    [key: string]: AdherenceData;
+}
+
+interface AdherenceData {
+    compliant0: number;
+    compliant1: number;
+    compliant2: number;
+}

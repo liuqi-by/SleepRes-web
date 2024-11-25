@@ -110,10 +110,10 @@ export const getLast12Months = () => {
     let last12Months = [];
     current.setMonth(current.getMonth() - 3);
     for (let i = 0; i < 12; i++) {
-        // 获取前一个月的月份并更新当前日期
-        current.setMonth(current.getMonth() - 1);
         // 将格式化的月份字符串添加到数组中
         last12Months.unshift(current.toISOString().slice(0, 7));
+        // 获取前一个月的月份并更新当前日期
+        current.setMonth(current.getMonth() - 1);
     }
 
     return last12Months;
