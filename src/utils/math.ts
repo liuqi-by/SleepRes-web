@@ -32,3 +32,8 @@ export function getPrecision(num: number) {
     const decimalIndex = str.indexOf('.');
     return decimalIndex === -1 ? 0 : str.length - decimalIndex - 1;
 }
+
+// 计算百分比取整
+export function calculatePercentage(num: number, total: number) {
+    return total ? Math.round((num / total) * 100) : 0;
+}

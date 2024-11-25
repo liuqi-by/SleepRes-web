@@ -16,15 +16,15 @@
                 >
                     <tr>
                         <td>Adherent</td>
-                        <td>10%</td>
+                        <td>{{ calculatePercentage(option.series[0].data[0].value, total) }}%</td>
                     </tr>
                     <tr>
                         <td>Monitoring</td>
-                        <td>10%</td>
+                        <td>{{ calculatePercentage(option.series[0].data[1].value, total) }}%</td>
                     </tr>
                     <tr>
                         <td>Non-Adherent</td>
-                        <td>10%</td>
+                        <td>{{ calculatePercentage(option.series[0].data[2].value, total) }}%</td>
                     </tr>
                 </table>
             </div>
@@ -44,6 +44,8 @@
     import { LabelLayout } from 'echarts/features';
     import { CanvasRenderer } from 'echarts/renderers';
     import selectDate from './select-date.vue';
+    import { getAdherenceProportion } from '~/api/dashboard';
+    import type { AdherenceProportion } from '~/api/dashboard/types';
 
     use([TitleComponent, TooltipComponent, LegendComponent, PieChart, CanvasRenderer, LabelLayout]);
 
@@ -63,14 +65,13 @@
 
         series: [
             {
-                name: 'Access From',
                 type: 'pie',
                 radius: '50%',
                 center: ['50%', '45%'],
                 data: [
-                    { value: 1048, name: 'Adherent', itemStyle: { color: '#156082' }, status: 0 },
-                    { value: 735, name: 'Monitoring', itemStyle: { color: '#E97132' }, status: 1 },
-                    { value: 580, name: 'Non-Adherent', itemStyle: { color: '#196B24' }, status: 2 },
+                    { value: 0, name: 'Adherent', itemStyle: { color: '#156082' }, status: 0 },
+                    { value: 0, name: 'Monitoring', itemStyle: { color: '#E97132' }, status: 1 },
+                    { value: 0, name: 'Non-Adherent', itemStyle: { color: '#196B24' }, status: 2 },
                 ],
                 itemStyle: {
                     borderWidth: 2, // 设置间隙宽度
@@ -108,6 +109,54 @@
 
     watchEffect(() => {
         console.log(month.value, year.value);
+    });
+
+    const date = computed(() => {
+        return year.value ? year.value + '-' + month.value : '';
+    });
+
+    watch(date, () => {
+        getData();
+    });
+
+    const getData = () => {
+        let params: AdherenceProportion = {
+            type: 0,
+        };
+
+        if (month.value && year.value) {
+            params = {
+                date: year.value + '-' + month.value,
+                type: 2,
+            };
+        } else if (year.value) {
+            params = {
+                date: year.value,
+                type: 1,
+            };
+        } else {
+            params = {
+                type: 0,
+            };
+        }
+
+        getAdherenceProportion(params).then(res => {
+            if (res.code === 1 && res.data) {
+                option.value.series[0].data = [
+                    { value: res.data.compliant0, name: 'Adherent', itemStyle: { color: '#156082' }, status: 0 },
+                    { value: res.data.compliant1, name: 'Monitoring', itemStyle: { color: '#E97132' }, status: 1 },
+                    { value: res.data.compliant2, name: 'Non-Adherent', itemStyle: { color: '#196B24' }, status: 2 },
+                ];
+            }
+        });
+    };
+
+    const total = computed(() => {
+        return option.value.series[0].data.reduce((total, cur) => total + cur.value, 0);
+    });
+
+    onMounted(() => {
+        getData();
     });
 </script>
 
