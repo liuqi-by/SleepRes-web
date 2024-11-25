@@ -20,6 +20,7 @@
     import { PieChart } from 'echarts/charts';
     import { LabelLayout } from 'echarts/features';
     import { CanvasRenderer } from 'echarts/renderers';
+    import { getNoConnect } from '~/api/dashboard';
 
     use([TitleComponent, TooltipComponent, LegendComponent, PieChart, CanvasRenderer, LabelLayout]);
 
@@ -43,11 +44,11 @@
                 radius: '50%',
                 center: ['50%', '45%'],
                 data: [
-                    { value: 1048, name: '3-5 Days', itemStyle: { color: '#156082' } },
-                    { value: 735, name: '6-10 Days', itemStyle: { color: '#E97132' } },
-                    { value: 580, name: '11-15 Days', itemStyle: { color: '#196B24' } },
-                    { value: 484, name: '16-20 Days', itemStyle: { color: '#1EA4D8' } },
-                    { value: 300, name: '21 Days or Greater', itemStyle: { color: '#A02B93' } },
+                    { value: 0, name: '3-5 Days', itemStyle: { color: '#156082' } },
+                    { value: 0, name: '6-10 Days', itemStyle: { color: '#E97132' } },
+                    { value: 0, name: '11-15 Days', itemStyle: { color: '#196B24' } },
+                    { value: 0, name: '16-20 Days', itemStyle: { color: '#1EA4D8' } },
+                    { value: 0, name: '21 Days or Greater', itemStyle: { color: '#A02B93' } },
                 ],
                 itemStyle: {
                     borderWidth: 2, // 设置间隙宽度
@@ -79,6 +80,24 @@
             },
         });
     };
+
+    const getData = () => {
+        getNoConnect().then(res => {
+            if (res.code === 1 && res.data) {
+                option.value.series[0].data = [
+                    { value: res.data.sta1, name: '3-5 Days', itemStyle: { color: '#156082' } },
+                    { value: res.data.sta2, name: '6-10 Days', itemStyle: { color: '#E97132' } },
+                    { value: res.data.sta3, name: '11-15 Days', itemStyle: { color: '#196B24' } },
+                    { value: res.data.sta4, name: '16-20 Days', itemStyle: { color: '#1EA4D8' } },
+                    { value: res.data.sta5, name: '21 Days or Greater', itemStyle: { color: '#A02B93' } },
+                ];
+            }
+        });
+    };
+
+    onMounted(() => {
+        getData();
+    });
 </script>
 
 <style lang="scss" scoped>

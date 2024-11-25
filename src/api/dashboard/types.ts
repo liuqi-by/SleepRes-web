@@ -38,10 +38,37 @@ export interface UseMonthResponse {
 }
 
 interface UseTimeData {
+    // 0=0H,1=0.1-2,2=2.1-4,3=4.1-6,4=6.1-8,5=大于8
     sta0: number;
     sta1: number;
     sta2: number;
     sta3: number;
     sta4: number;
     sta5: number;
+}
+
+export interface NoConnectResponse {
+    // 0=<3D,1=3-5D,2=6-10D,3=11-15D,4=16-20D,5=>21D
+    sta0: number;
+    sta1: number;
+    sta2: number;
+    sta3: number;
+    sta4: number;
+    sta5: number;
+}
+
+export interface HighLeakageResponse {
+    sta0: number;
+    sta1: number;
+    sta2: number;
+    sta3: number;
+    sta4: number;
+}
+
+export interface HignAHIResponse {
+    sta0: number;
+    sta1: number;
+    sta2: number;
+    sta3: number;
+    sta4: number;
 }

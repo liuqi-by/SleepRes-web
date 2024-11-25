@@ -5,6 +5,9 @@ import type {
     AdherenceProportionByMonthResponse,
     UseMonth,
     UseMonthResponse,
+    NoConnectResponse,
+    HighLeakageResponse,
+    HignAHIResponse,
 } from './types';
 
 /**
@@ -34,5 +37,32 @@ export const getUseMonth = (data: UseMonth) => {
     return useClientRequest<ResPonseType<UseMonthResponse>>('/api/index/Use_Month', {
         method: 'GET',
         params: data,
+    });
+};
+
+/**
+ *  获取长时间未连接云平台的用户
+ */
+export const getNoConnect = () => {
+    return useClientRequest<ResPonseType<NoConnectResponse>>('/api/index/Unconnected_Network', {
+        method: 'GET',
+    });
+};
+
+/**
+ * 获取高漏气量的用户
+ */
+export const getHighLeakage = () => {
+    return useClientRequest<ResPonseType<HighLeakageResponse>>('/api/index/Hign_Leak', {
+        method: 'GET',
+    });
+};
+
+/**
+ * 获取高AHI的用户
+ */
+export const getHighAHI = () => {
+    return useClientRequest<ResPonseType<HignAHIResponse>>('/api/index/Hign_AHI', {
+        method: 'GET',
     });
 };
