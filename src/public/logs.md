@@ -1,8 +1,8 @@
 # 2024/11/25
 
-1. Modify SD card upload, all completed(修改左侧菜单栏)
-2. Modify prescription KPAP(基本完成KPAP支持)
-3. Update version 0.0.2-alpha.3(更新版本0.0.2-alpha.3)
+1. Modify the left menu bar(修改左侧菜单栏)
+2. Complete dashboard homepage interface docking(完成dashboard首页接口对接)
+3. Fix the issue of login crashes(修复登录闪退的问题)
 
 # 2024/11/21
 

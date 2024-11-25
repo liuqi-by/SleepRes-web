@@ -26,25 +26,38 @@
                     v-for="item in permission_routes"
                     :key="item.path"
                 >
-                    <el-sub-menu
-                        v-if="item.children"
-                        :index="item.path"
-                        :expand-open-icon="Minus"
-                        :expand-close-icon="Plus"
-                        :collapse-open-icon="Minus"
-                        :collapse-close-icon="Plus"
-                    >
-                        <template #title>{{ $t(`router.${item.meta?.title}`) }}</template>
-
-                        <el-menu-item
-                            v-for="child in item.children"
-                            :key="child.path"
-                            :index="child.path"
-                            :title="$t(`router.${child.meta?.title}`)"
+                    <div v-if="item.children">
+                        <div v-if="permission_routes.length === 1">
+                            <el-menu-item
+                                v-for="child in item.children"
+                                :key="child.path"
+                                :index="child.path"
+                                :title="$t(`router.${child.meta?.title}`)"
+                            >
+                                <span>{{ $t(`router.${child.meta?.title}`) }}</span>
+                            </el-menu-item>
+                        </div>
+                        <el-sub-menu
+                            v-else
+                            :index="item.path"
+                            :expand-open-icon="Minus"
+                            :expand-close-icon="Plus"
+                            :collapse-open-icon="Minus"
+                            :collapse-close-icon="Plus"
                         >
-                            <span>{{ $t(`router.${child.meta?.title}`) }}</span>
-                        </el-menu-item>
-                    </el-sub-menu>
+                            <template #title>{{ $t(`router.${item.meta?.title}`) }}</template>
+
+                            <el-menu-item
+                                v-for="child in item.children"
+                                :key="child.path"
+                                :index="child.path"
+                                :title="$t(`router.${child.meta?.title}`)"
+                            >
+                                <span>{{ $t(`router.${child.meta?.title}`) }}</span>
+                            </el-menu-item>
+                        </el-sub-menu>
+                    </div>
+
                     <el-menu-item
                         v-else
                         :title="$t(`router.${item.meta?.title}`)"
