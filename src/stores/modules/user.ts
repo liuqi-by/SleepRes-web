@@ -90,7 +90,7 @@ export const useUserStore = defineStore(
          */
         function login(loginData: LoginReq) {
             return new Promise<UserInfo>((resolve, reject) => {
-                loginStatus.value = null;
+                // loginStatus.value = null;
                 // 登录
                 loginAccount(loginData)
                     .then(res => {
@@ -131,7 +131,7 @@ export const useUserStore = defineStore(
                         }
                     })
                     .catch((error: any) => {
-                        permissionStore.setPermissionRoutes([]);
+                        permissionStore.clearPermissionRoute();
                         reject(error);
                     });
                 // .finally(() => {
@@ -172,7 +172,7 @@ export const useUserStore = defineStore(
                     // useMessageStore().stopInterval();
                     userInfo.value = null;
                     roles.value = [];
-                    usePermissionStore().setPermissionRoutes([]);
+                    usePermissionStore().clearPermissionRoute();
                     tagsViewStore.delAllViews();
 
                     if (!loginStatus.value) {

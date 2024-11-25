@@ -78,7 +78,7 @@ export const usePermissionStore = defineStore('permission', () => {
 
         permissionRoutes.value = JSON.parse(JSON.stringify(route)).filter((item: any) => item.path !== '/');
         menuRoute.value = generateRoute(permissionRoutes.value);
-
+        return permissionRoutes.value;
         // permissionRoutes.value = routes.filter(item => {
         //     return (
         //         item.meta?.title &&
@@ -92,10 +92,16 @@ export const usePermissionStore = defineStore('permission', () => {
         // });
     };
 
+    const clearPermissionRoute = () => {
+        permissionRoutes.value = [];
+        menuRoute.value = [];
+    };
+
     return {
         getPermissionRoutes,
         setPermissionRoutes,
         menuRoute,
         permissionRoutes,
+        clearPermissionRoute,
     };
 });

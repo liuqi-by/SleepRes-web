@@ -77,7 +77,7 @@
     const permissionStore = usePermissionStore();
 
     const goBack = () => {
-        let menuRoute = permissionStore.permissionRoutes.filter(route => !route.meta?.hidden);
+        let menuRoute = permissionStore.menuRoute;
 
         // 如果跳转的路由不在权限路由中，跳转到第一个菜单路由
         if (menuRoute.length > 0) {

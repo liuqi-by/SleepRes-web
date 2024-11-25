@@ -1,3 +1,9 @@
+# 2024/11/25
+
+1. Modify SD card upload, all completed(修改左侧菜单栏)
+2. Modify prescription KPAP(基本完成KPAP支持)
+3. Update version 0.0.2-alpha.3(更新版本0.0.2-alpha.3)
+
 # 2024/11/21
 
 1. Modify SD card upload, all completed(修改SD卡上传，全部完成)

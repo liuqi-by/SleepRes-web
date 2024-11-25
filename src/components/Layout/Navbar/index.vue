@@ -60,6 +60,7 @@
             -webkit-tap-highlight-color: transparent;
 
             &:hover {
+                color: $menu-hover-color;
                 background: $menu-hover-background;
             }
         }

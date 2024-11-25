@@ -29,6 +29,10 @@
                     <el-sub-menu
                         v-if="item.children"
                         :index="item.path"
+                        :expand-open-icon="Minus"
+                        :expand-close-icon="Plus"
+                        :collapse-open-icon="Minus"
+                        :collapse-close-icon="Plus"
                     >
                         <template #title>{{ $t(`router.${item.meta?.title}`) }}</template>
 
@@ -98,6 +102,7 @@
 </template>
 
 <script setup lang="ts">
+    import { Plus, Minus } from '@element-plus/icons-vue';
     import NavbarRight from '../Navbar/NavbarRight.vue';
     import Logo from './components/Logo.vue';
 
