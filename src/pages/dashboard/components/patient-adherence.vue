@@ -95,11 +95,32 @@
     const router = useRouter();
     const handleClick = (params: any) => {
         let { status } = params.data;
+
+        let query: AdherenceProportion = {
+            type: 0,
+        };
+        if (month.value && year.value) {
+            query = {
+                date: year.value + '-' + month.value,
+                type: 2,
+            };
+        } else if (year.value) {
+            query = {
+                date: year.value,
+                type: 1,
+            };
+        } else {
+            query = {
+                type: 0,
+            };
+        }
+
         router.push({
             path: '/dashboard/list',
             query: {
-                type: 1,
+                ...query,
                 status,
+                listType: 1,
             },
         });
     };
@@ -151,7 +172,7 @@
         return option.value.series[0].data.reduce((total, cur) => total + cur.value, 0);
     });
 
-    onMounted(() => {
+    onActivated(() => {
         getData();
     });
 </script>

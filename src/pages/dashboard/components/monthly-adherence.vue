@@ -72,7 +72,8 @@
                     // 百分比
                     formatter: function (params: any) {
                         let { dataIndex } = params;
-                        return calculatePercentage(params.value, totalData.value[dataIndex]) + '%';
+                        let percent = calculatePercentage(params.value, totalData.value[dataIndex]);
+                        return percent === 0 ? '' : percent + '%';
                     },
                 },
             },
@@ -94,7 +95,7 @@
         navigateTo({
             path: '/dashboard/list',
             query: {
-                type: 2,
+                listType: 2,
                 status,
                 date,
             },
@@ -126,7 +127,7 @@
             }
         });
     };
-    onMounted(() => {
+    onActivated(() => {
         getData();
     });
 </script>

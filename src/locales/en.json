@@ -316,5 +316,8 @@
         "par99": "CS2",
         "par100": "ExpDecayConstant",
         "par101": "CorrectionGain"
+    },
+    "dashboard": {
+        "searchPlaceholder": "First name / Last name / Patient ID "
     }
 }

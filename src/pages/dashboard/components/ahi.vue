@@ -92,7 +92,7 @@
         });
     };
 
-    onMounted(() => {
+    onActivated(() => {
         getData();
     });
 </script>

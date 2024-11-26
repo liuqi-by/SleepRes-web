@@ -188,7 +188,7 @@
         });
     };
 
-    onMounted(() => {
+    onActivated(() => {
         getData();
     });
 </script>

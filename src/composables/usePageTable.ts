@@ -55,8 +55,12 @@ export const usePageTable = <T, K extends {}>(
     }, 300);
 
     // 搜索
-    const search = () => {
+    const search = (params?: K) => {
         pageOption.value.currentPage = 1;
+        if (params) {
+            data = params;
+        }
+
         getData();
     };
 

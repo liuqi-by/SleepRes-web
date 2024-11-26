@@ -8,13 +8,13 @@
             @search="search"
             v-model="searchOption"
             class="m-b-[20px]"
-            :placeholder="$t('patients.searchPlaceholder')"
+            :placeholder="$t('dashboard.searchPlaceholder')"
         />
         <!-- 功能模块 -->
         <div class="function-module m-b-[20px] flex justify-between">
             <base-button
                 type="primary"
-                @click="navigateTo('/dashboard')"
+                @click="$router.go(-1)"
                 v-auth="[RoleType.DMETherapist]"
                 width="120px"
                 >Back
@@ -27,9 +27,9 @@
                     v-if="listType === 3"
                 />
                 <select-month-year
-                    v-model="date"
+                    v-model="option.date"
                     class="m-r-[40px]"
-                    v-if="listType < 4"
+                    v-if="listType < 4 && listType > 1"
                 />
                 <select-options
                     v-model="selectConfig.model"
@@ -172,7 +172,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="patient.percent_usage"
-                    :label="`Average Hrs of Use ${moment(date).format('MMM YYYY')}`"
+                    :label="`Average Hrs of Use ${moment(option.date).format('MMM YYYY')}`"
                     min-width="120"
                     align="center"
                     sortable
@@ -241,7 +241,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="patient.compliant"
+                    prop="compliant"
                     :label="$t('patients.Compliant')"
                     min-width="120"
                     align="center"
@@ -249,7 +249,7 @@
                     v-if="listType < 3"
                 >
                     <template #default="{ row }">
-                        <compliant-status :compliant="Number(row.patient.compliant)" />
+                        <compliant-status :compliant="Number(row.compliant)" />
                     </template>
                     <template #header="{ column }">
                         <table-filter-header
@@ -332,15 +332,13 @@
     import moment from 'moment';
     import selectMonthYear from './components/select-month-year.vue';
     import { RoleType } from '~/enums/RolesEnum';
-    import { getPatient } from '~/api/patient';
+
+    import { getAdherenceProportionUserList } from '~/api/dashboard';
 
     // import type { FilterType } from '~/components/table-filter/header.vue';
 
-    const { searchOption, pageOption, loading, tableList, _getData, handleSizeChange, handleCurrentChange, search } =
-        usePageTable(getPatient);
-
     const tableListPaient = computed(() => {
-        return tableList.value?.map(item => {
+        return tableList.value?.map((item: any) => {
             return {
                 ...item,
                 patient: JSON.parse(item.patient),
@@ -370,24 +368,29 @@
         { label: 'Non-Adherent', value: 2 },
     ];
 
-    const status = ref(0);
     const route = useRoute();
-    const date = ref();
-    const listType = ref();
+
+    const option = ref({
+        status: (route.query.status as unknown as number) || 0,
+        dateType: (route.query.type as unknown as number) || 1,
+        date: (route.query.date as unknown as string) || '',
+    });
+    const listType = ref(Number(route.query.listType as unknown as number) || 1);
     const setupDate = ref();
     const hours = ref();
     const days = ref();
     const leak = ref();
     const ahi = ref();
-    onMounted(() => {
-        console.log(route.query);
-        listType.value = Number(route.query.type as unknown as number) || 1;
-        status.value = (route.query.status as unknown as number) || 0;
-        date.value = (route.query.date as unknown as string) || '';
-        hours.value = route.query.hours || '';
-        days.value = route.query.days || '';
-        leak.value = route.query.leak || '';
-        ahi.value = route.query.ahi || '';
+
+    type Config = {
+        option: { label: string; value: number }[];
+        model: string | number;
+        label: string;
+    };
+    const selectConfig = ref<Config>({
+        option: [],
+        model: '',
+        label: '',
     });
 
     const hoursOptions = [
@@ -478,69 +481,93 @@
         },
     ];
 
-    const selectConfig = ref<any>({
-        option: [],
-        model: '',
-        label: '',
+    selectConfig.value = (() => {
+        let config: Config = { option: [], model: '', label: '' };
+        switch (listType.value) {
+            case 1:
+                config = {
+                    option: compliantOptions,
+                    model: option.value.status,
+                    label: 'Status',
+                };
+                break;
+            case 2:
+                config = {
+                    option: compliantOptions.filter(item => item.value !== 1),
+                    model: option.value.status,
+                    label: 'Status',
+                };
+                break;
+            case 3:
+                config = {
+                    option: hoursOptions,
+                    model: hours.value,
+                    label: 'Hours',
+                };
+                break;
+            case 4:
+                config = {
+                    option: daysOptions,
+                    model: days.value,
+                    label: 'Days',
+                };
+                break;
+            case 5:
+                config = {
+                    option: leakOptions,
+                    model: leak.value,
+                    label: 'Leak',
+                };
+                break;
+            case 6:
+                config = {
+                    option: ahiOptions,
+                    model: ahi.value,
+                    label: 'AHI',
+                };
+                break;
+            default:
+                config = {
+                    option: [],
+                    model: '',
+                    label: '',
+                };
+                break;
+        }
+        return config;
+    })();
+
+    const { searchOption, pageOption, loading, tableList, handleSizeChange, handleCurrentChange, search } =
+        usePageTable(getAdherenceProportionUserList, {
+            type: option.value.dateType,
+            compliant: option.value.status,
+            date: option.value.date,
+        });
+
+    onMounted(() => {
+        console.log(route.query);
+        hours.value = route.query.hours || '';
+        days.value = route.query.days || '';
+        leak.value = route.query.leak || '';
+        ahi.value = route.query.ahi || '';
     });
 
+    // const selectConfig = ref<any>({
+    //     option: [],
+    //     model: '',
+    //     label: '',
+    // });
+
     watch(
-        listType,
+        () => selectConfig.value.model,
         () => {
-            switch (listType.value) {
-                case 1:
-                    selectConfig.value = {
-                        option: compliantOptions,
-                        model: status.value,
-                        label: 'Status',
-                    };
-                    break;
-                case 2:
-                    selectConfig.value = {
-                        option: compliantOptions.filter(item => item.value !== 1),
-                        model: status.value,
-                        label: 'Status',
-                    };
-                    break;
-                case 3:
-                    selectConfig.value = {
-                        option: hoursOptions,
-                        model: hours.value,
-                        label: 'Hours',
-                    };
-                    break;
-                case 4:
-                    selectConfig.value = {
-                        option: daysOptions,
-                        model: days.value,
-                        label: 'Days',
-                    };
-                    break;
-                case 5:
-                    selectConfig.value = {
-                        option: leakOptions,
-                        model: leak.value,
-                        label: 'Leak',
-                    };
-                    break;
-                case 6:
-                    selectConfig.value = {
-                        option: ahiOptions,
-                        model: ahi.value,
-                        label: 'AHI',
-                    };
-                    break;
-                default:
-                    selectConfig.value = {
-                        option: [],
-                        model: '',
-                        label: '',
-                    };
-                    break;
-            }
+            search({
+                type: option.value.dateType,
+                compliant: selectConfig.value.model as number,
+                date: option.value.date,
+            });
         },
         {
-            immediate: true,
             deep: true,
         },
     );
