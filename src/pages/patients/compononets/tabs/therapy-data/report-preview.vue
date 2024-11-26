@@ -606,6 +606,7 @@
 
     :deep(.chart-module) {
         border: 1px solid #000;
+        page-break-inside: avoid;
 
         &:not(:last-child) {
             border-bottom: 0;

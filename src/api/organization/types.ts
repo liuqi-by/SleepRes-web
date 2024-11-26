@@ -4,6 +4,7 @@ export interface OrganizationListReq {
      * 搜索内容，组织机构列表则传空，对名称+邮箱+手机号+State+地址,模糊搜索
      */
     val: string;
+    status: number;
 }
 
 export interface Organization {

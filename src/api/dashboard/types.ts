@@ -72,3 +72,14 @@ export interface HignAHIResponse {
     sta3: number;
     sta4: number;
 }
+
+export interface AdherenceList {
+    // type为1传2024，为2传2024-11
+    type: number;
+    // 0=符合,1=监测,2=X
+    compliant: number;
+    // type为1传2024，为2传2024-11
+    date?: string;
+}
+
+export interface AdherenceListResponse {}

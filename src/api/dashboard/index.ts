@@ -8,6 +8,7 @@ import type {
     NoConnectResponse,
     HighLeakageResponse,
     HignAHIResponse,
+    AdherenceList,
 } from './types';
 
 /**
@@ -15,6 +16,16 @@ import type {
  */
 export const getAdherenceProportion = (data: AdherenceProportion) => {
     return useClientRequest<ResPonseType<AdherenceProportionResponse>>('/api/index/Adherence', {
+        method: 'GET',
+        params: data,
+    });
+};
+
+/**
+ *  患者依从性比例的用户列表
+ */
+export const getAdherenceProportionUserList = (data: AdherenceList) => {
+    return useClientRequest<ResPonseType<AdherenceListResponse>>('/api/index/Adherence_List', {
         method: 'GET',
         params: data,
     });

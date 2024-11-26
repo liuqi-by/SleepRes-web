@@ -5,9 +5,15 @@
  * @param Fn 请求函数
  * @returns
  */
-export const usePageTable = <T>(
-    Fn: (params: { page: number; pagesize: number; val: string }, status?: number) => Promise<ResPonseType<T>>,
-    status?: number,
+
+interface ReqParamsType {
+    page: number;
+    pagesize: number;
+    val: string;
+}
+export const usePageTable = <T, K extends {}>(
+    Fn: (params: ReqParamsType & K) => Promise<ResPonseType<T>>,
+    data?: K,
 ) => {
     // 搜索条件
     const searchOption = ref('');
@@ -28,14 +34,12 @@ export const usePageTable = <T>(
     const getData = useDebounceFn(() => {
         loading.value = true;
 
-        Fn(
-            {
-                page: pageOption.value.currentPage - 1,
-                pagesize: pageOption.value.pageSize,
-                val: searchOption.value,
-            },
-            status,
-        )
+        Fn({
+            page: pageOption.value.currentPage - 1,
+            pagesize: pageOption.value.pageSize,
+            val: searchOption.value,
+            ...(data as K),
+        })
             .then(res => {
                 if (res.data) {
                     tableList.value = res.data;
