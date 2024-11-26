@@ -73,11 +73,12 @@ export const routes: RouteRecordRaw[] = [
     },
     {
         path: '/dashboard',
-        component: () => import('@/pages/dashboard/index.vue'),
-        name: '仪表盘',
+        component: () => import('@/pages/dashboard/dashboard.vue'),
+        name: 'Dashboard',
         meta: {
             title: 'dashboard',
-            keepalive: false,
+
+            keepalive: true,
             roles: [RoleType.DMETherapist],
         },
     },

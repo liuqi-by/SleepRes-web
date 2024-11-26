@@ -27,7 +27,7 @@
                 <!-- 页面加载loading -->
                 <LayoutPageLoading v-if="loading" />
 
-                <NuxtPage />
+                <NuxtPage :keepalive="{ include: 'dashboard' }" />
 
                 <LayoutSettings />
             </div>
