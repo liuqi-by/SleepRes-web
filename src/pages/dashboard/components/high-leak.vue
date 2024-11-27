@@ -69,11 +69,11 @@
     });
 
     const handleClick = (params: any) => {
-        let leak = params.dataIndex;
+        let leak = params.dataIndex + 1;
         navigateTo({
             path: '/dashboard/list',
             query: {
-                type: 5,
+                listType: 5,
                 leak,
             },
         });

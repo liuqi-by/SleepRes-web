@@ -86,3 +86,9 @@ export interface AdherenceMonthList {
     hapdate: string;
     compliant: number;
 }
+
+export interface UseMonthList {
+    date: string;
+    // 0=0H,1=0.1-2,2=2.1-4,3=4.1-6,4=6.1-8,5=大于8
+    time: number;
+}

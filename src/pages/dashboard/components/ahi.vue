@@ -68,11 +68,11 @@
     });
 
     const handleClick = (params: any) => {
-        let ahi = params.dataIndex;
+        let ahi = params.dataIndex + 1;
         navigateTo({
             path: '/dashboard/list',
             query: {
-                type: 6,
+                listType: 6,
                 ahi,
             },
         });

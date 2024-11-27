@@ -333,7 +333,13 @@
     import selectMonthYear from './components/select-month-year.vue';
     import { RoleType } from '~/enums/RolesEnum';
 
-    import { getAdherenceProportionByMonthUserList, getAdherenceProportionUserList } from '~/api/dashboard';
+    import {
+        getAdherenceProportionByMonthUserList,
+        getAdherenceProportionUserList,
+        getHighAHIUserList,
+        getHighLeakageUserList,
+        getNoConnectUserList,
+    } from '~/api/dashboard';
     import type { UserInfo } from '~/api/login/types';
 
     // import type { FilterType } from '~/components/table-filter/header.vue';
@@ -375,13 +381,13 @@
         status: (route.query.status as unknown as number) || 0,
         dateType: (route.query.type as unknown as number) || 1,
         date: (route.query.date as unknown as string) || '',
+        days: (route.query.days as unknown as number) || 0,
+        leak: (route.query.leak as unknown as number) || 0,
+        ahi: (route.query.ahi as unknown as number) || 0,
     });
     const listType = ref(Number(route.query.listType as unknown as number) || 1);
     const setupDate = ref();
     const hours = ref();
-    const days = ref();
-    const leak = ref();
-    const ahi = ref();
 
     type Config = {
         option: { label: string; value: number }[];
@@ -424,61 +430,61 @@
     const daysOptions = [
         {
             label: '3-5 Days',
-            value: 0,
-        },
-        {
-            label: '6-10 Days',
             value: 1,
         },
         {
-            label: '11-15 Days',
+            label: '6-10 Days',
             value: 2,
         },
         {
-            label: '16-20 Days',
+            label: '11-15 Days',
             value: 3,
         },
         {
-            label: '21 Days or Greater',
+            label: '16-20 Days',
             value: 4,
+        },
+        {
+            label: '21 Days or Greater',
+            value: 5,
         },
     ];
 
     const leakOptions = [
         {
             label: '10 - 19 LPM',
-            value: 0,
-        },
-        {
-            label: '20 - 29 LPM',
             value: 1,
         },
         {
-            label: '30 - 39 LPM',
+            label: '20 - 29 LPM',
             value: 2,
         },
         {
-            label: '40 LPM or greater',
+            label: '30 - 39 LPM',
             value: 3,
+        },
+        {
+            label: '40 LPM or greater',
+            value: 4,
         },
     ];
 
     const ahiOptions = [
         {
             label: '10 - 19',
-            value: 0,
-        },
-        {
-            label: '20 - 29',
             value: 1,
         },
         {
-            label: '30 - 39',
+            label: '20 - 29',
             value: 2,
         },
         {
-            label: '40 or greater',
+            label: '30 - 39',
             value: 3,
+        },
+        {
+            label: '40 or greater',
+            value: 4,
         },
     ];
 
@@ -569,6 +575,37 @@
                     };
 
                     break;
+
+                case 4:
+                    apiOption = {
+                        api: getNoConnectUserList,
+                        selectConfig: {
+                            option: daysOptions,
+                            model: option.value.days,
+                            label: 'Days',
+                        },
+                    };
+                    break;
+                case 5:
+                    apiOption = {
+                        api: getHighLeakageUserList,
+                        selectConfig: {
+                            option: leakOptions,
+                            model: option.value.leak,
+                            label: 'Leak',
+                        },
+                    };
+                    break;
+                case 6:
+                    apiOption = {
+                        api: getHighAHIUserList,
+                        selectConfig: {
+                            option: ahiOptions,
+                            model: option.value.ahi,
+                            label: 'AHI',
+                        },
+                    };
+                    break;
                 default:
                     break;
             }
@@ -588,6 +625,18 @@
                     compliant: getApiOption.value.selectConfig.model,
                     hapdate: option.value.date,
                 };
+            case 4:
+                return {
+                    type: getApiOption.value.selectConfig.model,
+                };
+            case 5:
+                return {
+                    type: getApiOption.value.selectConfig.model,
+                };
+            case 6:
+                return {
+                    type: getApiOption.value.selectConfig.model,
+                };
             default:
                 return {};
         }
@@ -600,9 +649,6 @@
     onMounted(() => {
         console.log(route.query);
         hours.value = route.query.hours || '';
-        days.value = route.query.days || '';
-        leak.value = route.query.leak || '';
-        ahi.value = route.query.ahi || '';
     });
 
     // const selectConfig = ref<any>({

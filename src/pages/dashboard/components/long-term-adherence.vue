@@ -133,7 +133,7 @@
         navigateTo({
             path: '/dashboard/list',
             query: {
-                type: 3,
+                listType: 3,
                 status: 1,
                 date,
                 hours,

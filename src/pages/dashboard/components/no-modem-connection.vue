@@ -71,11 +71,11 @@
 
     const handleClick = (params: any) => {
         console.log(params);
-        let days = params.dataIndex;
+        let days = params.dataIndex + 1;
         navigateTo({
             path: '/dashboard/list',
             query: {
-                type: 4,
+                listType: 4,
                 days,
             },
         });
