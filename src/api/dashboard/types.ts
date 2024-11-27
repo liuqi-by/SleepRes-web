@@ -82,4 +82,7 @@ export interface AdherenceList {
     date?: string;
 }
 
-export interface AdherenceListResponse {}
+export interface AdherenceMonthList {
+    hapdate: string;
+    compliant: number;
+}

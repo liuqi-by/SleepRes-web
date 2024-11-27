@@ -32,9 +32,9 @@
                     v-if="listType < 4 && listType > 1"
                 />
                 <select-options
-                    v-model="selectConfig.model"
-                    :options="selectConfig.option"
-                    :label="selectConfig.label"
+                    v-model="getApiOption.selectConfig.model"
+                    :options="getApiOption.selectConfig.option"
+                    :label="getApiOption.selectConfig.label"
                 />
             </div>
         </div>
@@ -333,7 +333,8 @@
     import selectMonthYear from './components/select-month-year.vue';
     import { RoleType } from '~/enums/RolesEnum';
 
-    import { getAdherenceProportionUserList } from '~/api/dashboard';
+    import { getAdherenceProportionByMonthUserList, getAdherenceProportionUserList } from '~/api/dashboard';
+    import type { UserInfo } from '~/api/login/types';
 
     // import type { FilterType } from '~/components/table-filter/header.vue';
 
@@ -387,11 +388,11 @@
         model: string | number;
         label: string;
     };
-    const selectConfig = ref<Config>({
-        option: [],
-        model: '',
-        label: '',
-    });
+    // const selectConfig = ref<Config>({
+    //     option: [],
+    //     model: '',
+    //     label: '',
+    // });
 
     const hoursOptions = [
         {
@@ -481,68 +482,120 @@
         },
     ];
 
-    selectConfig.value = (() => {
-        let config: Config = { option: [], model: '', label: '' };
+    // selectConfig.value = (() => {
+    //     let config: Config = { option: [], model: '', label: '' };
+    //     switch (listType.value) {
+    //         case 1:
+    //             config = {
+    //                 option: compliantOptions,
+    //                 model: option.value.status,
+    //                 label: 'Status',
+    //             };
+    //             break;
+    //         case 2:
+    //             config = {
+    //                 option: compliantOptions.filter(item => item.value !== 1),
+    //                 model: option.value.status,
+    //                 label: 'Status',
+    //             };
+    //             break;
+    //         case 3:
+    //             config = {
+    //                 option: hoursOptions,
+    //                 model: hours.value,
+    //                 label: 'Hours',
+    //             };
+    //             break;
+    //         case 4:
+    //             config = {
+    //                 option: daysOptions,
+    //                 model: days.value,
+    //                 label: 'Days',
+    //             };
+    //             break;
+    //         case 5:
+    //             config = {
+    //                 option: leakOptions,
+    //                 model: leak.value,
+    //                 label: 'Leak',
+    //             };
+    //             break;
+    //         case 6:
+    //             config = {
+    //                 option: ahiOptions,
+    //                 model: ahi.value,
+    //                 label: 'AHI',
+    //             };
+    //             break;
+    //         default:
+    //             config = {
+    //                 option: [],
+    //                 model: '',
+    //                 label: '',
+    //             };
+    //             break;
+    //     }
+    //     return config;
+    // })();
+    const getApiOption = ref(
+        (() => {
+            let apiOption: {
+                api: (data: any & PageQuery) => Promise<ResPonseType<UserInfo[]>>;
+                selectConfig: Config;
+            } = {
+                api: getAdherenceProportionUserList,
+                selectConfig: { option: compliantOptions, model: option.value.status, label: 'Status' },
+            };
+            switch (listType.value) {
+                case 1:
+                    apiOption = {
+                        api: getAdherenceProportionUserList,
+                        selectConfig: {
+                            option: compliantOptions,
+                            model: option.value.status,
+                            label: 'Status',
+                        },
+                    };
+
+                    break;
+                case 2:
+                    apiOption = {
+                        api: getAdherenceProportionByMonthUserList,
+                        selectConfig: {
+                            option: compliantOptions.filter(item => item.value !== 1),
+                            model: option.value.status,
+                            label: 'Status',
+                        },
+                    };
+
+                    break;
+                default:
+                    break;
+            }
+            return apiOption;
+        })(),
+    );
+    const params = computed(() => {
         switch (listType.value) {
             case 1:
-                config = {
-                    option: compliantOptions,
-                    model: option.value.status,
-                    label: 'Status',
+                return {
+                    type: option.value.dateType,
+                    compliant: getApiOption.value.selectConfig.model,
+                    date: option.value.date,
                 };
-                break;
             case 2:
-                config = {
-                    option: compliantOptions.filter(item => item.value !== 1),
-                    model: option.value.status,
-                    label: 'Status',
+                return {
+                    compliant: getApiOption.value.selectConfig.model,
+                    hapdate: option.value.date,
                 };
-                break;
-            case 3:
-                config = {
-                    option: hoursOptions,
-                    model: hours.value,
-                    label: 'Hours',
-                };
-                break;
-            case 4:
-                config = {
-                    option: daysOptions,
-                    model: days.value,
-                    label: 'Days',
-                };
-                break;
-            case 5:
-                config = {
-                    option: leakOptions,
-                    model: leak.value,
-                    label: 'Leak',
-                };
-                break;
-            case 6:
-                config = {
-                    option: ahiOptions,
-                    model: ahi.value,
-                    label: 'AHI',
-                };
-                break;
             default:
-                config = {
-                    option: [],
-                    model: '',
-                    label: '',
-                };
-                break;
+                return {};
         }
-        return config;
-    })();
+    });
+    // selectConfig.value = getApiOption.selectConfig;
 
     const { searchOption, pageOption, loading, tableList, handleSizeChange, handleCurrentChange, search } =
-        usePageTable(getAdherenceProportionUserList, {
-            type: option.value.dateType,
-            compliant: option.value.status,
-            date: option.value.date,
-        });
+        usePageTable(getApiOption.value.api, params.value);
 
     onMounted(() => {
         console.log(route.query);
@@ -559,12 +612,10 @@
     // });
 
     watch(
-        () => selectConfig.value.model,
+        params,
         () => {
             search({
-                type: option.value.dateType,
-                compliant: selectConfig.value.model as number,
-                date: option.value.date,
+                ...params.value,
             });
         },
         {

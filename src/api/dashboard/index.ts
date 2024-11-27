@@ -1,3 +1,4 @@
+import type { UserInfo } from '../login/types';
 import type {
     AdherenceProportion,
     AdherenceProportionResponse,
@@ -9,6 +10,7 @@ import type {
     HighLeakageResponse,
     HignAHIResponse,
     AdherenceList,
+    AdherenceMonthList,
 } from './types';
 
 /**
@@ -24,8 +26,8 @@ export const getAdherenceProportion = (data: AdherenceProportion) => {
 /**
  *  患者依从性比例的用户列表
  */
-export const getAdherenceProportionUserList = (data: AdherenceList) => {
-    return useClientRequest<ResPonseType<AdherenceListResponse>>('/api/index/Adherence_List', {
+export const getAdherenceProportionUserList = (data: AdherenceList & PageQuery) => {
+    return useClientRequest<ResPonseType<UserInfo[]>>('/api/index/Adherence_List', {
         method: 'GET',
         params: data,
     });
@@ -36,6 +38,16 @@ export const getAdherenceProportionUserList = (data: AdherenceList) => {
  */
 export const getAdherenceProportionByMonth = (data: AdherenceProportionByMonth) => {
     return useClientRequest<ResPonseType<AdherenceProportionByMonthResponse>>('/api/index/Adherence_Month', {
+        method: 'GET',
+        params: data,
+    });
+};
+
+/**
+ * 按月份获取依从性的用户列表
+ */
+export const getAdherenceProportionByMonthUserList = (data: AdherenceMonthList & PageQuery) => {
+    return useClientRequest<ResPonseType<UserInfo[]>>('/api/index/Adherence_Month_List', {
         method: 'GET',
         params: data,
     });

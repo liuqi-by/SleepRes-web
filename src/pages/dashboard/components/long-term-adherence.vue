@@ -191,6 +191,10 @@
     onActivated(() => {
         getData();
     });
+
+    onMounted(() => {
+        getData();
+    });
 </script>
 
 <style lang="scss" scoped>

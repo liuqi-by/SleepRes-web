@@ -8,6 +8,7 @@
             format="MMMM YY"
             value-format="YYYY-MM"
             :disabledDate="disabledDate"
+            :clearable="false"
         />
     </div>
 </template>
