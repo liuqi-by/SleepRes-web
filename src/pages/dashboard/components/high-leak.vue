@@ -74,7 +74,7 @@
             path: '/dashboard/list',
             query: {
                 listType: 5,
-                leak,
+                type: leak,
             },
         });
     };

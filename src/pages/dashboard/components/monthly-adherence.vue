@@ -39,6 +39,7 @@
         },
         yAxis: {
             type: 'value',
+            minInterval: 1,
         },
         title: {
             text: 'Monthly Adherence Trend',
@@ -96,7 +97,7 @@
             path: '/dashboard/list',
             query: {
                 listType: 2,
-                status,
+                type: status,
                 date,
             },
         });

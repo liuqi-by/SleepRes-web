@@ -7,8 +7,9 @@
             placeholder="Pick a month"
             format="MMMM YY"
             value-format="YYYY-MM"
-            :disabledDate="disabledDate"
+            :disabledDate="disabledDateFn"
             :clearable="false"
+            v-bind="$attrs"
         />
     </div>
 </template>
@@ -18,20 +19,25 @@
 
     const date = defineModel<string>();
 
-    defineProps({
+    const porps = defineProps({
         label: {
             type: String,
             default: '',
         },
+        disabledDate: {
+            type: Function,
+            default: function (time: Record<string, any>) {
+                const monthRange = useDashboard().monthRange;
+                return (
+                    time.getTime() > new Date(monthRange[monthRange.length - 1]).getTime() ||
+                    time.getTime() < new Date(monthRange[0]).getTime()
+                );
+            },
+        },
     });
 
-    const monthRange = useDashboard().monthRange;
-
-    const disabledDate = (time: Record<string, any>): boolean => {
-        return (
-            time.getTime() > new Date(monthRange[monthRange.length - 1]).getTime() ||
-            time.getTime() < new Date(monthRange[0]).getTime()
-        );
+    const disabledDateFn = (time: Record<string, any>): boolean => {
+        return porps.disabledDate(time);
     };
 </script>
 

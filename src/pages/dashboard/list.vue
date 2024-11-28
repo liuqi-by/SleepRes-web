@@ -20,19 +20,30 @@
                 >Back
             </base-button>
             <div class="flex">
-                <select-month-year
-                    v-model="setupDate"
-                    class="m-r-[40px]"
-                    label="Setup Month"
+                <div
                     v-if="listType === 3"
-                />
+                    class="flex"
+                >
+                    <select-month-year
+                        v-model="option.setupDate"
+                        class="m-r-[40px]"
+                        label="Setup Month"
+                        :disabledDate="disabledMonth"
+                        readonly
+                    />
+                    <select-month-year
+                        v-model="option.date"
+                        class="m-r-[40px]"
+                        :disabledDate="disabledRange"
+                    />
+                </div>
                 <select-month-year
                     v-model="option.date"
                     class="m-r-[40px]"
-                    v-if="listType < 4 && listType > 1"
+                    v-if="listType < 3 && listType > 1"
                 />
                 <select-options
-                    v-model="getApiOption.selectConfig.model"
+                    v-model="option.selectModel"
                     :options="getApiOption.selectConfig.option"
                     :label="getApiOption.selectConfig.label"
                 />
@@ -133,7 +144,7 @@
                     v-if="listType < 3"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage || 0 }}%</span>
+                        <span></span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -148,7 +159,7 @@
                     v-if="listType < 3"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage || 0 }}%</span>
+                        <span></span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -164,7 +175,7 @@
                     v-if="listType >= 4"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage || 0 }}%</span>
+                        <span></span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -179,7 +190,7 @@
                     v-if="listType === 3"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage || 0 }}%</span>
+                        <span></span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -194,7 +205,7 @@
                     v-if="listType === 4 || listType === 5"
                 >
                     <template #default="{ row }">
-                        <compliant-status :compliant="Number(row.patient.compliant)" />
+                        <span></span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header
@@ -231,7 +242,7 @@
                     v-if="listType === 4"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.use_end_time && dateFormat(row.patient.use_end_time) }}</span>
+                        <span></span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header
@@ -269,7 +280,7 @@
                     v-if="listType === 3"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage || 0 }}%</span>
+                        <span></span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -284,7 +295,7 @@
                     v-if="listType === 3"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage || 0 }}%</span>
+                        <span></span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -300,7 +311,7 @@
                     v-if="listType > 5"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.patient.percent_usage || 0 }}%</span>
+                        <span></span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -339,6 +350,7 @@
         getHighAHIUserList,
         getHighLeakageUserList,
         getNoConnectUserList,
+        getUseMonthUserList,
     } from '~/api/dashboard';
     import type { UserInfo } from '~/api/login/types';
 
@@ -369,36 +381,41 @@
         searchFilter,
     } = useFilterTableHeader(tableListPaient);
 
+    const route = useRoute();
+
+    const option = ref({
+        selectModel: (route.query.type as unknown as number) || 0,
+        dateType: (route.query.type as unknown as number) || 1,
+        date: (route.query.date as unknown as string) || '',
+        setupDate: (route.query.setupDate as unknown as string) || '',
+        dateRange: [route.query.startDate, route.query.endDate],
+    });
+    const listType = ref(Number(route.query.listType as unknown as number) || 1);
+
+    const disabledMonth = (time: Record<string, any>): boolean => {
+        return time.getTime() > new Date().getTime();
+    };
+
+    const disabledRange = (time: Record<string, any>): boolean => {
+        let dateRange = option.value.dateRange;
+        return (
+            (dateRange[0] ? time.getTime() < new Date(dateRange[0] as string).getTime() : true) ||
+            (dateRange[1]
+                ? time.getTime() > new Date(dateRange[1] as string).getTime()
+                : time.getTime() > new Date().getTime())
+        );
+    };
+
+    type Config = {
+        option: { label: string; value: number }[];
+        label: string;
+    };
+
     const compliantOptions = [
         { label: 'Adherent', value: 0 },
         { label: 'Monitoring', value: 1 },
         { label: 'Non-Adherent', value: 2 },
     ];
-
-    const route = useRoute();
-
-    const option = ref({
-        status: (route.query.status as unknown as number) || 0,
-        dateType: (route.query.type as unknown as number) || 1,
-        date: (route.query.date as unknown as string) || '',
-        days: (route.query.days as unknown as number) || 0,
-        leak: (route.query.leak as unknown as number) || 0,
-        ahi: (route.query.ahi as unknown as number) || 0,
-    });
-    const listType = ref(Number(route.query.listType as unknown as number) || 1);
-    const setupDate = ref();
-    const hours = ref();
-
-    type Config = {
-        option: { label: string; value: number }[];
-        model: string | number;
-        label: string;
-    };
-    // const selectConfig = ref<Config>({
-    //     option: [],
-    //     model: '',
-    //     label: '',
-    // });
 
     const hoursOptions = [
         {
@@ -488,61 +505,6 @@
         },
     ];
 
-    // selectConfig.value = (() => {
-    //     let config: Config = { option: [], model: '', label: '' };
-    //     switch (listType.value) {
-    //         case 1:
-    //             config = {
-    //                 option: compliantOptions,
-    //                 model: option.value.status,
-    //                 label: 'Status',
-    //             };
-    //             break;
-    //         case 2:
-    //             config = {
-    //                 option: compliantOptions.filter(item => item.value !== 1),
-    //                 model: option.value.status,
-    //                 label: 'Status',
-    //             };
-    //             break;
-    //         case 3:
-    //             config = {
-    //                 option: hoursOptions,
-    //                 model: hours.value,
-    //                 label: 'Hours',
-    //             };
-    //             break;
-    //         case 4:
-    //             config = {
-    //                 option: daysOptions,
-    //                 model: days.value,
-    //                 label: 'Days',
-    //             };
-    //             break;
-    //         case 5:
-    //             config = {
-    //                 option: leakOptions,
-    //                 model: leak.value,
-    //                 label: 'Leak',
-    //             };
-    //             break;
-    //         case 6:
-    //             config = {
-    //                 option: ahiOptions,
-    //                 model: ahi.value,
-    //                 label: 'AHI',
-    //             };
-    //             break;
-    //         default:
-    //             config = {
-    //                 option: [],
-    //                 model: '',
-    //                 label: '',
-    //             };
-    //             break;
-    //     }
-    //     return config;
-    // })();
     const getApiOption = ref(
         (() => {
             let apiOption: {
@@ -550,7 +512,7 @@
                 selectConfig: Config;
             } = {
                 api: getAdherenceProportionUserList,
-                selectConfig: { option: compliantOptions, model: option.value.status, label: 'Status' },
+                selectConfig: { option: compliantOptions, label: 'Status' },
             };
             switch (listType.value) {
                 case 1:
@@ -558,7 +520,6 @@
                         api: getAdherenceProportionUserList,
                         selectConfig: {
                             option: compliantOptions,
-                            model: option.value.status,
                             label: 'Status',
                         },
                     };
@@ -569,19 +530,25 @@
                         api: getAdherenceProportionByMonthUserList,
                         selectConfig: {
                             option: compliantOptions.filter(item => item.value !== 1),
-                            model: option.value.status,
                             label: 'Status',
                         },
                     };
 
                     break;
-
+                case 3:
+                    apiOption = {
+                        api: getUseMonthUserList,
+                        selectConfig: {
+                            option: hoursOptions,
+                            label: 'Hours',
+                        },
+                    };
+                    break;
                 case 4:
                     apiOption = {
                         api: getNoConnectUserList,
                         selectConfig: {
                             option: daysOptions,
-                            model: option.value.days,
                             label: 'Days',
                         },
                     };
@@ -591,7 +558,6 @@
                         api: getHighLeakageUserList,
                         selectConfig: {
                             option: leakOptions,
-                            model: option.value.leak,
                             label: 'Leak',
                         },
                     };
@@ -601,7 +567,6 @@
                         api: getHighAHIUserList,
                         selectConfig: {
                             option: ahiOptions,
-                            model: option.value.ahi,
                             label: 'AHI',
                         },
                     };
@@ -612,50 +577,41 @@
             return apiOption;
         })(),
     );
+
     const params = computed(() => {
+        let params: any = {
+            type: option.value.selectModel,
+        };
         switch (listType.value) {
             case 1:
-                return {
+                params = {
                     type: option.value.dateType,
-                    compliant: getApiOption.value.selectConfig.model,
+                    compliant: option.value.selectModel,
                     date: option.value.date,
                 };
+                break;
             case 2:
-                return {
-                    compliant: getApiOption.value.selectConfig.model,
+                params = {
+                    compliant: option.value.selectModel,
                     hapdate: option.value.date,
                 };
-            case 4:
-                return {
-                    type: getApiOption.value.selectConfig.model,
+                break;
+            case 3:
+                params = {
+                    date: option.value.setupDate,
+                    time: option.value.selectModel,
+                    month: option.value.date,
                 };
-            case 5:
-                return {
-                    type: getApiOption.value.selectConfig.model,
-                };
-            case 6:
-                return {
-                    type: getApiOption.value.selectConfig.model,
-                };
+                break;
+
             default:
-                return {};
+                break;
         }
+        return params;
     });
-    // selectConfig.value = getApiOption.selectConfig;
 
     const { searchOption, pageOption, loading, tableList, handleSizeChange, handleCurrentChange, search } =
         usePageTable(getApiOption.value.api, params.value);
-
-    onMounted(() => {
-        console.log(route.query);
-        hours.value = route.query.hours || '';
-    });
-
-    // const selectConfig = ref<any>({
-    //     option: [],
-    //     model: '',
-    //     label: '',
-    // });
 
     watch(
         params,

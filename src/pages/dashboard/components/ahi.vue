@@ -73,7 +73,7 @@
             path: '/dashboard/list',
             query: {
                 listType: 6,
-                ahi,
+                type: ahi,
             },
         });
     };

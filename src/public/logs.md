@@ -1,3 +1,8 @@
+# 2024/11/28
+
+1. Complete most of the dashboard functions, some fields have not been assigned yet(完成dashboard大部分功能，一些字段还未赋值)
+2. Update version 0.0.2-alpha.4(更新版本0.0.2-alpha.4)
+
 # 2024/11/25
 
 1. Modify the left menu bar(修改左侧菜单栏)

@@ -76,7 +76,7 @@
             path: '/dashboard/list',
             query: {
                 listType: 4,
-                days,
+                type: days,
             },
         });
     };

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import type { UseMonth } from '~/api/dashboard/types';
 
 /**
  * 获取区间时间
@@ -117,4 +118,29 @@ export const getLast12Months = () => {
     }
 
     return last12Months;
+};
+
+/**
+ * 获取日期
+ */
+export const getYearAndMonth = (year?: string, month?: string) => {
+    let date: UseMonth = {
+        type: 0,
+    };
+    if (month && year) {
+        date = {
+            date: year + '-' + month,
+            type: 2,
+        };
+    } else if (year) {
+        date = {
+            date: year,
+            type: 1,
+        };
+    } else {
+        date = {
+            type: 0,
+        };
+    }
+    return date;
 };

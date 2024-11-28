@@ -45,7 +45,6 @@
     import { CanvasRenderer } from 'echarts/renderers';
     import selectDate from './select-date.vue';
     import { getAdherenceProportion } from '~/api/dashboard';
-    import type { AdherenceProportion } from '~/api/dashboard/types';
 
     use([TitleComponent, TooltipComponent, LegendComponent, PieChart, CanvasRenderer, LabelLayout]);
 
@@ -95,31 +94,13 @@
     const router = useRouter();
     const handleClick = (params: any) => {
         let { status } = params.data;
-
-        let query: AdherenceProportion = {
-            type: 0,
-        };
-        if (month.value && year.value) {
-            query = {
-                date: year.value + '-' + month.value,
-                type: 2,
-            };
-        } else if (year.value) {
-            query = {
-                date: year.value,
-                type: 1,
-            };
-        } else {
-            query = {
-                type: 0,
-            };
-        }
+        let queryDate = getYearAndMonth(year.value, month.value);
 
         router.push({
             path: '/dashboard/list',
             query: {
-                ...query,
-                status,
+                ...queryDate,
+                type: status,
                 listType: 1,
             },
         });
@@ -137,25 +118,7 @@
     });
 
     const getData = () => {
-        let params: AdherenceProportion = {
-            type: 0,
-        };
-
-        if (month.value && year.value) {
-            params = {
-                date: year.value + '-' + month.value,
-                type: 2,
-            };
-        } else if (year.value) {
-            params = {
-                date: year.value,
-                type: 1,
-            };
-        } else {
-            params = {
-                type: 0,
-            };
-        }
+        let params = getYearAndMonth(year.value, month.value);
 
         getAdherenceProportion(params).then(res => {
             if (res.code === 1 && res.data) {
