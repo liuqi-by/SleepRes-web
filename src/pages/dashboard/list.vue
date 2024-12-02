@@ -136,7 +136,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="patient.percent_usage"
+                    prop="best30"
                     label="Best 30 Days"
                     min-width="120"
                     align="center"
@@ -144,14 +144,14 @@
                     v-if="listType < 3"
                 >
                     <template #default="{ row }">
-                        <span></span>
+                        <span>{{ row.best30 }}</span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="patient.percent_usage"
+                    prop="adherence_date"
                     label="Adherence Date"
                     min-width="120"
                     align="center"
@@ -159,7 +159,7 @@
                     v-if="listType < 3"
                 >
                     <template #default="{ row }">
-                        <span></span>
+                        <span>{{ row.adherence_date }}</span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -308,7 +308,7 @@
                     min-width="120"
                     align="center"
                     sortable
-                    v-if="listType > 5"
+                    v-if="listType >= 5"
                 >
                     <template #default="{ row }">
                         <span></span>
