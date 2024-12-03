@@ -219,6 +219,8 @@
                 :filterList="filterList"
                 :filterCustomOptions="filterCustomOptions"
             />
+
+            <column-selection ref="columnSelectionRef" />
         </client-only>
     </div>
 </template>
