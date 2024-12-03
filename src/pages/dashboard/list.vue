@@ -71,7 +71,12 @@
                     sortable
                 >
                     <template #default="{ row }">
-                        {{ nameFormat(row) }}
+                        <span
+                            class="link"
+                            @click="showPatientReport(row)"
+                        >
+                            {{ nameFormat(row) }}
+                        </span>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
@@ -333,6 +338,19 @@
                 :filterList="filterList"
                 :filterCustomOptions="filterCustomOptions"
             />
+
+            <!-- 患者记录 -->
+            <patient-record
+                ref="patientRecordRef"
+                @show-upload-files="showUploadFiles"
+                v-if="showUploadFiles"
+            />
+            <!-- 上传SD -->
+            <lazy-upload-files
+                ref="uploadFilesRef"
+                @show-patient-report="showPatientReport"
+                @upload-down="uploadDown"
+            />
         </client-only>
     </div>
 </template>
@@ -343,6 +361,7 @@
     import moment from 'moment';
     import selectMonthYear from './components/select-month-year.vue';
     import { RoleType } from '~/enums/RolesEnum';
+    import { getPatientInfo } from '~/api/patient';
 
     import {
         getAdherenceProportionByMonthUserList,
@@ -353,6 +372,9 @@
         getUseMonthUserList,
     } from '~/api/dashboard';
     import type { UserInfo } from '~/api/login/types';
+    import type { UploadFiles } from '#build/components';
+
+    const PatientRecord = defineAsyncComponent(() => import('../patients/compononets/patient-record.vue'));
 
     // import type { FilterType } from '~/components/table-filter/header.vue';
 
@@ -364,6 +386,11 @@
             };
         });
     });
+
+    const uploadFilesRef = ref<InstanceType<typeof UploadFiles>>();
+    const showUploadFiles = (userId?: string) => {
+        uploadFilesRef.value?.showDialog(userId);
+    };
 
     // 表格筛选
     const {
@@ -610,7 +637,7 @@
         return params;
     });
 
-    const { searchOption, pageOption, loading, tableList, handleSizeChange, handleCurrentChange, search } =
+    const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
         usePageTable(getApiOption.value.api, params.value);
 
     watch(
@@ -624,4 +651,24 @@
             deep: true,
         },
     );
+
+    // 查看患者信息
+    const patientRecordRef = ref<InstanceType<typeof PatientRecord>>();
+    const showPatientReport = (row: UserInfo) => {
+        patientRecordRef.value?.showDialog(row);
+    };
+
+    const uploadDown = async (id: string) => {
+        await getData();
+        if (id) {
+            getPatientInfo({ user_id: id }).then(res => {
+                if (res.data) {
+                    let userInfo = { ...res.data, patient: JSON.parse(res.data.patient) };
+                    patientRecordRef.value?.showDialog(userInfo);
+                }
+            });
+        }
+    };
+
+    provide('update', getData);
 </script>
