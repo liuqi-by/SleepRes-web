@@ -11,25 +11,21 @@
             :placeholder="$t('patients.searchPlaceholder')"
         />
         <!-- 功能模块 -->
-        <div class="function-module m-b-[20px] flex justify-between">
+        <!-- <div class="function-module m-b-[20px] flex justify-between">
             <base-button
                 type="primary"
                 @click="create"
                 v-auth="[RoleType.DMETherapist]"
                 >{{ $t('patients.AddPatient') }}
             </base-button>
-            <!-- <base-button
-                type="primary"
-                @click="create"
-                >{{ $t('patients.AddPatient') }}
-            </base-button> -->
+
             <base-button
                 type="primary"
                 @click="showUploadFiles"
                 class="m-l-auto"
                 >{{ $t('patients.SDCardUpload') }}
             </base-button>
-        </div>
+        </div> -->
         <!-- 表格模块 -->
         <div class="table-module">
             <table-module
@@ -43,13 +39,34 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :pageSizes="[25, 50, 100]"
+                :isExport="true"
+                ref="tableModuleRef"
+                :columns="columnSelection"
             >
-                <el-table-column
+                <template #header-left>
+                    <base-button
+                        type="primary"
+                        @click="create"
+                        v-auth="[RoleType.DMETherapist]"
+                        >{{ $t('patients.AddPatient') }}
+                    </base-button>
+                </template>
+                <template #header-right>
+                    <base-button
+                        type="primary"
+                        @click="showUploadFiles"
+                        class="m-l-auto"
+                        >{{ $t('patients.SDCardUpload') }}
+                    </base-button>
+                </template>
+                <!-- <el-table-column
                     prop="nickname"
                     :label="$t('users.FullName')"
                     min-width="120"
                     align="center"
                     sortable
+                    v-if="isShowColumn($t('users.FullName'))"
+                    :order="getColumnOrder($t('users.FullName'))"
                 >
                     <template #default="{ row }">
                         <span
@@ -62,25 +79,83 @@
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
+                </el-table-column> -->
 
                 <el-table-column
+                    v-for="item in columnsInit"
+                    :key="item.prop"
+                    :prop="item.prop"
+                    :label="item.label"
+                    :min-width="item.width"
+                    align="center"
+                    sortable
+                >
+                    <template
+                        #default="{ row }"
+                        v-if="item.defaultTemplate"
+                    >
+                        <span
+                            class="link"
+                            @click="showPatientReport(row)"
+                            v-if="item.prop === 'nickname'"
+                        >
+                            {{ nameFormat(row) }}
+                        </span>
+
+                        <span v-if="item.prop === 'patient.birthdate' || item.prop === 'patient.setup_date'">
+                            {{
+                                row[item.prop.split('.')[0]][item.prop.split('.')[1]] &&
+                                dateFormat(row[item.prop.split('.')[0]][item.prop.split('.')[1]])
+                            }}
+                        </span>
+
+                        <span v-if="item.prop === 'percent_usage'">{{ row.percent_usage || 0 }}%</span>
+
+                        <compliant-status
+                            :compliant="Number(row.compliant)"
+                            v-if="item.prop === 'compliant'"
+                        />
+                    </template>
+                    <template #header="{ column }">
+                        <table-filter-header
+                            :column="column"
+                            v-if="!item.type"
+                        />
+                        <table-filter-header
+                            :column="column"
+                            type="date"
+                            v-if="item.type === 'date'"
+                        />
+                        <table-filter-header
+                            :column="column"
+                            type="select"
+                            :customOptions="item.selectOptions"
+                            v-if="item.type === 'select'"
+                        />
+                    </template>
+                </el-table-column>
+
+                <!-- <el-table-column
                     prop="patient.patientid"
                     :label="$t('patients.PatientID')"
                     min-width="100"
                     align="center"
                     sortable
+                    v-if="isShowColumn($t('patients.PatientID'))"
+                    
                 >
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="patient.birthdate"
                     :label="$t('patients.Birthdate')"
                     min-width="120"
                     align="center"
                     sortable
+                    v-if="isShowColumn($t('patients.Birthdate'))"
+                   
                 >
                     <template #default="{ row }">
                         <span>{{ row.patient.birthdate && dateFormat(row.patient.birthdate) }}</span>
@@ -91,35 +166,41 @@
                             type="date"
                         />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="sn"
                     :label="$t('patients.SerialNumber')"
                     min-width="120"
                     align="center"
                     sortable
+                    v-if="isShowColumn($t('patients.SerialNumber'))"
+                    :order="getColumnOrder($t('patients.SerialNumber'))"
                 >
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="institution_name"
                     :label="$t('patients.Office')"
                     min-width="120"
                     align="center"
                     sortable
+                    v-if="isShowColumn($t('patients.Office'))"
+                    :order="getColumnOrder($t('patients.Office'))"
                 >
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="patient.setup_date"
                     :label="$t('patients.TherapyStartDate')"
                     min-width="125"
                     align="center"
                     sortable
+                    v-if="isShowColumn($t('patients.TherapyStartDate'))"
+                    :order="getColumnOrder($t('patients.TherapyStartDate'))"
                 >
                     <template #default="{ row }">
                         <span>{{ row.patient.setup_date && dateFormat(row.patient.setup_date) }}</span>
@@ -130,27 +211,31 @@
                             type="date"
                         />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="percent_usage"
                     :label="$t('patients.PercentUsage')"
                     min-width="120"
                     align="center"
                     sortable
+                    v-if="isShowColumn($t('patients.PercentUsage'))"
+                    :order="getColumnOrder($t('patients.PercentUsage'))"
                 >
                     <template #default="{ row }">
-                        <span>{{ row.percent_usage || 0 }}%</span>
+                    
                     </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="patient.use_end_time"
                     :label="$t('patients.LastUpdateDate')"
                     min-width="120"
                     align="center"
                     sortable
+                    v-if="isShowColumn($t('patients.LastUpdateDate'))"
+                    :order="getColumnOrder($t('patients.LastUpdateDate'))"
                 >
                     <template #default="{ row }">
                         <span>{{ row.patient.use_end_time && dateFormat(row.patient.use_end_time) }}</span>
@@ -161,13 +246,15 @@
                             type="date"
                         />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="compliant"
                     :label="$t('patients.Compliant')"
                     min-width="120"
                     align="center"
                     sortable
+                    v-if="isShowColumn($t('patients.Compliant'))"
+                    :order="getColumnOrder($t('patients.Compliant'))"
                 >
                     <template #default="{ row }">
                         <compliant-status :compliant="Number(row.patient.compliant)" />
@@ -179,7 +266,7 @@
                             :customOptions="compliantOptions"
                         />
                     </template>
-                </el-table-column>
+                </el-table-column>-->
             </table-module>
         </div>
 
@@ -219,8 +306,6 @@
                 :filterList="filterList"
                 :filterCustomOptions="filterCustomOptions"
             />
-
-            <column-selection ref="columnSelectionRef" />
         </client-only>
     </div>
 </template>
@@ -228,10 +313,11 @@
 <script setup lang="ts">
     // import AddUserDialog from './compononets/add.vue';
     // import PatientRecord from './compononets/patient-record.vue';
+    import { useLocalStorage } from '@vueuse/core';
     import { RoleType } from '~/enums/RolesEnum';
     import { getPatient, getPatientInfo } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
-    import type { UploadFiles } from '#build/components';
+    import type { TableModule, UploadFiles } from '#build/components';
     // import type { FilterType } from '~/components/table-filter/header.vue';
 
     const PatientRecord = defineAsyncComponent(() => import('./compononets/patient-record.vue'));
@@ -302,4 +388,103 @@
     };
 
     provide('update', getData);
+
+    const tableModuleRef = ref<InstanceType<typeof TableModule>>();
+
+    const columnSelection = useLocalStorage<any>(useRoute().path + 'columnSelection', []);
+
+    const { t } = useI18n();
+    const columnsInit = [
+        {
+            label: t('users.FullName'),
+            prop: 'nickname',
+            width: 120,
+            defaultTemplate: true,
+        },
+        {
+            label: t('patients.PatientID'),
+            prop: 'patient.patientid',
+            width: 100,
+        },
+        {
+            label: t('patients.Birthdate'),
+            prop: 'patient.birthdate',
+            width: 120,
+            defaultTemplate: true,
+            type: 'date',
+        },
+        {
+            label: t('patients.SerialNumber'),
+            prop: 'sn',
+            width: 120,
+        },
+        {
+            label: t('patients.Office'),
+            prop: 'institution_name',
+            width: 120,
+        },
+        {
+            label: t('patients.TherapyStartDate'),
+            prop: 'patient.setup_date',
+            width: 125,
+            defaultTemplate: true,
+            type: 'date',
+        },
+        {
+            label: t('patients.PercentUsage'),
+            prop: 'percent_usage',
+            width: 120,
+            defaultTemplate: true,
+        },
+        {
+            label: t('patients.LastUpdateDate'),
+            prop: 'patient.use_end_time',
+            width: 120,
+            defaultTemplate: true,
+            type: 'date',
+        },
+
+        {
+            label: t('patients.Compliant'),
+            prop: 'compliant',
+            width: 120,
+            defaultTemplate: true,
+            type: 'select',
+            selectOptions: compliantOptions,
+        },
+    ];
+
+    onMounted(() => {
+        nextTick(() => {
+            console.log(tableModuleRef.value?.tableRef?.columns);
+            if (columnSelection.value.length === 0) {
+                columnSelection.value = (tableModuleRef.value?.tableRef?.columns as any).map(
+                    (item: any, index: number) => {
+                        return {
+                            label: item.label,
+                            isShow: true,
+                            property: item.property,
+                            orderIndex: index,
+                        };
+                    },
+                );
+            }
+        });
+    });
+
+    const isShowColumn = (label: string) => {
+        return columnSelection.value.length > 0
+            ? columnSelection.value.find((item: any) => item.label === label)?.isShow
+            : true;
+    };
+
+    const getColumnOrder = (label: string) => {
+        return columnSelection.value.length > 0
+            ? columnSelection.value.find((item: any) => item.label === label)?.orderIndex
+            : 0;
+    };
+
+    provide('update:columns', (saveData: any) => {
+        columnSelection.value = saveData;
+    });
 </script>

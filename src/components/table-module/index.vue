@@ -1,6 +1,31 @@
 <template>
     <div class="module-table">
         <div
+            class="table-header flex justify-between items-center m-b-[20px]"
+            v-if="isExport"
+        >
+            <slot name="header-left"></slot>
+            <div class="flex items-center">
+                <slot name="header-right"> </slot>
+                <div class="exports-btns">
+                    <base-svg-icon
+                        icon="table"
+                        size="25px"
+                        class="cursor-pointer m-r-[10px]"
+                        color="#666"
+                        @click="showTableColumn"
+                    />
+                    <base-svg-icon
+                        icon="export-table"
+                        size="25px"
+                        class="cursor-pointer"
+                        color="#666"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div
             class="table-title"
             v-if="title"
         >
@@ -29,11 +54,17 @@
             v-if="isPagination"
             :layout="layout"
         />
+
+        <column-selection
+            ref="columnSelectionRef"
+            v-if="isExport"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
     import type { TableInstance } from 'element-plus';
+    import type { ColumnSelection } from '#build/components';
 
     interface Props {
         title?: string;
@@ -41,14 +72,17 @@
         isPagination?: boolean;
         pageSizes?: Array<number>;
         layout?: string;
+        isExport?: boolean;
+        columns?: Array<any>;
     }
 
-    withDefaults(defineProps<Props>(), {
+    const props = withDefaults(defineProps<Props>(), {
         title: '',
         tableData: () => [],
         isPagination: true,
         pageSizes: () => [10, 20, 30, 40, 50, 100],
         layout: 'prev, pager, next, jumper,->,total,,sizes',
+        isExport: false,
     });
 
     // const pageOption = defineModel('pageOption', {
@@ -110,13 +144,22 @@
         }
     };
 
+    const columnSelectionRef = ref<InstanceType<typeof ColumnSelection>>();
+    const showTableColumn = () => {
+        if (columnSelectionRef.value && tableRef.value) {
+            columnSelectionRef.value?.show(props.columns);
+        }
+    };
+
     defineExpose({
         setCurrentRow,
+        tableRef,
     });
 </script>
 
 <style lang="scss" scoped>
     .module-table {
+        position: relative;
         display: flex;
         flex-direction: column;
         background-color: #fff;
@@ -128,5 +171,9 @@
             line-height: 20px;
             letter-spacing: 0;
         }
+    }
+
+    .exports-btns {
+        margin-left: 20px;
     }
 </style>

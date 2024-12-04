@@ -72,3 +72,14 @@ export function queryString(data: Object) {
         .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`) // 使用encodeURIComponent来处理特殊字符
         .join('&');
 }
+/**
+ * 数组交换位置
+ * @param arr 数组
+ * @param indexA 数组1位置
+ * @param indexB 数组2位置
+ */
+export function swapArray(arr: [], indexA: number, indexB: number) {
+    const temp = arr[indexA];
+    arr[indexA] = arr[indexB];
+    arr[indexB] = temp;
+}
