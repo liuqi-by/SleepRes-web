@@ -5,8 +5,8 @@ import type { LoginReq, UserInfo, RegisterReq, EditPwdReq } from './types';
  */
 export const loginAccount = (data: LoginReq) => {
     return useClientRequest<ResPonseType<UserInfo>>('/api/admin/login', {
-        method: 'POST',
-        body: queryString(data),
+        method: 'GET',
+        query: data,
     });
 };
 

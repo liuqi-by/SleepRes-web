@@ -7,6 +7,7 @@
                 v-model="searchOption"
                 :placeholder="placeholder"
                 @keydown.enter="search"
+                maxlength="30"
             />
         </div>
         <!-- <div class="search-module-item">
