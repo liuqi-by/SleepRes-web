@@ -27,7 +27,7 @@
                         <base-button
                             type="primary"
                             width="100px"
-                            @click.stop="addColumn"
+                            @click="addColumn"
                             :disabled="!selectAddColumn"
                             >Add</base-button
                         >
@@ -35,7 +35,7 @@
                             type="primary"
                             width="100px"
                             :disabled="!selectColumn"
-                            @click.stop="removeColumn"
+                            @click="removeColumn"
                             >Remove</base-button
                         >
                     </div>
@@ -43,8 +43,8 @@
                         <h2 class="title">Selected Columns</h2>
                         <ul>
                             <li
-                                v-for="(item, index) in selectColumns.sort((a, b) => a.orderIndex - b.orderIndex)"
-                                :key="item.orderIndex"
+                                v-for="(item, index) in selectColumns"
+                                :key="item.prop"
                                 class="column"
                                 @click="selectRightColumn(index + 1)"
                                 :class="selectColumn === index + 1 ? 'selected' : ''"
@@ -84,20 +84,24 @@
 </template>
 
 <script setup lang="ts">
-    type ColumnsType = {
+    export type ColumnsType = {
         label: string;
+        prop: string;
+        width: number;
+        defaultTemplate: boolean;
         isShow: boolean;
         orderIndex: number;
+        type?: undefined;
+        selectOptions?: undefined;
     };
 
-    const dialogVisible = ref(true);
+    const dialogVisible = ref(false);
 
     const columns = ref<ColumnsType[]>([]);
 
     const selectColumns = computed(() => {
-        return columns.value.filter(item => item.isShow);
+        return columns.value.filter(item => item.isShow).sort((a, b) => a.orderIndex - b.orderIndex);
     });
-
     const close = () => {
         dialogVisible.value = false;
         selectColumn.value = '';
@@ -111,6 +115,7 @@
 
     const show = (showColumns: any) => {
         columns.value = JSON.parse(JSON.stringify(showColumns));
+
         dialogVisible.value = true;
     };
 
@@ -132,7 +137,7 @@
 
     const removeColumn = () => {
         if (selectColumn.value) {
-            columns.value[selectColumn.value - 1].isShow = false;
+            selectColumns.value[selectColumn.value - 1].isShow = false;
         }
     };
 
@@ -148,9 +153,9 @@
                 arr[index - 1].orderIndex = order;
 
                 selectColumn.value = index;
-            }
 
-            console.log('moveUp', columns.value);
+                console.log('moveUp', columns.value);
+            }
         }
     };
 
@@ -168,11 +173,13 @@
                 selectColumn.value = index + 2;
             }
         }
+        console.log('moveDown', columns.value);
     };
 
     const update = inject<any>('update:columns');
     const Save = () => {
         update(columns.value);
+        close();
     };
 
     defineExpose({

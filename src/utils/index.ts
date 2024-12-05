@@ -83,3 +83,24 @@ export function swapArray(arr: [], indexA: number, indexB: number) {
     arr[indexA] = arr[indexB];
     arr[indexB] = temp;
 }
+
+/**
+ * 获取嵌套属性
+ *
+ */
+export function getNestedProperty(obj: any, path: string) {
+    // 分割路径字符串为数组
+    const parts = path.split('.');
+
+    // 初始值为 obj，然后依次访问每个属性
+    let value = obj;
+    for (let part of parts) {
+        if (value && part in value) {
+            value = value[part];
+        } else {
+            // 如果路径无效，返回 undefined 或其他默认值
+            return undefined;
+        }
+    }
+    return value;
+}

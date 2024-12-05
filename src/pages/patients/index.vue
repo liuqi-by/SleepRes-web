@@ -27,6 +27,7 @@
             </base-button>
         </div> -->
         <!-- 表格模块 -->
+
         <div class="table-module">
             <table-module
                 border
@@ -82,7 +83,7 @@
                 </el-table-column> -->
 
                 <el-table-column
-                    v-for="item in columnsInit"
+                    v-for="item in showColumns"
                     :key="item.prop"
                     :prop="item.prop"
                     :label="item.label"
@@ -94,27 +95,26 @@
                         #default="{ row }"
                         v-if="item.defaultTemplate"
                     >
-                        <span
-                            class="link"
-                            @click="showPatientReport(row)"
-                            v-if="item.prop === 'nickname'"
-                        >
-                            {{ nameFormat(row) }}
-                        </span>
+                        <div>
+                            <span
+                                class="link"
+                                @click="showPatientReport(row)"
+                                v-if="item.prop === 'nickname'"
+                            >
+                                {{ nameFormat(row) }}
+                            </span>
 
-                        <span v-if="item.prop === 'patient.birthdate' || item.prop === 'patient.setup_date'">
-                            {{
-                                row[item.prop.split('.')[0]][item.prop.split('.')[1]] &&
-                                dateFormat(row[item.prop.split('.')[0]][item.prop.split('.')[1]])
-                            }}
-                        </span>
+                            <span v-else-if="item.type && item.type === 'date'">
+                                {{ dateFormat(getNestedProperty(row, item.prop)) }}
+                            </span>
 
-                        <span v-if="item.prop === 'percent_usage'">{{ row.percent_usage || 0 }}%</span>
+                            <span v-else-if="item.prop === 'percent_usage'">{{ row.percent_usage || 0 }}%</span>
 
-                        <compliant-status
-                            :compliant="Number(row.compliant)"
-                            v-if="item.prop === 'compliant'"
-                        />
+                            <compliant-status
+                                :compliant="Number(row.compliant)"
+                                v-else-if="item.prop === 'compliant'"
+                            />
+                        </div>
                     </template>
                     <template #header="{ column }">
                         <table-filter-header
@@ -318,6 +318,7 @@
     import { getPatient, getPatientInfo } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';
     import type { TableModule, UploadFiles } from '#build/components';
+
     // import type { FilterType } from '~/components/table-filter/header.vue';
 
     const PatientRecord = defineAsyncComponent(() => import('./compononets/patient-record.vue'));
@@ -391,20 +392,23 @@
 
     const tableModuleRef = ref<InstanceType<typeof TableModule>>();
 
-    const columnSelection = useLocalStorage<any>(useRoute().path + 'columnSelection', []);
-
     const { t } = useI18n();
+    // 初始数据
     const columnsInit = [
         {
             label: t('users.FullName'),
             prop: 'nickname',
             width: 120,
             defaultTemplate: true,
+            isShow: true,
+            orderIndex: 1,
         },
         {
             label: t('patients.PatientID'),
             prop: 'patient.patientid',
             width: 100,
+            isShow: true,
+            orderIndex: 2,
         },
         {
             label: t('patients.Birthdate'),
@@ -412,16 +416,22 @@
             width: 120,
             defaultTemplate: true,
             type: 'date',
+            isShow: true,
+            orderIndex: 3,
         },
         {
             label: t('patients.SerialNumber'),
             prop: 'sn',
             width: 120,
+            isShow: true,
+            orderIndex: 4,
         },
         {
             label: t('patients.Office'),
             prop: 'institution_name',
             width: 120,
+            isShow: true,
+            orderIndex: 5,
         },
         {
             label: t('patients.TherapyStartDate'),
@@ -429,12 +439,16 @@
             width: 125,
             defaultTemplate: true,
             type: 'date',
+            isShow: true,
+            orderIndex: 6,
         },
         {
             label: t('patients.PercentUsage'),
             prop: 'percent_usage',
             width: 120,
             defaultTemplate: true,
+            isShow: true,
+            orderIndex: 7,
         },
         {
             label: t('patients.LastUpdateDate'),
@@ -442,6 +456,8 @@
             width: 120,
             defaultTemplate: true,
             type: 'date',
+            isShow: true,
+            orderIndex: 8,
         },
 
         {
@@ -451,38 +467,32 @@
             defaultTemplate: true,
             type: 'select',
             selectOptions: compliantOptions,
+            isShow: true,
+            orderIndex: 9,
         },
     ];
 
-    onMounted(() => {
-        nextTick(() => {
-            console.log(tableModuleRef.value?.tableRef?.columns);
-            if (columnSelection.value.length === 0) {
-                columnSelection.value = (tableModuleRef.value?.tableRef?.columns as any).map(
-                    (item: any, index: number) => {
-                        return {
-                            label: item.label,
-                            isShow: true,
-                            property: item.property,
-                            orderIndex: index,
-                        };
-                    },
-                );
-            }
-        });
+    const columnSelection = useCookie(useRoute().path + 'columnSelection', {
+        default: () => [...columnsInit],
     });
 
-    const isShowColumn = (label: string) => {
-        return columnSelection.value.length > 0
-            ? columnSelection.value.find((item: any) => item.label === label)?.isShow
-            : true;
-    };
+    const showColumns = computed(() => {
+        return columnSelection.value
+            .slice()
+            .filter(item => item.isShow)
+            .sort((a, b) => a.orderIndex - b.orderIndex);
+    });
+    // const isShowColumn = (label: string) => {
+    //     return columnSelection.value.length > 0
+    //         ? columnSelection.value.find((item: any) => item.label === label)?.isShow
+    //         : true;
+    // };
 
-    const getColumnOrder = (label: string) => {
-        return columnSelection.value.length > 0
-            ? columnSelection.value.find((item: any) => item.label === label)?.orderIndex
-            : 0;
-    };
+    // const getColumnOrder = (label: string) => {
+    //     return columnSelection.value.length > 0
+    //         ? columnSelection.value.find((item: any) => item.label === label)?.orderIndex
+    //         : 0;
+    // };
 
     provide('update:columns', (saveData: any) => {
         columnSelection.value = saveData;
