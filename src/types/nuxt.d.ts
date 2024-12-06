@@ -7,3 +7,4 @@ declare module 'vue-simple-uploader';
 declare module 'v-focus-next';
 declare module 'marked';
 declare module 'vue3-print-nb';
+declare module 'csv-exportor';

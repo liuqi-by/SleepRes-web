@@ -20,6 +20,7 @@
                         size="25px"
                         class="cursor-pointer"
                         color="#666"
+                        @click="exportTable"
                     />
                 </div>
             </div>
@@ -148,6 +149,29 @@
     const showTableColumn = () => {
         if (columnSelectionRef.value && tableRef.value) {
             columnSelectionRef.value?.show(props.columns);
+        }
+    };
+
+    // 导出表格
+    const exportTable = () => {
+        if (tableRef.value) {
+            console.log('导出表格', tableRef.value);
+
+            // 根据节点获取每行cell的text
+
+            const tableRefDom = tableRef.value.$el;
+            const rows = tableRefDom.querySelectorAll('.el-table__row');
+            const tableData: any = [];
+            rows.forEach((row: any) => {
+                const cells = row.querySelectorAll('.cell');
+                const rowData: any = [];
+                cells.forEach((cell: any) => {
+                    rowData.push(cell.innerText);
+                });
+                tableData.push(rowData);
+            });
+
+            ExportCsv(tableData, tableRef.value.columns, 'patients.csv');
         }
     };
 

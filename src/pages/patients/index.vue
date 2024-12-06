@@ -31,7 +31,7 @@
         <div class="table-module">
             <table-module
                 border
-                :data="showTableListPaient"
+                :tableData="showTableListPaient"
                 v-loading="loading"
                 height="calc(100vh - 340px)"
                 v-model:current-page="pageOption.currentPage"
@@ -313,7 +313,7 @@
 <script setup lang="ts">
     // import AddUserDialog from './compononets/add.vue';
     // import PatientRecord from './compononets/patient-record.vue';
-    import { useLocalStorage } from '@vueuse/core';
+
     import { RoleType } from '~/enums/RolesEnum';
     import { getPatient, getPatientInfo } from '~/api/patient';
     import type { UserInfo } from '~/api/login/types';

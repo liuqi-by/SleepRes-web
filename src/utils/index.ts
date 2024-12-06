@@ -1,3 +1,5 @@
+import CsvExportor from 'csv-exportor';
+
 /**
  * 判断是否有Class
  * @param {HTMLElement} ele
@@ -103,4 +105,22 @@ export function getNestedProperty(obj: any, path: string) {
         }
     }
     return value;
+}
+
+/**
+ * 导出csv
+ */
+export function ExportCsv(rows: any, columns: any, fileName: string) {
+    // 导出的数据列标题
+    const header = columns.map((col: any) => col.label);
+
+    // 根据列生成data
+
+    console.log(rows);
+    CsvExportor.downloadCsv(rows, { header }, fileName);
+    try {
+        console.log(header);
+    } catch (err) {
+        alert(err);
+    }
 }

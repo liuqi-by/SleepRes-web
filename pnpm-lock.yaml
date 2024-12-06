@@ -20,6 +20,9 @@ importers:
       '@vueuse/nuxt':
         specifier: ^10.9.0
         version: 10.10.1(nuxt@3.12.1(@opentelemetry/api@1.9.0)(@parcel/watcher@2.4.1)(@types/node@20.14.2)(@unocss/reset@0.61.0)(async-validator@4.2.5)(encoding@0.1.13)(eslint@8.57.0)(floating-vue@5.2.2(@nuxt/kit@3.13.2(magicast@0.3.4)(rollup@4.18.0)(webpack-sources@3.2.3))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.4.1)(meow@13.2.0)(optionator@0.9.4)(rollup@4.18.0)(sass@1.77.5)(sortablejs@1.15.2)(stylelint@16.6.1(typescript@5.4.5))(terser@5.31.1)(typescript@5.4.5)(unocss@0.60.4(@unocss/webpack@0.60.4(rollup@4.18.0)(webpack@5.92.0))(postcss@8.4.38)(rollup@4.18.0)(vite@5.3.0(@types/node@20.14.2)(sass@1.77.5)(terser@5.31.1)))(vite@5.3.0(@types/node@20.14.2)(sass@1.77.5)(terser@5.31.1))(vue-tsc@1.8.27(typescript@5.4.5)))(rollup@4.18.0)(vue@3.4.27(typescript@5.4.5))
+      csv-export:
+        specifier: ^1.0.2
+        version: 1.0.2
       echarts:
         specifier: ^5.5.0
         version: 5.5.0
@@ -1836,6 +1839,10 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  adm-zip@0.4.11:
+    resolution: {integrity: sha512-L8vcjDTCOIJk7wFvmlEUN7AsSb8T+2JrdP7KINBjzr24TJ5Mwj590sLu3BC7zNZowvJWa/JtPmD8eJCzdtDWjA==}
+    engines: {node: '>=0.3.0'}
+
   agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==, tarball: https://r2.cnpmjs.org/agent-base/-/agent-base-6.0.2.tgz}
     engines: {node: '>= 6.0.0'}
@@ -1995,6 +2002,9 @@ packages:
   async-validator@4.2.5:
     resolution: {integrity: sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg==}
 
+  async@1.5.2:
+    resolution: {integrity: sha512-nSVgobk4rv61R9PUSDtYt7mPVB2olxNR5RWJcAsH676/ef11bUZwvu7+RGYrYauVdDPcO519v68wRhXQtxsV9w==}
+
   async@3.2.5:
     resolution: {integrity: sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==}
 
@@ -2046,8 +2056,11 @@ packages:
   birpc@0.2.17:
     resolution: {integrity: sha512-+hkTxhot+dWsLpp3gia5AkVHIsKlZybNT5gIYiDlNzJrmYPcTM9k5/w2uaj3IPpd7LlEYpmCj4Jj1nC41VhDFg==}
 
+  bluebird@2.10.2:
+    resolution: {integrity: sha512-ebc2LqTYQlFqC6wTQl9gknHsqh4EKBLR++8VzGMSh7CnsOedhymVD1ShVl19TRTx6WeMd1b5xXuKo8m6oP8pYQ==}
+
   bluebird@3.7.2:
-    resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==, tarball: https://r2.cnpmjs.org/bluebird/-/bluebird-3.7.2.tgz}
+    resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==}
 
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==, tarball: https://r2.cnpmjs.org/boolbase/-/boolbase-1.0.0.tgz}
@@ -2410,6 +2423,9 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
+  csv-export@1.0.2:
+    resolution: {integrity: sha512-Rq6PV3Q7lsHGZL6qSzwRK3UX51kwEMCJOFyVfO+bVppREFLlDnvCaipJUtZSpBnmB4OzTKzt6Bgy2DD6MpSAIA==}
+
   data-view-buffer@1.0.1:
     resolution: {integrity: sha512-0lht7OugA5x3iJLOWFhWK/5ehONdprk0ISXqVFn/NFrDu+cuc8iADFrGQz5BnRK7LLU3JmkbXSxaqX+/mXYtUA==}
     engines: {node: '>= 0.4'}
@@ -2554,6 +2570,10 @@ packages:
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==, tarball: https://r2.cnpmjs.org/dir-glob/-/dir-glob-3.0.1.tgz}
     engines: {node: '>=8'}
+
+  doc-path@1.0.8:
+    resolution: {integrity: sha512-93FRfZAXGK71dlWO/ePqhNXE0X7JHgUfM03Ofqg+cpbTpgUcMYXK44rr0Swku/ck7yENkjX5vtFkMDS/23LqGQ==}
+    deprecated: critical issue fixed in 2.3.0
 
   doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==, tarball: https://r2.cnpmjs.org/doctrine/-/doctrine-2.1.0.tgz}
@@ -3704,6 +3724,10 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
+  json-2-csv@1.5.0:
+    resolution: {integrity: sha512-dP3qePYg40pZKC76SieJzsiVTYCbJzGBSCz8oz9bd7koefNFsPeCwsosDrBna/v+FeEWBvOR2alZsWH+XqErbw==}
+    deprecated: Please upgrade to the latest version 3.x.x module for improved functionality.
+
   json-buffer@3.0.1:
     resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==, tarball: https://r2.cnpmjs.org/json-buffer/-/json-buffer-3.0.1.tgz}
 
@@ -3861,6 +3885,9 @@ packages:
 
   lodash.uniq@4.5.0:
     resolution: {integrity: sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==, tarball: https://r2.cnpmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz}
+
+  lodash@3.10.1:
+    resolution: {integrity: sha512-9mDDwqVIma6OZX79ZlDACZl8sBm0TEnkf99zV3iMA4GzkIT/9hiqP5mY0HoT1iNLCrKc/R1HByV+yJfRWVJryQ==}
 
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
@@ -4412,6 +4439,9 @@ packages:
   path-type@5.0.0:
     resolution: {integrity: sha512-5HviZNaZcfqP95rwpv+1HDgUamezbqdSYTyzjTvwtJSnIH+3vnbmWsItli8OFEndS984VT55M3jduxZbX351gg==}
     engines: {node: '>=12'}
+
+  path@0.11.14:
+    resolution: {integrity: sha512-CzEXTDgcEfa0yqMe+DJCSbEB5YCv4JZoic5xulBNFF2ifIMjNrTWbNSPNhgKfSo0MjneGIx9RLy4pCFuZPaMSQ==}
 
   pathe@0.2.0:
     resolution: {integrity: sha512-sTitTPYnn23esFR3RlqYBWn4c45WGeLcsKzQiUpXJAyfcWkolvlYpV8FLo7JishK946oQwMFUCHXQ9AjGPKExw==, tarball: https://r2.cnpmjs.org/pathe/-/pathe-0.2.0.tgz}
@@ -5610,6 +5640,9 @@ packages:
   unctx@2.3.1:
     resolution: {integrity: sha512-PhKke8ZYauiqh3FEMVNm7ljvzQiph0Mt3GBRve03IJm7ukfaON2OBK795tLwhbyfzknuRRkW0+Ze+CQUmzOZ+A==}
 
+  underscore@1.8.3:
+    resolution: {integrity: sha512-5WsVTFcH1ut/kkhAaHf4PVgI8c7++GiVcpCGxPouI6ZVjsqPnSDf8h/8HtVqc0t4fzRXwnMK70EcZeAs3PIddg==}
+
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
@@ -6140,6 +6173,9 @@ packages:
   zip-stream@6.0.1:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
+
+  ziptree@0.1.2:
+    resolution: {integrity: sha512-KTyV7HjfSZdKDC05QaoRRy0GTeMxTtrFKetPhXD1zsBpvEmiYZYbBK4xgzlJ4H2osJ1iu2TJwiW/UXu9QXqOGw==}
 
   zrender@5.5.0:
     resolution: {integrity: sha512-O3MilSi/9mwoovx77m6ROZM7sXShR/O/JIanvzTwjN3FORfLSr81PsUGd7jlaYOeds9d8tw82oP44+3YucVo+w==}
@@ -8317,6 +8353,8 @@ snapshots:
 
   acorn@8.12.1: {}
 
+  adm-zip@0.4.11: {}
+
   agent-base@6.0.2:
     dependencies:
       debug: 4.3.5
@@ -8500,6 +8538,8 @@ snapshots:
 
   async-validator@4.2.5: {}
 
+  async@1.5.2: {}
+
   async@3.2.5: {}
 
   atob@2.1.2: {}
@@ -8548,6 +8588,8 @@ snapshots:
       file-uri-to-path: 1.0.0
 
   birpc@0.2.17: {}
+
+  bluebird@2.10.2: {}
 
   bluebird@3.7.2: {}
 
@@ -8970,6 +9012,14 @@ snapshots:
 
   csstype@3.1.3: {}
 
+  csv-export@1.0.2:
+    dependencies:
+      async: 1.5.2
+      json-2-csv: 1.5.0
+      lodash: 3.10.1
+      path: 0.11.14
+      ziptree: 0.1.2
+
   data-view-buffer@1.0.1:
     dependencies:
       call-bind: 1.0.7
@@ -9071,6 +9121,8 @@ snapshots:
   dir-glob@3.0.1:
     dependencies:
       path-type: 4.0.0
+
+  doc-path@1.0.8: {}
 
   doctrine@2.1.0:
     dependencies:
@@ -10425,6 +10477,12 @@ snapshots:
 
   jsesc@2.5.2: {}
 
+  json-2-csv@1.5.0:
+    dependencies:
+      bluebird: 2.10.2
+      doc-path: 1.0.8
+      underscore: 1.8.3
+
   json-buffer@3.0.1: {}
 
   json-parse-even-better-errors@2.3.1: {}
@@ -10591,6 +10649,8 @@ snapshots:
   lodash.truncate@4.4.2: {}
 
   lodash.uniq@4.5.0: {}
+
+  lodash@3.10.1: {}
 
   lodash@4.17.21: {}
 
@@ -11377,6 +11437,8 @@ snapshots:
   path-type@4.0.0: {}
 
   path-type@5.0.0: {}
+
+  path@0.11.14: {}
 
   pathe@0.2.0: {}
 
@@ -12651,6 +12713,8 @@ snapshots:
       magic-string: 0.30.10
       unplugin: 1.10.1
 
+  underscore@1.8.3: {}
+
   undici-types@5.26.5: {}
 
   undici@5.28.4:
@@ -13272,6 +13336,10 @@ snapshots:
       archiver-utils: 5.0.2
       compress-commons: 6.0.2
       readable-stream: 4.5.2
+
+  ziptree@0.1.2:
+    dependencies:
+      adm-zip: 0.4.11
 
   zrender@5.5.0:
     dependencies:
