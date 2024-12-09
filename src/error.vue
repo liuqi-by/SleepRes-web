@@ -11,7 +11,7 @@
                 <base-button
                     type="primary"
                     height="32px"
-                    @click="$router.go(-1)"
+                    @click="$router.push('/login')"
                     v-if="currentError?.statusCode !== 401"
                     >{{ $t('errors.goBack') }}
                 </base-button>
