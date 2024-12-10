@@ -1,3 +1,8 @@
+# 2024/12/10
+
+1. Complete patients and dashboard Column Selection & Export Feature(完成患者页面和仪表盘页面的列表设置)
+2. Update version 0.0.2-alpha.5(更新版本0.0.2-alpha.5)
+
 # 2024/11/28
 
 1. Complete most of the dashboard functions, some fields have not been assigned yet(完成dashboard大部分功能，一些字段还未赋值)

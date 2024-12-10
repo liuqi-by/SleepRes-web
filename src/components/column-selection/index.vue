@@ -1,3 +1,4 @@
+<!-- 自定义表格 -->
 <template>
     <div>
         <base-dialog
@@ -16,8 +17,8 @@
                                 v-for="(item, index) in columns"
                                 :key="item.label"
                                 class="column"
-                                @click="selectLeftColumn(index + 1)"
-                                :class="selectAddColumn === index + 1 ? 'selected' : ''"
+                                @click="selectLeftColumn(index + 1, $event)"
+                                :class="selectAddColumn.includes(index + 1) ? 'selected' : ''"
                             >
                                 {{ item.label }}
                             </li>
@@ -46,8 +47,8 @@
                                 v-for="(item, index) in selectColumns"
                                 :key="item.prop"
                                 class="column"
-                                @click="selectRightColumn(index + 1)"
-                                :class="selectColumn === index + 1 ? 'selected' : ''"
+                                @click="selectRightColumn(index + 1, $event)"
+                                :class="selectColumn.includes(index + 1) ? 'selected' : ''"
                             >
                                 {{ item.label }}
                             </li>
@@ -97,21 +98,23 @@
 
     const dialogVisible = ref(false);
 
+    // 左侧列
     const columns = ref<ColumnsType[]>([]);
 
+    // 选择的列
     const selectColumns = computed(() => {
         return columns.value.filter(item => item.isShow).sort((a, b) => a.orderIndex - b.orderIndex);
     });
     const close = () => {
         dialogVisible.value = false;
-        selectColumn.value = '';
-        selectAddColumn.value = '';
+        selectColumn.value = [];
+        selectAddColumn.value = [];
         columns.value = [];
     };
 
-    const selectAddColumn = ref();
+    const selectAddColumn = ref<number[]>([]);
 
-    const selectColumn = ref();
+    const selectColumn = ref<number[]>([]);
 
     const show = (showColumns: any) => {
         columns.value = JSON.parse(JSON.stringify(showColumns));
@@ -119,31 +122,66 @@
         dialogVisible.value = true;
     };
 
-    const selectLeftColumn = (index: number) => {
-        selectAddColumn.value = index;
-        selectColumn.value = '';
+    // 左侧选择
+    const selectLeftColumn = (index: number, event: MouseEvent) => {
+        let isCtrl = event.ctrlKey;
+
+        if (selectAddColumn.value.includes(index)) {
+            return (selectAddColumn.value = selectAddColumn.value.filter(item => item !== index));
+        }
+
+        if (isCtrl) {
+            selectAddColumn.value = [...selectAddColumn.value, index];
+        } else {
+            selectAddColumn.value = [index];
+        }
+
+        selectColumn.value = [];
     };
 
-    const selectRightColumn = (index: number) => {
-        selectAddColumn.value = '';
-        selectColumn.value = index;
+    // 右侧选择
+    const selectRightColumn = (index: number, event: MouseEvent) => {
+        let isCtrl = event.ctrlKey;
+
+        if (selectColumn.value.includes(index)) {
+            return (selectColumn.value = selectColumn.value.filter(item => item !== index));
+        }
+
+        if (isCtrl) {
+            selectColumn.value = [...selectColumn.value, index];
+        } else {
+            selectColumn.value = [index];
+        }
+        selectAddColumn.value = [];
     };
 
+    // 添加
     const addColumn = () => {
-        if (selectAddColumn.value) {
-            columns.value[selectAddColumn.value - 1].isShow = true;
+        if (selectAddColumn.value.length > 0) {
+            selectAddColumn.value.forEach(item => {
+                columns.value[item - 1].isShow = true;
+            });
+
+            selectAddColumn.value = [];
         }
     };
 
+    // 移除
     const removeColumn = () => {
-        if (selectColumn.value) {
-            selectColumns.value[selectColumn.value - 1].isShow = false;
+        console.log('removeColumn', selectColumn.value);
+        if (selectColumn.value.length > 0) {
+            selectColumn.value.forEach(item => {
+                columns.value[item - 1].isShow = false;
+            });
+
+            selectColumn.value = [];
         }
     };
 
+    // 上移
     const moveUp = () => {
-        if (selectColumn.value) {
-            let index = selectColumn.value - 1;
+        if (selectColumn.value.length === 1) {
+            let index = selectColumn.value[0] - 1;
             if (index > 0) {
                 let arr = selectColumns.value;
 
@@ -152,16 +190,17 @@
                 arr[index].orderIndex = arr[index - 1].orderIndex;
                 arr[index - 1].orderIndex = order;
 
-                selectColumn.value = index;
+                selectColumn.value[0] = index;
 
                 console.log('moveUp', columns.value);
             }
         }
     };
 
+    // 下移
     const moveDown = () => {
-        if (selectColumn.value) {
-            let index = selectColumn.value - 1;
+        if (selectColumn.value.length === 1) {
+            let index = selectColumn.value[0] - 1;
             if (index <= selectColumns.value.length - 1) {
                 let arr = selectColumns.value;
 
@@ -170,7 +209,7 @@
                 arr[index].orderIndex = arr[index + 1].orderIndex;
                 arr[index + 1].orderIndex = order;
 
-                selectColumn.value = index + 2;
+                selectColumn.value[0] = index + 2;
             }
         }
         console.log('moveDown', columns.value);

@@ -66,6 +66,7 @@
 <script setup lang="ts">
     import type { TableInstance } from 'element-plus';
     import type { ColumnSelection } from '#build/components';
+    import BaseButton from '@/components/base-button/index.vue';
 
     interface Props {
         title?: string;
@@ -156,29 +157,75 @@
 
     // 导出表格
     const exportTable = () => {
-        if (tableRef.value) {
-            console.log('导出表格', tableRef.value);
+        // 二次确认
+        useElMessageBox().alert(
+            h('div', {}, [
+                h('div', { class: 'el-message-box__btns' }, [
+                    h(
+                        BaseButton,
+                        {
+                            onClick: () => {
+                                ElMessageBox.close();
+                                // 根据节点获取每行cell的text
+                                if (tableRef.value) {
+                                    const tableRefDom = tableRef.value.$el;
+                                    const rows = tableRefDom.querySelectorAll('.el-table__row');
+                                    const tableData: any = [];
+                                    rows.forEach((row: any) => {
+                                        const cells = row.querySelectorAll('.cell');
+                                        const rowData: any = [];
+                                        cells.forEach((cell: any) => {
+                                            rowData.push(cell.innerText);
+                                        });
+                                        tableData.push(rowData);
+                                    });
 
-            // 根据节点获取每行cell的text
+                                    ExportCsv(
+                                        tableData,
+                                        tableRef.value.columns,
+                                        props.exportFileName ? props.exportFileName + '.csv' : 'patients.csv',
+                                    );
+                                }
+                            },
+                        },
+                        'YES',
+                    ),
+                    h(
+                        BaseButton,
+                        {
+                            onClick: () => {
+                                ElMessageBox.close();
+                            },
+                        },
+                        'No',
+                    ),
+                ]),
+                h('div', { class: 'help-modal' }, [
+                    h('p', { class: 'msg' }, 'Need help?  Our technical support team can be reached at:'),
+                    h('p', { class: 'msg' }, '1-800-555-5555'),
+                    h('p', { class: 'msg' }, 'technical.support@sleepres.com'),
+                ]),
+            ]),
+            'Would you like to export this data into a .csv file?',
+            {
+                // if you want to disable its autofocus
+                // autofocus: false,
 
-            const tableRefDom = tableRef.value.$el;
-            const rows = tableRefDom.querySelectorAll('.el-table__row');
-            const tableData: any = [];
-            rows.forEach((row: any) => {
-                const cells = row.querySelectorAll('.cell');
-                const rowData: any = [];
-                cells.forEach((cell: any) => {
-                    rowData.push(cell.innerText);
-                });
-                tableData.push(rowData);
-            });
-
-            ExportCsv(
-                tableData,
-                tableRef.value.columns,
-                props.exportFileName ? props.exportFileName + '.csv' : 'patients.csv',
-            );
-        }
+                showConfirmButton: false,
+                showCancelButton: false,
+                confirmButtonText: 'No',
+                cancelButtonText: 'Yes',
+                center: true,
+                dangerouslyUseHTMLString: true,
+                customClass: 'message-dialog custom-btn export-confirm',
+                closeOnClickModal: false,
+                closeOnPressEscape: true,
+                showClose: false,
+                customStyle: {
+                    top: '-15vh',
+                },
+            },
+        );
     };
 
     defineExpose({
@@ -205,5 +252,40 @@
 
     .exports-btns {
         margin-left: 20px;
+    }
+</style>
+
+<style lang="scss">
+    .export-confirm {
+        .el-message-box__header {
+            margin-left: 0 !important;
+        }
+
+        .el-message-box__btns {
+            display: flex;
+            justify-content: center;
+        }
+
+        .el-message-box__title {
+            text-align: center;
+        }
+
+        .help-modal {
+            margin-top: 30px;
+            text-align: left;
+
+            .msg {
+                margin-bottom: 0;
+                text-align: left;
+            }
+        }
+
+        .el-message-box__container {
+            justify-content: flex-start;
+        }
+
+        .el-message-box__message {
+            flex: 1;
+        }
     }
 </style>
