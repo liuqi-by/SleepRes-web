@@ -40,8 +40,8 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :pageSizes="[25, 50, 100]"
-                :isExport="true"
                 ref="tableModuleRef"
+                :isExport="true"
                 :columns="columnSelection"
             >
                 <template #header-left>
@@ -394,7 +394,7 @@
 
     const { t } = useI18n();
     // 初始数据
-    const columnsInit = [
+    const columnsInit: ColumnsInit[] = [
         {
             label: t('users.FullName'),
             prop: 'nickname',
@@ -472,29 +472,18 @@
         },
     ];
 
-    const columnSelection = useCookie(useRoute().path + 'columnSelection', {
-        default: () => [...columnsInit],
-    });
+    // const columnSelection = useLocalStorage(useRoute().path + 'columnSelection', [...columnsInit]);
 
-    const showColumns = computed(() => {
-        return columnSelection.value
-            .slice()
-            .filter(item => item.isShow)
-            .sort((a, b) => a.orderIndex - b.orderIndex);
-    });
-    // const isShowColumn = (label: string) => {
-    //     return columnSelection.value.length > 0
-    //         ? columnSelection.value.find((item: any) => item.label === label)?.isShow
-    //         : true;
-    // };
+    // const showColumns = computed(() => {
+    //     return columnSelection.value
+    //         .slice()
+    //         .filter(item => item.isShow)
+    //         .sort((a, b) => a.orderIndex - b.orderIndex);
+    // });
 
-    // const getColumnOrder = (label: string) => {
-    //     return columnSelection.value.length > 0
-    //         ? columnSelection.value.find((item: any) => item.label === label)?.orderIndex
-    //         : 0;
-    // };
+    // provide('update:columns', (saveData: any) => {
+    //     columnSelection.value = saveData;
+    // });
 
-    provide('update:columns', (saveData: any) => {
-        columnSelection.value = saveData;
-    });
+    const { columnSelection, showColumns } = useTableSetting(columnsInit);
 </script>

@@ -32,6 +32,13 @@
     const language = computed(() => appStore.language);
     const locale = computed(() => (language.value === 'zh-CN' ? zhCn : en));
 
+    const versionStorage = useLocalStorage('version', version);
+
+    if (versionStorage.value !== version) {
+        // 重置本地存储
+        localStorage.clear();
+    }
+
     // 监听语言变化
     watch(
         () => language.value,

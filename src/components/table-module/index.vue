@@ -75,6 +75,7 @@
         layout?: string;
         isExport?: boolean;
         columns?: Array<any>;
+        exportFileName?: string;
     }
 
     const props = withDefaults(defineProps<Props>(), {
@@ -84,6 +85,7 @@
         pageSizes: () => [10, 20, 30, 40, 50, 100],
         layout: 'prev, pager, next, jumper,->,total,,sizes',
         isExport: false,
+        exportFileName: '',
     });
 
     // const pageOption = defineModel('pageOption', {
@@ -171,7 +173,11 @@
                 tableData.push(rowData);
             });
 
-            ExportCsv(tableData, tableRef.value.columns, 'patients.csv');
+            ExportCsv(
+                tableData,
+                tableRef.value.columns,
+                props.exportFileName ? props.exportFileName + '.csv' : 'patients.csv',
+            );
         }
     };
 

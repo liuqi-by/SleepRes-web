@@ -11,7 +11,7 @@
             :placeholder="$t('dashboard.searchPlaceholder')"
         />
         <!-- 功能模块 -->
-        <div class="function-module m-b-[20px] flex justify-between">
+        <!-- <div class="function-module m-b-[20px] flex justify-between">
             <base-button
                 type="primary"
                 @click="$router.go(-1)"
@@ -48,7 +48,7 @@
                     :label="getApiOption.selectConfig.label"
                 />
             </div>
-        </div>
+        </div> -->
         <!-- 表格模块 -->
         <div class="table-module">
             <table-module
@@ -62,8 +62,103 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :pageSizes="[25, 50, 100]"
+                :isExport="true"
+                :exportFileName="title"
+                :columns="columnSelection"
             >
+                <template #header-left>
+                    <base-button
+                        type="primary"
+                        @click="$router.go(-1)"
+                        v-auth="[RoleType.DMETherapist]"
+                        width="120px"
+                        >Back
+                    </base-button>
+                </template>
+                <template #header-right>
+                    <div class="flex">
+                        <div
+                            v-if="listType === 3"
+                            class="flex"
+                        >
+                            <select-month-year
+                                v-model="option.setupDate"
+                                class="m-r-[40px]"
+                                label="Setup Month"
+                                :disabledDate="disabledMonth"
+                                readonly
+                            />
+                            <select-month-year
+                                v-model="option.date"
+                                class="m-r-[40px]"
+                                :disabledDate="disabledRange"
+                            />
+                        </div>
+                        <select-month-year
+                            v-model="option.date"
+                            class="m-r-[40px]"
+                            v-if="listType < 3 && listType > 1"
+                        />
+                        <select-options
+                            v-model="option.selectModel"
+                            :options="getApiOption.selectConfig.option"
+                            :label="getApiOption.selectConfig.label"
+                        />
+                    </div>
+                </template>
+
                 <el-table-column
+                    v-for="item in showColumns"
+                    :key="item.prop"
+                    :prop="item.prop"
+                    :label="item.label"
+                    :min-width="item.width"
+                    align="center"
+                    sortable
+                >
+                    <template
+                        #default="{ row }"
+                        v-if="item.defaultTemplate"
+                    >
+                        <div>
+                            <span
+                                class="link"
+                                @click="showPatientReport(row)"
+                                v-if="item.prop === 'nickname'"
+                            >
+                                {{ nameFormat(row) }}
+                            </span>
+
+                            <span v-else-if="item.type && item.type === 'date'">
+                                {{ dateFormat(getNestedProperty(row, item.prop)) }}
+                            </span>
+
+                            <compliant-status
+                                :compliant="Number(row.compliant)"
+                                v-else-if="item.prop === 'compliant'"
+                            />
+                        </div>
+                    </template>
+                    <template #header="{ column }">
+                        <table-filter-header
+                            :column="column"
+                            v-if="!item.type"
+                        />
+                        <table-filter-header
+                            :column="column"
+                            type="date"
+                            v-if="item.type === 'date'"
+                        />
+                        <table-filter-header
+                            :column="column"
+                            type="select"
+                            :customOptions="item.selectOptions"
+                            v-if="item.type === 'select'"
+                        />
+                    </template>
+                </el-table-column>
+
+                <!-- <el-table-column
                     prop="nickname"
                     :label="$t('users.FullName')"
                     min-width="120"
@@ -81,8 +176,8 @@
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
-
+                </el-table-column> -->
+                <!-- 
                 <el-table-column
                     prop="patient.patientid"
                     :label="$t('patients.PatientID')"
@@ -93,8 +188,9 @@
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+
+                <!-- <el-table-column
                     prop="patient.birthdate"
                     :label="$t('patients.Birthdate')"
                     min-width="120"
@@ -110,9 +206,9 @@
                             type="date"
                         />
                     </template>
-                </el-table-column>
+                </el-table-column> -->
 
-                <el-table-column
+                <!-- <el-table-column
                     prop="institution_name"
                     :label="$t('patients.Office')"
                     min-width="120"
@@ -122,8 +218,8 @@
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="patient.setup_date"
                     :label="$t('patients.TherapyStartDate')"
                     min-width="125"
@@ -139,8 +235,8 @@
                             type="date"
                         />
                     </template>
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                     prop="best30"
                     label="Best 30 Days"
                     min-width="120"
@@ -148,9 +244,6 @@
                     sortable
                     v-if="listType < 3"
                 >
-                    <template #default="{ row }">
-                        <span>{{ row.best30 }}</span>
-                    </template>
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
@@ -213,11 +306,7 @@
                         <span></span>
                     </template>
                     <template #header="{ column }">
-                        <table-filter-header
-                            :column="column"
-                            type="select"
-                            :customOptions="compliantOptions"
-                        />
+                        <table-filter-header :column="column" />
                     </template>
                 </el-table-column>
 
@@ -321,7 +410,7 @@
                     <template #header="{ column }">
                         <table-filter-header :column="column" />
                     </template>
-                </el-table-column>
+                </el-table-column> -->
             </table-module>
         </div>
         <client-only>
@@ -418,6 +507,22 @@
         dateRange: [route.query.startDate, route.query.endDate],
     });
     const listType = ref(Number(route.query.listType as unknown as number) || 1);
+    const title = computed(() => {
+        switch (listType.value) {
+            case 1:
+                return 'Patient Adherence';
+            case 2:
+                return 'Monthly Adherence Trend';
+            case 3:
+                return 'Long-term Adherence';
+            case 4:
+                return 'No Modem Connection';
+            case 5:
+                return 'High Leak';
+            case 6:
+                return 'AHI';
+        }
+    });
 
     const disabledMonth = (time: Record<string, any>): boolean => {
         return time.getTime() > new Date().getTime();
@@ -671,4 +776,132 @@
     };
 
     provide('update', getData);
+
+    // 表格自定义
+    const { t } = useI18n();
+    const columnsInit = [
+        {
+            label: t('users.FullName'),
+            prop: 'nickname',
+            width: 120,
+            defaultTemplate: true,
+        },
+        {
+            label: t('patients.PatientID'),
+            prop: 'patient.patientid',
+            width: 120,
+        },
+        {
+            label: t('patients.Birthdate'),
+            prop: 'patient.birthdate',
+            width: 120,
+
+            defaultTemplate: true,
+            type: 'date',
+        },
+        {
+            label: t('patients.Office'),
+            prop: 'institution_name',
+            width: 120,
+        },
+        {
+            label: t('patients.TherapyStartDate'),
+            prop: 'patient.therapy_start_date',
+            width: 125,
+
+            defaultTemplate: true,
+            type: 'date',
+        },
+        {
+            label: 'Best 30 Days',
+            prop: 'best30',
+            width: 120,
+            listType: [1, 2],
+        },
+        {
+            label: 'Adherence Date',
+            prop: 'adherence_date',
+            width: 120,
+            listType: [1, 2],
+        },
+        {
+            label: 'Last 30 Days',
+            prop: '',
+            width: 120,
+            listType: [4, 5, 6],
+        },
+        {
+            label: `Average Hrs of Use ${moment(option.value.date).format('MMM YYYY')}`,
+            prop: '',
+            width: 120,
+            listType: [3],
+        },
+        {
+            label: listType.value === 4 ? 'Modem Type' : 'Mask',
+            prop: '',
+            width: 120,
+            listType: [4, 5],
+        },
+        {
+            label: t('patients.LastUpdateDate'),
+            prop: 'patient.use_end_time',
+            width: 120,
+            defaultTemplate: true,
+            type: 'date',
+        },
+        {
+            label: 'Days Since Last Upload',
+            prop: '',
+            width: 120,
+            listType: [4],
+        },
+        {
+            label: t('patients.Compliant'),
+            prop: 'compliant',
+            width: 120,
+            type: 'select',
+            selectOptions: compliantOptions,
+            listType: [1, 2, 3],
+            defaultTemplate: true,
+        },
+        {
+            label: '% of days >4 hours last 30 days',
+            prop: '',
+            width: 120,
+            listType: [3],
+        },
+        {
+            label: 'Avg Hours Last 30 Days',
+            prop: '',
+            width: 120,
+            listType: [3],
+        },
+        {
+            label: listType.value === 5 ? 'Avg Leak Last 5 Days' : 'Avg AHI Last 5 Days',
+            prop: '',
+            width: 120,
+            listType: [5, 6],
+        },
+    ];
+
+    // 不同类型列表对应的初始值
+    const listTypeColumns: ColumnsInit[] = columnsInit
+        .filter(item => {
+            if (item.listType) {
+                return item.listType.includes(listType.value);
+            } else {
+                return true;
+            }
+        })
+        .map((item, index) => {
+            // 清除listType
+            delete item.listType;
+            return {
+                ...item,
+                isShow: true,
+                orderIndex: index + 1,
+            };
+        });
+
+    const { columnSelection, showColumns } = useTableSetting(listTypeColumns, useRoute().path + '/' + listType.value);
 </script>
