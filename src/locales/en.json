@@ -78,7 +78,16 @@
         "login": "login",
         "organization": "Organization",
         "patientReport": "Patient Report",
-        "Administrator": "Administrator"
+        "Administrator": "Administrator",
+        "rules": "Rules",
+        "settings": "Settings",
+        "tasks": "Task Management",
+        "adherence": "Adherence",
+        "Long-term-adherence": "Long-term Adherence",
+        "High-Leak": "High Leak",
+        "High-AHI": "High AHI",
+        "Cellular-Connectivity": "Cellular Connectivity",
+        "Wi-Fi-Connectivity": "Wi-Fi Connectivity"
     },
     "layout": {
         "screenfull": "Full Screen",

@@ -21,6 +21,9 @@
                 :collapse-transition="false"
                 :mode="layout === LayoutEnum.LEFT || device === DeviceEnum.MOBILE ? 'vertical' : 'horizontal'"
                 router
+                @open="handleOpen"
+                @close="handleClose"
+                ref="sliderMenu"
             >
                 <div
                     v-for="item in permission_routes"
@@ -45,16 +48,21 @@
                             :collapse-open-icon="Minus"
                             :collapse-close-icon="Plus"
                         >
-                            <template #title>{{ $t(`router.${item.meta?.title}`) }}</template>
-
-                            <el-menu-item
+                            <template #title>
+                                <div>{{ $t(`router.${item.meta?.title}`) }}</div>
+                            </template>
+                            <div
                                 v-for="child in item.children"
                                 :key="child.path"
-                                :index="child.path"
-                                :title="$t(`router.${child.meta?.title}`)"
                             >
-                                <span>{{ $t(`router.${child.meta?.title}`) }}</span>
-                            </el-menu-item>
+                                <el-menu-item
+                                    :index="child.path"
+                                    :title="$t(`router.${child.meta?.title}`)"
+                                    v-show="!child.meta?.isParent"
+                                >
+                                    <span>{{ $t(`router.${child.meta?.title}`) }}</span>
+                                </el-menu-item>
+                            </div>
                         </el-sub-menu>
                     </div>
 
@@ -158,5 +166,21 @@
     // 	}
     // 	return path;
     // });
+
+    const handleOpen = (path: string) => {
+        if (path === 'tasks') {
+            navigateTo('/tasks');
+        }
+    };
+
+    const sliderMenu = ref();
+    const handleClose = (path: string) => {
+        if (path === 'tasks') {
+            if (useRoute().path !== '/tasks') {
+                navigateTo('/tasks');
+                sliderMenu.value?.open(path);
+            }
+        }
+    };
 </script>
 <style lang="scss" scoped></style>

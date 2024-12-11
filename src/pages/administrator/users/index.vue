@@ -205,7 +205,7 @@
 
     const userSotre = useUserStore();
 
-    const ResetPasswordForm = defineAsyncComponent(() => import('../login/components/reset-password-admin.vue'));
+    const ResetPasswordForm = defineAsyncComponent(() => import('@/pages/login/components/reset-password-admin.vue'));
 
     const { searchOption, pageOption, loading, tableList, getData, handleSizeChange, handleCurrentChange, search } =
         usePageTable(getUserlist);

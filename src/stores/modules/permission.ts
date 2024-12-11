@@ -16,6 +16,9 @@ const generateRoute = (routes: any[], result: any[] = []) => {
                         children: [route],
                     });
                 } else {
+                    if (!result[index].children) {
+                        result[index].children = [];
+                    }
                     result[index].children?.push(route);
                 }
             } else {
@@ -74,10 +77,12 @@ export const usePermissionStore = defineStore('permission', () => {
             });
             return result;
         }
-        console.log('routes', routesAsync);
+        console.log('routes', route);
 
         permissionRoutes.value = JSON.parse(JSON.stringify(route)).filter((item: any) => item.path !== '/');
+        console.log('permissionRoutes', permissionRoutes.value);
         menuRoute.value = generateRoute(permissionRoutes.value);
+        console.log('menuRoute', menuRoute.value);
         return permissionRoutes.value;
         // permissionRoutes.value = routes.filter(item => {
         //     return (
