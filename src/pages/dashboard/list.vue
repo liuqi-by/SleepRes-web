@@ -806,7 +806,7 @@
         },
         {
             label: t('patients.TherapyStartDate'),
-            prop: 'patient.therapy_start_date',
+            prop: 'patient.setup_date',
             width: 125,
 
             defaultTemplate: true,

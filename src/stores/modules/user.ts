@@ -158,9 +158,10 @@ export const useUserStore = defineStore(
                     //     // }
                     //     navigateTo(`/login`);
                     // }
+
                     location.reload();
                     resolve();
-                }, 200);
+                }, 0);
 
                 if (!logTimer.value) {
                     clearInterval(logTimer.value);

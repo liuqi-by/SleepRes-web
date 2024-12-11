@@ -11,7 +11,7 @@
                 <base-button
                     type="primary"
                     height="32px"
-                    @click="$router.push('/login')"
+                    @click="$router.go(-1)"
                     v-if="currentError?.statusCode !== 401"
                     >{{ $t('errors.goBack') }}
                 </base-button>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-    import { usePermissionStore } from './stores/modules/permission';
+    // import { usePermissionStore } from './stores/modules/permission';
 
     // import { useUserStore } from './stores/modules/user';
 
@@ -74,17 +74,10 @@
         },
     ];
 
-    const permissionStore = usePermissionStore();
+    // const permissionStore = usePermissionStore();
 
     const goBack = () => {
-        let menuRoute = permissionStore.menuRoute;
-
-        // 如果跳转的路由不在权限路由中，跳转到第一个菜单路由
-        if (menuRoute.length > 0) {
-            return navigateTo(menuRoute[0].path);
-        } else {
-            return navigateTo({ path: '/' });
-        }
+        return navigateTo({ path: '/login' });
     };
 </script>
 
