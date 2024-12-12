@@ -65,10 +65,6 @@ export const usePermissionStore = defineStore('permission', () => {
         // let route = routes.filter(item => {
         //     return (item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) || !item.meta?.roles;
         // });
-        let routesAsync = routes;
-
-        let route = getRoutes(routesAsync);
-
         function getRoutes(routes: any[], result: RouteRecordRaw[] = []) {
             routes.forEach(item => {
                 if ((item.meta?.roles && haveRoles(item.meta.roles, userStore.roles)) || !item.meta?.roles) {
@@ -77,12 +73,20 @@ export const usePermissionStore = defineStore('permission', () => {
             });
             return result;
         }
-        console.log('routes', route);
+
+        console.log('routes', routes);
+        let routesAsync = routes;
+
+        let route = getRoutes(routesAsync);
+        console.log(
+            'permissionRoutes',
+            JSON.parse(JSON.stringify(route)).filter((item: any) => item.path !== '/'),
+        );
 
         permissionRoutes.value = JSON.parse(JSON.stringify(route)).filter((item: any) => item.path !== '/');
-        console.log('permissionRoutes', permissionRoutes.value);
+
         menuRoute.value = generateRoute(permissionRoutes.value);
-        console.log('menuRoute', menuRoute.value);
+
         return permissionRoutes.value;
         // permissionRoutes.value = routes.filter(item => {
         //     return (

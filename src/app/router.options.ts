@@ -70,7 +70,6 @@ export const routes: RouteRecordRaw[] = [
             parent: 'tasks',
             parentTitle: 'tasks',
         },
-        children: [],
     },
     {
         path: '/tasks/Long-term-adherence',
