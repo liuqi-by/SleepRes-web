@@ -111,7 +111,11 @@
                     v-for="item in showColumns"
                     :key="item.prop"
                     :prop="item.prop"
-                    :label="item.label"
+                    :label="
+                        item.prop === 'avg_time'
+                            ? item.label + ' ' + moment(option.date).format('MMM YYYY')
+                            : item.label
+                    "
                     :min-width="item.width"
                     align="center"
                     sortable
@@ -137,6 +141,14 @@
                                 :compliant="Number(row.compliant)"
                                 v-else-if="item.prop === 'compliant'"
                             />
+
+                            <span v-else-if="item.prop === 'leak_avg'">
+                                {{ row[item.prop] ? row[item.prop] + ' LPM' : '' }}
+                            </span>
+
+                            <span v-else-if="item.type === 'percent'">
+                                {{ row[item.prop] || row[item.prop] === 0 ? row[item.prop] + '%' : '' }}
+                            </span>
                         </div>
                     </template>
                     <template #header="{ column }">
@@ -814,7 +826,7 @@
         },
         {
             label: 'Best 30 Days',
-            prop: 'best30',
+            prop: 'best30_days',
             width: 120,
             listType: [1, 2],
         },
@@ -826,19 +838,19 @@
         },
         {
             label: 'Last 30 Days',
-            prop: '',
+            prop: 'last30',
             width: 120,
             listType: [4, 5, 6],
         },
         {
-            label: `Average Hrs of Use ${moment(option.value.date).format('MMM YYYY')}`,
-            prop: '',
+            label: `Average Hrs of Use`,
+            prop: 'avg_time',
             width: 120,
             listType: [3],
         },
         {
             label: listType.value === 4 ? 'Modem Type' : 'Mask',
-            prop: '',
+            prop: listType.value === 4 ? 'data_type' : 'patient.mask',
             width: 120,
             listType: [4, 5],
         },
@@ -851,7 +863,7 @@
         },
         {
             label: 'Days Since Last Upload',
-            prop: '',
+            prop: 'con_days',
             width: 120,
             listType: [4],
         },
@@ -866,21 +878,24 @@
         },
         {
             label: '% of days >4 hours last 30 days',
-            prop: '',
+            prop: 'last30',
             width: 120,
             listType: [3],
+            type: 'percent',
+            defaultTemplate: true,
         },
         {
             label: 'Avg Hours Last 30 Days',
-            prop: '',
+            prop: 'last30_time',
             width: 120,
             listType: [3],
         },
         {
             label: listType.value === 5 ? 'Avg Leak Last 5 Days' : 'Avg AHI Last 5 Days',
-            prop: '',
+            prop: listType.value === 5 ? 'leak_avg' : 'ahi_avg',
             width: 120,
             listType: [5, 6],
+            defaultTemplate: listType.value === 5,
         },
     ];
 

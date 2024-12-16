@@ -328,5 +328,10 @@
     },
     "dashboard": {
         "searchPlaceholder": "First name / Last name / Patient ID "
+    },
+    "rules": {
+        "Therapy": "Therapy",
+        "Clinical": "Clinical",
+        "Connectivity": "Connectivity"
     }
 }

@@ -31,13 +31,9 @@ const generateRoute = (routes: any[], result: any[] = []) => {
 };
 
 export const usePermissionStore = defineStore('permission', () => {
-    const permissionRoutes = useCookie<RouteRecordRaw[]>('routes', {
-        default: () => [],
-    });
+    const permissionRoutes = useLocalStorage<RouteRecordRaw[]>('routes', []);
 
-    const menuRoute = useCookie<RouteRecordRaw[]>('menuRoute', {
-        default: () => [],
-    });
+    const menuRoute = useLocalStorage<RouteRecordRaw[]>('menuRoute', []);
     // 设置权限路由
     const setPermissionRoutes = (routes: any) => {
         permissionRoutes.value = routes;

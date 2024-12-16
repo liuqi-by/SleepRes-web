@@ -53,7 +53,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'tasks',
             keepalive: false,
-            roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
+            roles: [RoleType.DMEAdmin],
             parent: 'tasks',
             parentTitle: 'tasks',
             isParent: true,
@@ -66,7 +66,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'adherence',
             keepalive: false,
-            roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
+            roles: [RoleType.DMEAdmin],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -78,7 +78,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'Long-term-adherence',
             keepalive: false,
-            roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
+            roles: [RoleType.DMEAdmin],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -90,7 +90,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'High-Leak',
             keepalive: false,
-            roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
+            roles: [RoleType.DMEAdmin],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -102,7 +102,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'High-AHI',
             keepalive: false,
-            roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
+            roles: [RoleType.DMEAdmin],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -114,7 +114,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'Cellular-Connectivity',
             keepalive: false,
-            roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
+            roles: [RoleType.DMEAdmin],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -126,7 +126,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'Wi-Fi-Connectivity',
             keepalive: false,
-            roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
+            roles: [RoleType.DMEAdmin],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -163,7 +163,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'rules',
             keepalive: false,
-            roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
+            roles: [RoleType.DMEAdmin],
             parent: 'administrator',
             parentTitle: 'Administrator',
         },
