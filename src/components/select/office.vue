@@ -9,6 +9,7 @@
         ref="baseSelectRef"
         v-bind="$attrs"
         clearable
+        :status="0"
     >
         <template #option="{ data }">
             <div class="flex justify-between">

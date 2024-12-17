@@ -1,3 +1,7 @@
+# 2024/12/17
+
+1. Complete dashboard(完成仪表盘页面)
+
 # 2024/12/10
 
 1. Complete patients and dashboard Column Selection & Export Feature(完成患者页面和仪表盘页面的列表设置)

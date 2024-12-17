@@ -4,88 +4,90 @@
             <h1>{{ $t('rules.Therapy') }}</h1>
             <div class="radio-flex">
                 <switch-radio
-                    v-model="option1"
+                    v-model="rulesOption.Therapy.good.isOpen"
                     label="Good:"
                     color="#03BF16"
                 />
-                The patients therapy usage is <selectNum v-model="selectNumber" /> % or greater based on 4 hours of use
-                per night
+                The patients therapy usage is
+                <selectNum v-model="rulesOption.Therapy.good.limits[0]" />
+                % or greater based on 4 hours of use per night
             </div>
             <div class="radio-flex">
                 <switch-radio
-                    v-model="option2"
-                    label="Poor:"
+                    v-model="rulesOption.Therapy.caution.isOpen"
+                    label="Caution:"
                     color="#F59A23"
                 />
-                The patients therapy usage is between <selectNum v-model="selectNumber" /> % and
-                <selectNum v-model="selectNumber" /> % based on 4 hours of use per night
+                The patients therapy usage is between
+                <selectNum v-model="rulesOption.Therapy.caution.limits[0]" /> % and
+                <selectNum v-model="rulesOption.Therapy.caution.limits[1]" /> % based on 4 hours of use per night
             </div>
             <div class="radio-flex">
                 <switch-radio
-                    v-model="option3"
+                    v-model="rulesOption.Therapy.risk.isOpen"
                     label="At Risk:"
                     class="self-start"
                     color="#D9001B"
                 />
                 <div>
                     <p class="line-height-[32px] flex">
-                        The patients therapy usage is below <selectNum v-model="selectNumber" /> % based on 4 hours of
-                        use per night
+                        The patients therapy usage is below
+                        <selectNum v-model="rulesOption.Therapy.risk.limits[0]" /> % based on 4 hours of use per night
                     </p>
-                    <el-radio-group v-model="option3">
+                    <el-checkbox-group v-model="rulesOption.Therapy.selectDays">
                         <div>
-                            <el-radio
-                                label="1"
+                            <el-checkbox
+                                value="1"
                                 size="large"
                                 class="w-[70px]"
                             >
                                 Day 7
-                            </el-radio>
-                            <el-radio
-                                label="2"
+                            </el-checkbox>
+                            <el-checkbox
+                                value="2"
                                 size="large"
                                 class="w-[70px]"
                             >
                                 Day 21
-                            </el-radio>
-                            <el-radio
-                                label="3"
+                            </el-checkbox>
+                            <el-checkbox
+                                value="3"
                                 size="large"
                                 class="w-[70px]"
                             >
                                 Day 45
-                            </el-radio>
+                            </el-checkbox>
                         </div>
 
                         <div>
-                            <el-radio
-                                label="4"
+                            <el-checkbox
+                                value="4"
                                 size="large"
                                 class="w-[70px]"
                             >
                                 Day 14
-                            </el-radio>
-                            <el-radio
-                                label="5"
+                            </el-checkbox>
+                            <el-checkbox
+                                value="5"
                                 size="large"
                                 class="w-[70px]"
                             >
                                 Day 28
-                            </el-radio>
-                            <el-radio
-                                label="6"
+                            </el-checkbox>
+                            <el-checkbox
+                                value="6"
                                 size="large"
                                 class="w-[70px]"
                             >
                                 Day 6
-                            </el-radio>
+                            </el-checkbox>
                         </div>
-                    </el-radio-group>
+                    </el-checkbox-group>
                 </div>
             </div>
             <div class="radio-flex">
                 <switch-radio
-                    v-model="option2"
+                    v-model="rulesOption.Therapy.adherenceAchieved.isOpen"
                     label="Adherence Achieved:"
                     minWidth="200px"
                 />
@@ -93,22 +95,32 @@
             </div>
             <div class="radio-flex">
                 <switch-radio
-                    v-model="option2"
+                    v-model="rulesOption.Therapy.LongTermAdherence.isOpen"
                     label="Long-term Adherence:"
                     class="self-start"
                     minWidth="200px"
                 />
                 <div>
-                    <p class="h-[32px] line-height-[32px]">
-                        The patient has not used their machine and/or the machine has not contacted SleepRes for number
-                        of days in a row.
+                    <p class="line-height-[32px] flex">
+                        The patient has not used their machine and/or the machine has not contacted SleepRes for
+                        <selectNum
+                            v-model="rulesOption.Therapy.LongTermAdherence.limits[0]"
+                            :min="1"
+                        />
+                        number of days in a row.
                     </p>
                     <div class="radio-flex">
                         <switch-radio
-                            v-model="option2"
+                            v-model="rulesOption.Therapy.LongTermAdherence.isDisregard"
                             label=""
+                            minWidth="0"
                         />
                         Disregard patients whose machine has not contacted SleepRes cloud platform for greater than
+                        <selectNum
+                            v-model="rulesOption.Therapy.LongTermAdherence.disregard"
+                            :min="1"
+                            :max="200"
+                        />
                         days.
                     </div>
                 </div>
@@ -118,40 +130,73 @@
             <h1>{{ $t('rules.Clinical') }}</h1>
             <div class="radio-flex">
                 <switch-radio
-                    v-model="option2"
+                    v-model="rulesOption.Clinical.leak.isOpen"
                     label="High Leak"
                     class="self-start"
                 />
                 <div>
-                    <p class="h-[32px] line-height-[32px]">
-                        The patients average unintentional leak is greater than LPM over the past days
+                    <p class="line-height-[32px] flex">
+                        The patients average unintentional leak is greater than
+                        <selectNum
+                            v-model="rulesOption.Clinical.leak.limits[0]"
+                            :min="1"
+                        />
+                        LPM over the past
+                        <selectNum
+                            v-model="rulesOption.Clinical.leak.limits[1]"
+                            :min="2"
+                            :max="30"
+                        />
+                        days
                     </p>
                     <div class="radio-flex">
                         <switch-radio
-                            v-model="option2"
+                            v-model="rulesOption.Clinical.leak.isDisregard"
                             label=""
-                            class="label"
                         />
-                        Disregard patients whose therapy start date is greater than days
+                        Disregard patients whose therapy start date is greater than
+                        <selectNum
+                            v-model="rulesOption.Clinical.leak.disregard"
+                            :min="1"
+                            :max="200"
+                        />
+                        days
                     </div>
                 </div>
             </div>
             <div class="radio-flex">
                 <switch-radio
-                    v-model="option2"
+                    v-model="rulesOption.Clinical.ahi.isOpen"
                     label="High AHI"
                     class="self-start"
                 />
                 <div>
-                    <p class="h-[32px] line-height-[32px]">
-                        The patients average AHI is greater than over the past days
+                    <p class="line-height-[32px] flex">
+                        The patients average AHI is greater than
+                        <selectNum
+                            v-model="rulesOption.Clinical.ahi.limits[0]"
+                            :min="1"
+                        />
+                        over the past
+                        <selectNum
+                            v-model="rulesOption.Clinical.ahi.limits[1]"
+                            :min="2"
+                            :max="30"
+                        />
+                        days
                     </p>
                     <div class="radio-flex">
                         <switch-radio
-                            v-model="option2"
+                            v-model="rulesOption.Clinical.ahi.isDisregard"
                             label=""
                         />
-                        Disregard patients whose therapy start date is greater than days
+                        Disregard patients whose therapy start date is greater than
+                        <selectNum
+                            v-model="rulesOption.Clinical.ahi.disregard"
+                            :min="1"
+                            :max="200"
+                        />
+                        days
                     </div>
                 </div>
             </div>
@@ -160,41 +205,63 @@
             <h1>{{ $t('rules.Connectivity') }}</h1>
             <div class="radio-flex">
                 <switch-radio
-                    v-model="option2"
+                    v-model="rulesOption.Connectivity.cellularModem.isOpen"
                     label="Cellular Modem"
                     class="self-start"
                     minWidth="200px"
                 />
                 <div>
-                    <p class="h-[32px] line-height-[32px]">
-                        The patients cellular modem has not contacted the SleepRes Cloud Platform for consecutive days
+                    <p class="line-height-[32px] flex">
+                        The patients cellular modem has not contacted the SleepRes Cloud Platform for
+                        <selectNum
+                            v-model="rulesOption.Connectivity.cellularModem.limits[0]"
+                            :min="2"
+                        />
+                        consecutive days
                     </p>
                     <div class="radio-flex">
                         <switch-radio
-                            v-model="option2"
+                            v-model="rulesOption.Connectivity.cellularModem.isDisregard"
                             label=""
                         />
-                        Disregard patients whose therapy start date is greater than days
+                        Disregard patients whose therapy start date is greater than
+                        <selectNum
+                            v-model="rulesOption.Connectivity.cellularModem.disregard"
+                            :min="1"
+                            :max="200"
+                        />
+                        days
                     </div>
                 </div>
             </div>
             <div class="radio-flex">
                 <switch-radio
-                    v-model="option2"
+                    v-model="rulesOption.Connectivity.wifiModule.isOpen"
                     label="Wi-Fi Module"
                     class="self-start"
                     minWidth="200px"
                 />
                 <div>
-                    <p class="h-[32px] line-height-[32px]">
-                        The patients Wi-Fi module has not contacted the SleepRes Cloud Platform for consecutive days
+                    <p class="line-height-[32px] flex">
+                        The patients Wi-Fi module has not contacted the SleepRes Cloud Platform for
+                        <selectNum
+                            v-model="rulesOption.Connectivity.wifiModule.limits[0]"
+                            :min="2"
+                        />
+                        consecutive days
                     </p>
                     <div class="radio-flex">
                         <switch-radio
-                            v-model="option2"
+                            v-model="rulesOption.Connectivity.wifiModule.isDisregard"
                             label=""
                         />
-                        Disregard patients whose therapy start date is greater than days
+                        Disregard patients whose therapy start date is greater than
+                        <selectNum
+                            v-model="rulesOption.Connectivity.wifiModule.disregard"
+                            :min="1"
+                            :max="200"
+                        />
+                        days
                     </div>
                 </div>
             </div>
@@ -204,14 +271,68 @@
 
 <script setup lang="ts">
     import selectNum from './components/select-number.vue';
-    const option1 = ref(false);
-    const option2 = ref(false);
-    const option3 = ref(false);
 
-    const selectNumber = ref();
+    const rulesOption = ref({
+        Therapy: {
+            good: {
+                isOpen: false,
+                limits: [''],
+            },
+            caution: {
+                isOpen: false,
+                limits: ['', ''],
+            },
+            risk: {
+                isOpen: false,
+                limits: [''],
+            },
+            selectDays: [],
+            adherenceAchieved: {
+                isOpen: false,
+            },
+            LongTermAdherence: {
+                isOpen: false,
+                limits: [''],
+                isDisregard: false,
+                disregard: '',
+            },
+        },
+        Clinical: {
+            leak: {
+                isOpen: false,
+                limits: ['', ''],
+                isDisregard: false,
+                disregard: '',
+            },
+            ahi: {
+                isOpen: false,
+                limits: ['', ''],
+                isDisregard: false,
+                disregard: '',
+            },
+        },
+        Connectivity: {
+            cellularModem: {
+                isOpen: false,
+                limits: [''],
+                isDisregard: false,
+                disregard: '',
+            },
+            wifiModule: {
+                isOpen: false,
+                limits: [''],
+                isDisregard: false,
+                disregard: '',
+            },
+        },
+    });
 </script>
 
 <style lang="scss" scoped>
+    .page-container {
+        padding-top: 20px;
+    }
+
     .radio-flex {
         display: flex;
         align-items: center;
@@ -219,7 +340,7 @@
     }
 
     .rule-module {
-        padding: 25px 0;
+        padding: 20px 0;
         border-top: 1px solid #000;
 
         h1 {
@@ -232,13 +353,34 @@
             padding-top: 0;
             border-top: none;
         }
+
+        &:last-child {
+            padding-bottom: 0;
+        }
     }
 
     :deep(.select-number) {
         margin: 0 10px;
     }
 
-    :deep(.el-radio-group) {
+    :deep(.el-checkbox-group) {
         display: block;
+    }
+
+    :deep(.el-checkbox__inner::after) {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4px;
+        height: 4px;
+        content: '';
+        background-color: var(--el-color-white);
+        border-radius: 50% !important;
+        transition: transform 0.15s ease-in;
+        transform: translate(-50%, -50%) scale(1) !important;
+    }
+
+    :deep(.el-checkbox__inner) {
+        border-radius: 50%;
     }
 </style>

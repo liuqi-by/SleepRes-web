@@ -2,7 +2,7 @@
     <div>
         <el-radio-group v-model="radioValue">
             <el-radio
-                :label="true"
+                :value="true"
                 @click.prevent="radioValue = !radioValue"
                 :style="{ color: color, fontWeight: 'bold', minWidth: label ? minWidth : '0' }"
             >

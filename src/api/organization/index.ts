@@ -3,10 +3,10 @@ import type { OrganizationListReq, Organization, AddOrganizationReq, EditOrganiz
 /**
  * @description 组织机构列表 // 状态0=正常，1=冻结，2=全部
  */
-export const getOrganization = (data: OrganizationListReq & PageQuery) => {
+export const getOrganization = (data: OrganizationListReq & PageQuery, status?: number) => {
     return useClientRequest<ResPonseType<Organization[]>>('/api/institution/list', {
         method: 'GET',
-        query: data,
+        query: status ? { ...data, status } : data,
     });
 };
 
