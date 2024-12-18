@@ -1,16 +1,18 @@
 <template>
     <div>
-        <el-radio-group v-model="radioValue">
-            <el-radio
-                :value="true"
-                @click.prevent="radioValue = !radioValue"
-                :style="{ color: color, fontWeight: 'bold', minWidth: label ? minWidth : '0' }"
-            >
-                <template #default>
-                    {{ label }}
-                </template>
-            </el-radio>
-        </el-radio-group>
+        <client-only>
+            <el-radio-group v-model="radioValue">
+                <el-radio
+                    :value="true"
+                    @click.prevent="radioValue = !radioValue"
+                    :style="{ color: color, fontWeight: 'bold', minWidth: label ? minWidth : '0' }"
+                >
+                    <template #default>
+                        {{ label }}
+                    </template>
+                </el-radio>
+            </el-radio-group>
+        </client-only>
     </div>
 </template>
 

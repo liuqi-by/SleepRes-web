@@ -6,7 +6,7 @@ import type { OrganizationListReq, Organization, AddOrganizationReq, EditOrganiz
 export const getOrganization = (data: OrganizationListReq & PageQuery, status?: number) => {
     return useClientRequest<ResPonseType<Organization[]>>('/api/institution/list', {
         method: 'GET',
-        query: status ? { ...data, status } : data,
+        query: status || status === 0 ? { ...data, status } : data,
     });
 };
 

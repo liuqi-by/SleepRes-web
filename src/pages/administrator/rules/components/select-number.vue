@@ -1,19 +1,21 @@
 <!-- 0% ~ 100%选择框 -->
 <template>
-    <div class="select-number">
-        <el-select
-            v-model="value"
-            placeholder=""
-            style="min-width: 65px"
-        >
-            <el-option
-                v-for="item in range"
-                :key="item"
-                :label="item"
-                :value="item"
-            />
-        </el-select>
-    </div>
+    <client-only>
+        <div class="select-number">
+            <el-select
+                v-model="value"
+                placeholder=""
+                style="min-width: 65px"
+            >
+                <el-option
+                    v-for="item in range"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                />
+            </el-select>
+        </div>
+    </client-only>
 </template>
 
 <script setup lang="ts">

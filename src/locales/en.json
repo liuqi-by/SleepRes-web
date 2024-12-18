@@ -184,7 +184,7 @@
         "Tubing": "Tubing",
         "Demographics": "Demographics",
         "ContactDetails": "Contact Details",
-        "searchPlaceholder": "First name / Last name / Patient ID / Date of Birth / Serial number",
+        "searchPlaceholder": "First name / Last name / Patient ID / Date of Birth / Serial number ",
         "unknown": "Unknown",
         "Male": "Male",
         "Female": "Female",

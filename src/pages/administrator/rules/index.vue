@@ -19,14 +19,21 @@
                     color="#F59A23"
                 />
                 The patients therapy usage is between
-                <selectNum v-model="rulesOption.Therapy.caution.limits[0]" /> % and
-                <selectNum v-model="rulesOption.Therapy.caution.limits[1]" /> % based on 4 hours of use per night
+                <selectNum
+                    v-model="rulesOption.Therapy.caution.limits[0]"
+                    :max="rulesOption.Therapy.caution.limits[1] || 100"
+                />
+                % and
+                <selectNum
+                    v-model="rulesOption.Therapy.caution.limits[1]"
+                    :min="rulesOption.Therapy.caution.limits[0] || 0"
+                />
+                % based on 4 hours of use per night
             </div>
             <div class="radio-flex">
                 <switch-radio
                     v-model="rulesOption.Therapy.risk.isOpen"
                     label="At Risk:"
-                    class="self-start"
                     color="#D9001B"
                 />
                 <div>
@@ -97,9 +104,10 @@
                 <switch-radio
                     v-model="rulesOption.Therapy.LongTermAdherence.isOpen"
                     label="Long-term Adherence:"
-                    class="self-start"
                     minWidth="200px"
+                    class="self-start"
                 />
+
                 <div>
                     <p class="line-height-[32px] flex">
                         The patient has not used their machine and/or the machine has not contacted SleepRes for
@@ -207,8 +215,8 @@
                 <switch-radio
                     v-model="rulesOption.Connectivity.cellularModem.isOpen"
                     label="Cellular Modem"
-                    class="self-start"
                     minWidth="200px"
+                    class="self-start"
                 />
                 <div>
                     <p class="line-height-[32px] flex">
@@ -238,8 +246,8 @@
                 <switch-radio
                     v-model="rulesOption.Connectivity.wifiModule.isOpen"
                     label="Wi-Fi Module"
-                    class="self-start"
                     minWidth="200px"
+                    class="self-start"
                 />
                 <div>
                     <p class="line-height-[32px] flex">
@@ -271,8 +279,9 @@
 
 <script setup lang="ts">
     import selectNum from './components/select-number.vue';
+    import { getAdminRules, updateAdminRules } from '~/api/rules';
 
-    const rulesOption = ref({
+    const rulesOption = ref<any>({
         Therapy: {
             good: {
                 isOpen: false,
@@ -325,6 +334,33 @@
                 disregard: '',
             },
         },
+    });
+
+    watch(
+        rulesOption,
+        () => {
+            updateData();
+        },
+        {
+            deep: true,
+        },
+    );
+
+    const getData = () => {
+        getAdminRules().then(res => {
+            if (res.code === 1 && res.data) {
+                rulesOption.value = JSON.parse((res.data as string).replaceAll('&quot;', '"'));
+            }
+        });
+    };
+
+    const updateData = useThrottleFn(() => {
+        console.log(JSON.stringify(rulesOption.value));
+        updateAdminRules({ rules: JSON.stringify(rulesOption.value) });
+    }, 200);
+
+    onMounted(() => {
+        getData();
     });
 </script>
 

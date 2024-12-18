@@ -1,6 +1,8 @@
-# 2024/12/17
+# 2024/12/18
 
 1. Complete dashboard(完成仪表盘页面)
+2. Complete DME Admin Rules(完成DME管理员规则)
+3. Update version 0.0.2-alpha.6(更新版本0.0.2-alpha.6)
 
 # 2024/12/10
 
