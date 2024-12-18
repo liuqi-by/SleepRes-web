@@ -295,9 +295,12 @@
         dialogVisible.value = true;
         tabType.value = item.group_id === 2 ? 'DME' : 'Physician';
 
-        setTimeout(() => {
-            focusRef.value?.focus();
-        }, 0);
+        nextTick(() => {
+            setTimeout(() => {
+                formRef.value?.resetFields();
+                focusRef.value?.focus();
+            }, 0);
+        });
     };
 
     const loading = ref(false); // 按钮loading
