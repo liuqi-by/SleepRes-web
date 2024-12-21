@@ -286,19 +286,14 @@
 
     // 打开
     const showApproval = (item: MessageRes) => {
-        formData.value = {
-            ...item.userinfo,
-
-            username: '',
-        };
-
         dialogVisible.value = true;
         tabType.value = item.group_id === 2 ? 'DME' : 'Physician';
-
+        formData.value = JSON.parse(JSON.stringify(item.userinfo));
+        console.log('formData.value', item.userinfo);
         nextTick(() => {
             setTimeout(() => {
-                formRef.value?.resetFields();
                 focusRef.value?.focus();
+                formRef.value?.clearValidate();
             }, 0);
         });
     };

@@ -288,7 +288,7 @@
                                 closeOnClickModal: false,
                                 closeOnPressEscape: false,
                                 customStyle: {
-                                    minWidth: '500px',
+                                    minWidth: '700px',
                                 },
                             },
                         );

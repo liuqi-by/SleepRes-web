@@ -98,7 +98,7 @@ export const getNoConnectUserList = (data: { type: number } & PageQuery) => {
  * 获取高漏气量的用户
  */
 export const getHighLeakage = () => {
-    return useClientRequest<ResPonseType<HighLeakageResponse>>('/api/index/Hign_Leak', {
+    return useClientRequest<ResPonseType<HighLeakageResponse>>('/api/index/High_Leak', {
         method: 'GET',
     });
 };
@@ -107,7 +107,7 @@ export const getHighLeakage = () => {
  * 获取高漏气量的用户列表 0=<10,1=10-19,2=20-29,3=30-39,4=>40
  */
 export const getHighLeakageUserList = (data: { type: number } & PageQuery) => {
-    return useClientRequest<ResPonseType<UserInfo[]>>('/api/index/Hign_Leak_List', {
+    return useClientRequest<ResPonseType<UserInfo[]>>('/api/index/High_Leak_List', {
         method: 'GET',
         params: data,
     });
@@ -117,7 +117,7 @@ export const getHighLeakageUserList = (data: { type: number } & PageQuery) => {
  * 获取高AHI的用户
  */
 export const getHighAHI = () => {
-    return useClientRequest<ResPonseType<HignAHIResponse>>('/api/index/Hign_AHI', {
+    return useClientRequest<ResPonseType<HignAHIResponse>>('/api/index/High_AHI', {
         method: 'GET',
     });
 };
@@ -126,7 +126,7 @@ export const getHighAHI = () => {
  *  获取高AHI的用户列表 0=<10,1=10-19,2=20-29,3=30-39,4=>40
  */
 export const getHighAHIUserList = (data: { type: number } & PageQuery) => {
-    return useClientRequest<ResPonseType<UserInfo[]>>('/api/index/Hign_AHI_List', {
+    return useClientRequest<ResPonseType<UserInfo[]>>('/api/index/High_AHI_List', {
         method: 'GET',
         params: data,
     });

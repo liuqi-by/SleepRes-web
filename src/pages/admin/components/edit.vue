@@ -295,17 +295,14 @@
 
     // 打开
     const showDialog = (item: UserInfo) => {
-        formData.value = {
-            ...item,
-        };
-
         dialogVisible.value = true;
         tabType.value = item.group_id === 2 ? 'DME' : 'Physician';
+        formData.value = JSON.parse(JSON.stringify(item));
 
         nextTick(() => {
             setTimeout(() => {
                 focusRef.value?.focus();
-                formRef.value?.resetFields();
+                formRef.value?.clearValidate();
             }, 0);
         });
     };
