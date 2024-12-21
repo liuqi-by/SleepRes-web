@@ -199,6 +199,13 @@
             }
             loading.value = true;
 
+            const submitSuccess = (msg: string) => {
+                ElMessage.success(msg);
+                dialogVisible.value = false;
+                emit('refresh');
+                formRef.value?.resetFields();
+            };
+
             if (formData.value.id) {
                 // 编辑
                 console.log(formData.value);
@@ -207,10 +214,11 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success('Office saved successfully');
-                            dialogVisible.value = false;
-                            emit('refresh');
-                            formRef.value?.resetFields();
+                            // ElMessage.success('Office saved successfully');
+                            // dialogVisible.value = false;
+                            // emit('refresh');
+                            // formRef.value?.resetFields();
+                            submitSuccess('Office saved successfully');
                         }
                     })
                     .finally(() => {
@@ -223,10 +231,11 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success('Office created successfully');
-                            dialogVisible.value = false;
-                            emit('refresh');
-                            formRef.value?.resetFields();
+                            // ElMessage.success('Office created successfully');
+                            // dialogVisible.value = false;
+                            // emit('refresh');
+                            // formRef.value?.resetFields();
+                            submitSuccess('Office created successfully');
                         }
                     })
                     .finally(() => {

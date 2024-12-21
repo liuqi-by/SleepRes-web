@@ -262,6 +262,16 @@
                 return;
             }
             loading.value = true;
+
+            const submitSuccess = (msg: string) => {
+                ElMessage.success(msg);
+                dialogVisible.value = false;
+                emit('refresh');
+                formData.value = {
+                    ...formDataInit,
+                };
+            };
+
             if (formData.value.id) {
                 // 编辑
                 updateUser({
@@ -277,12 +287,13 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success('Account saved successfully');
-                            dialogVisible.value = false;
-                            emit('refresh');
-                            formData.value = {
-                                ...formDataInit,
-                            };
+                            submitSuccess('Account saved successfully');
+                            // ElMessage.success('Account saved successfully');
+                            // dialogVisible.value = false;
+                            // emit('refresh');
+                            // formData.value = {
+                            //     ...formDataInit,
+                            // };
                         }
                     })
                     .finally(() => {
@@ -296,10 +307,13 @@
                 })
                     .then(res => {
                         if (res.code === 1) {
-                            ElMessage.success('Account created successfully');
-                            dialogVisible.value = false;
-                            emit('refresh');
-                            formRef.value?.resetFields();
+                            submitSuccess('Account created successfully');
+                            // ElMessage.success('Account created successfully');
+                            // dialogVisible.value = false;
+                            // emit('refresh');
+                            // formData.value = {
+                            //     ...formDataInit,
+                            // };
                         }
                     })
                     .finally(() => {
