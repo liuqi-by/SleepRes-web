@@ -1,6 +1,6 @@
 <template>
     <div class="page-container">
-        <div class="rule-module">
+        <div class="module">
             <h1>{{ $t('rules.Therapy') }}</h1>
             <div class="radio-flex">
                 <switch-radio
@@ -9,7 +9,7 @@
                     color="#03BF16"
                 />
                 The patients therapy usage is
-                <selectNum v-model="rulesOption.Therapy.good.limits[0]" />
+                <select-number v-model="rulesOption.Therapy.good.limits[0]" />
                 % or greater based on 4 hours of use per night
             </div>
             <div class="radio-flex">
@@ -19,12 +19,12 @@
                     color="#F59A23"
                 />
                 The patients therapy usage is between
-                <selectNum
+                <select-number
                     v-model="rulesOption.Therapy.caution.limits[0]"
                     :max="rulesOption.Therapy.caution.limits[1] || 100"
                 />
                 % and
-                <selectNum
+                <select-number
                     v-model="rulesOption.Therapy.caution.limits[1]"
                     :min="rulesOption.Therapy.caution.limits[0] || 0"
                 />
@@ -39,7 +39,8 @@
                 <div>
                     <p class="line-height-[32px] flex">
                         The patients therapy usage is below
-                        <selectNum v-model="rulesOption.Therapy.risk.limits[0]" /> % based on 4 hours of use per night
+                        <select-number v-model="rulesOption.Therapy.risk.limits[0]" /> % based on 4 hours of use per
+                        night
                     </p>
                     <el-checkbox-group v-model="rulesOption.Therapy.selectDays">
                         <div>
@@ -111,7 +112,7 @@
                 <div>
                     <p class="line-height-[32px] flex">
                         The patient has not used their machine and/or the machine has not contacted SleepRes for
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Therapy.LongTermAdherence.limits[0]"
                             :min="1"
                         />
@@ -124,7 +125,7 @@
                             minWidth="0"
                         />
                         Disregard patients whose machine has not contacted SleepRes cloud platform for greater than
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Therapy.LongTermAdherence.disregard"
                             :min="1"
                             :max="200"
@@ -134,7 +135,7 @@
                 </div>
             </div>
         </div>
-        <div class="rule-module">
+        <div class="module">
             <h1>{{ $t('rules.Clinical') }}</h1>
             <div class="radio-flex">
                 <switch-radio
@@ -145,12 +146,12 @@
                 <div>
                     <p class="line-height-[32px] flex">
                         The patients average unintentional leak is greater than
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Clinical.leak.limits[0]"
                             :min="1"
                         />
                         LPM over the past
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Clinical.leak.limits[1]"
                             :min="2"
                             :max="30"
@@ -163,7 +164,7 @@
                             label=""
                         />
                         Disregard patients whose therapy start date is greater than
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Clinical.leak.disregard"
                             :min="1"
                             :max="200"
@@ -181,12 +182,12 @@
                 <div>
                     <p class="line-height-[32px] flex">
                         The patients average AHI is greater than
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Clinical.ahi.limits[0]"
                             :min="1"
                         />
                         over the past
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Clinical.ahi.limits[1]"
                             :min="2"
                             :max="30"
@@ -199,7 +200,7 @@
                             label=""
                         />
                         Disregard patients whose therapy start date is greater than
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Clinical.ahi.disregard"
                             :min="1"
                             :max="200"
@@ -209,7 +210,7 @@
                 </div>
             </div>
         </div>
-        <div class="rule-module">
+        <div class="module">
             <h1>{{ $t('rules.Connectivity') }}</h1>
             <div class="radio-flex">
                 <switch-radio
@@ -221,7 +222,7 @@
                 <div>
                     <p class="line-height-[32px] flex">
                         The patients cellular modem has not contacted the SleepRes Cloud Platform for
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Connectivity.cellularModem.limits[0]"
                             :min="2"
                         />
@@ -233,7 +234,7 @@
                             label=""
                         />
                         Disregard patients whose therapy start date is greater than
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Connectivity.cellularModem.disregard"
                             :min="1"
                             :max="200"
@@ -252,7 +253,7 @@
                 <div>
                     <p class="line-height-[32px] flex">
                         The patients Wi-Fi module has not contacted the SleepRes Cloud Platform for
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Connectivity.wifiModule.limits[0]"
                             :min="2"
                         />
@@ -264,7 +265,7 @@
                             label=""
                         />
                         Disregard patients whose therapy start date is greater than
-                        <selectNum
+                        <select-number
                             v-model="rulesOption.Connectivity.wifiModule.disregard"
                             :min="1"
                             :max="200"
@@ -278,7 +279,6 @@
 </template>
 
 <script setup lang="ts">
-    import selectNum from './components/select-number.vue';
     import { getAdminRules, updateAdminRules } from '~/api/rules';
 
     const rulesOption = ref<any>({
@@ -375,7 +375,8 @@
         margin-bottom: 5px;
     }
 
-    .rule-module {
+    .module {
+        box-sizing: content-box;
         padding: 20px 0;
         border-top: 1px solid #000;
 

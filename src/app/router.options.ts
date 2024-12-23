@@ -46,19 +46,7 @@ export const routes: RouteRecordRaw[] = [
             roles: [RoleType.DMETherapist, RoleType.Physician, RoleType.Clinician],
         },
     },
-    {
-        path: '/tasks',
-        component: () => import('@/pages/tasks/index.vue'),
-        name: '任务管理',
-        meta: {
-            title: 'tasks',
-            keepalive: false,
-            roles: [RoleType.DMEAdmin],
-            parent: 'tasks',
-            parentTitle: 'tasks',
-            isParent: true,
-        },
-    },
+
     {
         path: '/tasks/adherence',
         component: () => import('@/pages/tasks/list.vue'),
@@ -66,7 +54,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'adherence',
             keepalive: false,
-            roles: [RoleType.DMEAdmin],
+            roles: [RoleType.DMETherapist],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -78,7 +66,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'Long-term-adherence',
             keepalive: false,
-            roles: [RoleType.DMEAdmin],
+            roles: [RoleType.DMETherapist],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -90,7 +78,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'High-Leak',
             keepalive: false,
-            roles: [RoleType.DMEAdmin],
+            roles: [RoleType.DMETherapist],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -102,7 +90,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'High-AHI',
             keepalive: false,
-            roles: [RoleType.DMEAdmin],
+            roles: [RoleType.DMETherapist],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -114,7 +102,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'Cellular-Connectivity',
             keepalive: false,
-            roles: [RoleType.DMEAdmin],
+            roles: [RoleType.DMETherapist],
             parent: 'tasks',
             parentTitle: 'tasks',
         },
@@ -126,9 +114,22 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'Wi-Fi-Connectivity',
             keepalive: false,
-            roles: [RoleType.DMEAdmin],
+            roles: [RoleType.DMETherapist],
             parent: 'tasks',
             parentTitle: 'tasks',
+        },
+    },
+    {
+        path: '/tasks',
+        component: () => import('@/pages/tasks/index.vue'),
+        name: '任务管理',
+        meta: {
+            title: 'tasks',
+            keepalive: false,
+            roles: [RoleType.DMETherapist],
+            parent: 'tasks',
+            parentTitle: 'tasks',
+            isParent: true,
         },
     },
 

@@ -333,5 +333,14 @@
         "Therapy": "Therapy",
         "Clinical": "Clinical",
         "Connectivity": "Connectivity"
+    },
+    "tasks": {
+        "tasks": "Tasks",
+        "ViewPatientList": "View Patient List",
+        "patients": "Patients",
+        "Connectivity": "Connectivity",
+        "CellularModule": "Missed Cellular Module Calls",
+        "W-FiModule": "Missed W-Fi Module Calls",
+        "Action": "Action"
     }
 }

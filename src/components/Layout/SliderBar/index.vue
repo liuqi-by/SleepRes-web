@@ -166,10 +166,14 @@
     // 	}
     // 	return path;
     // });
-
+    const isFirstOpen = ref(true);
     const handleOpen = (path: string) => {
-        if (path === 'tasks') {
-            navigateTo('/tasks');
+        if (!isFirstOpen.value) {
+            if (path === 'tasks') {
+                navigateTo('/tasks');
+            }
+        } else {
+            isFirstOpen.value = false;
         }
     };
 

@@ -1,3 +1,11 @@
+/**
+ * @description 表格自定义设置
+ * @params columnsInit 表格列初始数据
+ * @params path 保存key
+ *
+ */
+import { useLocalStorage } from '@vueuse/core';
+
 export interface ColumnsInit {
     label: string;
     prop: string;
@@ -11,15 +19,8 @@ export interface ColumnsInit {
         value: number;
     }[];
     valid?: any;
+    noFilter?: boolean;
 }
-
-/**
- * @description 表格自定义设置
- * @params columnsInit 表格列初始数据
- * @params path 保存key
- *
- */
-
 export const useTableSetting = (columnsInit: ColumnsInit[], path?: string) => {
     // 表格列设置
     const columnSelection = useLocalStorage(path || useRoute().path + 'columnSelection', [...columnsInit]);
@@ -28,7 +29,7 @@ export const useTableSetting = (columnsInit: ColumnsInit[], path?: string) => {
     const showColumns = computed(() => {
         return columnSelection.value
             .slice()
-            .filter(item => item.isShow)
+            .filter((item: any) => item.isShow)
             .sort((a, b) => a.orderIndex - b.orderIndex);
     });
 
