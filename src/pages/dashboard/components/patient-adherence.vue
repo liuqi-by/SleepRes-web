@@ -83,9 +83,17 @@
                 label: {
                     show: true,
                     position: 'inner',
-                    formatter: '{c}',
+
                     fontSize: 14,
                     color: '#fff',
+
+                    formatter: function (param: any) {
+                        if (!param.value) {
+                            return '';
+                        } else {
+                            return param.value;
+                        }
+                    },
                 },
             },
         ],
