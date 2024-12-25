@@ -4,7 +4,7 @@
  * @params path 保存key
  *
  */
-import { useLocalStorage } from '@vueuse/core';
+import { useStorage as useVueUseLocalStorage } from '@vueuse/core';
 
 export interface ColumnsInit {
     label: string;
@@ -23,7 +23,14 @@ export interface ColumnsInit {
 }
 export const useTableSetting = (columnsInit: ColumnsInit[], path?: string) => {
     // 表格列设置
-    const columnSelection = useLocalStorage(path || useRoute().path + 'columnSelection', [...columnsInit]);
+    let columnSelection = ref<ColumnsInit[]>(columnsInit);
+    if (process.client) {
+        columnSelection = useVueUseLocalStorage(
+            path || useRoute().path + 'columnSelection',
+            [...columnsInit],
+            localStorage,
+        );
+    }
 
     // 筛选和排序的表格数据
     const showColumns = computed(() => {

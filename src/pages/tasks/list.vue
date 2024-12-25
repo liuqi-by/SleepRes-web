@@ -9,7 +9,7 @@
                 border
                 :data="showTableListPaient"
                 v-loading="loading"
-                height="calc(100vh - 260px)"
+                :height="route.name !== 'adherence' ? 'calc(100vh - 340px)' : 'calc(100vh - 260px)'"
                 v-model:current-page="pageOption.currentPage"
                 v-model:page-size="pageOption.pageSize"
                 :total="pageOption.total"
@@ -21,7 +21,7 @@
                 :columns="columnSelection"
             >
                 <template #header-left>
-                    <div v-if="route.name === 'Long-term-adherence'">
+                    <div v-if="route.name !== 'adherence'">
                         <base-button
                             type="primary"
                             @click="$router.go(-1)"
@@ -37,8 +37,8 @@
                                     :min="2"
                                     :max="200"
                                 />
-                                days since last therapy upload</span
-                            >
+                                days since last therapy upload
+                            </span>
                             <base-button type="primary">Go</base-button>
                         </div>
                         <div class="action">
@@ -62,6 +62,7 @@
                             v-model="option.selectModel"
                             :options="getApiOption.selectConfig.option"
                             :label="getApiOption.selectConfig.label"
+                            v-if="route.name === 'adherence'"
                         />
                     </div>
                 </template>
@@ -230,7 +231,7 @@
         setupDate: (route.query.setupDate as unknown as string) || '',
         dateRange: [route.query.startDate, route.query.endDate],
     });
-    const listType = ref(Number(route.query.listType as unknown as number) || 1);
+
     const title = computed(() => {
         switch (route.name) {
             case 'adherence':
@@ -424,7 +425,12 @@
             defaultTemplate: true,
             type: 'date',
         },
-
+        {
+            label: 'Days Since Setup',
+            prop: 'patient.use_end_time',
+            width: 120,
+            listType: ['Long-term-adherence', 'Cellular-Connectivity', 'Wi-Fi-Connectivity'],
+        },
         {
             label: t('patients.LastUpdateDate'),
             prop: 'patient.use_end_time',
@@ -432,19 +438,44 @@
             defaultTemplate: true,
             type: 'date',
         },
-
+        {
+            label: 'Days Since Last Upload',
+            prop: 'con_days',
+            width: 120,
+            listType: ['Long-term-adherence', 'Cellular-Connectivity', 'Wi-Fi-Connectivity'],
+        },
+        {
+            label: 'Days > 4 hrs Last 10 Days',
+            prop: 'last10',
+            width: 120,
+            listType: ['High-Leak'],
+        },
         {
             label: '% of days >4 hours',
             prop: 'last30',
             width: 120,
             type: 'percent',
             defaultTemplate: true,
+            listType: ['adherence'],
         },
 
         {
             label: 'Task Day',
             prop: 'last30_time',
             width: 100,
+            listType: ['adherence'],
+        },
+        {
+            label: 'Average Leak',
+            prop: 'last30_leak',
+            width: 100,
+            listType: ['High-Leak'],
+        },
+        {
+            label: 'Average AHI',
+            prop: 'last30_ahi',
+            width: 100,
+            listType: ['High-AHI'],
         },
         {
             label: t('tasks.Action'),
@@ -459,7 +490,7 @@
     const listTypeColumns: ColumnsInit[] = columnsInit
         .filter(item => {
             if (item.listType) {
-                return item.listType.includes(listType.value);
+                return item.listType.includes(route.name as string);
             } else {
                 return true;
             }
@@ -472,7 +503,7 @@
             };
         });
 
-    const { columnSelection, showColumns } = useTableSetting(listTypeColumns, useRoute().path + '/' + listType.value);
+    const { columnSelection, showColumns } = useTableSetting(listTypeColumns, useRoute().path);
 </script>
 <style lang="scss" scoped>
     :deep(.table-header) {

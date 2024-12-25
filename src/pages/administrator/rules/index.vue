@@ -87,7 +87,7 @@
                                 size="large"
                                 class="w-[70px]"
                             >
-                                Day 6
+                                Day 60
                             </el-checkbox>
                         </div>
                     </el-checkbox-group>

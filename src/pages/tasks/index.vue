@@ -149,6 +149,7 @@
                 <base-button
                     type="primary"
                     height="40px"
+                    @click="navigateTo('/tasks/Long-term-adherence')"
                 >
                     {{ $t('tasks.ViewPatientList') }}
                 </base-button>
@@ -163,6 +164,7 @@
                     <base-button
                         type="primary"
                         height="40px"
+                        @click="navigateTo('/tasks/High-Leak')"
                     >
                         {{ $t('tasks.ViewPatientList') }}
                     </base-button>
@@ -175,6 +177,7 @@
                     <base-button
                         type="primary"
                         height="40px"
+                        @click="navigateTo('/tasks/High-AHI')"
                     >
                         {{ $t('tasks.ViewPatientList') }}
                     </base-button>
