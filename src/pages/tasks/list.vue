@@ -71,11 +71,7 @@
                     v-for="item in showColumns"
                     :key="item.prop"
                     :prop="item.prop"
-                    :label="
-                        item.prop === 'avg_time'
-                            ? item.label + ' ' + moment(option.date).format('MMM YYYY')
-                            : item.label
-                    "
+                    :label="item.label"
                     :min-width="item.width"
                     align="center"
                     :sortable="item.noFilter ? false : true"
@@ -92,28 +88,20 @@
                             >
                                 {{ nameFormat(row) }}
                             </span>
-
+                            <!-- 日期 -->
                             <span v-else-if="item.type && item.type === 'date'">
                                 {{ dateFormat(getNestedProperty(row, item.prop)) }}
                             </span>
-
-                            <compliant-status
-                                :compliant="Number(row.compliant)"
-                                v-else-if="item.prop === 'compliant'"
-                            />
-
-                            <span v-else-if="item.prop === 'leak_avg'">
-                                {{ row[item.prop] ? row[item.prop] + ' LPM' : '' }}
-                            </span>
-
+                            <!-- 百分比 -->
                             <span v-else-if="item.type === 'percent'">
                                 {{ row[item.prop] || row[item.prop] === 0 ? row[item.prop] + '%' : '' }}
                             </span>
 
-                            <!-- action -->
+                            <!-- action操作 -->
                             <el-select
                                 v-else-if="item.label === t('tasks.Action')"
                                 v-model="row.action"
+                                @change="handleActionChange(row)"
                             >
                                 <el-option
                                     v-for="action in actionOptions"
@@ -176,10 +164,6 @@
 </template>
 
 <script setup lang="ts">
-    // import AddUserDialog from './compononets/add.vue';
-    // import PatientRecord from './compononets/patient-record.vue';
-    import moment from 'moment';
-
     import { RoleType } from '~/enums/RolesEnum';
     import { getPatientInfo } from '~/api/patient';
 
@@ -226,10 +210,6 @@
 
     const option = ref({
         selectModel: (route.query.type as unknown as number) || '2',
-        dateType: (route.query.type as unknown as number) || 1,
-        date: (route.query.date as unknown as string) || '',
-        setupDate: (route.query.setupDate as unknown as string) || '',
-        dateRange: [route.query.startDate, route.query.endDate],
     });
 
     const title = computed(() => {
@@ -239,30 +219,10 @@
         }
     });
 
-    // const disabledMonth = (time: Record<string, any>): boolean => {
-    //     return time.getTime() > new Date().getTime();
-    // };
-
-    // const disabledRange = (time: Record<string, any>): boolean => {
-    //     let dateRange = option.value.dateRange;
-    //     return (
-    //         (dateRange[0] ? time.getTime() < new Date(dateRange[0] as string).getTime() : true) ||
-    //         (dateRange[1]
-    //             ? time.getTime() > new Date(dateRange[1] as string).getTime()
-    //             : time.getTime() > new Date().getTime())
-    //     );
-    // };
-
     type Config = {
         option: { label: string; value: number }[];
         label: string;
     };
-
-    // const compliantOptions = [
-    //     { label: 'Adherent', value: 0 },
-    //     { label: 'Monitoring', value: 1 },
-    //     { label: 'Non-Adherent', value: 2 },
-    // ];
 
     const adherenceOptions = [
         {
@@ -504,6 +464,11 @@
         });
 
     const { columnSelection, showColumns } = useTableSetting(listTypeColumns, useRoute().path);
+
+    // 选择操作
+    const handleActionChange = (row: UserInfo & { action: number }) => {
+        console.log(row.id, row.action);
+    };
 </script>
 <style lang="scss" scoped>
     :deep(.table-header) {
