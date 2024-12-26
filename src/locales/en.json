@@ -20,7 +20,8 @@
         "selectOfficeLocation": "Please select an office location",
         "selectRole": "Please select a role",
         "pickBirth": "Please enter the date of birth",
-        "pickSetup": "Please enter the date of setup"
+        "pickSetup": "Please enter the date of setup",
+        "Select": "Select"
     },
     "login": {
         "login": "Login",
@@ -138,18 +139,19 @@
         "EditUserInfo": "User Information",
         "CreateUser": "Create User",
         "CreateUserAccount": "Create User Account",
-        "searchPlaceholder": "Name / Email / Phone number",
+        "searchPlaceholder": "First name / Last name / Username",
         "NPI": "NPI",
         "Modify": "Modify",
         "statusOff": "Are you sure you would like to deactivate this account?",
         "statusOn": "Are you sure you would like to activate this account?",
-        "AccountStatus": "Account Status"
+        "AccountStatus": "Account Status",
+        "searchPlaceholder2": "First name / Last name / Username / NPI"
     },
     "office": {
         "CreateOffice": "Create Office",
         "OfficeName": "Office Name",
         "City": "City",
-        "Telephone": "Telephone",
+        "Telephone": "Phone number",
         "Modify": "Modify",
         "Edit": "Edit",
         "searchPlaceholder": "Name / Email / Telephone / State / Address",

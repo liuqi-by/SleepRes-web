@@ -46,9 +46,9 @@
                         @click="selectPhy"
                         class="m-r-[50px]"
                         :disabled="!currentRow"
-                        >SELECT
+                        >{{ $t('form.Select') }}
                     </base-button>
-                    <base-button @click="close">CANCEL </base-button>
+                    <base-button @click="close">{{ $t('form.Cancel') }} </base-button>
                 </div>
             </div>
         </base-dialog>

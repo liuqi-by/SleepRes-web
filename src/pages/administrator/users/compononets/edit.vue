@@ -70,7 +70,7 @@
                 <el-form-item
                     prop="account_id"
                     :label="$t('users.NPI')"
-                    v-if="userStore.userInfo?.group_id === 4"
+                    v-if="userStore.roles?.includes(RoleType.PhysicianAdmin)"
                 >
                     <div class="form-item">
                         <el-input
@@ -190,6 +190,7 @@
     import { useUserStore } from '~/stores/modules/user';
     import type { UserInfo } from '~/api/login/types';
     import type { SelectOffice } from '#build/components';
+    import { RoleType } from '~/enums/RolesEnum';
 
     const userStore = useUserStore();
     const rolesOption = computed(() => {

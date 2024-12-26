@@ -1,3 +1,4 @@
+import moment from 'moment';
 import type { FilterType } from '~/components/table-filter/header.vue';
 
 export default function useFilterTableHeader(tableData: any) {
@@ -34,6 +35,7 @@ export default function useFilterTableHeader(tableData: any) {
                 } else if (!itemValue && itemValue !== 0) {
                     itemValue = '';
                 }
+
                 let searchValue = searchData.value[key];
 
                 // 如果key是数组
@@ -50,6 +52,17 @@ export default function useFilterTableHeader(tableData: any) {
                     }
                 } else if (searchValue && !String(itemValue).includes(searchValue.toLocaleLowerCase())) {
                     flag = false;
+                }
+
+                if (key === 'updatetime') {
+                    // 时间戳比较天是否相等
+                    searchValue = moment(searchValue).format('YYYY-MM-DD');
+                    itemValue = moment((itemValue as number) * 1000).format('YYYY-MM-DD');
+
+                    console.log(searchValue, itemValue);
+                    if (searchValue === itemValue) {
+                        flag = true;
+                    }
                 }
             }
             return flag;
@@ -127,9 +140,8 @@ export default function useFilterTableHeader(tableData: any) {
             case 'select':
                 searchData.value[showKey.value] = selectFilter.value;
                 break;
-
             case 'date':
-                searchData.value[showKey.value] = dateFormat(filterInput.value);
+                searchData.value[showKey.value] = filterInput.value;
                 break;
             default:
                 searchData.value[showKey.value] = filterInput.value;

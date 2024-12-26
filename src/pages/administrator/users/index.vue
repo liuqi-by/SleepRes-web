@@ -8,14 +8,24 @@
             @search="search"
             v-model="searchOption"
             class="m-b-[20px]"
-            :placeholder="$t('users.searchPlaceholder')"
+            :placeholder="
+                userStore.roles?.includes(RoleType.PhysicianAdmin)
+                    ? $t('users.searchPlaceholder2')
+                    : $t('users.searchPlaceholder')
+            "
         />
         <!-- 功能模块 -->
         <div class="function-module m-b-[20px]">
             <base-button
                 type="primary"
                 @click="createUser"
-                >{{ userSotre.userInfo?.group_id !== 4 ? $t('users.CreateUser') : $t('users.CreateUserAccount') }}
+            >
+                <!-- {{
+                    !userStore.roles?.includes(RoleType.PhysicianAdmin)
+                        ? $t('users.CreateUser')
+                        : $t('users.CreateUserAccount')
+                }} -->
+                {{ $t('users.CreateUser') }}
             </base-button>
         </div>
         <!-- 表格模块 -->
@@ -32,13 +42,13 @@
                 @current-change="handleCurrentChange"
                 :page-sizes="[25, 50, 100]"
             >
-                <el-table-column
+                <!-- <el-table-column
                     :label="$t('message.NO')"
                     min-width="60"
                     align="center"
                     type="index"
-                    v-if="userSotre.userInfo?.group_id === 4"
-                />
+                    v-if="userStore.roles?.includes(RoleType.PhysicianAdmin)"
+                /> -->
                 <el-table-column
                     prop="nickname"
                     :label="$t('users.FullName')"
@@ -110,7 +120,7 @@
                     :label="$t('users.NPI')"
                     min-width="120"
                     align="center"
-                    v-if="userSotre.userInfo?.group_id === 4"
+                    v-if="userStore.roles?.includes(RoleType.PhysicianAdmin)"
                     sortable
                 >
                     <template #header="{ column }">
@@ -202,8 +212,9 @@
     import type { UserInfo } from '~/api/login/types';
     import { useUserStore } from '~/stores/modules/user';
     // import { getRolesName } from '~/enums/RolesEnum';
+    import { RoleType } from '~/enums/RolesEnum';
 
-    const userSotre = useUserStore();
+    const userStore = useUserStore();
 
     const ResetPasswordForm = defineAsyncComponent(() => import('@/pages/login/components/reset-password-admin.vue'));
 

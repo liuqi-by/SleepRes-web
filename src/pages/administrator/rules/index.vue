@@ -30,7 +30,7 @@
                 />
                 % based on 4 hours of use per night
             </div>
-            <div class="radio-flex">
+            <div class="radio-flex items-start">
                 <switch-radio
                     v-model="rulesOption.Therapy.risk.isOpen"
                     label="At Risk:"

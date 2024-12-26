@@ -158,7 +158,6 @@ export const useUserStore = defineStore(
                     //     // }
                     //     navigateTo(`/login`);
                     // }
-
                     location.reload();
                     resolve();
                 }, 0);

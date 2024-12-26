@@ -408,7 +408,7 @@
             start_date: options.value.customDate[0],
             end_date: options.value.customDate[1],
         }).then((res: any) => {
-            if (res.code === 1 && res.data && res.data.length > 0) {
+            if (res.code === 1 && res.data) {
                 deviceSettings.value = res.data[Object.keys(res.data).pop() as string].map((item: string) => {
                     let arr = item.split(':');
                     return {

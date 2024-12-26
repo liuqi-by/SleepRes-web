@@ -1,10 +1,13 @@
 <!-- 日志 -->
 <template>
-    <div class="logs">
+    <div
+        class="logs"
+        @click="handleClickOutside"
+    >
         <table-module
             border
             v-loading="loading"
-            :data="tableList"
+            :data="showTableListPaient"
             height="100%"
             v-model:current-page="pageOption.currentPage"
             v-model:page-size="pageOption.pageSize"
@@ -24,15 +27,27 @@
                 :label="$t('patients.revision')"
                 min-width="200"
                 align="center"
-            />
+                sortable
+            >
+                <template #header="{ column }">
+                    <table-filter-header :column="column" />
+                </template>
+            </el-table-column>
             <el-table-column
                 prop="updatetime"
                 :label="$t('patients.modifyTime')"
                 min-width="100"
                 align="center"
+                sortable
             >
                 <template #default="{ row }">
                     {{ row.updatetime && moment(row.updatetime * 1000).format(dateFormatReg + ' HH:mm:ss') }}
+                </template>
+                <template #header="{ column }">
+                    <table-filter-header
+                        :column="column"
+                        type="date"
+                    />
                 </template>
             </el-table-column>
             <el-table-column
@@ -40,8 +55,26 @@
                 :label="$t('patients.RevisionPersonnel')"
                 min-width="100"
                 align="center"
-            />
+                sortable
+            >
+                <template #header="{ column }">
+                    <table-filter-header :column="column" />
+                </template>
+            </el-table-column>
         </table-module>
+        <!-- 筛选弹窗 -->
+        <table-filter-popover
+            :visible="visible"
+            :virtual-ref="showKeyRef[showKey]"
+            :key="showKeyRef[showKey]"
+            :filterType="filterType"
+            v-model:filterInput="filterInput"
+            v-model:selectFilter="selectFilter"
+            @search-filter="searchFilter"
+            @cancel-filter="cancelFilter"
+            :filterList="filterList"
+            :filterCustomOptions="filterCustomOptions"
+        />
     </div>
 </template>
 
@@ -83,6 +116,22 @@
             });
     };
     getData();
+
+    // 表格筛选
+    const {
+        showKey,
+        showKeyRef,
+        visible,
+        filterInput,
+        selectFilter,
+        filterType,
+        filterCustomOptions,
+        filterList,
+        showTableListPaient,
+        handleClickOutside,
+        cancelFilter,
+        searchFilter,
+    } = useFilterTableHeader(tableList);
 </script>
 
 <style lang="scss" scoped>
