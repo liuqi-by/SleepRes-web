@@ -111,6 +111,18 @@
                             <span v-else-if="item.type === 'percent'">
                                 {{ row[item.prop] || row[item.prop] === 0 ? row[item.prop] + '%' : '' }}
                             </span>
+
+                            <span v-else-if="item.prop === 'data_type'">
+                                {{
+                                    row[item.prop] === 0
+                                        ? 'Wi-Fi'
+                                        : row[item.prop] === 1
+                                          ? 'SD Card'
+                                          : row[item.prop] === 2
+                                            ? 'Cellular'
+                                            : ''
+                                }}
+                            </span>
                         </div>
                     </template>
                     <template #header="{ column }">
@@ -561,6 +573,7 @@
             prop: listType.value === 4 ? 'data_type' : 'patient.mask',
             width: 120,
             listType: [4, 5],
+            defaultTemplate: true,
         },
         {
             label: t('patients.LastUpdateDate'),
