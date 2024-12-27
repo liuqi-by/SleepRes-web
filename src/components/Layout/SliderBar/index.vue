@@ -21,8 +21,6 @@
                 :collapse-transition="false"
                 :mode="layout === LayoutEnum.LEFT || device === DeviceEnum.MOBILE ? 'vertical' : 'horizontal'"
                 router
-                @open="handleOpen"
-                @close="handleClose"
                 ref="sliderMenu"
             >
                 <div
@@ -49,7 +47,7 @@
                             :collapse-close-icon="Plus"
                         >
                             <template #title>
-                                <div>{{ $t(`router.${item.meta?.title}`) }}</div>
+                                <div @click.stop="handleOpen(item.path)">{{ $t(`router.${item.meta?.title}`) }}</div>
                             </template>
                             <div
                                 v-for="child in item.children"
@@ -166,25 +164,21 @@
     // 	}
     // 	return path;
     // });
-    const isFirstOpen = ref(true);
+
     const handleOpen = (path: string) => {
-        if (!isFirstOpen.value) {
-            if (path === 'tasks') {
-                navigateTo('/tasks');
-            }
-        } else {
-            isFirstOpen.value = false;
+        if (path === 'tasks') {
+            navigateTo('/tasks');
         }
     };
 
     const sliderMenu = ref();
-    const handleClose = (path: string) => {
-        if (path === 'tasks') {
-            if (useRoute().path !== '/tasks') {
-                navigateTo('/tasks');
-                sliderMenu.value?.open(path);
-            }
-        }
-    };
+    // const handleClose = (path: string) => {
+    //     if (path === 'tasks') {
+    //         if (useRoute().path !== '/tasks') {
+    //             navigateTo('/tasks');
+    //             sliderMenu.value?.open(path);
+    //         }
+    //     }
+    // };
 </script>
 <style lang="scss" scoped></style>
