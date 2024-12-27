@@ -214,11 +214,13 @@
             icon: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAAAdSURBVDiNYzwz8/9/BgoAEyWaRw0YNWDUgMFkAAD/DAODw7WPgwAAAABJRU5ErkJggg==',
         },
         {
-            name: t('charts.ob_event'),
+            // name: t('charts.ob_event'),
+            name: 'Obstructive',
             icon: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAYAAABb0P4QAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAAD3SURBVDiNpZK9EYJAFIT3PfxJKQE6UCQxswTtgABJtQNKIHWswg7MRUc70BLMmfMMHFE8OB7jZnezt/PNzQcIEufhLDlO5pJuT1Ji0hmgXQC71m5bIc6DNYARQN7yEER/DUbnkctE6ftMjNTWbx0cPHgFwP3ckJecAuso2egGyrlWBwEAdy7UeDO93DoRDpWT1YwBgKv7TiNlLWGchzMmvW96BABcKL+OspaQSLd+fhOlQSih+8piG54qbhqEL4mlMbuVwY/E0piyl4O/Eosnf2QvB02JxZMV2elN1yCxNKXsDFgllqaUnTpqYg0XymeJxNLovpM+AcApT6z8CeojAAAAAElFTkSuQmCC',
         },
         {
-            name: t('charts.central_event'),
+            // name: t('charts.central_event'),
+            name: 'Central',
             icon: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAYAAADQWvz5AAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAAFESURBVDiNpZRNUsJAEIXfSyasc4S4o8pQ4lqKSk4gN4DcQE6AnABvQG7gEUJpPAFKuRNPoPtkpl1QYMgPobRXU92vv3ozPTNAS0jS9STpem06q02Ajhobxx79GySCgOC4TceTkKTriaM+AIBZfsHwffs3Rx11cNK2vZMgEQT7ddv2KE+9EWy5qlLoCuTuSEzc10G0Np+UpO/C0bNy07lB8IGD9fRw2PLsB0I8AnDPQ8jWGJmr4SbeAYul3ZSWwO/ZNMSKWR4Vp1g7fkkvlwJO6mqExBy8ReV87dQE9JqsNNUqjiTpu+LkX00goP5yVhwZJ5sUsFtjTERjIgDf+6y2raDcVwERvN1DmOlQDTcxh5uYWX4NYAUAlmWdfnuS9F2T+iIv/qxRk/YWJvWl/LUcOdK2DigIefM6bwJxsJ5SEEKpI9APrcp8esvF7J0AAAAASUVORK5CYII=',
         },
         {
@@ -230,7 +232,8 @@
             icon: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAATCAYAAACUef2IAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAADRSURBVDiN7ZTbjcIwEEXPoLgP0kHoADrYEtgOkgoIFcQdUAMVQAdLB6QPI11+CEIIGyMeP8v5tHXPXFkjw6eoneavyNj1QeO0B3pB44PtkkI0NscGoAtWXt6NIpmpwV9daBGVFlqYYw+Mb90XqUZmtI3Tj+B3aH/R8qYwS3yiOrVvh2EZmSwxjwgHYm/8NF/xfxBLtFL+yuXsca/AzGM9QO20NlgBVSqUbCzRdsHKQQrgg+26YJN77WPiXoHSH2wZC/qDLQUTYJsacOZV//HbOAJnE0aSjhCiRAAAAABJRU5ErkJggg==',
         },
         {
-            name: t('charts.hypopnea_event'),
+            // name: t('charts.hypopnea_event'),
+            name: 'Hypopnea',
             icon: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAARCAYAAAACCvahAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAADzSURBVDiN1dPBccIwEIXhT66AEkwH0AHphFQQqMCTCkgqgA6SDkgHFhXgDqAD5YAVFI9Nznkzuuy8f3cl7TKhlnWkbdlMecIYFGhQF+Eu8bzkq/RWBVRHPgL7HuwSW3SoA8fIsWVhAO0jqT/nYasnmsgle07sWmYhci5aPCRel7dqw+vMKpp0T3wNkQSJ+Rg0kqQOt4J+4MXI400pM9Vfxkf673D7e6ImVfoqXCFwzp8/BUX2+ZvQVYl54A0Smz5JMwA3gSPWfeiQeAqFYRHYYZUzJ94DL+6tfia2eZjGtmpVLEdW14/t4eGDlK32+7ye8nwDmeVbytwpYQ0AAAAASUVORK5CYII=',
         },
         {
@@ -399,7 +402,7 @@
                         },
 
                         legend: {
-                            data: eventList,
+                            data: eventList.filter((_item, index) => index === 2 || index === 3 || index === 6),
                             itemWidth: 12,
                             itemHeight: 12,
                             width: 700,
@@ -462,51 +465,53 @@
                          */
                         series: [
                             // 多列柱状图，数据为空情况下，也可以居中显示
-                            ...dealBar(bar.ar_event, eventList[0].name, 0),
-                            ...dealBar(bar.pm_event, eventList[1].name, 1),
+                            // ...dealBar(bar.ar_event, eventList[0].name, 0),
+                            // ...dealBar(bar.pm_event, eventList[1].name, 1),
                             ...dealBar(bar.ob_event, eventList[2].name, 2),
                             ...dealBar(bar.central_event, eventList[3].name, 3),
-                            ...dealBar(bar.sr_event, eventList[4].name, 4),
-                            ...dealBar(bar.ore_str, eventList[5].name, 5),
+                            // ...dealBar(bar.sr_event, eventList[4].name, 4),
+                            // ...dealBar(bar.ore_str, eventList[5].name, 5),
                             ...dealBar(bar.hypopnea_event, eventList[6].name, 6),
-                            ...dealBar(bar.alarm_event, eventList[7].name, 7),
+                            // ...dealBar(bar.alarm_event, eventList[7].name, 7),
 
                             // 普通显示，symbol none不显示，只为展示tooltip
-                            {
-                                name: eventList[0].name,
-                                type: 'pictorialBar',
-                                symbolSize: 16,
-                                symbol: 'none',
-                                data: bar.ar_event.map((item, index) => {
-                                    if (item) {
-                                        return [xAxis[index], item];
-                                    } else {
-                                        return '';
-                                    }
-                                }),
-                                barWidth: 16,
-                                barGap: 0,
-                                symbolPosition: 'end',
+                            // {
+                            //     name: eventList[0].name,
+                            //     type: 'pictorialBar',
+                            //     symbolSize: 16,
+                            //     symbol: 'none',
+                            //     data: bar.ar_event.map((item, index) => {
+                            //         if (item) {
+                            //             return [xAxis[index], item];
+                            //         } else {
+                            //             return '';
+                            //         }
+                            //     }),
+                            //     show: false,
+                            //     barWidth: 16,
+                            //     barGap: 0,
+                            //     symbolPosition: 'end',
 
-                                xAxisIndex: 0,
-                            },
-                            {
-                                name: eventList[1].name,
-                                type: 'pictorialBar',
-                                symbolSize: 16,
-                                symbol: 'none',
-                                data: bar.pm_event.map((item, index) => {
-                                    if (item) {
-                                        return [xAxis[index], item];
-                                    } else {
-                                        return '';
-                                    }
-                                }),
-                                barGap: 0,
-                                barWidth: 16,
-                                symbolPosition: 'end',
-                                xAxisIndex: 0,
-                            },
+                            //     xAxisIndex: 0,
+                            // },
+                            // {
+                            //     name: eventList[1].name,
+                            //     type: 'pictorialBar',
+                            //     symbolSize: 16,
+                            //     symbol: 'none',
+                            //     data: bar.pm_event.map((item, index) => {
+                            //         if (item) {
+                            //             return [xAxis[index], item];
+                            //         } else {
+                            //             return '';
+                            //         }
+                            //     }),
+                            //     barGap: 0,
+                            //     barWidth: 16,
+                            //     symbolPosition: 'end',
+                            //     xAxisIndex: 0,
+                            //     show: false,
+                            // },
                             {
                                 name: eventList[2].name,
                                 type: 'pictorialBar',
@@ -541,40 +546,40 @@
                                 symbolPosition: 'end',
                                 xAxisIndex: 0,
                             },
-                            {
-                                name: eventList[4].name,
-                                type: 'pictorialBar',
-                                symbolSize: 16,
-                                symbol: 'none',
-                                data: bar.sr_event.map((item, index) => {
-                                    if (item) {
-                                        return [xAxis[index], item];
-                                    } else {
-                                        return '';
-                                    }
-                                }),
-                                barGap: 0,
-                                barWidth: 16,
-                                symbolPosition: 'end',
-                                xAxisIndex: 0,
-                            },
-                            {
-                                name: eventList[5].name,
-                                type: 'pictorialBar',
-                                symbolSize: 16,
-                                symbol: 'none',
-                                data: bar.ore_str.map((item, index) => {
-                                    if (item) {
-                                        return [xAxis[index], item];
-                                    } else {
-                                        return '';
-                                    }
-                                }),
-                                barGap: 0,
-                                barWidth: 16,
-                                symbolPosition: 'end',
-                                xAxisIndex: 0,
-                            },
+                            // {
+                            //     name: eventList[4].name,
+                            //     type: 'pictorialBar',
+                            //     symbolSize: 16,
+                            //     symbol: 'none',
+                            //     data: bar.sr_event.map((item, index) => {
+                            //         if (item) {
+                            //             return [xAxis[index], item];
+                            //         } else {
+                            //             return '';
+                            //         }
+                            //     }),
+                            //     barGap: 0,
+                            //     barWidth: 16,
+                            //     symbolPosition: 'end',
+                            //     xAxisIndex: 0,
+                            // },
+                            // {
+                            //     name: eventList[5].name,
+                            //     type: 'pictorialBar',
+                            //     symbolSize: 16,
+                            //     symbol: 'none',
+                            //     data: bar.ore_str.map((item, index) => {
+                            //         if (item) {
+                            //             return [xAxis[index], item];
+                            //         } else {
+                            //             return '';
+                            //         }
+                            //     }),
+                            //     barGap: 0,
+                            //     barWidth: 16,
+                            //     symbolPosition: 'end',
+                            //     xAxisIndex: 0,
+                            // },
                             {
                                 name: eventList[6].name,
                                 type: 'pictorialBar',
@@ -592,23 +597,23 @@
                                 symbolPosition: 'end',
                                 xAxisIndex: 0,
                             },
-                            {
-                                name: eventList[7].name,
-                                type: 'pictorialBar',
-                                symbolSize: 16,
-                                symbol: 'none',
-                                data: bar.alarm_event.map((item, index) => {
-                                    if (item) {
-                                        return [xAxis[index], item];
-                                    } else {
-                                        return '';
-                                    }
-                                }),
-                                barGap: 0,
-                                barWidth: 16,
-                                symbolPosition: 'end',
-                                xAxisIndex: 0,
-                            },
+                            // {
+                            //     name: eventList[7].name,
+                            //     type: 'pictorialBar',
+                            //     symbolSize: 16,
+                            //     symbol: 'none',
+                            //     data: bar.alarm_event.map((item, index) => {
+                            //         if (item) {
+                            //             return [xAxis[index], item];
+                            //         } else {
+                            //             return '';
+                            //         }
+                            //     }),
+                            //     barGap: 0,
+                            //     barWidth: 16,
+                            //     symbolPosition: 'end',
+                            //     xAxisIndex: 0,
+                            // },
                         ],
                     },
                     true,

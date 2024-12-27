@@ -204,29 +204,19 @@
                                         <div>
                                             <span class="statistics-label">Max Pressure:</span>
                                             <span class="statistics-value">
-                                                {{
-                                                    deviceReport?.pressure_max
-                                                        ? deviceReport.pressure_max + 'cmH2O'
-                                                        : '-'
-                                                }}
+                                                {{ deviceReport?.pressure_max ? deviceReport.pressure_max : '-' }}
                                             </span>
                                         </div>
                                         <div>
                                             <span class="statistics-label">95% Pressure:</span>
                                             <span class="statistics-value">
-                                                {{
-                                                    deviceReport?.pressure_95 ? deviceReport.pressure_95 + 'cmH2O' : '-'
-                                                }}
+                                                {{ deviceReport?.pressure_95 ? deviceReport.pressure_95 : '-' }}
                                             </span>
                                         </div>
                                         <div>
                                             <span class="statistics-label">Avg Pressure:</span>
                                             <span class="statistics-value">
-                                                {{
-                                                    deviceReport?.pressure_avg
-                                                        ? deviceReport.pressure_avg + 'cmH2O'
-                                                        : '-'
-                                                }}
+                                                {{ deviceReport?.pressure_avg ? deviceReport.pressure_avg : '-' }}
                                             </span>
                                         </div>
                                     </div>
@@ -239,13 +229,13 @@
                                         <div>
                                             <span class="statistics-label">Max Leak:</span>
                                             <span class="statistics-value">
-                                                {{ deviceReport?.leak_max ? deviceReport.leak_max + 'L/min' : '-' }}
+                                                {{ deviceReport?.leak_max ? deviceReport.leak_max : '-' }}
                                             </span>
                                         </div>
                                         <div>
                                             <span class="statistics-label">Avg Leak:</span>
                                             <span class="statistics-value">
-                                                {{ deviceReport?.leak_avg ? deviceReport.leak_avg + 'L/min' : '-' }}
+                                                {{ deviceReport?.leak_avg ? deviceReport.leak_avg : '-' }}
                                             </span>
                                         </div>
                                     </div>
