@@ -8,7 +8,7 @@
             @search="search"
             v-model="searchOption"
             class="m-b-[20px]"
-            :placeholder="$t('dashboard.searchPlaceholder')"
+            :placeholder="$t('patients.searchPlaceholder')"
         />
 
         <!-- 表格模块 -->
