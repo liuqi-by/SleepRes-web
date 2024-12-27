@@ -1,3 +1,10 @@
+# 2024/12/27
+
+1. Complete Rules(完成规则)
+2. Complete the Task Management static page(完成任务管理静态页面)
+3. Complete the Settings static page(完成设置静态页面)
+4. Update version 0.0.2-alpha.7(更新版本0.0.2-alpha.7)
+
 # 2024/12/18
 
 1. Complete dashboard(完成仪表盘页面)
