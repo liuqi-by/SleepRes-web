@@ -344,5 +344,13 @@
         "CellularModule": "Missed Cellular Module Calls",
         "W-FiModule": "Missed W-Fi Module Calls",
         "Action": "Action"
+    },
+    "settings": {
+        "CompanyInformation": "Company Information",
+        "CompanyName": "Company Name",
+        "CompanyLogo": "Company Logo",
+        "Upload": "Upload",
+        "imgFormatRule": "Image format error",
+        "imgSizeRule": "Image size can not exceed 5MB"
     }
 }
