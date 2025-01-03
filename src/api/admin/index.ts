@@ -1,5 +1,7 @@
 import type { UserInfo } from '../login/types';
 import type {
+    AdminSetting,
+    AdminSettingRes,
     CheckMessageReq,
     EditAccountReq,
     FrozenUserReq,
@@ -66,5 +68,25 @@ export const editAccount = (data: EditAccountReq) => {
     return useClientRequest<ResPonseType<void>>('/api/admin/edit', {
         method: 'POST',
         body: queryString(data),
+    });
+};
+
+/**
+ * @description 获取管理员设置
+ */
+export const getAdminSetting = () => {
+    return useClientRequest<ResPonseType<AdminSettingRes>>('/api/admin/settings', {
+        method: 'GET',
+        params: { type: 0 },
+    });
+};
+
+/**
+ * @description 修改管理员设置
+ */
+export const updateAdminSetting = (data: AdminSetting) => {
+    return useClientRequest<ResPonseType<void>>('/api/admin/settings', {
+        method: 'POST',
+        body: queryString({ ...data, type: 1 }),
     });
 };

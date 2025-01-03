@@ -88,3 +88,30 @@ export interface EditAccountReq {
     address: string;
     state: string;
 }
+
+// 管理员设置
+export interface AdminSetting {
+    company_name: string;
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip_code: string;
+    logo: string;
+}
+
+// 管理员设置
+export interface AdminSettingRes {
+    id: number;
+    userid: number;
+    company_name: string;
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip_code: string;
+    logo: string;
+    creattime: number;
+    updatetime: number;
+    creattime_text: string;
+}

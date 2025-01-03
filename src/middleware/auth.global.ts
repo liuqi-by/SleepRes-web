@@ -2,7 +2,7 @@ import { usePermissionStore } from '~/stores/modules/permission';
 import { useUserStore } from '~/stores/modules/user';
 export default defineNuxtRouteMiddleware(async to => {
     // 路由白名单
-    const whiteList = ['/login', '/resetpwd'];
+    const whiteList = ['/login', '/resetpwd', '/tasks', '/administrator/rules'];
     // 获取用户信息
     const userStore = useUserStore();
 

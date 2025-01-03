@@ -15,57 +15,68 @@
             >
                 <el-form-item
                     :label="$t('settings.CompanyName')"
-                    prop="companyName"
+                    prop="company_name"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.companyName"
+                            v-model="formData.company_name"
                             class="form-input"
+                            :placeholder="$t('settings.CompanyName')"
+                            :maxlength="inputLength.office_name"
+                            ref="focusRef"
                         />
                     </div>
                 </el-form-item>
                 <el-form-item
                     label="Address Line 1"
-                    prop="companyName"
+                    prop="address1"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.companyName"
+                            v-model="formData.address1"
                             class="form-input"
+                            :placeholder="`${$t('login.Address')}`"
+                            type="text"
+                            :maxlength="inputLength.address"
                         />
                     </div>
                 </el-form-item>
                 <el-form-item
                     label="Address Line 2"
-                    prop="companyName"
+                    prop="address2"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.companyName"
+                            v-model="formData.address2"
                             class="form-input"
+                            :placeholder="`${$t('login.Address')}`"
+                            type="text"
+                            :maxlength="inputLength.address"
                         />
                     </div>
                 </el-form-item>
                 <el-form-item
                     :label="$t('office.City')"
-                    prop="companyName"
+                    prop="city"
                 >
                     <div class="form-item">
                         <el-input
-                            v-model="formData.companyName"
+                            v-model="formData.city"
                             class="form-input"
+                            :placeholder="$t('office.City')"
+                            :maxlength="inputLength.city"
                         />
                     </div>
                 </el-form-item>
                 <el-form-item
                     label=""
-                    prop="companyName"
+                    prop="state"
                     label-width="200px"
                 >
                     <template #label>
                         State
                         <select-state
-                            v-model="formData.companyName"
+                            v-model="formData.state"
                             class="form-input m-l-10px"
                             :placeholder="`${$t('login.State')}`"
                         />
@@ -73,8 +84,12 @@
                     <div class="form-item el-form-item__label p-0!">
                         Zip Code
                         <el-input
-                            v-model="formData.companyName"
-                            class="form-input m-l-10px"
+                            v-model="formData.zip_code"
+                            class="form-input"
+                            :placeholder="`${$t('login.ZipCode')}`"
+                            type="text"
+                            :maxlength="inputLength.zipCode"
+                            @input="filterNumberAndChart('zip_code')"
                         />
                     </div>
                 </el-form-item>
@@ -96,11 +111,11 @@
                             </el-upload>
                         </div>
                     </template>
-                    <div class="form-item w-[240px]! items-center justify-center relative top-20px">
+                    <div class="form-item w-[208px]! h-[64px]! items-center justify-center relative top-20px">
                         <img
-                            src="@/assets/images/logo.png"
+                            :src="formData.logo ? baseUrl + formData.logo : ''"
                             alt="logo"
-                            class="bg-#797979"
+                            class="bg-#797979 wh-full"
                         />
                     </div>
                 </el-form-item>
@@ -111,14 +126,62 @@
 
 <script setup lang="ts">
     import type { UploadFile } from 'element-plus';
+    import { getAdminSetting, updateAdminSetting } from '~/api/admin';
+    import type { AdminSetting } from '~/api/admin/types';
+    import { uploadFile } from '~/api/public';
 
-    const formData = ref({
-        companyName: '',
+    const baseUrl = process.env.API_URL;
+
+    const formData = ref<AdminSetting>({
+        company_name: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip_code: '',
+        logo: '',
     });
+
+    const isLoading = ref(true);
+    onMounted(() => {
+        // 获取管理员设置信息
+        getAdminSetting()
+            .then(res => {
+                // formData一个个key赋值
+                for (const keys in formData.value) {
+                    let key = keys as keyof AdminSetting;
+                    formData.value[key] = res.data[key];
+                }
+            })
+            .finally(() => {
+                nextTick(() => {
+                    isLoading.value = false;
+                });
+            });
+    });
+
+    watch(
+        () => formData.value,
+        () => {
+            if (isLoading.value) {
+                return;
+            }
+            // 更新管理员设置信息
+            updateData();
+        },
+        {
+            deep: true,
+        },
+    );
+
+    const updateData = useDebounceFn(() => {
+        updateAdminSetting(formData.value);
+    }, 500);
 
     const formRules = computed(() => {
         return {};
     });
+    const { filterNumberAndChart } = useFilterInput(formData);
 
     const { t } = useI18n();
     // 图片上传
@@ -142,21 +205,20 @@
             return false;
         }
 
-        const formData = new FormData();
-        formData.append('file', rawFile); // 添加文件到表单数据
-        formData.append('name', rawFile.name); // 添加其他表单数据
+        const fileData = new FormData();
 
-        // // 调用上传文件的接口
-        // try {
-        //     let res = await uploadFile(formData);
+        fileData.append('file', rawFile); // 添加文件到表单数据
+        fileData.append('name', rawFile.name); // 添加其他表单数据
 
-        //     if (res.code === 1) {
-        //         userStore.updateUserInfo({
-        //             ...userStore.userInfo,
-        //             avatar: res.data.url,
-        //         });
-        //     }
-        // } catch (error) {}
+        console.log(fileData);
+        // 调用上传文件的接口
+        try {
+            let res = await uploadFile(fileData);
+
+            if (res.code === 1) {
+                formData.value.logo = res.data.url;
+            }
+        } catch (error) {}
     };
 </script>
 

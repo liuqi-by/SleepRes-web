@@ -1,11 +1,11 @@
 <template>
     <div class="navbar">
-        <Hamburger
+        <!-- <Hamburger
             id="hamburger-container"
             :isCollapse="!sidebar.opened"
             class="hamburger-container"
             @toggle-click="toggleSideBar"
-        />
+        /> -->
         <!-- 面包屑 -->
         <Breadcrumb
             id="breadcrumb-container"

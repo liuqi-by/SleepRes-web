@@ -58,9 +58,9 @@ export const useClientRequest = <T = unknown>(url: string, opts?: FetchOptions) 
                      * 当code 为0，error_code为1，token_status为0时，表示登录过期
                      */
                     // 登录过期
-                    if (response._data.token_status === 0) {
-                        useUserStore().logout();
-                    }
+                    // if (response._data.token_status === 0) {
+                    //     useUserStore().logout();
+                    // }
 
                     return Promise.reject(response._data.msg);
                 }

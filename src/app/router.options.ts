@@ -176,7 +176,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: 'settings',
             keepalive: false,
-            roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin],
+            roles: [RoleType.DMEAdmin, RoleType.PhysicianAdmin, RoleType.SleepRes],
             parent: 'administrator',
             parentTitle: 'Administrator',
         },

@@ -16,7 +16,6 @@
         <el-scrollbar :key="layout">
             <el-menu
                 :default-active="route.path"
-                :collapse="isCollapse"
                 :unique-opened="false"
                 :collapse-transition="false"
                 :mode="layout === LayoutEnum.LEFT || device === DeviceEnum.MOBILE ? 'vertical' : 'horizontal'"

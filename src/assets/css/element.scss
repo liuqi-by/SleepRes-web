@@ -139,4 +139,13 @@ body {
             left: 25px;
         }
     }
+
+    .el-select-dropdown {
+        .el-scrollbar {
+            .el-scrollbar__bar.is-vertical {
+                display: block !important;
+                opacity: 1 !important;
+            }
+        }
+    }
 }
