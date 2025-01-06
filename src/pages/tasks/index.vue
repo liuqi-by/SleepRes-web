@@ -10,29 +10,14 @@
                 >
                     <div class="ad-card__title bg-[#e86474]">At Risk</div>
                     <ul>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
+                        <li
+                            v-for="(item, index) in riskDays"
+                            :key="item.value"
+                        >
+                            <span class="ad-card__label">{{ item.label }}</span>
+                            <span class="ad-card__value">
+                                {{ tasksData?.at_risk[index].num || 0 }} {{ $t('tasks.patients') }}
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -42,29 +27,14 @@
                 >
                     <div class="ad-card__title bg-[#ffff64]">Opportunity</div>
                     <ul>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
+                        <li
+                            v-for="(item, index) in riskDays"
+                            :key="item.value"
+                        >
+                            <span class="ad-card__label">{{ item.label }}</span>
+                            <span class="ad-card__value">
+                                {{ tasksData?.opportunity[index].num || 0 }}{{ $t('tasks.patients') }}
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -74,29 +44,14 @@
                 >
                     <div class="ad-card__title bg-[#03bf16]">Good</div>
                     <ul>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
-                        </li>
-                        <li>
-                            <span class="ad-card__label">Day 7</span>
-                            <span class="ad-card__value">56 {{ $t('tasks.patients') }}</span>
+                        <li
+                            v-for="(item, index) in riskDays"
+                            :key="item.value"
+                        >
+                            <span class="ad-card__label">{{ item.label }}</span>
+                            <span class="ad-card__value">
+                                {{ tasksData?.good[index].num || 0 }}{{ $t('tasks.patients') }}
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -145,7 +100,7 @@
         <div class="module">
             <h1>{{ $t('router.Long-term-adherence') }} {{ $t('tasks.tasks') }}</h1>
             <div class="task-link">
-                <div class="task-link__item">XXXX {{ $t('tasks.patients') }}</div>
+                <div class="task-link__item">{{ tasksData?.long_term.num || 0 }} {{ $t('tasks.patients') }}</div>
                 <base-button
                     type="primary"
                     height="40px"
@@ -160,7 +115,7 @@
             <div class="m-b-20px">
                 <h2>{{ $t('router.High-Leak') }}</h2>
                 <div class="task-link">
-                    <div class="task-link__item">XXXX {{ $t('tasks.patients') }}</div>
+                    <div class="task-link__item">{{ tasksData?.high_leak.num || 0 }} {{ $t('tasks.patients') }}</div>
                     <base-button
                         type="primary"
                         height="40px"
@@ -173,7 +128,7 @@
             <div>
                 <h2>{{ $t('router.High-AHI') }}</h2>
                 <div class="task-link">
-                    <div class="task-link__item">XXXX {{ $t('tasks.patients') }}</div>
+                    <div class="task-link__item">{{ tasksData?.high_ahi.num || 0 }} {{ $t('tasks.patients') }}</div>
                     <base-button
                         type="primary"
                         height="40px"
@@ -189,7 +144,9 @@
             <div class="m-b-20px">
                 <h2>{{ $t('tasks.CellularModule') }}</h2>
                 <div class="task-link">
-                    <div class="task-link__item">XXXX {{ $t('tasks.patients') }}</div>
+                    <div class="task-link__item">
+                        {{ tasksData?.missed_cellular.num || 0 }} {{ $t('tasks.patients') }}
+                    </div>
                     <base-button
                         type="primary"
                         height="40px"
@@ -201,7 +158,7 @@
             <div>
                 <h2>{{ $t('tasks.W-FiModule') }}</h2>
                 <div class="task-link">
-                    <div class="task-link__item">XXXX {{ $t('tasks.patients') }}</div>
+                    <div class="task-link__item">{{ tasksData?.missed_wifi.num || 0 }} {{ $t('tasks.patients') }}</div>
                     <base-button
                         type="primary"
                         height="40px"
@@ -214,7 +171,33 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+    import { getTaskRuleData } from '@/api/tasks';
+    import type { TaskRuleData } from '~/api/tasks/types';
+    import { useRules } from '~/stores/modules/rules';
+    const rulesStore = useRules();
+
+    const rulesOption = computed(() => rulesStore.rulesOption);
+    const riskDays = computed(() => {
+        return rulesStore.riskDays.filter(item => {
+            return rulesOption.value.Therapy.selectDays.includes(item.value);
+        });
+    });
+
+    const tasksData = ref<TaskRuleData>();
+    onMounted(() => {
+        getData();
+    });
+
+    const getData = () => {
+        rulesStore.getRules();
+        getTaskRuleData().then(res => {
+            if (res.code === 1) {
+                tasksData.value = res.data;
+            }
+        });
+    };
+</script>
 
 <style lang="scss" scoped>
     .page-container {

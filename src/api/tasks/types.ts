@@ -1,7 +1,4 @@
-export interface AdminRulesReq {
-    rules: string;
-}
-export interface AdminRulesRes {
+export interface TaskRuleData {
     long_term: Longterm;
     high_leak: Longterm;
     high_ahi: Longterm;

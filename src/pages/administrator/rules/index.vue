@@ -30,11 +30,12 @@
                 />
                 % based on 4 hours of use per night
             </div>
-            <div class="radio-flex items-start">
+            <div class="radio-flex">
                 <switch-radio
                     v-model="rulesOption.Therapy.risk.isOpen"
                     label="At Risk:"
                     color="#D9001B"
+                    class="self-start"
                 />
                 <div>
                     <p class="line-height-[32px] flex">
@@ -42,53 +43,40 @@
                         <select-number v-model="rulesOption.Therapy.risk.limits[0]" /> % based on 4 hours of use per
                         night
                     </p>
+
                     <el-checkbox-group v-model="rulesOption.Therapy.selectDays">
                         <div>
-                            <el-checkbox
-                                value="1"
-                                size="large"
-                                class="w-[70px]"
+                            <div
+                                v-for="item in riskDays.filter(item => item.value % 2 === 0)"
+                                :key="item.value"
+                                class="inline-block m-r-[40px]"
                             >
-                                Day 7
-                            </el-checkbox>
-                            <el-checkbox
-                                value="2"
-                                size="large"
-                                class="w-[70px]"
-                            >
-                                Day 21
-                            </el-checkbox>
-                            <el-checkbox
-                                value="3"
-                                size="large"
-                                class="w-[70px]"
-                            >
-                                Day 45
-                            </el-checkbox>
-                        </div>
+                                <!-- 偶数换行 -->
 
+                                <el-checkbox
+                                    :value="item.value"
+                                    size="large"
+                                    class="w-[70px]"
+                                >
+                                    {{ item.label }}
+                                </el-checkbox>
+                            </div>
+                        </div>
                         <div>
-                            <el-checkbox
-                                value="4"
-                                size="large"
-                                class="w-[70px]"
+                            <div
+                                v-for="item in riskDays.filter(item => item.value % 2 !== 0)"
+                                :key="item.value"
+                                class="inline-block m-r-[40px]"
                             >
-                                Day 14
-                            </el-checkbox>
-                            <el-checkbox
-                                value="5"
-                                size="large"
-                                class="w-[70px]"
-                            >
-                                Day 28
-                            </el-checkbox>
-                            <el-checkbox
-                                value="6"
-                                size="large"
-                                class="w-[70px]"
-                            >
-                                Day 60
-                            </el-checkbox>
+                                <!-- 偶数换行 -->
+                                <el-checkbox
+                                    :value="item.value"
+                                    size="large"
+                                    class="w-[70px]"
+                                >
+                                    {{ item.label }}
+                                </el-checkbox>
+                            </div>
                         </div>
                     </el-checkbox-group>
                 </div>
@@ -279,62 +267,12 @@
 </template>
 
 <script setup lang="ts">
-    import { getAdminRules, updateAdminRules } from '~/api/rules';
+    import { useRules } from '~/stores/modules/rules';
 
-    const rulesOption = ref<any>({
-        Therapy: {
-            good: {
-                isOpen: false,
-                limits: [''],
-            },
-            caution: {
-                isOpen: false,
-                limits: ['', ''],
-            },
-            risk: {
-                isOpen: false,
-                limits: [''],
-            },
-            selectDays: [],
-            adherenceAchieved: {
-                isOpen: false,
-            },
-            LongTermAdherence: {
-                isOpen: false,
-                limits: [''],
-                isDisregard: false,
-                disregard: '',
-            },
-        },
-        Clinical: {
-            leak: {
-                isOpen: false,
-                limits: ['', ''],
-                isDisregard: false,
-                disregard: '',
-            },
-            ahi: {
-                isOpen: false,
-                limits: ['', ''],
-                isDisregard: false,
-                disregard: '',
-            },
-        },
-        Connectivity: {
-            cellularModem: {
-                isOpen: false,
-                limits: [''],
-                isDisregard: false,
-                disregard: '',
-            },
-            wifiModule: {
-                isOpen: false,
-                limits: [''],
-                isDisregard: false,
-                disregard: '',
-            },
-        },
-    });
+    const rulesStore = useRules();
+
+    const rulesOption = computed(() => rulesStore.rulesOption);
+    const riskDays = computed(() => rulesStore.riskDays);
 
     watch(
         rulesOption,
@@ -347,16 +285,11 @@
     );
 
     const getData = () => {
-        getAdminRules().then(res => {
-            if (res.code === 1 && res.data) {
-                rulesOption.value = JSON.parse((res.data as string).replaceAll('&quot;', '"'));
-            }
-        });
+        rulesStore.getRules();
     };
 
     const updateData = useThrottleFn(() => {
-        console.log(JSON.stringify(rulesOption.value));
-        updateAdminRules({ rules: JSON.stringify(rulesOption.value) });
+        rulesStore.updateRules(rulesOption.value);
     }, 200);
 
     onMounted(() => {

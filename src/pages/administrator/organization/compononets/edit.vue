@@ -14,7 +14,7 @@
                 :model="formData"
                 :rules="formRules"
                 class="form line-form"
-                label-width="130"
+                label-width="140"
                 label-position="left"
             >
                 <!-- OfficeName -->
