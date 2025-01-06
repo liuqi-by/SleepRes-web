@@ -1,7 +1,7 @@
+import { useStorage as useVueUseLocalStorage } from '@vueuse/core';
 import { useTagsViewStore } from './tagsView';
 import { usePermissionStore } from './permission';
 import { getMessage } from '~/api/admin';
-
 import { loginAccount, getUserDetailInfo, loginOut } from '~/api/login';
 import type { LoginReq, UserInfo } from '~/api/login/types';
 import { getRoles, RoleType } from '~/enums/RolesEnum';
@@ -16,13 +16,9 @@ export const useUserStore = defineStore(
 
         // const userInfoInit = null;
         // 用户信息
-        const userInfo = useCookie<UserInfo | null>('userInfo', {
-            default: () => null,
-        });
+        const userInfo = useVueUseLocalStorage<UserInfo | null>('userInfo', null);
         // 角色权限
-        const roles = useCookie<string[]>('roles', {
-            default: () => [],
-        });
+        const roles = useVueUseLocalStorage<string[]>('roles', []);
 
         // watch(
         //     () => userInfo.value?.group_id,

@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
+import { useStorage as useVueUseLocalStorage } from '@vueuse/core';
 import { useUserStore } from './user';
 import { routes } from '@/app/router.options';
 
@@ -31,9 +32,9 @@ const generateRoute = (routes: any[], result: any[] = []) => {
 };
 
 export const usePermissionStore = defineStore('permission', () => {
-    const permissionRoutes = useLocalStorage<RouteRecordRaw[]>('routes', []);
+    const permissionRoutes = useVueUseLocalStorage<RouteRecordRaw[]>('routes', []);
 
-    const menuRoute = useLocalStorage<RouteRecordRaw[]>('menuRoute', []);
+    const menuRoute = useVueUseLocalStorage<RouteRecordRaw[]>('menuRoute', []);
     // 设置权限路由
     const setPermissionRoutes = (routes: any) => {
         permissionRoutes.value = routes;

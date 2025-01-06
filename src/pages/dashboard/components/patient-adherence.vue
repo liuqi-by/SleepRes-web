@@ -68,9 +68,9 @@
                 radius: '50%',
                 center: ['50%', '45%'],
                 data: [
-                    { value: 0, name: 'Adherent', itemStyle: { color: '#156082' }, status: 0 },
-                    { value: 0, name: 'Monitoring', itemStyle: { color: '#E97132' }, status: 1 },
-                    { value: 0, name: 'Non-Adherent', itemStyle: { color: '#196B24' }, status: 2 },
+                    { value: 0, name: 'Adherent', itemStyle: { color: 'green' }, status: 0 },
+                    { value: 0, name: 'Monitoring', itemStyle: { color: 'grey' }, status: 1 },
+                    { value: 0, name: 'Non-Adherent', itemStyle: { color: 'red' }, status: 2 },
                 ],
                 itemStyle: {
                     borderWidth: 2, // 设置间隙宽度
@@ -131,9 +131,9 @@
         getAdherenceProportion(params).then(res => {
             if (res.code === 1 && res.data) {
                 option.value.series[0].data = [
-                    { value: res.data.compliant0, name: 'Adherent', itemStyle: { color: '#156082' }, status: 0 },
-                    { value: res.data.compliant1, name: 'Monitoring', itemStyle: { color: '#E97132' }, status: 1 },
-                    { value: res.data.compliant2, name: 'Non-Adherent', itemStyle: { color: '#196B24' }, status: 2 },
+                    { value: res.data.compliant0, name: 'Adherent', itemStyle: { color: 'green' }, status: 0 },
+                    { value: res.data.compliant1, name: 'Monitoring', itemStyle: { color: 'grey' }, status: 1 },
+                    { value: res.data.compliant2, name: 'Non-Adherent', itemStyle: { color: 'red' }, status: 2 },
                 ];
             }
         });

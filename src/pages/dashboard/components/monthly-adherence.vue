@@ -65,7 +65,7 @@
                 name: 'Adherent Patients',
                 barMaxWidth: '20',
                 itemStyle: {
-                    color: '#156082',
+                    color: 'green',
                 },
                 label: {
                     show: true,
@@ -84,7 +84,7 @@
                 barMaxWidth: '20',
                 name: 'Non-Adherent Patients',
                 itemStyle: {
-                    color: '#E97132',
+                    color: 'red',
                 },
             },
         ],

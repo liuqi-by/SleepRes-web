@@ -44,10 +44,10 @@
                 radius: '50%',
                 center: ['50%', '45%'],
                 data: [
-                    { value: 0, name: '10-19 LPM', itemStyle: { color: '#156082' } },
-                    { value: 0, name: '20-29 LPM', itemStyle: { color: '#E97132' } },
-                    { value: 0, name: '30-39 LPM', itemStyle: { color: '#196B24' } },
-                    { value: 0, name: '40 LPM or Greater', itemStyle: { color: '#1EA4D8' } },
+                    { value: 0, name: '10-19 LPM', itemStyle: { color: 'blue' } },
+                    { value: 0, name: '20-29 LPM', itemStyle: { color: 'orange' } },
+                    { value: 0, name: '30-39 LPM', itemStyle: { color: 'purple' } },
+                    { value: 0, name: '40 LPM or Greater', itemStyle: { color: 'red' } },
                 ],
                 itemStyle: {
                     borderWidth: 2, // 设置间隙宽度
@@ -91,10 +91,10 @@
             console.log(res);
             if (res.code === 1 && res.data) {
                 option.value.series[0].data = [
-                    { value: res.data.sta1, name: '10-19 LPM', itemStyle: { color: '#156082' } },
-                    { value: res.data.sta2, name: '20-29 LPM', itemStyle: { color: '#E97132' } },
-                    { value: res.data.sta3, name: '30-39 LPM', itemStyle: { color: '#196B24' } },
-                    { value: res.data.sta4, name: '40 LPM or Greater', itemStyle: { color: '#1EA4D8' } },
+                    { value: res.data.sta1, name: '10-19 LPM', itemStyle: { color: 'blue' } },
+                    { value: res.data.sta2, name: '20-29 LPM', itemStyle: { color: 'orange' } },
+                    { value: res.data.sta3, name: '30-39 LPM', itemStyle: { color: 'purple' } },
+                    { value: res.data.sta4, name: '40 LPM or Greater', itemStyle: { color: 'red' } },
                 ];
             }
         });
